@@ -4,19 +4,19 @@
     <string name="menu_settings">réglages</string>
     <string name="title_activity_main">SARA</string>
     <string name="speed">vitesse</string>
-    <string name="bearing">cap</string>
+    <string name="heading">cap</string>
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
     <string name="speedtreshold">seuil de vitesse</string>
     <string name="timetreshold">seuil de temps</string>
-    <string name="bearingtreshold">seuil de cap</string>
+    <string name="headingtreshold">seuil de cap</string>
     <string name="nosatelite">pas de satellites</string>
     <string name="norecognition">pas de reconnaissance</string>
     <string name="defaultmode">mode auto par défault</string>
     <string name="vocalrecognition">reconnaissance vocale</string>
     <string name="available">disponible</string>
     <string name="autospeed">vitesse auto</string>
-    <string name="autobearing">cap auto</string>
+    <string name="autoheading">cap auto</string>
     
 
 </resources>

@@ -23,11 +23,11 @@
         />
 
     <TextView
-        android:id="@+id/bearing"
+        android:id="@+id/heading"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="25"
-        android:text= "@string/bearing"
+        android:text= "@string/heading"
         tools:context=".MainActivity" 
         />
     
@@ -58,11 +58,11 @@
 		android:text="@string/autospeed"
 		/>
 		<CheckBox
-			android:id="@+id/bearingAutoCheckBox"
+			android:id="@+id/headingAutoCheckBox"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="25"
-			android:text="@string/autobearing"
+			android:text="@string/autoheading"
 		/>
 		<CheckBox
 			android:id="@+id/autoCheckBox"
@@ -92,7 +92,7 @@
         android:progress="5"
         />
     <SeekBar
-        android:id="@+id/seekBarBearing"        
+        android:id="@+id/seekBarheading"        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -124,11 +124,11 @@
         android:text="@string/speed"
     	/>
     <Button 
-        android:id="@+id/buttonBearing"
+        android:id="@+id/buttonheading"
     	android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="25"
-        android:text="@string/bearing"
+        android:text="@string/heading"
     	/>
     <ImageButton 
         android:id="@+id/buttonSpeak"

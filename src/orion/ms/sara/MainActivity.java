@@ -31,17 +31,17 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	protected static final int RESULT_SPEECH = 1;
 	
 	private TextView textViewSpeed = null;
-	private TextView textViewBearing = null;
+	private TextView textViewheading = null;
 	private TextView textViewAuto = null;	
 	private Button buttonSpeed = null;
-	private Button buttonBearing = null;
+	private Button buttonheading = null;
 	private ImageButton buttonReco = null;
 	
 	private CheckBox speedAutoCheckBox = null;
-	private CheckBox bearingAutoCheckBox = null;
+	private CheckBox headingAutoCheckBox = null;
 	
 	private SeekBar speedBar = null;
-	private SeekBar bearingBar = null;
+	private SeekBar headingBar = null;
 	private SeekBar timeBar = null; 
 	
 	private TextToSpeech tts = null;
@@ -49,13 +49,13 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private LocationManager lm = null;
 	private LocationListener ll = null;
 	
-	private String bearing = "";
-	private double bearingAuto = 0;
-	private double bearingLastAuto = 0;
-	private double bearingTreshold = 4; 
-	private long bearingTimeTreshold = 5;
-	private Date bearingNow = null;
-	private Date bearingBefore = null;
+	private String heading = "";
+	private double headingAuto = 0;
+	private double headingLastAuto = 0;
+	private double headingTreshold = 4; 
+	private long headingTimeTreshold = 5;
+	private Date headingNow = null;
+	private Date headingBefore = null;
 	
 	private String speed = "";
 	private double speedAuto = 0;
@@ -83,8 +83,8 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
     //TextView creation
     textViewSpeed = new TextView(this);
     textViewSpeed = (TextView) findViewById(R.id.speedView);
-    textViewBearing = new TextView(this);
-    textViewBearing = (TextView) findViewById(R.id.bearing);
+    textViewheading = new TextView(this);
+    textViewheading = (TextView) findViewById(R.id.heading);
     textViewAuto = new TextView(this);
     textViewAuto = (TextView) findViewById(R.id.speak);
     textViewAuto.setText(getResources().getString(R.string.defaultmode));
@@ -92,8 +92,8 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
     //CheckBox
     speedAutoCheckBox = (CheckBox) findViewById(R.id.speedAutoCheckBox);
     speedAutoCheckBox.setChecked(true);
-    bearingAutoCheckBox = (CheckBox) findViewById(R.id.bearingAutoCheckBox);
-    bearingAutoCheckBox.setChecked(true);
+    headingAutoCheckBox = (CheckBox) findViewById(R.id.headingAutoCheckBox);
+    headingAutoCheckBox.setChecked(true);
         
     //SpeedBar
     speedBar = (SeekBar) findViewById(R.id.seekBarSpeed);
@@ -101,9 +101,9 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
     speedBar.setContentDescription(getResources().getString(R.string.speedtreshold));
     
     //SpeedBar
-    bearingBar = (SeekBar) findViewById(R.id.seekBarBearing);
-    bearingBar.setOnSeekBarChangeListener(this);
-    bearingBar.setContentDescription(getResources().getString(R.string.bearingtreshold));
+    headingBar = (SeekBar) findViewById(R.id.seekBarheading);
+    headingBar.setOnSeekBarChangeListener(this);
+    headingBar.setContentDescription(getResources().getString(R.string.headingtreshold));
     
     //TimeBar 
     timeBar = (SeekBar) findViewById(R.id.seekBarTime);
@@ -111,7 +111,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
     timeBar.setContentDescription("Time");
     
     //DefaultValue
-    bearing =  getResources().getString(R.string.nosatelite);
+    heading =  getResources().getString(R.string.nosatelite);
     speed =  getResources().getString(R.string.nosatelite);
     latitude =  getResources().getString(R.string.nosatelite);
     longitude =  getResources().getString(R.string.nosatelite);
@@ -124,7 +124,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
    
 	//dates creation
 	speedBefore = new Date();
-	bearingBefore = new Date();
+	headingBefore = new Date();
 	
 	//2point creation
 	/**
@@ -153,8 +153,8 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	// button creation
     buttonSpeed= new Button(this);
     buttonSpeed = (Button) findViewById(R.id.buttonSpeed);
-	buttonBearing = new Button(this);
-    buttonBearing = (Button) findViewById(R.id.buttonBearing);
+	buttonheading = new Button(this);
+    buttonheading = (Button) findViewById(R.id.buttonheading);
 	buttonReco= new ImageButton(this);
     buttonReco = (ImageButton) findViewById(R.id.buttonSpeak);
 
@@ -165,8 +165,8 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			if (v== buttonSpeed){
 				tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_FLUSH, null);
 			}
-			if (v== buttonBearing){
-				tts.speak(getResources().getString(R.string.bearing)+ " : " + bearing, TextToSpeech.QUEUE_FLUSH, null);
+			if (v== buttonheading){
+				tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_FLUSH, null);
 			}
 			if (v== buttonReco){
 				 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -182,7 +182,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	
 	// button activation
 	buttonSpeed.setOnClickListener(onclickListener);
-	buttonBearing.setOnClickListener(onclickListener);
+	buttonheading.setOnClickListener(onclickListener);
 	buttonReco.setOnClickListener(onclickListener);
 	
     }//end of oncreate
@@ -227,8 +227,8 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
                 	if ( (text.get(0).equals(getResources().getString(R.string.speed)))){
                 		tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_FLUSH, null);
                 	}
-                	else if ( (text.get(0).equals(getResources().getString(R.string.bearing)))){
-                		tts.speak(getResources().getString(R.string.bearing)+ " : " + bearing, TextToSpeech.QUEUE_FLUSH, null);
+                	else if ( (text.get(0).equals(getResources().getString(R.string.heading)))){
+                		tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_FLUSH, null);
                 	}
                 	else {
                 		Toast.makeText(getApplicationContext(),text.get(0),Toast.LENGTH_SHORT).show();
@@ -243,7 +243,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	//public double arrondiLat(double val) {return (Math.floor(val*1000))/1000;}
 	//public double arrondiLong(double val) {return (Math.floor(val*100))/100;}
 	public double arrondiSpeed(double val) {return (Math.floor(val*10))/10;}
-	//public double arrondiBearing(double val) {return (Math.floor(val*100))/100;}
+	//public double arrondiheading(double val) {return (Math.floor(val*100))/100;}
 
     public class MyLocationListener implements LocationListener {
 
@@ -253,7 +253,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			latitude = String.valueOf(loc.getLatitude());
 			longitude = String.valueOf(loc.getLongitude());			
 			speed = String.valueOf(arrondiSpeed(loc.getSpeed()*(1.94)));
-			bearing = String.valueOf((int)loc.getBearing());
+			heading = String.valueOf((int)loc.getBearing());
 			
 			if (speedAutoCheckBox.isChecked()){
 				speedAuto = arrondiSpeed(loc.getSpeed()*(1.94));
@@ -266,25 +266,25 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 				}
 			}//end of if speedAutoCheck...
 			
-			if (bearingAutoCheckBox.isChecked()){
-				bearingAuto = (int)loc.getBearing();
-				bearingNow = new Date();
+			if (headingAutoCheckBox.isChecked()){
+				headingAuto = (int)loc.getBearing();
+				headingNow = new Date();
 				
-				int bearingDiff = java.lang.Math.abs( (int)bearingLastAuto - (int)bearingAuto );
-				if (bearingDiff > 180) bearingDiff = java.lang.Math.abs(bearingDiff-360);
+				int headingDiff = java.lang.Math.abs( (int)headingLastAuto - (int)headingAuto );
+				if (headingDiff > 180) headingDiff = java.lang.Math.abs(headingDiff-360);
 				
-				if 	((( bearingDiff > bearingTreshold ))
-				 &&	((bearingNow.getTime() - bearingBefore.getTime()) > bearingTimeTreshold*1000)){
-				tts.speak(getResources().getString(R.string.bearing)+ " : " + bearing, TextToSpeech.QUEUE_FLUSH, null);
-				bearingLastAuto = bearingAuto;
-				bearingBefore = new Date();
+				if 	((( headingDiff > headingTreshold ))
+				 &&	((headingNow.getTime() - headingBefore.getTime()) > headingTimeTreshold*1000)){
+				tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_FLUSH, null);
+				headingLastAuto = headingAuto;
+				headingBefore = new Date();
 				}
 			}//end of if speedAutoCheck...
 			
 			
 			//displaying value
 			textViewSpeed.setText(speed);
-			textViewBearing.setText(bearing);    
+			textViewheading.setText(heading);    
 		}
 
 		@Override
@@ -313,11 +313,11 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			seekBar.setContentDescription(Double.valueOf(speedTreshold).toString());
 		}
 		
-		else if (seekBar.equals(bearingBar)){
-			bearingTreshold = progress;
-//			textViewAuto.setText("Seuil de cap : " + Double.valueOf(bearingTreshold).toString());
-			textViewAuto.setText(getResources().getString(R.string.bearingtreshold) + "  : " + Integer.toString((int)bearingTreshold));
-			seekBar.setContentDescription(Integer.toString((int)bearingTreshold));
+		else if (seekBar.equals(headingBar)){
+			headingTreshold = progress;
+//			textViewAuto.setText("Seuil de cap : " + Double.valueOf(headingTreshold).toString());
+			textViewAuto.setText(getResources().getString(R.string.headingtreshold) + "  : " + Integer.toString((int)headingTreshold));
+			seekBar.setContentDescription(Integer.toString((int)headingTreshold));
 		}
 		
 		else if (seekBar.equals(timeBar)){
