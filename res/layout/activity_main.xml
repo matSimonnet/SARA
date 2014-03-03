@@ -36,7 +36,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="25"
-        android:text= "@string/test"
+        android:text= "@string/speed"
         tools:context=".MainActivity" 
         />
     
@@ -55,21 +55,21 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="25"
-		android:text="Vitesse auto"
+		android:text="@string/autospeed"
 		/>
 		<CheckBox
 			android:id="@+id/bearingAutoCheckBox"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="25"
-			android:text="cap auto"
+			android:text="@string/autobearing"
 		/>
 		<CheckBox
 			android:id="@+id/autoCheckBox"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="25"
-			android:text="disponible"
+			android:text="@string/available"
 		/>
 
 	</LinearLayout>
@@ -121,21 +121,21 @@
     	android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="25"
-        android:text="Vitesse"
+        android:text="@string/speed"
     	/>
     <Button 
         android:id="@+id/buttonBearing"
     	android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="25"
-        android:text="Cap"
+        android:text="@string/bearing"
     	/>
     <ImageButton 
         android:id="@+id/buttonSpeak"
     	android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="25"
-        android:contentDescription="reconnaissance vocale"
+        android:contentDescription="@string/vocalrecognition"
         android:src="@+android:drawable/ic_btn_speak_now"
     	/>
 

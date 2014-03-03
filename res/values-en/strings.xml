@@ -1,0 +1,21 @@
+<resources>
+    
+    <string name="app_name">SARA</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">SARA</string>
+    <string name="speed">speed</string>
+    <string name="bearing">bearing</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
+    <string name="speedtreshold">speed Treshold</string>
+    <string name="timetreshold">time Treshold</string>
+    <string name="bearingtreshold">bearing Treshold</string>
+    <string name="nosatelite">no satellite</string>
+    <string name="norecognition">not recognized</string>
+    <string name="defaultmode">auto mode by default</string>
+    <string name="vocalrecognition">vocal recognition</string>
+    <string name="available">available</string>
+    <string name="autospeed">auto speed</string>
+    <string name="autobearing">auto bearing</string>
+</resources>
+

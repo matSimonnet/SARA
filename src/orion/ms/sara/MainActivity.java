@@ -49,7 +49,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private LocationManager lm = null;
 	private LocationListener ll = null;
 	
-	private String bearing = " pas de satellite";
+	private String bearing = "";
 	private double bearingAuto = 0;
 	private double bearingLastAuto = 0;
 	private double bearingTreshold = 4; 
@@ -57,7 +57,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private Date bearingNow = null;
 	private Date bearingBefore = null;
 	
-	private String speed = " pas de satellite";
+	private String speed = "";
 	private double speedAuto = 0;
 	private double speedLastAuto = 0;
 	private double speedTreshold = 1; 
@@ -67,9 +67,9 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	
 	//positions : 
 	@SuppressWarnings("unused")
-	private String latitude = " pas de satellite";
+	private String latitude = "";
 	@SuppressWarnings("unused")
-	private String longitude = " pas de satellite";
+	private String longitude = "";
 	
 	
 	@Override
@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
     textViewBearing = (TextView) findViewById(R.id.bearing);
     textViewAuto = new TextView(this);
     textViewAuto = (TextView) findViewById(R.id.speak);
-    textViewAuto.setText("mode auto par défault");
+    textViewAuto.setText(getResources().getString(R.string.defaultmode));
     
     //CheckBox
     speedAutoCheckBox = (CheckBox) findViewById(R.id.speedAutoCheckBox);
@@ -98,21 +98,23 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
     //SpeedBar
     speedBar = (SeekBar) findViewById(R.id.seekBarSpeed);
     speedBar.setOnSeekBarChangeListener(this);
-    speedBar.setContentDescription("Réglage seuil vitesse auto");
+    speedBar.setContentDescription(getResources().getString(R.string.speedtreshold));
     
     //SpeedBar
     bearingBar = (SeekBar) findViewById(R.id.seekBarBearing);
     bearingBar.setOnSeekBarChangeListener(this);
-    bearingBar.setContentDescription("Réglage seuil cap auto");
+    bearingBar.setContentDescription(getResources().getString(R.string.bearingtreshold));
     
     //TimeBar 
     timeBar = (SeekBar) findViewById(R.id.seekBarTime);
     timeBar.setOnSeekBarChangeListener(this);
-    timeBar.setContentDescription("Réglage seuil temps vitesse auto");
+    timeBar.setContentDescription("Time");
     
-    // edit text creation
-    //editText = new EditText(this);
-    //editText = (EditText) findViewById(R.id.editTextInvitation);
+    //DefaultValue
+    bearing =  getResources().getString(R.string.nosatelite);
+    speed =  getResources().getString(R.string.nosatelite);
+    latitude =  getResources().getString(R.string.nosatelite);
+    longitude =  getResources().getString(R.string.nosatelite);
 	  
 	//location manager creation
 	lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -121,8 +123,6 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
    
 	//dates creation
-//	now = new Date();
-//	Log.i("new Date() : now.getTime", " = " + now.getTime());
 	speedBefore = new Date();
 	bearingBefore = new Date();
 	
@@ -143,7 +143,6 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	OnInitListener onInitListener = new OnInitListener() {
 		@Override
 		public void onInit(int status) {
-			//Toast.makeText(getApplicationContext(), (Integer.valueOf(status)).toString(), Toast.LENGTH_SHORT).show();
 		}
 	};
 	
@@ -164,18 +163,18 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 		@Override
 		public void onClick(View v) {
 			if (v== buttonSpeed){
-				tts.speak("vitesse : " + speed, TextToSpeech.QUEUE_FLUSH, null);
+				tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_FLUSH, null);
 			}
 			if (v== buttonBearing){
-				tts.speak("cap : " + bearing, TextToSpeech.QUEUE_FLUSH, null);
+				tts.speak(getResources().getString(R.string.bearing)+ " : " + bearing, TextToSpeech.QUEUE_FLUSH, null);
 			}
 			if (v== buttonReco){
 				 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-	             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "fr-FR");	 
+	             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE);	 
 	                try {
 	                    startActivityForResult(intent, RESULT_SPEECH);
 	                } catch (ActivityNotFoundException a) {
-	                    Toast.makeText(getApplicationContext(),"Pas de reconnaissance",Toast.LENGTH_SHORT).show();
+	                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.norecognition),Toast.LENGTH_SHORT).show();
 	                }//end of catch
 	            }// end of if button5
 	        }// end of onclick		
@@ -225,11 +224,11 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
         	case RESULT_SPEECH: {
         		if (resultCode == RESULT_OK && null != data) {
                 ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                	if ( (text.get(0).equals("vitesse"))){
-                		tts.speak("vitesse : " + speed + "noeuds", TextToSpeech.QUEUE_FLUSH, null);
+                	if ( (text.get(0).equals(getResources().getString(R.string.speed)))){
+                		tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_FLUSH, null);
                 	}
-                	else if ( (text.get(0).equals("cap"))){
-                		tts.speak("cap : " + bearing, TextToSpeech.QUEUE_FLUSH, null);
+                	else if ( (text.get(0).equals(getResources().getString(R.string.bearing)))){
+                		tts.speak(getResources().getString(R.string.bearing)+ " : " + bearing, TextToSpeech.QUEUE_FLUSH, null);
                 	}
                 	else {
                 		Toast.makeText(getApplicationContext(),text.get(0),Toast.LENGTH_SHORT).show();
@@ -261,7 +260,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 				speedNow = new Date();
 				if 	((( speedAuto < speedLastAuto - speedTreshold ) || ( speedAuto > speedLastAuto + speedTreshold ))
 				 &&	((speedNow.getTime() - speedBefore.getTime()) > speedTimeTreshold*1000)){
-				tts.speak("vitesse : " + speed + "noeuds", TextToSpeech.QUEUE_FLUSH, null);
+				tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_FLUSH, null);
 				speedLastAuto = speedAuto;
 				speedBefore = new Date();
 				}
@@ -276,7 +275,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 				
 				if 	((( bearingDiff > bearingTreshold ))
 				 &&	((bearingNow.getTime() - bearingBefore.getTime()) > bearingTimeTreshold*1000)){
-				tts.speak("cap : " + bearing + "degrés", TextToSpeech.QUEUE_FLUSH, null);
+				tts.speak(getResources().getString(R.string.bearing)+ " : " + bearing, TextToSpeech.QUEUE_FLUSH, null);
 				bearingLastAuto = bearingAuto;
 				bearingBefore = new Date();
 				}
@@ -310,21 +309,21 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			boolean fromUser) {
 		if (seekBar.equals(speedBar)){
 			speedTreshold = (double) progress/10;
-			textViewAuto.setText("Seuil vitesse : " + Double.valueOf(speedTreshold).toString());
-			seekBar.setContentDescription(Double.valueOf(speedTreshold).toString() + "noeuds");
+			textViewAuto.setText(getResources().getString(R.string.speedtreshold) + " : " + Double.valueOf(speedTreshold).toString());
+			seekBar.setContentDescription(Double.valueOf(speedTreshold).toString());
 		}
 		
 		else if (seekBar.equals(bearingBar)){
 			bearingTreshold = progress;
-			textViewAuto.setText("Seuil de cap : " + Double.valueOf(bearingTreshold).toString());
-			textViewAuto.setText("Seuil de cap : " + Integer.toString((int)bearingTreshold));
-			seekBar.setContentDescription(Integer.toString((int)bearingTreshold) + "degrés");
+//			textViewAuto.setText("Seuil de cap : " + Double.valueOf(bearingTreshold).toString());
+			textViewAuto.setText(getResources().getString(R.string.bearingtreshold) + "  : " + Integer.toString((int)bearingTreshold));
+			seekBar.setContentDescription(Integer.toString((int)bearingTreshold));
 		}
 		
 		else if (seekBar.equals(timeBar)){
 			speedTimeTreshold = progress;
-			textViewAuto.setText("Seuil de temps : " + Integer.toString((int)speedTimeTreshold));
-			seekBar.setContentDescription(Integer.toString((int)speedTimeTreshold) + "secondes");
+			textViewAuto.setText(getResources().getString(R.string.timetreshold) + "  : " + Integer.toString((int)speedTimeTreshold));
+			seekBar.setContentDescription(Integer.toString((int)speedTimeTreshold));
 		}
 		
 	}
