@@ -163,10 +163,10 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 		@Override
 		public void onClick(View v) {
 			if (v== buttonSpeed){
-				tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_FLUSH, null);
+				tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_ADD, null);
 			}
 			if (v== buttonheading){
-				tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_FLUSH, null);
+				tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_ADD, null);
 			}
 			if (v== buttonReco){
 				 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -225,10 +225,10 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
         		if (resultCode == RESULT_OK && null != data) {
                 ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 	if ( (text.get(0).equals(getResources().getString(R.string.speed)))){
-                		tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_FLUSH, null);
+                		tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_ADD, null);
                 	}
                 	else if ( (text.get(0).equals(getResources().getString(R.string.heading)))){
-                		tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_FLUSH, null);
+                		tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_ADD, null);
                 	}
                 	else {
                 		Toast.makeText(getApplicationContext(),text.get(0),Toast.LENGTH_SHORT).show();
@@ -260,7 +260,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 				speedNow = new Date();
 				if 	((( speedAuto < speedLastAuto - speedTreshold ) || ( speedAuto > speedLastAuto + speedTreshold ))
 				 &&	((speedNow.getTime() - speedBefore.getTime()) > speedTimeTreshold*1000)){
-				tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_FLUSH, null);
+				tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_ADD, null);
 				speedLastAuto = speedAuto;
 				speedBefore = new Date();
 				}
@@ -275,7 +275,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 				
 				if 	((( headingDiff > headingTreshold ))
 				 &&	((headingNow.getTime() - headingBefore.getTime()) > headingTimeTreshold*1000)){
-				tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_FLUSH, null);
+				tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_ADD, null);
 				headingLastAuto = headingAuto;
 				headingBefore = new Date();
 				}
