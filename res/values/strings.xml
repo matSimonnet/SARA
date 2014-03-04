@@ -1,22 +1,37 @@
 <resources>
 
+    
     <string name="app_name">SARA</string>
     <string name="menu_settings">réglages</string>
     <string name="title_activity_main">SARA</string>
+    
     <string name="speed">vitesse</string>
-    <string name="heading">cap</string>
+    <string name="speedtreshold">seuil vitesse</string>
+    <string name="autospeed">vitesse auto</string>
+    <string name="speedtimetreshold">répétition vitesse minimum</string>
+       
+    <string name="heading">cap </string>
+    <string name="headingtreshold">seuil cap</string>
+    <string name="autohead">cap auto</string>
+    <string name="headingtimetreshold">répétition cap minimum </string>
+       
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
-    <string name="speedtreshold">seuil de vitesse</string>
-    <string name="timetreshold">seuil de temps</string>
-    <string name="headingtreshold">seuil de cap</string>
-    <string name="nosatelite">pas de satellites</string>
+ 
+    <string name="nosatelite">perdu</string>
     <string name="norecognition">pas de reconnaissance</string>
     <string name="defaultmode">mode auto par défault</string>
     <string name="vocalrecognition">reconnaissance vocale</string>
-    <string name="available">disponible</string>
-    <string name="autospeed">vitesse auto</string>
-    <string name="autoheading">cap auto</string>
+    <string name="available">available</string>
+    
+    <string name="speedunit">noeuds</string>
+    <string name="headingunit">degrés</string>
+    <string name="distance">mètres</string>
+    <string name="bearingunit">degrés</string>
+    <string name="timeunit">secondes</string>
+    
+    
+    
     
 
 </resources>

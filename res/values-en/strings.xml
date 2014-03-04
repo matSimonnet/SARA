@@ -3,19 +3,30 @@
     <string name="app_name">SARA</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">SARA</string>
+    
     <string name="speed">speed</string>
+    <string name="speedtreshold">speed Treshold</string>
+    <string name="autospeed">auto speed</string>
+    <string name="speedtimetreshold">minimum speed repetition</string>
+       
     <string name="heading">heading</string>
+    <string name="headingtreshold">heading Treshold</string>
+    <string name="autohead">auto heading</string>
+    <string name="headingtimetreshold">minimum heading repetition</string>
+       
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
-    <string name="speedtreshold">speed Treshold</string>
-    <string name="timetreshold">time Treshold</string>
-    <string name="headingtreshold">heading Treshold</string>
-    <string name="nosatelite">no satellite</string>
+ 
+    <string name="nosatelite">lost</string>
     <string name="norecognition">not recognized</string>
     <string name="defaultmode">auto mode by default</string>
     <string name="vocalrecognition">vocal recognition</string>
-    <string name="available">available</string>
-    <string name="autospeed">auto speed</string>
-    <string name="autohead">auto heading</string>
+    
+    <string name="speedunit">knots</string>
+    <string name="headingunit">degreess</string>
+    <string name="distance">meters</string>
+    <string name="bearingunit">degrees</string>
+    <string name="timeunit">seconds</string>
+
 </resources>
 
