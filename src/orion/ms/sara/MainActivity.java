@@ -26,6 +26,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements OnSeekBarChangeListener{
 
 	// variables declarations
+	//test
 	
 	protected static final int RESULT_SPEECH = 1;
 	
