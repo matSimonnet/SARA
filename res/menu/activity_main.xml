@@ -1,6 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"
+   
+    
+    <item android:id="@+id/main"
+        android:title="@string/main"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:showAsAction="ifRoom">
+    </item>
+    
+    <item android:id="@+id/auto_setting"
+        android:title="@string/auto_setting"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom">
+    </item>
+
+     <item android:id="@+id/waypoint_setting"
+        android:title="@string/waypoint_setting"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom">
+    </item>
+
+
+
 </menu>

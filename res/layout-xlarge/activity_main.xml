@@ -26,7 +26,15 @@
 	        android:text= "@string/speedtreshold"
 	        tools:context=".MainActivity" 
         	/>	
-	    <SeekBar
+        	
+		<NumberPicker
+		    android:id="@+id/np1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"
+		    android:width="100dip" />
+		
+	    <!--  <SeekBar
 	        android:id="@+id/seekBarSpeed"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
@@ -34,7 +42,7 @@
 	        android:layout_weight="100" 
 	        android:max="30"
 	        android:progress="5"
-	    	/>
+	    	/> -->
 	</LinearLayout>
 	
     	<LinearLayout
@@ -47,19 +55,28 @@
    		<TextView
 	        android:id= "@+id/speedtimetreshold"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
+	        android:layout_height="0dip"
 	        android:layout_weight="25"
 	        android:gravity="center"
 	        tools:context=".MainActivity" 
         	/>
-	    <SeekBar
+   		
+   		<NumberPicker
+   		    android:id="@+id/np2"
+   		    android:layout_width="wrap_content"
+   		    android:layout_height="wrap_content"
+   		    android:orientation="horizontal"
+   		    android:width="100dip" 
+   		    />
+		
+	    <!-- <SeekBar
 	        android:id="@+id/seekBarSpeedTime"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="100"
 	        android:max="30"
 	        android:progress="10"
-	        />
+	        />-->
    	</LinearLayout>
     
     

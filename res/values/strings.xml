@@ -5,6 +5,14 @@
     <string name="menu_settings">réglages</string>
     <string name="title_activity_main">SARA</string>
     
+    <!-- Action bar --> 
+    <string name="auto_setting">AUTO SETTING</string>
+    <string name="waypoint_setting">Waypoint</string>
+    <string name="main">Main</string>
+    
+    
+    
+    
     <string name="speed">vitesse</string>
     <string name="speedtreshold">seuil vitesse</string>
     <string name="autospeed">vitesse auto</string>

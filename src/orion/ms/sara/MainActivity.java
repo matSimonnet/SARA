@@ -2,7 +2,7 @@ package orion.ms.sara;
 
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.lang.Math;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -15,6 +15,9 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -23,15 +26,19 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MainActivity extends Activity implements OnSeekBarChangeListener{
 
 	// variables declarations
-	//test
 	
 	protected static final int RESULT_SPEECH = 1;
 	
 	private TextView textViewSpeed = null;
 	private TextView textViewheading = null;
+	private TextView textViewDistance = null;
+	private TextView textViewBearing = null;
+
+	
 	private TextView textViewSpeedTreshold = null;
 	private TextView textViewHeadingTreshold = null;
 	private TextView textViewspeedTimeTreshold = null;
@@ -68,6 +75,18 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private Date speedNow = null;
 	private Date speedBefore = null;
 	
+	private String distance = "";
+	private Location loc = null;
+	
+	// Carrefour Express, 33 Rue Victor Eusen, 29200 Brest, France
+	private double currentlatitude = 48.381481;
+	private double currentlongitude = -4.533540;
+	
+	
+	private String BearingToWaypoint = "";
+	private double bearing = 0;
+
+	
 	//positions : 
 	@SuppressWarnings("unused")
 	private String latitude = "";
@@ -82,14 +101,26 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 		
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
+
         //DefaultValue
         latitude =  getResources().getString(R.string.nosatelite);
         longitude =  getResources().getString(R.string.nosatelite);
         heading =  getResources().getString(R.string.nosatelite);
         speed =  getResources().getString(R.string.nosatelite);
-        
+        distance = getResources().getString(R.string.nosatelite);
+        BearingToWaypoint = getResources().getString(R.string.nosatelite);
+
+
     //TextView creation
+    textViewDistance = (TextView) findViewById(R.id.distanceView);
+    textViewDistance.setText(distance);
+    textViewDistance.setContentDescription("");
+    
+    textViewBearing = (TextView) findViewById(R.id.bearingView);
+    textViewBearing.setText(BearingToWaypoint);
+    textViewBearing.setContentDescription("");
+        
     textViewSpeed = (TextView) findViewById(R.id.speedView);
     textViewSpeed.setText(speed);
     textViewSpeed.setContentDescription(getResources().getString(R.string.speed) + speed + " " + getResources().getString(R.string.speedunit));
@@ -141,12 +172,17 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	//location manager creation
 	lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	ll = new MyLocationListener();		
-	//loc = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
    
+	// latitude, longitude, bearing creation
+    loc = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+    bearing = _Bearing(loc.getLatitude(),loc.getLongitude(),currentlatitude,currentlongitude);
+
+    
 	//dates creation
 	speedBefore = new Date();
 	headingBefore = new Date();
+	
 	
 	//2point creation
 	/**
@@ -249,6 +285,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	//method to round 1 decimal
 
 	public double arrondiSpeed(double val) {return (Math.floor(val*10))/10;}
+	public double arrondiDistance(double val) {return (Math.floor(val*10))/10;}
 
 
     public class MyLocationListener implements LocationListener {
@@ -261,6 +298,18 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			speed = String.valueOf(arrondiSpeed(loc.getSpeed()*(1.94)));
 			heading = String.valueOf((int)loc.getBearing());
 			
+			// calculate distance to the current waypoint
+			float[] result = new float[1];
+			Location.distanceBetween(currentlatitude, currentlongitude, loc.getLatitude(), loc.getLongitude(), result);
+			distance = String.valueOf(arrondiDistance(result[0]/1000));
+			Log.i("distance", distance);
+			
+			// calculate bearing to the current waypoint
+			BearingToWaypoint = String.valueOf(java.lang.Math.abs( (int)bearing - (int)loc.getBearing() ));
+			Log.i("bearing", BearingToWaypoint);
+			
+			
+			
 			if (speedAutoCheckBox.isChecked()){
 				speedAuto = arrondiSpeed(loc.getSpeed()*(1.94));
 				speedNow = new Date();
@@ -271,7 +320,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 				speedBefore = new Date();
 				}
 			}//end of if speedAutoCheck...
-			
+
 			if (headingAutoCheckBox.isChecked()){
 				headingAuto = (int)loc.getBearing();
 				headingNow = new Date();
@@ -291,6 +340,10 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			//displaying value
 			textViewSpeed.setText(speed);
 			textViewheading.setText(heading);    
+			textViewDistance.setText(distance);
+			textViewBearing.setText(BearingToWaypoint);    
+
+
 		}
 
 		@Override
@@ -346,5 +399,69 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
 	}
+
+	//  action bar
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem Item){
+		switch (Item.getItemId()) {
+		case R.id.auto_setting:
+			Intent intentAuto_setting = new Intent(MainActivity.this,AutoSetting.class);
+			startActivity(intentAuto_setting);
+			break;
+		case R.id.waypoint_setting:
+			Intent intentWaypoint_setting = new Intent(MainActivity.this,AutoSetting.class);
+			startActivity(intentWaypoint_setting);
+			break;
+		case R.id.main:
+			Intent intentmain = new Intent(MainActivity.this,MainActivity.class);
+			startActivity(intentmain);
+			break;
+		default:
+			break;
+		}
+
+		return false;
+	}
+	
+	
+	public static double RadToDeg(double radians)  
+    {  
+        return radians * (180 / Math.PI);  
+    }  
+
+    public static double DegToRad(double degrees)  
+    {  
+        return degrees * (Math.PI / 180);  
+    }  
+
+    public static double _Bearing(double lat1, double long1, double lat2, double long2)  
+    {  
+        //Convert input values to radians  
+        lat1 = DegToRad(lat1);  
+        long1 = DegToRad(long1);  
+        lat2 =  DegToRad(lat2);  
+        long2 = DegToRad(long2);  
+
+        double deltaLong = long2 - long1;  
+
+        double y = Math.sin(deltaLong) * Math.cos(lat2);  
+        double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLong);  
+        double bearing = Math.atan2(y, x);  
+        return ConvertToBearing(RadToDeg(bearing));  
+    }  
+
+    public static double ConvertToBearing(double deg)  
+    {  
+        return (deg + 360) % 360;  
+    }  
+	
+
+	
  
 }//end of Activity
