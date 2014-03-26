@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="58dp"
-        android:text="@string/Choose the waypoint"
+        android:text="Choose the waypoint"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Spinner
@@ -25,5 +25,14 @@
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="27dp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp"
+        android:text="New Waypoint" />
 
 </RelativeLayout>

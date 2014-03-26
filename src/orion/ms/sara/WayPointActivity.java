@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -92,6 +93,7 @@ public class WayPointActivity extends Activity {
 		way.setOnTouchListener((OnTouchListener) this);
 		way.setAdapter(arrAdapt);
 		
+		//OnSelectedListener creation
 		way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener(){
 
 			@Override
@@ -113,6 +115,29 @@ public class WayPointActivity extends Activity {
 			
 		});
 		
+		//"New Waypoint" button
+		//button creation
+		newWay = (Button) findViewById(R.id.button1);
+		
+		// OnClickListener creation
+	    View.OnClickListener onclickListener = new View.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(v==newWay){
+					tts.speak("new waypoint", TextToSpeech.QUEUE_FLUSH, null);
+					//change to the "NewWayPoint" activity
+					Intent newActivity = new Intent(WayPointActivity.this,NewWayPointActivity.class);
+					startActivity(newActivity);
+				}
+				
+			}//end of onClick
+	    	
+	    };//end of View.OnClickListener
+	    
+	    //setOnClickListener
+	    newWay.setOnClickListener(onclickListener);
 		
 
 	}
