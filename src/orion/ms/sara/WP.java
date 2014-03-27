@@ -1,6 +1,7 @@
 package orion.ms.sara;
+
 //a waypoint class containing each latitude, longitude, distance and bearing
-public class WP {
+public class WP implements Comparable<WP>{
 		//name
 		private String name = "";
 		//positions  
@@ -17,6 +18,10 @@ public class WP {
 			this.longitude = lo;
 			this.distance = dis;
 			this.bearing = bear;
+		}
+		
+		public String toString(){
+			return this.getName();
 		}
 
 		public String getName() {
@@ -57,6 +62,13 @@ public class WP {
 
 		public void setBearing(double bearing) {
 			this.bearing = bearing;
+		}
+
+		@Override
+		public int compareTo(WP another) {
+			//compare each distance
+			if(this.distance<=another.distance) return -1;
+			else return 1;
 		}
 		
 		

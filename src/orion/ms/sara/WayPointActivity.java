@@ -1,11 +1,15 @@
 package orion.ms.sara;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -13,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,8 +27,6 @@ import android.widget.Toast;
 
 public class WayPointActivity extends Activity {
 	// variables declarations
-	
-		protected static final int RESULT_SPEECH = 1;
 		
 		//components
 		private TextView chooseText = null;
@@ -33,25 +34,20 @@ public class WayPointActivity extends Activity {
 		private Spinner way = null;
 		
 		private TextToSpeech tts = null;
-
-		private int routeNow = 0;//waypoint selected order number
+		
+		//waypoint selected order number
+		private int routeNow = 0;
 		
 		//a list of many waypoints sorted by proximity
-		List<String> wayPointList = new ArrayList<String>();
-		//testing distances
-		private String d1 = "1000";
-		private String d2 = "2000";
+		static List<WP> wayPointList = new ArrayList<WP>();
 		
-		/*
-		private LocationManager lm = null;
-		private LocationListener ll = null;
-		//positions : 
-		@SuppressWarnings("unused")
-		private String latitude = "";
-		@SuppressWarnings("unused")
-		private String longitude = "";
-		*/
+		//testing WP
+		private WP wp1 = new WP("WP1", "1", "2", 90, 2);
+		private WP wp2 = new WP("WP2", "1", "2", 45, 2);
 		
+		
+		//to receive new waypoint from NewWayPoint class
+		//private WP newWP = null;		
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,20 +74,32 @@ public class WayPointActivity extends Activity {
 		chooseText = (TextView) findViewById(R.id.textView1);
 		//chooseText.setText("Choose the waypoint");
 		chooseText.setContentDescription("Please choose a waypoint from the list below");
-		
-		//waypoint list
-		wayPointList.add(d1);
-		wayPointList.add(d2);
 
+		//adding testing waypoint
+		wayPointList.add(wp1);
+		wayPointList.add(wp2);
+		int i=0;
+		for(WP temp: wayPointList){
+			System.out.println("position " + ++i + "  with name : " + temp.getName());
+		}
+		Collections.sort(wayPointList);
 		
+		//alertDialog creation
+		final AlertDialog.Builder selectedWay = new AlertDialog.Builder(this);
+
 		//Adapter for using array with spinner
-		ArrayAdapter<String> arrAdapt = new ArrayAdapter<String>(WayPointActivity.this,android.R.layout.simple_spinner_item,wayPointList);
+		ArrayAdapter<WP> arrAdapt = new ArrayAdapter<WP>(WayPointActivity.this,R.id.spinner1,wayPointList);
 		arrAdapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		//Spinner
 		way = (Spinner) findViewById(R.id.spinner1);
-		way.setOnTouchListener((OnTouchListener) this);
 		way.setAdapter(arrAdapt);
+		//setOnTouchListener
+		/*
+		way.setOnTouchListener((OnTouchListener) new  AdapterView.OnItemSelectedListener(){
+			//OnSelectedListener creation
+		});
+		*/
 		
 		//OnSelectedListener creation
 		way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener(){
@@ -100,10 +108,15 @@ public class WayPointActivity extends Activity {
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
+				//set the route to be this waypoint
 				routeNow = position;
 				Toast.makeText(WayPointActivity.this, String.valueOf("Selected waypoint : " + wayPointList.get(position)), Toast.LENGTH_SHORT).show();
 				tts.speak(String.valueOf("Selected waypoint : " + wayPointList.get(position)), TextToSpeech.QUEUE_FLUSH, null);
 				
+				//open the dialog
+				selectedWay.setMessage(String.valueOf("Selected waypoint : " + wayPointList.get(position)));
+				//selectedWay.set
+				selectedWay.show();
 			}
 
 			@Override
@@ -147,9 +160,19 @@ public class WayPointActivity extends Activity {
 	    super.onResume();
 	    way.setTop(routeNow);
 	    tts.speak(String.valueOf("resume to the selected waypoint :" + wayPointList.get(routeNow)), TextToSpeech.QUEUE_FLUSH, null);
-	  }
-
-	  @Override
+	   
+	    /*
+	    //Receive distance from a new waypoint
+	    Intent returnWP = getIntent();
+	    newWP = (WP)returnWP.getParcelableExtra("newDis");//not sure//
+	    
+	    //adding new distance into the waypoint list and sort by proximity
+	    wayPointList.add(newWP);
+	    insertionSort(wayPointList);
+	    */
+	    
+	}
+	@Override
 	  protected void onPause() {
 	    super.onPause();
 	  }
@@ -202,5 +225,6 @@ public class WayPointActivity extends Activity {
 			return rootView;
 		}
 	}
-
+	
+	
 }
