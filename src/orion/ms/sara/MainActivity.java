@@ -75,15 +75,14 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private Date speedNow = null;
 	private Date speedBefore = null;
 	
-	private String distance = "";
-	//private Location loc = null;
+	private Location loc = null;
+	private double lastlatitude = 0;
+	private double lastlongitude = 0;
 	
-	// Carrefour Express, 33 Rue Victor Eusen, 29200 Brest, France
-	private double currentlatitude = 48.381481;
-	private double currentlongitude = -4.533540;
+	private String DistanceToCurrentWaypoint = "";
+	private float[] distance = new float[1];
 	
-	
-	private String BearingToWaypoint = "";
+	private String BearingToCurrentWaypoint = "";
 	private double bearing = 0;
 
 	
@@ -108,17 +107,17 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
         longitude =  getResources().getString(R.string.nosatelite);
         heading =  getResources().getString(R.string.nosatelite);
         speed =  getResources().getString(R.string.nosatelite);
-        distance = getResources().getString(R.string.nosatelite);
-        BearingToWaypoint = getResources().getString(R.string.nosatelite);
+        DistanceToCurrentWaypoint = getResources().getString(R.string.nosatelite);
+        BearingToCurrentWaypoint = getResources().getString(R.string.nosatelite);
 
 
     //TextView creation
     textViewDistance = (TextView) findViewById(R.id.distanceView);
-    textViewDistance.setText(distance);
+    textViewDistance.setText(DistanceToCurrentWaypoint);
     textViewDistance.setContentDescription("");
     
     textViewBearing = (TextView) findViewById(R.id.bearingView);
-    textViewBearing.setText(BearingToWaypoint);
+    textViewBearing.setText(BearingToCurrentWaypoint);
     textViewBearing.setContentDescription("");
         
     textViewSpeed = (TextView) findViewById(R.id.speedView);
@@ -174,10 +173,12 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	ll = new MyLocationListener();		
 	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
    
-	/**
+	
+	// Last know location creation
     loc = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-    bearing = _Bearing(loc.getLatitude(),loc.getLongitude(),currentlatitude,currentlongitude);
-	**/
+    lastlatitude = loc.getLatitude();
+    lastlongitude = loc.getLongitude();
+    
     
 	//dates creation
 	speedBefore = new Date();
@@ -237,13 +238,15 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
   protected void onResume() {
     super.onResume();
     lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-    //tts.speak("resume", tts.QUEUE_FLUSH, null);
+    tts.speak("resume", TextToSpeech.QUEUE_FLUSH, null);
   }
 
   @Override
   protected void onPause() {
     super.onPause();
-    //lm.removeUpdates(ll);
+    lm.removeUpdates(ll);
+    tts.speak("pause", TextToSpeech.QUEUE_FLUSH, null);
+
   }
   
   @Override
@@ -301,17 +304,16 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			heading = String.valueOf((int)loc.getBearing());
 			
 			// calculate distance to the current waypoint
-			float[] result = new float[1];
-			Location.distanceBetween(loc.getLatitude(), loc.getLongitude(),currentlatitude,currentlongitude, result);
-			distance = String.valueOf(arrondiDistance(result[0]/1000));
-			Log.i("distance", distance);
+			Location.distanceBetween(loc.getLatitude(), loc.getLongitude(),lastlatitude,lastlongitude, distance);
+			DistanceToCurrentWaypoint = String.valueOf(arrondiDistance((distance[0])/1000));
+			Log.i("distance", DistanceToCurrentWaypoint);
 			
-			// calculate bearing to the current waypoint
-			bearing = _Bearing(loc.getLatitude(),loc.getLongitude(),currentlatitude,currentlongitude);
-			BearingToWaypoint = String.valueOf(arrondiBearing(bearing));
-			Log.i("bearing", BearingToWaypoint);
-			
-			
+			// calculate bearing to the current waypoint						
+			bearing = _Bearing(lastlatitude,lastlongitude,loc.getLatitude(),loc.getLongitude());
+			DistanceToCurrentWaypoint = String.valueOf(arrondiDistance(bearing));
+			Log.i("bearing", DistanceToCurrentWaypoint);
+
+	
 			if (speedAutoCheckBox.isChecked()){
 				speedAuto = arrondiSpeed(loc.getSpeed()*(1.94));
 				speedNow = new Date();
@@ -342,10 +344,8 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			//displaying value
 			textViewSpeed.setText(speed);
 			textViewheading.setText(heading);    
-			textViewDistance.setText(distance);
-			textViewBearing.setText(BearingToWaypoint);    
-
-
+			textViewDistance.setText(DistanceToCurrentWaypoint);
+			textViewBearing.setText(BearingToCurrentWaypoint);    
 		}
 
 		@Override
