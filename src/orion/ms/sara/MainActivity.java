@@ -76,7 +76,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private Date speedBefore = null;
 	
 	private String distance = "";
-	private Location loc = null;
+	//private Location loc = null;
 	
 	// Carrefour Express, 33 Rue Victor Eusen, 29200 Brest, France
 	private double currentlatitude = 48.381481;
@@ -174,10 +174,10 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	ll = new MyLocationListener();		
 	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
    
-	// latitude, longitude, bearing creation
+	/**
     loc = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
     bearing = _Bearing(loc.getLatitude(),loc.getLongitude(),currentlatitude,currentlongitude);
-
+	**/
     
 	//dates creation
 	speedBefore = new Date();
@@ -286,6 +286,8 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 
 	public double arrondiSpeed(double val) {return (Math.floor(val*10))/10;}
 	public double arrondiDistance(double val) {return (Math.floor(val*10))/10;}
+	public double arrondiBearing(double val) {return (Math.floor(val*10))/10;}
+
 
 
     public class MyLocationListener implements LocationListener {
@@ -300,14 +302,14 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			
 			// calculate distance to the current waypoint
 			float[] result = new float[1];
-			Location.distanceBetween(currentlatitude, currentlongitude, loc.getLatitude(), loc.getLongitude(), result);
+			Location.distanceBetween(loc.getLatitude(), loc.getLongitude(),currentlatitude,currentlongitude, result);
 			distance = String.valueOf(arrondiDistance(result[0]/1000));
 			Log.i("distance", distance);
 			
 			// calculate bearing to the current waypoint
-			BearingToWaypoint = String.valueOf(java.lang.Math.abs( (int)bearing - (int)loc.getBearing() ));
+			bearing = _Bearing(loc.getLatitude(),loc.getLongitude(),currentlatitude,currentlongitude);
+			BearingToWaypoint = String.valueOf(arrondiBearing(bearing));
 			Log.i("bearing", BearingToWaypoint);
-			
 			
 			
 			if (speedAutoCheckBox.isChecked()){
