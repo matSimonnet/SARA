@@ -1,4 +1,7 @@
-package orion.ms.sara;
+package com.example.mainact;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //a waypoint class containing each latitude, longitude, distance and bearing
 public class WP implements Comparable<WP>{
@@ -11,7 +14,7 @@ public class WP implements Comparable<WP>{
 		private double distance = 0.0;
 		private double bearing = 0.0;
 		
-		//constructor
+		//constructor1
 		public WP(String n, String la, String lo, double dis, double bear){
 			this.name = n;
 			this.latitude = la;
@@ -20,8 +23,11 @@ public class WP implements Comparable<WP>{
 			this.bearing = bear;
 		}
 		
-		public String toString(){
-			return this.getName();
+		//constructor2
+		public WP(String n,String la,String lo){
+			this.name = n;
+			this.latitude = la;
+			this.longitude = lo;
 		}
 
 		public String getName() {

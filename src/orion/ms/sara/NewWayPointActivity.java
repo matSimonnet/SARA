@@ -1,4 +1,4 @@
-package orion.ms.sara;
+package com.example.mainact;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -46,11 +46,6 @@ public class NewWayPointActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_way_point);
-
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
 		
 		//OnInitListener Creation
 				OnInitListener onInitListener = new OnInitListener() {
@@ -96,23 +91,6 @@ public class NewWayPointActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_new_way_point,
-					container, false);
-			return rootView;
-		}
 	}
 
 }
