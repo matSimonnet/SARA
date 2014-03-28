@@ -1,11 +1,8 @@
 package orion.ms.sara;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -17,37 +14,34 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.os.Build;
 
-public class NewWayPointActivity extends Activity{
-
+public class NewWayPointActivity extends Activity {
 	//variables declaration
 	
-	//string for each attribute of the new waypoint
-	private String name = "";
-	private String latitude = "";
-	private String longitude = "";
-	
-	//TextView
-	private TextView introText = null;
-	private TextView nameText = null;
-	private TextView latitudeText = null;
-	private TextView longitudeText = null;
-	
-	//EditText
-	private EditText nameBox = null;
-	private EditText latitudeBox = null;
-	private EditText longitudeBox = null;
-	
-	//save button
-	private Button saveButton = null;
-	
-	private TextToSpeech tts = null;
-	private LocationManager lm = null;
-	private LocationListener ll = null;
-	
+		//string for each attribute of the new waypoint
+		private String name = "";
+		private String latitude = "";
+		private String longitude = "";
+		
+		//TextView
+		private TextView introText = null;
+		private TextView nameText = null;
+		private TextView latitudeText = null;
+		private TextView longitudeText = null;
+		
+		//EditText
+		private EditText nameBox = null;
+		private EditText latitudeBox = null;
+		private EditText longitudeBox = null;
+		
+		//save button
+		private Button saveButton = null;
+		
+		private TextToSpeech tts = null;
 
-
-	
+		
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,25 +53,29 @@ public class NewWayPointActivity extends Activity{
 		}
 		
 		//OnInitListener Creation
-		OnInitListener onInitListener = new OnInitListener() {
-			@Override
-			public void onInit(int status) {
-			}
-		};
-		
-	    // textToSpeech creation
-		tts = new TextToSpeech(this, onInitListener);
-		tts.setSpeechRate((float) 2.0);
-		
-		//location manager creation
-		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		//ll = new MyLocationListener();		
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-		
-		Location loc = new Location("aa");
-		//setting default as the current position
-		latitude = ""+loc.getLatitude();
-		longitude = ""+loc.getLongitude();
+				OnInitListener onInitListener = new OnInitListener() {
+					@Override
+					public void onInit(int status) {
+					}
+				};
+				
+			    // textToSpeech creation
+				tts = new TextToSpeech(this, onInitListener);
+				tts.setSpeechRate((float) 2.0);
+				
+				//TextView
+				introText = (TextView) findViewById(R.id.textView1);
+				nameText = (TextView) findViewById(R.id.textView2);
+				latitudeText = (TextView) findViewById(R.id.textView3);
+				longitudeText = (TextView) findViewById(R.id.textView4);
+				
+				//EditText
+				nameBox = (EditText) findViewById(R.id.editText1);
+				latitudeBox = (EditText) findViewById(R.id.editText2);
+				longitudeBox = (EditText) findViewById(R.id.editText3);
+				
+				//"save" button
+				saveButton = (Button) findViewById(R.id.button1);
 	}
 
 	@Override

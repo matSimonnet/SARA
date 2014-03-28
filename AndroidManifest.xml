@@ -7,7 +7,8 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +23,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="orion.ms.sara.WayPointActivity"
+            android:label="@string/title_activity_way_point" >
+        </activity>
+        <activity
+            android:name="orion.ms.sara.NewWayPointActivity"
+            android:label="@string/title_activity_new_way_point" >
         </activity>
     </application>
 

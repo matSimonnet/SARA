@@ -3,20 +3,12 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="orion.ms.sara.WayPointActivity"
+    tools:context="com.trying.WayPointActivity"
     tools:ignore="MergeRootFrame" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textView1"
-            android:layout_marginTop="22dp" />
 
         <TextView
             android:id="@+id/textView1"
@@ -24,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="89dp"
+            android:layout_marginTop="103dp"
             android:text="@string/choose_the_waypoint"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -32,10 +24,18 @@
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/spinner1"
+            android:layout_below="@+id/textView1"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="28dp"
-            android:text="New Waypoint" />
+            android:layout_marginTop="127dp"
+            android:text="@string/new_waypoint" />
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp" />
 
     </RelativeLayout>
 
