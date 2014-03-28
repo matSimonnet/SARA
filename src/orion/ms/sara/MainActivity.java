@@ -305,13 +305,13 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			
 			// calculate distance to the current waypoint
 			Location.distanceBetween(loc.getLatitude(), loc.getLongitude(),lastlatitude,lastlongitude, distance);
-			DistanceToCurrentWaypoint = String.valueOf(arrondiDistance((distance[0])/1000));
+			DistanceToCurrentWaypoint = String.valueOf(arrondiDistance(distance[0]/1000));
 			Log.i("distance", DistanceToCurrentWaypoint);
 			
 			// calculate bearing to the current waypoint						
 			bearing = _Bearing(lastlatitude,lastlongitude,loc.getLatitude(),loc.getLongitude());
-			DistanceToCurrentWaypoint = String.valueOf(arrondiDistance(bearing));
-			Log.i("bearing", DistanceToCurrentWaypoint);
+			BearingToCurrentWaypoint = String.valueOf(arrondiBearing(bearing));
+			Log.i("bearing", BearingToCurrentWaypoint);
 
 	
 			if (speedAutoCheckBox.isChecked()){
@@ -417,7 +417,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			startActivity(intentAuto_setting);
 			break;
 		case R.id.waypoint_setting:
-			Intent intentWaypoint_setting = new Intent(MainActivity.this,AutoSetting.class);
+			Intent intentWaypoint_setting = new Intent(MainActivity.this,Waypoint.class);
 			startActivity(intentWaypoint_setting);
 			break;
 		case R.id.main:
