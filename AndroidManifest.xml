@@ -35,6 +35,15 @@
             </intent-filter>
         </activity>
         
+        <activity
+            android:name="orion.ms.sara.Waypoint"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
     </application>
 
 </manifest>
