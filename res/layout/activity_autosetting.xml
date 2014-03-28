@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    	<CheckBox
+		    android:id="@+id/speedAutoCheckBox2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    
+		    android:text="@string/autospeed" 
+		/>
+    	<LinearLayout
+			android:id="@+id/linearLayout1"
+			android:orientation="horizontal"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+    		>
+			<NumberPicker android:id="@+id/np"
+  				android:layout_width="wrap_content"
+   				android:layout_height="wrap_content"
+   				android:layout_weight="25"
+   				/>
+			
+    		<TextView
+	      	  	android:id="@+id/testtextview"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:gravity="center"
+	       		android:layout_weight="25"
+	        	android:text= "@string/speedtreshold"
+        	/>	
+			<NumberPicker android:id="@+id/np2"
+  				android:layout_width="wrap_content"
+   				android:layout_height="wrap_content"
+   				android:layout_weight="25"
+   				/>
+			
+    		<TextView
+	      	  	android:id="@+id/testtextview2"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:gravity="center"
+	       		android:layout_weight="25"
+	        	android:text= "@string/speedtreshold"
+        	/>
+  
+			
+			</LinearLayout>
+
+		
+    			
+    	
+        
+
+    
+</LinearLayout>
