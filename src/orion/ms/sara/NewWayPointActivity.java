@@ -1,9 +1,9 @@
 package com.example.mainact;
 
-import android.app.ActionBar;
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -11,17 +11,14 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Build;
 
 public class NewWayPointActivity extends Activity {
 	//variables declaration
@@ -47,7 +44,15 @@ public class NewWayPointActivity extends Activity {
 		
 		private TextToSpeech tts = null;
 		
-		private LocationManager lm = null;		
+		private LocationManager lm = null;	
+		private LocationListener ll = null;
+		
+		//receiving parameter arrays
+		private String[] nameArray = null;
+		private String[] latitudeArray = null;
+		private String[] longitudeArray = null;		
+		
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,7 +88,7 @@ public class NewWayPointActivity extends Activity {
 				
 				//location manager creation
 				lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-				LocationListener ll = new LocationListener(){
+				ll = new LocationListener(){
 					//LocationListener creation
 					@Override
 					public void onLocationChanged(Location loc) {
@@ -111,10 +116,16 @@ public class NewWayPointActivity extends Activity {
 						//tts.speak("Location changed", tts.QUEUE_FLUSH, null);
 					}
 					
-				};
+				};//end of locationListener creation
+
+				/*errorrrrrrrrrr */
 				//lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 				
-				
+				//get parameters from the waypoint activity when create a new waypoint
+				Intent intentFromWayPointAct = getIntent();
+				nameArray = intentFromWayPointAct.getStringArrayExtra("nameArray");
+				latitudeArray = intentFromWayPointAct.getStringArrayExtra("latitudeArray");
+				longitudeArray = intentFromWayPointAct.getStringArrayExtra("longitudeArray");				
 				
 				//"save" button
 				saveButton = (Button) findViewById(R.id.button1);
@@ -125,16 +136,84 @@ public class NewWayPointActivity extends Activity {
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						if(v==saveButton){
+							//get the new waypoint's name, latitude and longitude from the EditText
 							name = nameBox.getText().toString();
 							latitude = latitudeBox.getText().toString();
 							longitude = longitudeBox.getText().toString();
-							tts.speak("the new waypoint already saved", tts.QUEUE_FLUSH, null);
-							Toast.makeText(NewWayPointActivity.this,"new waypoint already saved", Toast.LENGTH_SHORT);
-						}
-					}
+							
+							//check if the filled name or the position (latitude and longitude) are already recorded
+							/*if(isRecorded(name, latitude, longitude)){
+								tts.speak("Please fill the new information", tts.QUEUE_FLUSH, null);
+							}*/
+							//else{
+								//sent the new waypoint information back to waypoint activity
+																
+								//notification
+								tts.speak("the new waypoint already saved", tts.QUEUE_FLUSH, null);
+								Toast.makeText(NewWayPointActivity.this,"new waypoint already saved", Toast.LENGTH_SHORT);
+								
+								//change back to the waypoint activity
+								Intent intentToWayPoint = new Intent(NewWayPointActivity.this,WayPointActivity.class);
+								//pass the parameters including name,latitude,longitude
+								intentToWayPoint.putExtra("newName",name);//name
+								intentToWayPoint.putExtra("newLatitude", latitude);//latitude
+								intentToWayPoint.putExtra("newLongitude", longitude);//longitude
+								//back to WayPoint activity
+								/*errorrrrr because it starts the new activity by calling OnCreate()*/
+								startActivity(intentToWayPoint);
+
+							//}end else
+						}	
+					}//end onClick
 				});
 	}
 
+	//to check if the filled name or the position (latitude and longitude) are already recorded
+	@SuppressWarnings("static-access")
+	@SuppressLint("ShowToast")
+	public boolean isRecorded(String n, String la, String lo){
+		for(int i = 0;i<nameArray.length;i++){
+			if(nameArray[i].equalsIgnoreCase(n)){
+				// same name
+				Toast.makeText(NewWayPointActivity.this, "This name is already recorded.", Toast.LENGTH_SHORT);
+				tts.speak("This name is already recorded.", tts.QUEUE_FLUSH, null);
+				return true;
+			}//end if
+			if(latitudeArray[i].equalsIgnoreCase(la) && latitudeArray[i].equalsIgnoreCase(la)){
+				//same position
+				Toast.makeText(NewWayPointActivity.this, "This position is already recorded.", Toast.LENGTH_SHORT);
+				tts.speak("This position is already recorded.", tts.QUEUE_FLUSH, null);
+				return true;
+			}//end if
+		}//end for
+		return false;
+	}//end isRecored
+		
+	@Override
+	  protected void onResume() {
+	    super.onResume();
+	    //lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+	  }
+
+	  @Override
+	  protected void onPause() {
+	    super.onPause();
+	    //lm.removeUpdates(ll);
+	  }
+	  
+	  @Override
+	  protected void onStop() {
+	    super.onStop();
+		//tts.shutdown();
+	  }
+	  
+		@Override
+		protected void onDestroy() {
+			super.onDestroy();
+			//lm.removeUpdates(ll);
+			tts.shutdown();
+		}
+		
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
