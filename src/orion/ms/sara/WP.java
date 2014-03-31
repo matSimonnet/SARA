@@ -1,7 +1,5 @@
-package com.example.mainact;
+package orion.ms.sara;
 
-import java.util.ArrayList;
-import java.util.List;
 
 //a waypoint class containing each latitude, longitude, distance and bearing
 public class WP implements Comparable<WP>{

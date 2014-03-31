@@ -1,4 +1,4 @@
-package com.example.mainact;
+package orion.ms.sara;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,8 +33,8 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 		public static List<WP> wayPointList = new ArrayList<WP>();
 				
 		//testing WP
-		private WP wp1 = new WP("WP1", "1", "2", 90, 2);
-		private WP wp2 = new WP("WP2", "1", "2", 45, 2);
+		private WP wp1 = new WP("WP1", "1la", "1long", 90, 2);
+		private WP wp2 = new WP("WP2", "2la", "2long", 45, 2);
 		
 		//Receiving parameter arrays
 		private static String newName;
@@ -82,13 +83,13 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 				public void onItemSelected(AdapterView<?> adapterView, 
 	            	View view, int i, long l) { 
 	            	// TODO Auto-generated method stub
-	      				Toast.makeText(WayPointActivity.this,"Your Selected : "+toNameArrayList(wayPointList).get(i),Toast.LENGTH_SHORT).show();
+	      				Toast.makeText(WayPointActivity.this,"You selected : "+toNameArrayList(wayPointList).get(i),Toast.LENGTH_SHORT).show();
 	      				tts.speak("Your Selected : "+toNameArrayList(wayPointList).get(i), tts.QUEUE_FLUSH, null);
 	              	}
 
 					public void onNothingSelected(AdapterView<?> arg0) {
 						// TODO Auto-generated method stub
-	      				Toast.makeText(WayPointActivity.this,"Your Selected Empty",Toast.LENGTH_SHORT).show();
+	      				Toast.makeText(WayPointActivity.this,"You selected Empty",Toast.LENGTH_SHORT).show();
 	      				tts.speak("Your Selected : nothing", tts.QUEUE_FLUSH, null);
 					} 
 
@@ -110,16 +111,32 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 								//change to the "NewWayPoint" activity
 								Intent intentToNewWayPoint = new Intent(WayPointActivity.this,NewWayPointActivity.class);
 								//pass the parameters including name,latitude,longitude
-								intentToNewWayPoint.putExtra("nameArray", nameArray(wayPointList));//name
-								intentToNewWayPoint.putExtra("latitudeArray", latitudeArray(wayPointList));//latitude
-								intentToNewWayPoint.putExtra("longitudeArray", longitudeArray(wayPointList));//longitude
+								intentToNewWayPoint.putExtra("nameArrayFromWP", nameArray(wayPointList));//name
+								intentToNewWayPoint.putExtra("latitudeArrayFromWP", latitudeArray(wayPointList));//latitude
+								intentToNewWayPoint.putExtra("longitudeArrayFromWP", longitudeArray(wayPointList));//longitude
 								//start NewWayPoint activity
 								startActivity(intentToNewWayPoint);
 							}
 						}//end of onClick
 				    	
 				    });//end of View.OnClickListener
-					
+			
+			//testing part already worked
+			/*
+			//Intent to receive parameters from NewWayPoint
+			//get parameters from the NewWayPoint activity when create a new waypoint
+			Intent intentFromNewWayPoint = getIntent();
+			newName = intentFromNewWayPoint.getStringExtra("newName");
+			newLatitude = intentFromNewWayPoint.getStringExtra("newLatitude");
+			newLongitude = intentFromNewWayPoint.getStringExtra("newLongitude");
+			Log.i("WayPoint OnCreate", "newName is "+newName);
+			Log.i("WayPoint OnCreate", "newLa is "+newLatitude);
+			Log.i("WayPoint OnCreate", "newLong is "+newLongitude);
+			
+			//create a new waypoint
+			wayPointList.add(new WP(newName,newLatitude,newLongitude,19.0,0.0));
+			Collections.sort(wayPointList);
+			*/		
 	}
 	//to convert from array list of waypoint into name of the waypoint array list
 	public static ArrayList<String> toNameArrayList(List<WP> wList){
@@ -142,7 +159,7 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 	public String[] latitudeArray(List<WP> wList){
 		String[] arrayLatitude = new String[wList.size()];
 		for(int i = 0;i<wList.size();i++){
-			arrayLatitude[i] = wList.get(i).getName();
+			arrayLatitude[i] = wList.get(i).getLatitude();
 		}
 		return arrayLatitude;
 	}
@@ -150,7 +167,7 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 	public String[] longitudeArray(List<WP> wList){
 		String[] arrayLongitude = new String[wList.size()];
 		for(int i = 0;i<wList.size();i++){
-			arrayLongitude[i] = wList.get(i).getName();
+			arrayLongitude[i] = wList.get(i).getLongitude();
 		}
 		return arrayLongitude;
 	}
@@ -158,16 +175,8 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 	@Override
 	  protected void onResume() {
 	    super.onResume();
-	    //tts.speak("Resume", tts.QUEUE_FLUSH, null);
-	    //get parameters from the NewWayPoint activity when create a new waypoint
-		Intent intentFromNewWayPoint = getIntent();
-		newName = intentFromNewWayPoint.getStringExtra("newName");
-		newLatitude = intentFromNewWayPoint.getStringExtra("newLatitude");
-		newLongitude = intentFromNewWayPoint.getStringExtra("newLongitude");
+	    tts.speak("Resume", tts.QUEUE_FLUSH, null);
 		
-		//create a new waypoint
-		wayPointList.add(new WP(newName,newLatitude,newLongitude));
-		Collections.sort(wayPointList);
 	  }
 
 	  @Override
