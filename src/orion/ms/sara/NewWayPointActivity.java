@@ -53,6 +53,8 @@ public class NewWayPointActivity extends Activity {
 		private String[] latitudeArray = null;
 		private String[] longitudeArray = null;	
 
+		//default name
+		private String defaultName = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,7 +69,7 @@ public class NewWayPointActivity extends Activity {
 				
 			    // textToSpeech creation
 				tts = new TextToSpeech(this, onInitListener);
-				tts.setSpeechRate((float) 9.0);
+				tts.setSpeechRate((float) 1.5);
 				
 								
 				//TextView
@@ -110,6 +112,7 @@ public class NewWayPointActivity extends Activity {
 						Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();	
 					}
 
+					@SuppressWarnings("static-access")
 					@Override
 					public void onStatusChanged(String provider, int status, Bundle extras) {
 						Log.i("LocationListener","onStatusChanged");
@@ -126,12 +129,11 @@ public class NewWayPointActivity extends Activity {
 				nameArray = intentFromWayPointAct.getStringArrayExtra("nameArrayFromWP");
 				latitudeArray = intentFromWayPointAct.getStringArrayExtra("latitudeArrayFromWP");
 				longitudeArray = intentFromWayPointAct.getStringArrayExtra("longitudeArrayFromWP");
-				for(int i = 0;i<nameArray.length;i++){
-					Log.i("Name Array", "position "+i+" is "+nameArray[i]);
-					Log.i("La Array", "position "+i+" is "+latitudeArray[i]);
-					Log.i("Long Array", "position "+i+" is "+longitudeArray[i]);
-
-				}
+				defaultName = intentFromWayPointAct.getStringExtra("defaultNameFromWP");
+				
+				//set default name
+				nameBox.setText(defaultName);
+				
 
 				
 				//"save" button

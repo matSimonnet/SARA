@@ -31,15 +31,17 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 		
 		//a list of many waypoints sorted by proximity
 		public static List<WP> wayPointList = new ArrayList<WP>();
-				
 		//testing WP
-		private WP wp1 = new WP("WP1", "1la", "1long", 90, 2);
-		private WP wp2 = new WP("WP2", "2la", "2long", 45, 2);
+		private WP wp1 = new WP("Waypoint1", "1la", "1long", 90, 2);
+		private WP wp2 = new WP("Waypoint2", "2la", "2long", 45, 2);
 		
 		//Receiving parameter arrays
-		private static String newName;
-		private static String newLatitude;
-		private static String newLongitude;
+		private static String newName = "Waypoint1";
+		private static String newLatitude = "";
+		private static String newLongitude = "";
+		
+		//Generating default number for a new waypoint's name
+		private int lastNum = 0;
 		
 		
 
@@ -79,7 +81,7 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 			
 			way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
 
-	              @SuppressWarnings("static-access")
+	            @SuppressWarnings("static-access")
 				public void onItemSelected(AdapterView<?> adapterView, 
 	            	View view, int i, long l) { 
 	            	// TODO Auto-generated method stub
@@ -87,6 +89,7 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 	      				tts.speak("Your Selected : "+toNameArrayList(wayPointList).get(i), tts.QUEUE_FLUSH, null);
 	              	}
 
+					@SuppressWarnings("static-access")
 					public void onNothingSelected(AdapterView<?> arg0) {
 						// TODO Auto-generated method stub
 	      				Toast.makeText(WayPointActivity.this,"You selected Empty",Toast.LENGTH_SHORT).show();
@@ -102,18 +105,24 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 			//setOnClickListener
 			newWay.setOnClickListener(new View.OnClickListener(){
 						// OnClickListener creation			    
+						@SuppressWarnings("static-access")
 						@Override
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
 							if(v==newWay){
+								//notification
 								Toast.makeText(WayPointActivity.this,"Clicked new waypoint", Toast.LENGTH_SHORT).show();
 								tts.speak("create a new waypoint", tts.QUEUE_FLUSH, null);
+								
 								//change to the "NewWayPoint" activity
 								Intent intentToNewWayPoint = new Intent(WayPointActivity.this,NewWayPointActivity.class);
-								//pass the parameters including name,latitude,longitude
+								
+								//pass the parameters including name,latitude,longitude arrays
 								intentToNewWayPoint.putExtra("nameArrayFromWP", nameArray(wayPointList));//name
 								intentToNewWayPoint.putExtra("latitudeArrayFromWP", latitudeArray(wayPointList));//latitude
 								intentToNewWayPoint.putExtra("longitudeArrayFromWP", longitudeArray(wayPointList));//longitude
+								//sending default name for a new waypoint
+								intentToNewWayPoint.putExtra("defaultNameFromWP", String.valueOf("Waypoint"+(lastNum+1)));
 								//start NewWayPoint activity
 								startActivity(intentToNewWayPoint);
 							}
@@ -122,21 +131,25 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 				    });//end of View.OnClickListener
 			
 			//testing part already worked
-			/*
 			//Intent to receive parameters from NewWayPoint
 			//get parameters from the NewWayPoint activity when create a new waypoint
 			Intent intentFromNewWayPoint = getIntent();
 			newName = intentFromNewWayPoint.getStringExtra("newName");
 			newLatitude = intentFromNewWayPoint.getStringExtra("newLatitude");
 			newLongitude = intentFromNewWayPoint.getStringExtra("newLongitude");
+			
 			Log.i("WayPoint OnCreate", "newName is "+newName);
 			Log.i("WayPoint OnCreate", "newLa is "+newLatitude);
 			Log.i("WayPoint OnCreate", "newLong is "+newLongitude);
 			
-			//create a new waypoint
-			wayPointList.add(new WP(newName,newLatitude,newLongitude,19.0,0.0));
-			Collections.sort(wayPointList);
-			*/		
+			/*
+			if(newName.contains("Waypoint")){
+				lastNum = Integer.parseInt(newName.substring(8));
+				Log.i("NameNUM", "lastnum :"+lastNum);
+			}*/
+			//addNewWPtoList(wayPointList, newName, newLatitude, newLongitude);
+			
+				
 	}
 	//to convert from array list of waypoint into name of the waypoint array list
 	public static ArrayList<String> toNameArrayList(List<WP> wList){
@@ -172,6 +185,18 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 		return arrayLongitude;
 	}
 	
+	//adding new waypoint into the waypoint list
+	public void addNewWPtoList(List<WP> wList,String n,String la,String lo){
+		if(n.contains("Waypoint") || n.contains("WayPoint")){
+			lastNum = Integer.parseInt(n.substring(8));
+			Log.i("NameNUM", "lastnum :"+lastNum);
+		}
+		//still have to add more about distance and bearing
+		wList.add(new WP(n,la,lo));
+		Collections.sort(wList);
+	}
+	
+	@SuppressWarnings("static-access")
 	@Override
 	  protected void onResume() {
 	    super.onResume();
