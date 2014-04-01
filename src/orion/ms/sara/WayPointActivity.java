@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -20,7 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class WayPointActivity extends Activity {//implements AdapterView.OnItemSelectedListener {
+public class WayPointActivity extends Activity {
 	
 	//components
 		private TextView chooseText = null;
@@ -36,9 +37,10 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 		private WP wp2 = new WP("Waypoint2", "2la", "2long", 45, 2);
 		
 		//Receiving parameter arrays
-		private static String newName = "Waypoint1";
-		private static String newLatitude = "";
-		private static String newLongitude = "";
+		private String newName = "Waypoint1";
+		private String newLatitude = "";
+		private String newLongitude = "";
+		private double newBearing = 0.0;
 		
 		//Generating default number for a new waypoint's name
 		private int lastNum = 0;
@@ -48,6 +50,11 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 		
 		//array adapter
 		private ArrayAdapter<String> arrAd = null;
+		
+		//alert dialog after choosing the waypoint from the list
+		private AlertDialog.Builder dDialog = null;
+		//initial list selection value
+		private boolean isSelected = false;
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -72,23 +79,40 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 			chooseText.setContentDescription("a list containing many waypoints sorted by the least distance");
 			
 			//adding test
-			addNewWPtoList(wayPointList, wp1.getName(), wp1.getLatitude(), wp1.getLongitude());
-			addNewWPtoList(wayPointList, wp2.getName(), wp2.getLatitude(), wp2.getLongitude());			
+			addNewWPtoList(wayPointList, wp1.getName(), wp1.getLatitude(), wp1.getLongitude(),wp1.getDistance(),wp1.getBearing());
+			addNewWPtoList(wayPointList, wp2.getName(), wp2.getLatitude(), wp2.getLongitude(),wp2.getDistance(),wp2.getBearing());			
 
-			
+			//alert dialog creation
+			dDialog = new AlertDialog.Builder(this);
+			//setOnItemSelectedListener
 			way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
-
+				//OnItemSelectedListener creation
 	            @SuppressWarnings("static-access")
 				public void onItemSelected(AdapterView<?> adapterView, 
 	            	View view, int i, long l) { 
-	            	// TODO Auto-generated method stub
-	      				Toast.makeText(WayPointActivity.this,"You selected : "+toNameArrayList(wayPointList).get(i),Toast.LENGTH_SHORT).show();
-	      				tts.speak("Your Selected : "+toNameArrayList(wayPointList).get(i), tts.QUEUE_FLUSH, null);
+	      				try{
+	                		switch(adapterView.getId()){
+	                		case R.id.spinner1: 
+	                			if(isSelected){
+	                				Toast.makeText(WayPointActivity.this,"You selected : "+toNameArrayList(wayPointList).get(i),Toast.LENGTH_SHORT).show();
+	        	      				tts.speak("Your Selected : "+toNameArrayList(wayPointList).get(i), tts.QUEUE_FLUSH, null);
+	                				dDialog.setTitle("You selected : "+toNameArrayList(wayPointList).get(i));
+	                				dDialog.setIcon(android.R.drawable.presence_busy);
+	                				dDialog.setMessage("What do you want to do with "+toNameArrayList(wayPointList).get(i)+"?");
+	                				dDialog.setNegativeButton("Activate", null);
+	                				dDialog.setNeutralButton("Modify", null);
+	                				dDialog.setPositiveButton("Delete", null);
+	                				dDialog.show();
+	                			}
+	            				isSelected = true;
+	                		}
+	                    }catch(Exception e){
+	                        e.printStackTrace();
+	                    }
 	              	}
 
 					@SuppressWarnings("static-access")
 					public void onNothingSelected(AdapterView<?> arg0) {
-						// TODO Auto-generated method stub
 	      				Toast.makeText(WayPointActivity.this,"You selected Empty",Toast.LENGTH_SHORT).show();
 	      				tts.speak("Your Selected : nothing", tts.QUEUE_FLUSH, null);
 					} 
@@ -105,7 +129,6 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 						@SuppressWarnings("static-access")
 						@Override
 						public void onClick(View v) {
-							// TODO Auto-generated method stub
 							if(v==newWay){
 								//notification
 								Toast.makeText(WayPointActivity.this,"Clicked new waypoint", Toast.LENGTH_SHORT).show();
@@ -164,20 +187,18 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 	}
 	
 	//adding new waypoint into the waypoint list
-	public void addNewWPtoList(List<WP> wList,String n,String la,String lo){
+	public void addNewWPtoList(List<WP> wList,String n,String la,String lo,double dis,double bear){
 		//Get the latest number after adding a new waypoint
 		if(n.contains("Waypoint")){
 			lastNum = Integer.parseInt(n.substring(n.lastIndexOf("t")+1));//substring "waypoint" and get the number after that
 			Log.i("NameNUM", "lastnum :"+lastNum);
 		}
-		//still have to add more about distance and bearing
-		if(n.equals("Waypoint1")) wList.add(wp1);
-		else if(n.equals("Waypoint2")) wList.add(wp2);
-		else if(n.equals("Waypoint3")) wList.add(new WP(n,la,lo,15,0.0));
-		Collections.sort(wList);//sorted by proximity
+		//Adding the new waypoint into the list
+		wList.add(new WP(n,la,lo,dis,bear));
+		Collections.sort(wList);//Sorting the lisst by proximity
 		
+		//set array adapter of the list into the spinner
 		way = (Spinner) findViewById(R.id.spinner1);
-		
 		arrAd = new ArrayAdapter<String>(WayPointActivity.this,
 				android.R.layout.simple_spinner_item, 
 				toNameArrayList(wList));
@@ -194,7 +215,8 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
         	newName = intentFromNewWayPoint.getStringExtra("newName");
     		newLatitude = intentFromNewWayPoint.getStringExtra("newLatitude");
     		newLongitude = intentFromNewWayPoint.getStringExtra("newLongitude");
-			addNewWPtoList(wayPointList, newName, newLatitude, newLongitude);
+    		newBearing =  Double.parseDouble(intentFromNewWayPoint.getStringExtra("newBearing"));
+			addNewWPtoList(wayPointList, newName, newLatitude, newLongitude,0.0,newBearing);
         }
 	}
 
