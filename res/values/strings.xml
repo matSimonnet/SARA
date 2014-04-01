@@ -6,10 +6,16 @@
     <string name="title_activity_main">SARA</string>
     
     <!-- Action bar --> 
-    <string name="auto_setting">AUTO SETTING</string>
-    <string name="waypoint_setting">Waypoint</string>
-    <string name="main">Main</string>
+    <string name="auto_setting">AUTO SETTING Menu</string>
+    <string name="waypoint_setting">Waypoint Menu</string>
+    <string name="main">Main Menu</string>
     
+        <!--  Button --> 
+        
+    <string name="increase">Increase</string>
+    <string name="decrease">decrease</string>
+    <string name="increased">increased</string>
+    <string name="decreased">decreased</string>
     
     
     
@@ -33,10 +39,16 @@
     <string name="available">available</string>
     
     <string name="speedunit">noeuds</string>
-    <string name="headingunit">degrés</string>
+    <string name="headingunit">degrees</string>
     <string name="distance">mètres</string>
     <string name="bearingunit">degrés</string>
     <string name="timeunit">secondes</string>
+    
+        <string name="SpeedUnit">knots</string>
+    <string name="HeadingUnit">degrees</string>
+    <string name="DistanceUnit">kilometre</string>
+    <string name="BearingUnit">degrees</string>
+    <string name="TimeUnit">seconds</string>
     
     
     
