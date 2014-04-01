@@ -49,8 +49,6 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 		//array adapter
 		private ArrayAdapter<String> arrAd = null;
 		
-		
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -68,7 +66,8 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 			tts = new TextToSpeech(this, onInitListener);
 			tts.setSpeechRate((float) 2.0);
 
-	
+			
+			//TextView
 			chooseText = (TextView) findViewById(R.id.textView1);
 			chooseText.setContentDescription("a list containing many waypoints sorted by the least distance");
 			

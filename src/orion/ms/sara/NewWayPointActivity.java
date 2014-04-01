@@ -45,19 +45,20 @@ public class NewWayPointActivity extends Activity {
 		
 		private TextToSpeech tts = null;
 		
-		@SuppressWarnings("unused")
-		private LocationManager lm = null;	
-		@SuppressWarnings("unused")
-		private LocationListener ll = null;
-		
 		//receiving parameter arrays
 		private String[] nameArray = null;
 		private String[] latitudeArray = null;
 		@SuppressWarnings("unused")
 		private String[] longitudeArray = null;	
+		
+		private LocationManager lm = null;	
+		private LocationListener ll = null;
 
-		//default name
+		//default name and current position
 		private String defaultName = "";
+		private String currentLatitude = "";
+		private String currentLongitude = "";
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,6 +74,41 @@ public class NewWayPointActivity extends Activity {
 			    // textToSpeech creation
 				tts = new TextToSpeech(this, onInitListener);
 				tts.setSpeechRate((float) 1.5);
+				
+				//location manager creation
+				lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+				ll = new LocationListener(){
+					//LocationListener creation
+					@Override
+					public void onLocationChanged(Location loc) {
+						currentLatitude = String.valueOf(loc.getLatitude());
+						currentLongitude = String.valueOf(loc.getLongitude());
+						Log.i("Latitude current","current la is "+currentLatitude);
+						Log.i("Longitude current","current long is "+currentLongitude);
+					}
+
+					@Override
+					public void onProviderDisabled(String provider) {
+						Toast.makeText( getApplicationContext(),"Gps Disabled",Toast.LENGTH_SHORT).show();	
+						//set each EditText default
+						latitudeBox.setText(currentLatitude);
+						longitudeBox.setText(currentLongitude);
+					}
+
+					@Override
+					public void onProviderEnabled(String provider) {
+						Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();	
+					}
+
+					@Override
+					public void onStatusChanged(String provider, int status, Bundle extras) {
+
+					}
+					
+				};//end of locationListener creation
+
+				//update location
+				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 				
 								
 				//TextView
@@ -90,54 +126,54 @@ public class NewWayPointActivity extends Activity {
 				latitudeBox = (EditText) findViewById(R.id.editText2);
 				longitudeBox = (EditText) findViewById(R.id.editText3);
 				
-				
-				//location manager creation
-				lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-				ll = new LocationListener(){
-					//LocationListener creation
-					@Override
-					public void onLocationChanged(Location loc) {
-						// TODO Auto-generated method stub
-						latitude = String.valueOf(loc.getLatitude());
-						longitude = String.valueOf(loc.getLongitude());
-						//set each EditText default
-						latitudeBox.setText(latitude);
-						longitudeBox.setText(longitude);
-					}
-
-					@Override
-					public void onProviderDisabled(String provider) {
-						Toast.makeText( getApplicationContext(),"Gps Disabled",Toast.LENGTH_SHORT).show();	
-					}
-
-					@Override
-					public void onProviderEnabled(String provider) {
-						Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();	
-					}
-
-					@SuppressWarnings("static-access")
-					@Override
-					public void onStatusChanged(String provider, int status, Bundle extras) {
-						Log.i("LocationListener","onStatusChanged");
-						tts.speak("Location changed", tts.QUEUE_FLUSH, null);
-					}
-					
-				};//end of locationListener creation
-
-/*errorrrrrrrrrr the program clashes */
-				//lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-				
-				//receive parameters from the waypoint activity when create a new waypoint
+				//receiving parameters from the waypoint activity when create a new waypoint
 				Intent intentFromWayPointAct = getIntent();
 				nameArray = intentFromWayPointAct.getStringArrayExtra("nameArrayFromWP");
 				latitudeArray = intentFromWayPointAct.getStringArrayExtra("latitudeArrayFromWP");
 				longitudeArray = intentFromWayPointAct.getStringArrayExtra("longitudeArrayFromWP");
+				//receiving default name
 				defaultName = intentFromWayPointAct.getStringExtra("defaultNameFromWP");
-				
 				//set default name
 				nameBox.setText(defaultName);
 				
-
+				//set each EditText default
+				latitudeBox.setText("Waiting for GPS signal");
+				longitudeBox.setText("Waiting for GPS signal");
+				
+				//setOnclickListener
+				//latitudeBox
+				latitudeBox.setOnClickListener(new OnClickListener() {
+					//OnClick creation
+					@Override
+					public void onClick(View v) {
+						if(v==latitudeBox){
+							//update location
+							lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+							if(!currentLatitude.equals("")){
+								//set each EditText default
+								latitudeBox.setText(currentLatitude);
+								longitudeBox.setText(currentLongitude);
+							}
+						}
+					}
+				});
+				
+				//latitudeBox
+				longitudeBox.setOnClickListener(new OnClickListener() {
+					//OnClick creation
+					@Override
+					public void onClick(View v) {
+						if(v==longitudeBox){
+							//update location
+							lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+							if(!currentLongitude.equals("")){
+								//set each EditText default
+								latitudeBox.setText(currentLatitude);
+								longitudeBox.setText(currentLongitude);
+							}
+						}
+					}
+				});
 				
 				//"save" button
 				saveButton = (Button) findViewById(R.id.button1);
@@ -212,19 +248,19 @@ public class NewWayPointActivity extends Activity {
 	  @Override
 	  protected void onPause() {
 	    super.onPause();
-	    //lm.removeUpdates(ll);
+	    lm.removeUpdates(ll);
 	  }
 	  
 	  @Override
 	  protected void onStop() {
 	    super.onStop();
-		//tts.shutdown();
+		tts.shutdown();
 	  }
 	  
 		@Override
 		protected void onDestroy() {
 			super.onDestroy();
-			//lm.removeUpdates(ll);
+			lm.removeUpdates(ll);
 			tts.shutdown();
 		}
 		
