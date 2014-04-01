@@ -45,12 +45,15 @@ public class NewWayPointActivity extends Activity {
 		
 		private TextToSpeech tts = null;
 		
+		@SuppressWarnings("unused")
 		private LocationManager lm = null;	
+		@SuppressWarnings("unused")
 		private LocationListener ll = null;
 		
 		//receiving parameter arrays
 		private String[] nameArray = null;
 		private String[] latitudeArray = null;
+		@SuppressWarnings("unused")
 		private String[] longitudeArray = null;	
 
 		//default name
@@ -168,11 +171,10 @@ public class NewWayPointActivity extends Activity {
 								intentToWayPoint.putExtra("newLatitude", latitude);//latitude
 								intentToWayPoint.putExtra("newLongitude", longitude);//longitude
 								
-								//back to WayPoint activity
-								/*error it doesn't call onResume() method */
-								startActivity(intentToWayPoint);
-								/*error it cannot send any parameters*/
+								//back to WayPoint activity and send some parameters to the activity
+								setResult(RESULT_OK, intentToWayPoint);
 								finish();
+								
 							}//end else
 						}	
 					}//end onClick

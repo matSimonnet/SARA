@@ -43,6 +43,12 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 		//Generating default number for a new waypoint's name
 		private int lastNum = 0;
 		
+		//code for communication between activity
+		protected int BETWEEN_WAYPOINT_AND_NEWWAYPOINT = 7777777;
+		
+		//array adapter
+		private ArrayAdapter<String> arrAd = null;
+		
 		
 
 	@Override
@@ -67,17 +73,9 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 			chooseText.setContentDescription("a list containing many waypoints sorted by the least distance");
 			
 			//adding test
-			wayPointList.add(wp1);
-			wayPointList.add(wp2);
-			Collections.sort(wayPointList);
+			addNewWPtoList(wayPointList, wp1.getName(), wp1.getLatitude(), wp1.getLongitude());
+			addNewWPtoList(wayPointList, wp2.getName(), wp2.getLatitude(), wp2.getLongitude());			
 
-			way = (Spinner) findViewById(R.id.spinner1);
-			
-			ArrayAdapter<String> arrAd = new ArrayAdapter<String>(WayPointActivity.this,
-					android.R.layout.simple_spinner_item, 
-					toNameArrayList(wayPointList));
-	        
-			way.setAdapter(arrAd);
 			
 			way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
 
@@ -124,38 +122,19 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 								//sending default name for a new waypoint
 								intentToNewWayPoint.putExtra("defaultNameFromWP", String.valueOf("Waypoint"+(lastNum+1)));
 								//start NewWayPoint activity
-								startActivity(intentToNewWayPoint);
+								startActivityForResult(intentToNewWayPoint, BETWEEN_WAYPOINT_AND_NEWWAYPOINT);
 							}
 						}//end of onClick
 				    	
-				    });//end of View.OnClickListener
-			
-			//testing part already worked
-			//Intent to receive parameters from NewWayPoint
-			//get parameters from the NewWayPoint activity when create a new waypoint
-			Intent intentFromNewWayPoint = getIntent();
-			newName = intentFromNewWayPoint.getStringExtra("newName");
-			newLatitude = intentFromNewWayPoint.getStringExtra("newLatitude");
-			newLongitude = intentFromNewWayPoint.getStringExtra("newLongitude");
-			
-			Log.i("WayPoint OnCreate", "newName is "+newName);
-			Log.i("WayPoint OnCreate", "newLa is "+newLatitude);
-			Log.i("WayPoint OnCreate", "newLong is "+newLongitude);
-			
-			/*
-			if(newName.contains("Waypoint")){
-				lastNum = Integer.parseInt(newName.substring(8));
-				Log.i("NameNUM", "lastnum :"+lastNum);
-			}*/
-			//addNewWPtoList(wayPointList, newName, newLatitude, newLongitude);
-			
-				
-	}
+				    });//end of View.OnClickListener	
+	}//end of OnCreate
+	
 	//to convert from array list of waypoint into name of the waypoint array list
 	public static ArrayList<String> toNameArrayList(List<WP> wList){
 		ArrayList<String> nameList = new ArrayList<String>();
 		for(int i = 0;i<wList.size();i++){
 			nameList.add(wList.get(i).getName());
+			Log.i("Name to show in the list :", nameList.get(i));
 		}
 		return nameList;
 	}
@@ -187,22 +166,38 @@ public class WayPointActivity extends Activity {//implements AdapterView.OnItemS
 	
 	//adding new waypoint into the waypoint list
 	public void addNewWPtoList(List<WP> wList,String n,String la,String lo){
-		if(n.contains("Waypoint") || n.contains("WayPoint")){
-			lastNum = Integer.parseInt(n.substring(8));
+		//Get the latest number after adding a new waypoint
+		if(n.contains("Waypoint")){
+			lastNum = Integer.parseInt(n.substring(n.lastIndexOf("t")+1));//substring "waypoint" and get the number after that
 			Log.i("NameNUM", "lastnum :"+lastNum);
 		}
 		//still have to add more about distance and bearing
-		wList.add(new WP(n,la,lo));
-		Collections.sort(wList);
+		if(n.equals("Waypoint1")) wList.add(wp1);
+		else if(n.equals("Waypoint2")) wList.add(wp2);
+		else if(n.equals("Waypoint3")) wList.add(new WP(n,la,lo,15,0.0));
+		Collections.sort(wList);//sorted by proximity
+		
+		way = (Spinner) findViewById(R.id.spinner1);
+		
+		arrAd = new ArrayAdapter<String>(WayPointActivity.this,
+				android.R.layout.simple_spinner_item, 
+				toNameArrayList(wList));
+        
+		way.setAdapter(arrAd);
 	}
 	
-	@SuppressWarnings("static-access")
+	//Intent to receive parameters from NewWayPoint
+	//get parameters from the NewWayPoint activity when create a new waypoint
 	@Override
-	  protected void onResume() {
-	    super.onResume();
-	    tts.speak("Resume", tts.QUEUE_FLUSH, null);
-		
-	  }
+    protected void onActivityResult(int requestCode, int resultCode, Intent intentFromNewWayPoint){
+        super.onActivityResult(requestCode, resultCode, intentFromNewWayPoint);
+        if(requestCode == BETWEEN_WAYPOINT_AND_NEWWAYPOINT && resultCode == RESULT_OK){
+        	newName = intentFromNewWayPoint.getStringExtra("newName");
+    		newLatitude = intentFromNewWayPoint.getStringExtra("newLatitude");
+    		newLongitude = intentFromNewWayPoint.getStringExtra("newLongitude");
+			addNewWPtoList(wayPointList, newName, newLatitude, newLongitude);
+        }
+	}
 
 	  @Override
 	  protected void onPause() {
