@@ -215,7 +215,7 @@ public class NewWayPointActivity extends Activity {
 						}	
 					}//end onClick
 				});
-	}
+	}//end of OnCreate
 
 	//to check if the filled name or the position (latitude and longitude) are already recorded
 	@SuppressWarnings("static-access")

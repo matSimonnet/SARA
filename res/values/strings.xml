@@ -29,11 +29,17 @@
     <string name="title_activity_new_way_point">NewWayPointActivity</string>
     <string name="choose_the_waypoint">Choose the waypoint</string>
     <string name="new_waypoint">New Waypoint</string>
-    <string name="introText">Please fill the new waypoint information</string>
+    <string name="introText">The new waypoint information</string>
     <string name="nameText">name :</string>
     <string name="latitudeText">latitude :</string>
     <string name="longitudeText">longitude :</string>
     <string name="saveText">Save</string>
+    <string name="choosingTitle">You selected :</string>
+    <string name="closeButton">X</string>
+    <string name="title_activity_modify">ModifyActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="modifyText">The modifying waypoint information</string>
+    <string name="modifyButton">Save modifying waypoint</string>
+    <string name="current_checkedBox">Use current position</string>
 
 </resources>

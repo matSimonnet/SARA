@@ -43,11 +43,17 @@ public class WayPointActivity extends Activity {
 		private String newLatitude = "";
 		private String newLongitude = "";
 		
+		//string for each attribute of the modifying waypoint
+		private String modName = "";
+		private String modLatitude = "";
+		private String modLongitude = "";
+		
 		//Generating default number for a new waypoint's name
 		private int lastNum = 0;
 		
 		//code for communication between activity
-		protected int BETWEEN_WAYPOINT_AND_NEWWAYPOINT = 7777777;
+		protected int NEW_WAYPOINT = 7777777;
+		protected int MODIFY_WAYPOINT = 9999999;
 		
 		//array adapter
 		private ArrayAdapter<String> arrAd = null;
@@ -144,18 +150,19 @@ public class WayPointActivity extends Activity {
 											Toast.makeText(WayPointActivity.this,"Modify",Toast.LENGTH_SHORT).show();
 											tts.speak("Modify", tts.QUEUE_FLUSH, null);
 											
-											/*
-											//change to the "NewWayPoint" activity
-											Intent intentToNewWayPoint = new Intent(WayPointActivity.this,NewWayPointActivity.class);
-											
+											//change to the "Modify" activity
+											Intent intentToModify = new Intent(WayPointActivity.this,ModifyActivity.class);
+											//pass the parameters including name,latitude,longitude arrays
+											intentToModify.putExtra("nameArrayFromWP", nameArray(wayPointList));//name
+											intentToModify.putExtra("latitudeArrayFromWP", latitudeArray(wayPointList));//latitude
+											intentToModify.putExtra("longitudeArrayFromWP", longitudeArray(wayPointList));//longitude
 											//passing modifying waypoint name and position
-											intentToNewWayPoint.putExtra("modName", choosingWaypoint.getName());//name
-											intentToNewWayPoint.putExtra("modLatitude", choosingWaypoint.getLatitude());//latitude
-											intentToNewWayPoint.putExtra("modLongitude", choosingWaypoint.getLongitude());//longitude
+											intentToModify.putExtra("modName", choosingWaypoint.getName());//name
+											intentToModify.putExtra("modLatitude", choosingWaypoint.getLatitude());//latitude
+											intentToModify.putExtra("modLongitude", choosingWaypoint.getLongitude());//longitude
 											//start NewWayPoint activity
-											startActivityForResult(intentToNewWayPoint, BETWEEN_WAYPOINT_AND_NEWWAYPOINT);
-											*/
-										}
+											startActivityForResult(intentToModify, MODIFY_WAYPOINT);
+										}//end of onClick
 	                					
 	                				});
 	                				//delete button OnClickListener
@@ -229,7 +236,7 @@ public class WayPointActivity extends Activity {
 								//sending default name for a new waypoint
 								intentToNewWayPoint.putExtra("defaultNameFromWP", String.valueOf("Waypoint"+(lastNum+1)));
 								//start NewWayPoint activity
-								startActivityForResult(intentToNewWayPoint, BETWEEN_WAYPOINT_AND_NEWWAYPOINT);
+								startActivityForResult(intentToNewWayPoint, NEW_WAYPOINT);
 							}
 						}//end of onClick
 				    	
@@ -306,16 +313,25 @@ public class WayPointActivity extends Activity {
 		way.setAdapter(arrAd);
 	}
 	
-	//Intent to receive parameters from NewWayPoint
-	//get parameters from the NewWayPoint activity when create a new waypoint
+	//Intent to handle receive parameters from NewWayPoint and Modify
 	@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intentFromNewWayPoint){
-        super.onActivityResult(requestCode, resultCode, intentFromNewWayPoint);
-        if(requestCode == BETWEEN_WAYPOINT_AND_NEWWAYPOINT && resultCode == RESULT_OK){
-        	newName = intentFromNewWayPoint.getStringExtra("newName");
-    		newLatitude = intentFromNewWayPoint.getStringExtra("newLatitude");
-    		newLongitude = intentFromNewWayPoint.getStringExtra("newLongitude");
+    protected void onActivityResult(int requestCode, int resultCode, Intent intentFromAnother){
+        super.onActivityResult(requestCode, resultCode, intentFromAnother);
+    	//get parameters from the NewWayPoint activity when create a new waypoint
+        if(requestCode == NEW_WAYPOINT && resultCode == RESULT_OK){
+        	newName = intentFromAnother.getStringExtra("newName");
+    		newLatitude = intentFromAnother.getStringExtra("newLatitude");
+    		newLongitude = intentFromAnother.getStringExtra("newLongitude");
    			addNewWPtoList(wayPointList, newName, newLatitude, newLongitude,0.0,0.0);
+        }
+      //get parameters from the Modify activity and replace the old information
+        if(requestCode == MODIFY_WAYPOINT && resultCode == RESULT_OK){
+        	modName = intentFromAnother.getStringExtra("modName");
+    		modLatitude = intentFromAnother.getStringExtra("modLatitude");
+    		modLongitude = intentFromAnother.getStringExtra("modLongitude");
+    		/*still have to fix this point*/
+   			//addNewWPtoList(wayPointList, modName, modLatitude, modLongitude,0.0,0.0);
+    		Log.i("Receive from modify", "Name "+modName+" La "+modLatitude+" lo "+modLongitude);
         }
 	}
 
