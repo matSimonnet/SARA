@@ -30,13 +30,10 @@ public class MainActivity extends Activity {
 	public static final String PREFS_NAME = "MyPrefsFile";
 
 	// variables declarations
-
 	protected static final int RESULT_SPEECH = 1;
 	protected static final int RESULT_AUTO_SETTING = 2;
 	protected static final int RESULT_WAYPOINT_SETTING = 3;
 	protected static final int RESULT_MAIN = 3;
-
-
 	
 	private Intent intentAuto_setting;
 	private Intent intentWaypoint_setting;
@@ -99,19 +96,18 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-     // Restore preferences
-     		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-     		this.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
-     	    this.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
-     		this.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
-     	    this.headingTimeTreshold = settings.getLong("headingTimeTreshold", 5);
-     	    this.isAutoSpeed = settings.getBoolean("isAutoSpeed", true);
-     	    this.isAutoHeading = settings.getBoolean("isAutoHeading", true);
+        //Restore preferences
+ 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+ 		this.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
+ 	    this.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
+ 		this.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
+ 	    this.headingTimeTreshold = settings.getLong("headingTimeTreshold", 5);
+ 	    this.isAutoSpeed = settings.getBoolean("isAutoSpeed", true);
+ 	    this.isAutoHeading = settings.getBoolean("isAutoHeading", true);
 
-        
-        //intent creation
+    
+        //Intent creation
 		intentMain = new Intent(MainActivity.this,MainActivity.class);
-		intentWaypoint_setting = new Intent(MainActivity.this,Waypoint.class);
 		intentAuto_setting = new Intent(MainActivity.this,AutoSetting.class);
 
 
@@ -141,148 +137,212 @@ public class MainActivity extends Activity {
         textViewheading.setText(heading);
         textViewheading.setContentDescription(getResources().getString(R.string.heading)+ " "  + heading  + " " + getResources().getString(R.string.headingunit));
         
-	//location manager creation
-	lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	ll = new MyLocationListener();		
-	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+		//location manager creation
+		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		ll = new MyLocationListener();		
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+		
+		// Last know location creation
+	    LastLocation = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+	    
+		//dates creation
+		speedBefore = new Date();
+		headingBefore = new Date();
+		
 	
-	// Last know location creation
-    LastLocation = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-    
-	//dates creation
-	speedBefore = new Date();
-	headingBefore = new Date();
+		//OnInitListener Creation
+		OnInitListener onInitListener = new OnInitListener() {
+			@Override
+			public void onInit(int status) {
+			}
+		};
 	
+	    // tts creation
+		tts = new TextToSpeech(this, onInitListener);
+		tts.setSpeechRate((float) 2.0);
+		
+		// button creation
+		buttonReco= new ImageButton(this);
+	    buttonReco = (ImageButton) findViewById(R.id.buttonSpeak);
 	
-	//2point creation
-	/**
-	point1 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-	point2 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);	
-	point1.setLatitude(48.1);
-    point1.setLongitude(-4.1);
-    point2.setLatitude(48.9);
-    point2.setLongitude(-4.9);
-    int dist1to2 = (int)(point1.distanceTo(point2))/1000  ;
-    test = (String.valueOf(dist1to2));
-    textView5.setText(test);
-    **/
+	    // OnClickListener creation
+	    View.OnClickListener onclickListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (v== buttonReco){
+					 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE);	 
+		                try {
+		                    startActivityForResult(intent, RESULT_SPEECH);
+		                } catch (ActivityNotFoundException a) {
+		                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.norecognition),Toast.LENGTH_SHORT).show();
+		                }//end of catch
+		            }// end of if button5
+		        }// end of onclick		
+			}; //end of new View.LocationListener	
+		
+		// button activation
+		buttonReco.setOnClickListener(onclickListener);
+		
+	    }//end of oncreate
 	
-	//OnInitListener Creation
-	OnInitListener onInitListener = new OnInitListener() {
+	  @Override
+	  protected void onResume() {
+	    super.onResume();
+	   lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+	    //tts.speak("resume", TextToSpeech.QUEUE_FLUSH, null);
+	  }
+	
+	  @Override
+	  protected void onPause() {
+	    super.onPause();
+	    lm.removeUpdates(ll);
+	    //tts.speak("pause", TextToSpeech.QUEUE_FLUSH, null);
+	  }
+	  
+	  @Override
+	  protected void onStop() {
+	    super.onStop();
+	
+		//tts.shutdown();
+	  }
+	  
 		@Override
-		public void onInit(int status) {
+		protected void onDestroy() {
+			super.onDestroy();
+			lm.removeUpdates(ll);
+			tts.shutdown();
 		}
-	};
 	
-    // tts creation
-	tts = new TextToSpeech(this, onInitListener);
-	tts.setSpeechRate((float) 2.0);
+	    @Override
+	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	        super.onActivityResult(requestCode, resultCode, data);
+	        
+	        switch (requestCode) {
+	        	case RESULT_SPEECH: {
+	        		if (resultCode == RESULT_OK && null != data) {
+	        			ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+	                	if ( (text.get(0).equals(getResources().getString(R.string.speed)))){
+	                		tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_ADD, null);
+	                	}
+	                	else if ( (text.get(0).equals(getResources().getString(R.string.heading)))){
+	                		tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_ADD, null);
+	                	}
+	                	else {
+	                		Toast.makeText(getApplicationContext(),text.get(0),Toast.LENGTH_SHORT).show();
+	                	}
+	        		}	 
+	            break;
+	        	}// end of case
+	        	case RESULT_AUTO_SETTING : {
+	        		this.speedTreshold = data.getDoubleExtra("speedTreshold", 0.0);
+	        		this.speedTimeTreshold = data.getLongExtra("speedTimeTreshold", 0);
+	        		this.headingTreshold = data.getDoubleExtra("headingTreshold", 0.0);
+	        		this.headingTimeTreshold = data.getLongExtra("headingTimeTreshold", 0);
+	        		this.isAutoSpeed = data.getBooleanExtra("isAutoSpeed", true);
+	        		this.isAutoHeading = data.getBooleanExtra("isAutoHeading", true);
 	
-	// button creation
-	buttonReco= new ImageButton(this);
-    buttonReco = (ImageButton) findViewById(R.id.buttonSpeak);
+	        		//this.speedAutoCheckBox.setChecked(isAutoSpeed);
+	        		//this.headingAutoCheckBox.setChecked(isAutoHeading);
+	
+	        		Log.i("speed", this.speedTreshold+"");
+	        		Log.i("speedtime", this.speedTimeTreshold+"");
+	        		Log.i("heading", this.headingTreshold+"");
+	        		Log.i("headingtime", this.headingTimeTreshold+"");
+	        		
+	        		Log.i("isSpeed", this.isAutoSpeed+"");
+	        		Log.i("isheading", this.isAutoHeading+"");
+	
+	        	break;
+	        	}
+	
+	        }//end of switch 
+	    }//end of on Activity result 
+	
 
-    // OnClickListener creation
-    View.OnClickListener onclickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			if (v== buttonReco){
-				 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-	             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE);	 
-	                try {
-	                    startActivityForResult(intent, RESULT_SPEECH);
-	                } catch (ActivityNotFoundException a) {
-	                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.norecognition),Toast.LENGTH_SHORT).show();
-	                }//end of catch
-	            }// end of if button5
-	        }// end of onclick		
-		}; //end of new View.LocationListener	
-	
-	// button activation
-	buttonReco.setOnClickListener(onclickListener);
-	
-    }//end of oncreate
-	
-  @Override
-  protected void onResume() {
-    super.onResume();
-   lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-    //tts.speak("resume", TextToSpeech.QUEUE_FLUSH, null);
-  }
 
-  @Override
-  protected void onPause() {
-    super.onPause();
-    lm.removeUpdates(ll);
-    //tts.speak("pause", TextToSpeech.QUEUE_FLUSH, null);
-  }
-  
-  @Override
-  protected void onStop() {
-    super.onStop();
 
-	//tts.shutdown();
-  }
-  
+    
+   
+	//  action bar
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		lm.removeUpdates(ll);
-		tts.shutdown();
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		
+		return super.onCreateOptionsMenu(menu);
 	}
 	
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        
-        switch (requestCode) {
-        	case RESULT_SPEECH: {
-        		if (resultCode == RESULT_OK && null != data) {
-        			ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                	if ( (text.get(0).equals(getResources().getString(R.string.speed)))){
-                		tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_ADD, null);
-                	}
-                	else if ( (text.get(0).equals(getResources().getString(R.string.heading)))){
-                		tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_ADD, null);
-                	}
-                	else {
-                		Toast.makeText(getApplicationContext(),text.get(0),Toast.LENGTH_SHORT).show();
-                	}
-        		}	 
-            break;
-        	}// end of case
-        	case RESULT_AUTO_SETTING : {
-        		this.speedTreshold = data.getDoubleExtra("speedTreshold", 0.0);
-        		this.speedTimeTreshold = data.getLongExtra("speedTimeTreshold", 0);
-        		this.headingTreshold = data.getDoubleExtra("headingTreshold", 0.0);
-        		this.headingTimeTreshold = data.getLongExtra("headingTimeTreshold", 0);
-        		this.isAutoSpeed = data.getBooleanExtra("isAutoSpeed", true);
-        		this.isAutoHeading = data.getBooleanExtra("isAutoHeading", true);
+	public boolean onOptionsItemSelected(MenuItem Item){
+		switch (Item.getItemId()) {
+		case R.id.auto_setting:
+            startActivityForResult(intentAuto_setting, RESULT_AUTO_SETTING);
+			break;
+		case R.id.waypoint_setting:
+            //startActivityForResult(intentWaypoint_setting, RESULT_WAYPOINT_SETTING);
+			break;
+		case R.id.main:
+			break;
+		default:
+			break;
+		}
+		intentMain = new Intent(MainActivity.this,MainActivity.class);
+		intentWaypoint_setting = new Intent(MainActivity.this,WayPointActivity.class);
+		intentAuto_setting = new Intent(MainActivity.this,AutoSetting.class);
 
-        		//this.speedAutoCheckBox.setChecked(isAutoSpeed);
-        		//this.headingAutoCheckBox.setChecked(isAutoHeading);
 
-        		Log.i("speed", this.speedTreshold+"");
-        		Log.i("speedtime", this.speedTimeTreshold+"");
-        		Log.i("heading", this.headingTreshold+"");
-        		Log.i("headingtime", this.headingTimeTreshold+"");
-        		
-        		Log.i("isSpeed", this.isAutoSpeed+"");
-        		Log.i("isheading", this.isAutoHeading+"");
-
-        	break;
-        	}
-
-        }//end of switch 
-    }//end of on Activity result 
+		return false;
+	}
 	
-	//method to round 1 decimal
 
+	
+	
+	// FOR NEW UTILS CLASS
+	
+	
+	
+	
+	public static double RadToDeg(double radians)  
+    {  
+        return radians * (180 / Math.PI);  
+    }  
+
+    public static double DegToRad(double degrees)  
+    {  
+        return degrees * (Math.PI / 180);  
+    }  
+
+    public static double _Bearing(double lat1, double long1, double lat2, double long2)  
+    {  
+        //Convert input values to radians  
+        lat1 = DegToRad(lat1);  
+        long1 = DegToRad(long1);  
+        lat2 =  DegToRad(lat2);  
+        long2 = DegToRad(long2);  
+
+        double deltaLong = long2 - long1;  
+
+        double y = Math.sin(deltaLong) * Math.cos(lat2);  
+        double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLong);  
+        double bearing = Math.atan2(y, x);  
+        return ConvertToBearing(RadToDeg(bearing));  
+    }  
+
+    public static double ConvertToBearing(double deg)  
+    {  
+        return (deg + 360) % 360;  
+    }  
+    
+	//method to round 1 decimal
 	public double arrondiSpeed(double val) {return (Math.floor(val*10))/10;}
 	public double arrondiDistance(double val) {return (Math.floor(val*10))/10;}
 	public double arrondiBearing(double val) {return (Math.floor(val*10))/10;}
 
-
+	
+	
+	// FOR NEW MYLOCATION LISTENER CLASS
+	
+	
 
     public class MyLocationListener implements LocationListener {
 
@@ -364,109 +424,9 @@ public class MainActivity extends Activity {
 		}
     	
     } //end of MyLocationListener
-
-    /*
-	@Override
-	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-		
-		if (seekBar.equals(speedBar)){
-			speedTreshold = (double) progress/10;
-			textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold) + " " + Double.valueOf(speedTreshold).toString()+ " " + getResources().getString(R.string.speedunit) );
-			seekBar.setContentDescription(Double.valueOf(speedTreshold).toString()+ " " + getResources().getString(R.string.speedunit));
-		}
-		
-		else if (seekBar.equals(headingBar)){
-			headingTreshold = progress;
-			textViewHeadingTreshold.setText(getResources().getString(R.string.headingtreshold) + " " + Integer.toString((int)headingTreshold)+ " " + getResources().getString(R.string.headingunit));
-			seekBar.setContentDescription(Integer.toString((int)headingTreshold)+ " " + getResources().getString(R.string.headingunit));
-		}
-		
-		
-		else if (seekBar.equals(speedtimeBar)){
-			speedTimeTreshold = progress;
-			textViewspeedTimeTreshold.setText(getResources().getString(R.string.speedtimetreshold) + " " + Integer.toString((int)speedTimeTreshold)+ " " + getResources().getString(R.string.timeunit));
-			seekBar.setContentDescription(Integer.toString((int)speedTimeTreshold)+ " " + getResources().getString(R.string.speedunit));
-		}
-		
-		else if (seekBar.equals(headingtimeBar)){
-			headingTimeTreshold = progress;
-			textViewHeadingTimeTreshold.setText(getResources().getString(R.string.headingtimetreshold) + " " + Integer.toString((int)headingTimeTreshold)+ " " + getResources().getString(R.string.timeunit));
-			seekBar.setContentDescription(Integer.toString((int)headingTimeTreshold)+ " " + getResources().getString(R.string.timeunit));
-		}
-		
-	}*/
-    /*
-	@Override
-	public void onStartTrackingTouch(SeekBar seekBar) {
-	}
-
-	@Override
-	public void onStopTrackingTouch(SeekBar seekBar) {
-	}*/
-
-	//  action bar
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		
-		return super.onCreateOptionsMenu(menu);
-	}
-	
-	public boolean onOptionsItemSelected(MenuItem Item){
-		switch (Item.getItemId()) {
-		case R.id.auto_setting:
-            startActivityForResult(intentAuto_setting, RESULT_AUTO_SETTING);
-			break;
-		case R.id.waypoint_setting:
-            //startActivityForResult(intentWaypoint_setting, RESULT_WAYPOINT_SETTING);
-			break;
-		case R.id.main:
-			break;
-		default:
-			break;
-		}
-		intentMain = new Intent(MainActivity.this,MainActivity.class);
-		intentWaypoint_setting = new Intent(MainActivity.this,Waypoint.class);
-		intentAuto_setting = new Intent(MainActivity.this,AutoSetting.class);
-
-
-		return false;
-	}
 	
 	
-	public static double RadToDeg(double radians)  
-    {  
-        return radians * (180 / Math.PI);  
-    }  
-
-    public static double DegToRad(double degrees)  
-    {  
-        return degrees * (Math.PI / 180);  
-    }  
-
-    public static double _Bearing(double lat1, double long1, double lat2, double long2)  
-    {  
-        //Convert input values to radians  
-        lat1 = DegToRad(lat1);  
-        long1 = DegToRad(long1);  
-        lat2 =  DegToRad(lat2);  
-        long2 = DegToRad(long2);  
-
-        double deltaLong = long2 - long1;  
-
-        double y = Math.sin(deltaLong) * Math.cos(lat2);  
-        double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLong);  
-        double bearing = Math.atan2(y, x);  
-        return ConvertToBearing(RadToDeg(bearing));  
-    }  
-
-    public static double ConvertToBearing(double deg)  
-    {  
-        return (deg + 360) % 360;  
-    }  
 	
-
 	
  
 }//end of Activity
