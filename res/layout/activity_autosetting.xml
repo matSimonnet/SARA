@@ -10,6 +10,7 @@
     	android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:orientation="horizontal" 
+        
     >
         
     
@@ -29,15 +30,6 @@
    
         >
         
-    	<Button
-    		android:id="@+id/DecreaseSpeedTresholdButton"
-    		android:layout_width="0dp"
-    		android:layout_height="wrap_content"
-    		android:layout_weight="25"
-    		android:gravity="center"
-    		android:text="-" 
-    		    
-    		/>
 		<TextView
 	    	android:id="@+id/speedTresholdView"
 	       	android:layout_width="0dp"
@@ -46,14 +38,22 @@
 	       	android:gravity="center"
 	        android:text= "@string/speedtreshold"
 	        />
-
+    	<Button
+    		android:id="@+id/DecreaseSpeedTresholdButton"
+    		android:layout_width="0dp"
+    		android:layout_height="wrap_content"
+    		android:layout_weight="25"
+    		android:gravity="center"
+    		android:text="@string/DecreaseButton" 
+    		    
+    		/>
     	<Button
     		android:id="@+id/IncreaseSpeedTresholdButton"
     		android:layout_width="0dp"
     		android:layout_height="wrap_content"
     		android:layout_weight="25"
     		android:gravity="center"
-    		android:text="+" 
+    		android:text="@string/IncreaseButton" 
     		    
     		/>	
     		
@@ -64,17 +64,6 @@
         android:orientation="horizontal" 
    
         >
-        
-        
-    	<Button
-    		android:id="@+id/DecreaseSpeedTimeTresholdButton"
-    		android:layout_width="0dp"
-    		android:layout_height="wrap_content"
-    		android:layout_weight="25"
-    		android:gravity="center"
-    		android:text="-" 
-    		    
-    		/>
 		<TextView
 	    	android:id="@+id/speedTimeTresholdView3"
 	       	android:layout_width="0dp"
@@ -83,14 +72,22 @@
 	       	android:gravity="center"
 	        android:text= "@string/speedtreshold"
 	        />
-
+    	<Button
+    		android:id="@+id/DecreaseSpeedTimeTresholdButton"
+    		android:layout_width="0dp"
+    		android:layout_height="wrap_content"
+    		android:layout_weight="25"
+    		android:gravity="center"
+    		android:text="@string/DecreaseButton" 
+    		    
+    		/>
     	<Button
     		android:id="@+id/IncreaseSpeedTimeTresholdButton"
     		android:layout_width="0dp"
     		android:layout_height="wrap_content"
     		android:layout_weight="25"
     		android:gravity="center"
-    		android:text="+"     
+    		android:text="@string/IncreaseButton" 
     		/>	
     		
     	</LinearLayout>
@@ -101,7 +98,6 @@
         android:gravity="left"
         android:orientation="horizontal" 
         >
-    
     
     	<CheckBox
 		    android:id="@+id/headingAutoCheckBox"
@@ -118,16 +114,6 @@
         android:gravity="center"
         android:orientation="horizontal" 
         >
-       
-    	<Button
-    		android:id="@+id/DecreaseHeadingTresholdButton"
-    		android:layout_width="0dp"
-    		android:layout_height="wrap_content"
-    		android:layout_weight="25"
-    		android:gravity="center"
-    		android:text="-" 
-    		    
-    		/>
 		<TextView
 	    	android:id="@+id/HeadingTresholdView"
 	       	android:layout_width="0dp"
@@ -136,14 +122,22 @@
 	       	android:gravity="center"
 	        android:text= "@string/headingtreshold"	      
 	        />
-
+    	<Button
+    		android:id="@+id/DecreaseHeadingTresholdButton"
+    		android:layout_width="0dp"
+    		android:layout_height="wrap_content"
+    		android:layout_weight="25"
+    		android:gravity="center"
+    		android:text="@string/DecreaseButton" 
+    		    
+    		/>
     	<Button
     		android:id="@+id/IncreaseHeadingTresholdButton"
     		android:layout_width="0dp"
     		android:layout_height="wrap_content"
     		android:layout_weight="25"
     		android:gravity="center"
-    		android:text="+" 
+    		android:text="@string/IncreaseButton" 
     		    
     		/>	
     		
@@ -155,16 +149,6 @@
         android:orientation="horizontal" 
         >
         
-        
-    	<Button
-    		android:id="@+id/DecreaseHeadingTimeTresholdButton"
-    		android:layout_width="0dp"
-    		android:layout_height="wrap_content"
-    		android:layout_weight="25"
-    		android:gravity="center"
-    		android:text="-" 
-    		    
-    		/>
 		<TextView
 	    	android:id="@+id/HeadingTimeTresholdView"
 	       	android:layout_width="0dp"
@@ -173,17 +157,173 @@
 	       	android:gravity="center"
 	        android:text= "@string/headingtimetreshold"
 	        />
-
+    	<Button
+    		android:id="@+id/DecreaseHeadingTimeTresholdButton"
+    		android:layout_width="0dp"
+    		android:layout_height="wrap_content"
+    		android:layout_weight="25"
+    		android:gravity="center"
+    		android:text="@string/DecreaseButton"   
+    		/>
     	<Button
     		android:id="@+id/IncreaseHeadingTimeTresholdButton"
     		android:layout_width="0dp"
     		android:layout_height="wrap_content"
     		android:layout_weight="25"
     		android:gravity="center"
-    		android:text="+" 
+    		android:text="@string/IncreaseButton" 
     		    
     		/>	
     		
-    	</LinearLayout>		
+    	</LinearLayout>	
+    	
+    	<!-- distance -->
+    <LinearLayout
+    	android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="left"
+        android:orientation="horizontal" 
+        >
+    	<CheckBox
+		    android:id="@+id/DistanceAutoCheckBox"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/autodistance" 
+			/>
+    	
+   	</LinearLayout>
+
+    <LinearLayout
+    	android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:orientation="horizontal" 
+        >    
+		<TextView
+	    	android:id="@+id/DistanceTimeTresholdView"
+	       	android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="50"    
+	       	android:gravity="center"
+	        android:text= "@string/distancetimetreshold"
+	        />
+    	<Button
+    		android:id="@+id/DecreaseDistanceTimeTresholdButton"
+    		android:layout_width="0dp"
+    		android:layout_height="wrap_content"
+    		android:layout_weight="25"
+    		android:gravity="center"
+    		android:text="@string/DecreaseButton" 
+    		    
+    		/>
+    	<Button
+    		android:id="@+id/IncreaseDistanceTimeTresholdButton"
+    		android:layout_width="0dp"
+    		android:layout_height="wrap_content"
+    		android:layout_weight="25"
+    		android:gravity="center"
+    		android:text="@string/IncreaseButton" 
+    		    
+    		/>	
+    		
+    	</LinearLayout>	
+    	
+    	<!-- bearing -->
+    <LinearLayout
+    	android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="left"
+        android:orientation="horizontal" 
+        >
+    
+    
+    	<CheckBox
+		    android:id="@+id/BearingAutoCheckBox"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/autobearing" 
+			/>
+    	
+   	</LinearLayout>
+    	
+    <LinearLayout
+    	android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:orientation="horizontal" 
+        >
+   
+		<TextView
+	    	android:id="@+id/BearingTresholdView"
+	       	android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="50"
+	       	android:gravity="center"
+	        android:text= "@string/bearingtreshold"	      
+	        />
+    	<Button
+    		android:id="@+id/DecreaseBearingTresholdButton"
+    		android:layout_width="0dp"
+    		android:layout_height="wrap_content"
+    		android:layout_weight="25"
+    		android:gravity="center"
+    		android:text="@string/DecreaseButton" 
+    		    
+    		/>
+    	<Button
+    		android:id="@+id/IncreaseBearingTresholdButton"
+    		android:layout_width="0dp"
+    		android:layout_height="wrap_content"
+    		android:layout_weight="25"
+    		android:gravity="center"
+    		android:text="@string/IncreaseButton" 
+    		    
+    		/>	
+    		
+    	</LinearLayout>
+    <LinearLayout
+    	android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:orientation="horizontal" 
+        >
+        
+		<TextView
+	    	android:id="@+id/BearingTimeTresholdView"
+	       	android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="50"    
+	       	android:gravity="center"
+	        android:text= "@string/bearingtimetreshold"
+	        />
+    	<Button
+    		android:id="@+id/DecreaseBearingTimeTresholdButton"
+    		android:layout_width="0dp"
+    		android:layout_height="wrap_content"
+    		android:layout_weight="25"
+    		android:gravity="center"
+    		android:text="@string/DecreaseButton"   
+    		/>
+    	<Button
+    		android:id="@+id/IncreaseBearingTimeTresholdButton"
+    		android:layout_width="0dp"
+    		android:layout_height="wrap_content"
+    		android:layout_weight="25"
+    		android:gravity="center"
+    		android:text="@string/IncreaseButton" 
+    		    
+    		/>	
+    		
+    	</LinearLayout>	
+    	
+        <Button 
+        android:id="@+id/SaveSettingButton"
+    	android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:text="@string/savesetting"
+    	/>
+        
+        
   
 </LinearLayout>
