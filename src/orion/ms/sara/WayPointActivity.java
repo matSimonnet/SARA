@@ -42,7 +42,6 @@ public class WayPointActivity extends Activity {
 		private String newName = "Waypoint1";
 		private String newLatitude = "";
 		private String newLongitude = "";
-		private double newBearing = 0.0;
 		
 		//Generating default number for a new waypoint's name
 		private int lastNum = 0;
@@ -96,7 +95,7 @@ public class WayPointActivity extends Activity {
 			way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
 				//OnItemSelectedListener creation
 	            @SuppressWarnings("static-access")
-				public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) { 
+				public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) { 
 	      				try{
 	                		switch(adapterView.getId()){
 	                		case R.id.spinner1: 
@@ -180,18 +179,13 @@ public class WayPointActivity extends Activity {
 												//OnClick listener for delete button
 												@Override
 												public void onClick(DialogInterface dialog, int which) {
-													// TODO Auto-generated method stub
 													deleteWPfromList(wayPointList,choosingWaypoint);
-//*error still show the choosing dialog after deleted item
-													//choosingDialog.close();
 												}
 											});
-										
 											//show the deleting dialog
 											deletingDialog.show();
 										}
-	                				});
-	                				
+	                				});	                				
 	                				//show the choosing dialog
 	                				choosingDialog.show();
 	                			}
@@ -321,8 +315,7 @@ public class WayPointActivity extends Activity {
         	newName = intentFromNewWayPoint.getStringExtra("newName");
     		newLatitude = intentFromNewWayPoint.getStringExtra("newLatitude");
     		newLongitude = intentFromNewWayPoint.getStringExtra("newLongitude");
-    		newBearing =  Double.parseDouble(intentFromNewWayPoint.getStringExtra("newBearing"));
-			addNewWPtoList(wayPointList, newName, newLatitude, newLongitude,0.0,newBearing);
+   			addNewWPtoList(wayPointList, newName, newLatitude, newLongitude,0.0,0.0);
         }
 	}
 
