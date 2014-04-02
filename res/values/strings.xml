@@ -39,6 +39,9 @@
     <string name="distance">mètres</string>
     <string name="bearingunit">degrés</string>
     <string name="timeunit">secondes</string>
+    <string name="bearing">Bearing</string>
+    <string name="Distance">Distance</string>
+    
     
         <string name="SpeedUnit">knots</string>
     <string name="HeadingUnit">degrees</string>
