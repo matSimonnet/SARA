@@ -6,6 +6,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -51,10 +53,14 @@ public class WayPointActivity extends Activity {
 		//array adapter
 		private ArrayAdapter<String> arrAd = null;
 		
-		//alert dialog after choosing the waypoint from the list
-		private AlertDialog.Builder dDialog = null;
+		//alert dialog 
+		private AlertDialog.Builder choosingDialog = null;//after choosing the waypoint from the list
+		private AlertDialog.Builder deletingDialog = null;//after choosing delete button from the list
 		//initial list selection value
 		private boolean isSelected = false;
+		
+		//choosing waypoint
+		private WP choosingWaypoint = null;
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,26 +89,111 @@ public class WayPointActivity extends Activity {
 			addNewWPtoList(wayPointList, wp2.getName(), wp2.getLatitude(), wp2.getLongitude(),wp2.getDistance(),wp2.getBearing());			
 
 			//alert dialog creation
-			dDialog = new AlertDialog.Builder(this);
+			choosingDialog = new AlertDialog.Builder(this);
+			deletingDialog = new AlertDialog.Builder(this);
+			
 			//setOnItemSelectedListener
 			way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
 				//OnItemSelectedListener creation
 	            @SuppressWarnings("static-access")
-				public void onItemSelected(AdapterView<?> adapterView, 
-	            	View view, int i, long l) { 
+				public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) { 
 	      				try{
 	                		switch(adapterView.getId()){
 	                		case R.id.spinner1: 
 	                			if(isSelected){
+	                				//notify
 	                				Toast.makeText(WayPointActivity.this,"You selected : "+toNameArrayList(wayPointList).get(i),Toast.LENGTH_SHORT).show();
 	        	      				tts.speak("Your Selected : "+toNameArrayList(wayPointList).get(i), tts.QUEUE_FLUSH, null);
-	                				dDialog.setTitle("You selected : "+toNameArrayList(wayPointList).get(i));
-	                				dDialog.setIcon(android.R.drawable.presence_busy);
-	                				dDialog.setMessage("What do you want to do with "+toNameArrayList(wayPointList).get(i)+"?");
-	                				dDialog.setNegativeButton("Activate", null);
-	                				dDialog.setNeutralButton("Modify", null);
-	                				dDialog.setPositiveButton("Delete", null);
-	                				dDialog.show();
+	                				//choosing waypoint
+	        	      				choosingWaypoint = wayPointList.get(i);
+	        	      				
+	        	      				//dialog creation
+	        	      				choosingDialog.setTitle("You selected : "+choosingWaypoint.getName());
+	                				choosingDialog.setIcon(android.R.drawable.presence_busy);
+	                				choosingDialog.setMessage("What do you want to do with "+choosingWaypoint.getName()+",activate, modify or delete?");
+	                				
+	                				//setOnClickListener
+	                				
+	                				//activate button OnClickListener
+	                				choosingDialog.setNegativeButton("Activate", new OnClickListener(){
+	                					//activate button OnClickListener creation
+										@Override
+										public void onClick(DialogInterface arg0, int arg1) {
+			                				//notify
+											Toast.makeText(WayPointActivity.this,"Activate",Toast.LENGTH_SHORT).show();
+											tts.speak("Activate", tts.QUEUE_FLUSH, null);
+
+			                				//change back to the main activity
+											Intent intentToMain = new Intent(WayPointActivity.this,MainActivity.class);
+											//passing activate waypoint name and position
+											intentToMain.putExtra("actName",choosingWaypoint.getName());//name
+											intentToMain.putExtra("actLatitude", choosingWaypoint.getLatitude());//latitude
+											intentToMain.putExtra("actLongitude", choosingWaypoint.getLongitude());//longitude
+											
+											//back to WayPoint activity and send some parameters to the activity
+											setResult(RESULT_OK, intentToMain);
+											onPause();
+										}
+	                				});
+	                				
+	                				//modify button OnClickListener
+	                				choosingDialog.setNeutralButton("Modify", new OnClickListener(){
+	                					//modify button OnClickListener creation
+										@Override
+										public void onClick(DialogInterface dialog,int which) {
+											//notification
+											Toast.makeText(WayPointActivity.this,"Modify",Toast.LENGTH_SHORT).show();
+											tts.speak("Modify", tts.QUEUE_FLUSH, null);
+											
+											/*
+											//change to the "NewWayPoint" activity
+											Intent intentToNewWayPoint = new Intent(WayPointActivity.this,NewWayPointActivity.class);
+											
+											//passing modifying waypoint name and position
+											intentToNewWayPoint.putExtra("modName", choosingWaypoint.getName());//name
+											intentToNewWayPoint.putExtra("modLatitude", choosingWaypoint.getLatitude());//latitude
+											intentToNewWayPoint.putExtra("modLongitude", choosingWaypoint.getLongitude());//longitude
+											//start NewWayPoint activity
+											startActivityForResult(intentToNewWayPoint, BETWEEN_WAYPOINT_AND_NEWWAYPOINT);
+											*/
+										}
+	                					
+	                				});
+	                				//delete button OnClickListener
+	                				choosingDialog.setPositiveButton("Delete", new OnClickListener(){
+	                					//delete button OnClickListener creation
+										@Override
+										public void onClick(DialogInterface dialog,int which) {
+			                				//notify
+											Toast.makeText(WayPointActivity.this,"Delete",Toast.LENGTH_SHORT).show();
+											tts.speak("Delete", tts.QUEUE_FLUSH, null);
+											
+											//dialog creation
+											deletingDialog.setTitle("Delete : "+choosingWaypoint.getName());
+											deletingDialog.setIcon(android.R.drawable.presence_busy);
+											deletingDialog.setMessage("Are you sure deleting "+choosingWaypoint.getName()+"?");
+											tts.speak("Are you sure deleting "+choosingWaypoint.getName()+"?", tts.QUEUE_FLUSH, null);
+
+											//button
+											deletingDialog.setPositiveButton("Cancel", null);
+											deletingDialog.setNegativeButton("Sure", new OnClickListener() {
+												//OnClick listener for delete button
+												@Override
+												public void onClick(DialogInterface dialog, int which) {
+													// TODO Auto-generated method stub
+													deleteWPfromList(wayPointList,choosingWaypoint);
+//*error still show the choosing dialog after deleted item
+													//choosingDialog.close();
+												}
+											});
+										
+											//show the deleting dialog
+											deletingDialog.show();
+										}
+	                				});
+	                				
+	                				//show the choosing dialog
+	                				choosingDialog.show();
 	                			}
 	            				isSelected = true;
 	                		}
@@ -190,11 +281,26 @@ public class WayPointActivity extends Activity {
 	public void addNewWPtoList(List<WP> wList,String n,String la,String lo,double dis,double bear){
 		//Get the latest number after adding a new waypoint
 		if(n.contains("Waypoint")){
-			lastNum = Integer.parseInt(n.substring(n.lastIndexOf("t")+1));//substring "waypoint" and get the number after that
+			lastNum = Integer.parseInt(n.substring(n.lastIndexOf("t")+1));//substring "waypoint" name to get the number after that
 			Log.i("NameNUM", "lastnum :"+lastNum);
 		}
 		//Adding the new waypoint into the list
 		wList.add(new WP(n,la,lo,dis,bear));
+		Collections.sort(wList);//Sorting the lisst by proximity
+		
+		//set array adapter of the list into the spinner
+		way = (Spinner) findViewById(R.id.spinner1);
+		arrAd = new ArrayAdapter<String>(WayPointActivity.this,
+				android.R.layout.simple_spinner_item, 
+				toNameArrayList(wList));
+        
+		way.setAdapter(arrAd);
+	}
+	
+	//deleting the waypoint from the waypoint list
+	public void deleteWPfromList(List<WP> wList, WP del){
+		//Deleting the waypoint from the list
+		wList.remove(del);
 		Collections.sort(wList);//Sorting the lisst by proximity
 		
 		//set array adapter of the list into the spinner
