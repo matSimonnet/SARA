@@ -68,5 +68,18 @@
     <string name="modifyText">The modifying waypoint information</string>
     <string name="modifyButton">Save modifying waypoint</string>
     <string name="current_checkedBox">Use current position</string>
+    
+    <string name="autobearing">auto bearing</string>
+    <string name="autodistance">auto distance</string>
+    
+    <string name="DecreaseButton">-</string>
+    <string name="IncreaseButton">+</string>
+    <string name="savesetting">save</string>
+    
+    <string name="bearingtreshold">bearing treshold</string>
+    <string name="bearingtimetreshold">minimum bearing repetition</string>
+    <string name="distancetimetreshold">minimum distance repetition</string>
+    
+    
 
 </resources>
