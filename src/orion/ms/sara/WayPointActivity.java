@@ -329,8 +329,10 @@ public class WayPointActivity extends Activity {
         	modName = intentFromAnother.getStringExtra("modName");
     		modLatitude = intentFromAnother.getStringExtra("modLatitude");
     		modLongitude = intentFromAnother.getStringExtra("modLongitude");
-    		/*still have to fix this point*/
-   			//addNewWPtoList(wayPointList, modName, modLatitude, modLongitude,0.0,0.0);
+
+    		//replace the old information with the modifying information
+    		deleteWPfromList(wayPointList, choosingWaypoint);
+    		addNewWPtoList(wayPointList, modName, modLatitude, modLongitude, 0.0, 0.0);
     		Log.i("Receive from modify", "Name "+modName+" La "+modLatitude+" lo "+modLongitude);
         }
 	}
