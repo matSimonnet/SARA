@@ -10,7 +10,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +19,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class ModifyActivity extends Activity {
@@ -30,11 +28,6 @@ public class ModifyActivity extends Activity {
 			private String modName = "";
 			private String modLatitude = "";
 			private String modLongitude = "";
-			
-			//TextView
-			private TextView nameText = null;
-			private TextView latitudeText = null;
-			private TextView longitudeText = null;
 			
 			//EditText
 			private EditText nameBox = null;
@@ -91,8 +84,6 @@ public class ModifyActivity extends Activity {
 			public void onLocationChanged(Location loc) {
 				currentLatitude = String.valueOf(loc.getLatitude());
 				currentLongitude = String.valueOf(loc.getLongitude());
-				Log.i("Latitude current","current la is "+currentLatitude);
-				Log.i("Longitude current","current long is "+currentLongitude);
 			}
 
 			@Override
@@ -118,18 +109,13 @@ public class ModifyActivity extends Activity {
 		//update location
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 						
-		//TextView
-		nameText = (TextView) findViewById(R.id.textView2);
-		nameText.setContentDescription("Name of the modifying waypoint in editbox below");
-		latitudeText = (TextView) findViewById(R.id.textView3);
-		latitudeText.setContentDescription("Latitude of the modifying waypoint in editbox below");
-		longitudeText = (TextView) findViewById(R.id.textView4);
-		longitudeText.setContentDescription("Longitude of the modifying waypoint  in editbox below");
-		
 		//EditText
 		nameBox = (EditText) findViewById(R.id.editText1);
+		nameBox.setContentDescription("describes Name of the modifying waypoint");
 		latitudeBox = (EditText) findViewById(R.id.editText2);
+		latitudeBox.setContentDescription("describes Latitude of the modifying waypoint");
 		longitudeBox = (EditText) findViewById(R.id.editText3);
+		longitudeBox.setContentDescription("describes Longitude of the modifying waypoint");
 		
 		//CheckBox
 		currentPositionBox = (CheckBox) findViewById(R.id.checkBox1);
@@ -143,12 +129,6 @@ public class ModifyActivity extends Activity {
 		oldName = intentFromWayPointAct.getStringExtra("modName");
 		oldLatitude = intentFromWayPointAct.getStringExtra("modLatitude");
 		oldLongitude = intentFromWayPointAct.getStringExtra("modLongitude");
-		
-		//set default name
-		nameBox.setText(oldName);
-		//set each EditText default
-		latitudeBox.setText(oldLatitude);
-		longitudeBox.setText(oldLongitude);
 		
 		//setOnclickListener of current position check box
 		currentPositionBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -179,6 +159,8 @@ public class ModifyActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(v==nameBox)
+					//set default name
+					nameBox.setText(oldName);
 					nameBox.setSelectAllOnFocus(true);
 			}
 		});

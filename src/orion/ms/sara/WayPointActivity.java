@@ -208,9 +208,8 @@ public class WayPointActivity extends Activity {
 											tts.speak("Delete", tts.QUEUE_FLUSH, null);
 											
 											//dialog creation
-											deletingDialog.setTitle("Delete : "+choosingWaypoint.getName());
+											deletingDialog.setTitle("Are you sure deleting "+choosingWaypoint.getName()+"?");
 											deletingDialog.setIcon(android.R.drawable.presence_busy);
-											deletingDialog.setMessage("Are you sure deleting "+choosingWaypoint.getName()+"?");
 											tts.speak("Are you sure deleting "+choosingWaypoint.getName()+"?", tts.QUEUE_FLUSH, null);
 
 											//button
@@ -229,7 +228,7 @@ public class WayPointActivity extends Activity {
 	                				
 	                				//show the choosing dialog
 	                				choosingDialog.show();
-	                			}
+	                			}//end switch case
 	                    }catch(Exception e){
 	                        e.printStackTrace();
 	                    }
@@ -240,6 +239,8 @@ public class WayPointActivity extends Activity {
 	      				Toast.makeText(WayPointActivity.this,"You selected Empty",Toast.LENGTH_SHORT).show();
 	      				tts.speak("Your Selected : nothing", tts.QUEUE_FLUSH, null);
 					} 
+					
+				
 
 	        });
 
