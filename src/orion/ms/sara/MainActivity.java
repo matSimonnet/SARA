@@ -32,11 +32,11 @@ public class MainActivity extends Activity {
 	// variables declarations
 	protected static final int RESULT_SPEECH = 1;
 	protected static final int RESULT_AUTO_SETTING = 2;
-	protected static final int RESULT_WAYPOINT_SETTING = 3;
+	protected static final int RESULT_WAYPOINT = 3;
 	protected static final int RESULT_MAIN = 3;
 
-	private Intent intentAuto_setting;
-	//private Intent intentWaypoint_setting;
+	private Intent intent_AutoSetting_activity;
+	private Intent intent_Waypoint_activity;
 	//private Intent intentMain;
 
 	private TextView textViewSpeed = null;
@@ -85,8 +85,8 @@ public class MainActivity extends Activity {
 	private Date bearingBefore = null;
 	
 	//private Location LastKnowLocation = null;
-	private String WaypointLatitude = "";
-	private String WaypointLongitude = "";
+	private double WaypointLatitude = 999;
+	private double WaypointLongitude = 999;
 	
 	private boolean isAutoSpeed;
 	private boolean isAutoHeading;
@@ -126,8 +126,8 @@ public class MainActivity extends Activity {
         
         //intent creation
 		//intentMain = new Intent(MainActivity.this,MainActivity.class);
-		//intentWaypoint_setting = new Intent(MainActivity.this,Waypoint.class);
-		intentAuto_setting = new Intent(MainActivity.this,AutoSetting.class);
+		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
+		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSetting.class);
 
         //DefaultValue
         latitude =  getResources().getString(R.string.nosatelite);
@@ -163,8 +163,8 @@ public class MainActivity extends Activity {
         // Last know location creation
         //LastLocation = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
  
-        this.WaypointLatitude = settings.getString("WaypointLatitude", "");
-        this.WaypointLongitude = settings.getString("WaypointLongitude", "");
+        this.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
+        this.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
     
         //dates creation
         speedBefore = new Date();
@@ -273,7 +273,6 @@ public class MainActivity extends Activity {
         			this.isAutoDistance = data.getBooleanExtra("isAutoDistance", true);
         			this.isAutoBearing = data.getBooleanExtra("isAutoBearing", true);
 
-
         			Log.i("speed", this.speedTreshold+"");
         			Log.i("speedtime", this.speedTimeTreshold+"");
         			Log.i("heading", this.headingTreshold+"");
@@ -286,6 +285,18 @@ public class MainActivity extends Activity {
         			Log.i("isheading", this.isAutoHeading+"");
         			Log.i("isDistance", this.isAutoDistance+"");
         			Log.i("isBearing", this.isAutoBearing+"");
+        		}
+        	break;
+        	}// end of case
+        	case RESULT_WAYPOINT : {
+        		if (resultCode == RESULT_OK && null != data) {
+
+        			this.WaypointLatitude = data.getDoubleExtra("actLatitude", 999);
+        			this.WaypointLongitude = data.getDoubleExtra("actLongitude", 999);
+        			
+        			Log.i("Waypoint Latitude", this.WaypointLatitude+"");
+        			Log.i("Waypoint Latitude", this.WaypointLongitude+"");
+       			
         		}
         	break;
         	}// end of case
@@ -305,10 +316,10 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem Item){
 		switch (Item.getItemId()) {
 		case R.id.auto_setting:
-            startActivityForResult(intentAuto_setting, RESULT_AUTO_SETTING);
+            startActivityForResult(intent_AutoSetting_activity, RESULT_AUTO_SETTING);
 			break;
 		case R.id.waypoint_setting:
-            //startActivityForResult(intentWaypoint_setting, RESULT_WAYPOINT_SETTING);
+			startActivityForResult(intent_Waypoint_activity, RESULT_WAYPOINT);
 			break;
 		default:
 			break;
@@ -316,7 +327,6 @@ public class MainActivity extends Activity {
 
 		return false;
 	}
-	
 	// FOR NEW UTILS CLASS
 	
 	public static double RadToDeg(double radians)  
@@ -367,7 +377,7 @@ public class MainActivity extends Activity {
 			speed = String.valueOf(arrondiSpeed(loc.getSpeed()*(1.945)));
 			heading = String.valueOf((int)loc.getBearing());
 			
-			if(WaypointLatitude == "" || WaypointLongitude == "") {
+			if(WaypointLatitude == 999 || WaypointLongitude == 999) {
 				textViewDistance.setText("No Waypoint");
 				textViewBearing.setText("No Waypoint");  
 		        textViewDistance.setContentDescription("Waypoint is not activated");
@@ -375,12 +385,12 @@ public class MainActivity extends Activity {
 			}
 			else {
 				// calculate distance to the current waypoint
-				Location.distanceBetween(Double.parseDouble(WaypointLatitude), Double.parseDouble(WaypointLongitude), loc.getLatitude(), loc.getLongitude(), distance);
+				Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distance);
 				DistanceToCurrentWaypoint = String.valueOf(arrondiDistance(distance[0]/1000));
 				Log.i("distance", DistanceToCurrentWaypoint);
 				
 				// calculate bearing to the current waypoint						
-				bearing = _Bearing(loc.getLatitude(), loc.getLongitude(), Double.parseDouble(WaypointLatitude), Double.parseDouble(WaypointLongitude));
+				bearing = _Bearing(loc.getLatitude(), loc.getLongitude(), WaypointLatitude, WaypointLongitude);
 				BearingToCurrentWaypoint = String.valueOf(arrondiBearing(bearing));
 				Log.i("bearing", BearingToCurrentWaypoint);
 				
@@ -445,7 +455,7 @@ public class MainActivity extends Activity {
 			textViewSpeed.setContentDescription(getResources().getString(R.string.speed) + " " + speed + " " + getResources().getString(R.string.speedunit));			
 		    textViewheading.setContentDescription(getResources().getString(R.string.heading)+ " "  + heading  + " " + getResources().getString(R.string.headingunit));
 			
-			if(WaypointLatitude != "" && WaypointLongitude != "") {
+			if(WaypointLatitude != 999 && WaypointLongitude != 999) {
 				textViewDistance.setText(DistanceToCurrentWaypoint);
 				textViewBearing.setText(BearingToCurrentWaypoint);  
 		        textViewDistance.setContentDescription("Distance" + DistanceToCurrentWaypoint + " " + "kilometres");

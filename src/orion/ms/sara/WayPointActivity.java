@@ -132,12 +132,14 @@ public class WayPointActivity extends Activity {
 											Intent intentToMain = new Intent(WayPointActivity.this,MainActivity.class);
 											//passing activate waypoint name and position
 											intentToMain.putExtra("actName",choosingWaypoint.getName());//name
-											intentToMain.putExtra("actLatitude", choosingWaypoint.getLatitude());//latitude
-											intentToMain.putExtra("actLongitude", choosingWaypoint.getLongitude());//longitude
-											
+											intentToMain.putExtra("actLatitude", Double.parseDouble(choosingWaypoint.getLatitude()));//latitude
+											intentToMain.putExtra("actLongitude", Double.parseDouble(choosingWaypoint.getLongitude()));//longitude
+																					
 											//back to WayPoint activity and send some parameters to the activity
 											setResult(RESULT_OK, intentToMain);
-											onPause();
+											finish();
+											
+											
 										}
 	                				});
 	                				
