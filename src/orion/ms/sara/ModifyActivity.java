@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +32,6 @@ public class ModifyActivity extends Activity {
 			private String modLongitude = "";
 			
 			//TextView
-			private TextView introText = null;
 			private TextView nameText = null;
 			private TextView latitudeText = null;
 			private TextView longitudeText = null;
@@ -118,14 +119,12 @@ public class ModifyActivity extends Activity {
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 						
 		//TextView
-		introText = (TextView) findViewById(R.id.textView1);
-		introText.setContentDescription("The modifying waypoint information including name and position are set as default");
 		nameText = (TextView) findViewById(R.id.textView2);
-		nameText.setContentDescription("Name of the modifying waypoint");
+		nameText.setContentDescription("Name of the modifying waypoint in editbox below");
 		latitudeText = (TextView) findViewById(R.id.textView3);
-		latitudeText.setContentDescription("Latitude of the modifying waypoint");
+		latitudeText.setContentDescription("Latitude of the modifying waypoint in editbox below");
 		longitudeText = (TextView) findViewById(R.id.textView4);
-		longitudeText.setContentDescription("Longitude of the modifying waypoint");
+		longitudeText.setContentDescription("Longitude of the modifying waypoint  in editbox below");
 		
 		//EditText
 		nameBox = (EditText) findViewById(R.id.editText1);
@@ -151,49 +150,59 @@ public class ModifyActivity extends Activity {
 		latitudeBox.setText(oldLatitude);
 		longitudeBox.setText(oldLongitude);
 		
+		//setOnclickListener of current position check box
+		currentPositionBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			//onCheckedChanged creation
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if(isChecked){
+					//update location
+					lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+					if(!currentLatitude.equals("")){
+						//set each EditText with current position
+						latitudeBox.setText(currentLatitude);
+						longitudeBox.setText(currentLongitude);
+					}
+				}
+				else{
+					//set each EditText with default position
+					latitudeBox.setText(oldLatitude);
+					longitudeBox.setText(oldLongitude);
+				}
+			}
+		});
+		
 		//setOnclickListener
+		//nameBox
+		nameBox.setOnClickListener(new OnClickListener() {
+			//OnClick creation
+			@Override
+			public void onClick(View v) {
+				if(v==nameBox)
+					nameBox.setSelectAllOnFocus(true);
+			}
+		});
 		//latitudeBox
 		latitudeBox.setOnClickListener(new OnClickListener() {
 			//OnClick creation
 			@Override
 			public void onClick(View v) {
 				if(v==latitudeBox){
-					if(!currentPositionBox.isChecked())
-						latitudeBox.setText(oldLatitude);
-					else{
-						//update location
-						lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-						if(!currentLatitude.equals("")){
-							//set each EditText default
-							latitudeBox.setText(currentLatitude);
-							longitudeBox.setText(currentLongitude);
-						}
-					}//end else
+					latitudeBox.setSelectAllOnFocus(true);
 				}
 			}
 		});
-		
-		//latitudeBox
+		//longitudeBox
 		longitudeBox.setOnClickListener(new OnClickListener() {
 			//OnClick creation
 			@Override
 			public void onClick(View v) {
 				if(v==longitudeBox){
-					if(!currentPositionBox.isChecked())
-						longitudeBox.setText(oldLongitude);
-					else{
-						//update location
-						lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-						if(!currentLatitude.equals("")){
-							//set each EditText default
-							latitudeBox.setText(currentLatitude);
-							longitudeBox.setText(currentLongitude);
-						}
-					}//end else
+					longitudeBox.setSelectAllOnFocus(true);
 				}
 			}
 		});
-		
+
 		//"save" button
 		saveButton = (Button) findViewById(R.id.button1);
 		//setOnClickedListener

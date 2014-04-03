@@ -10,7 +10,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,10 +29,9 @@ public class NewWayPointActivity extends Activity {
 		private String longitude = "";
 		
 		//TextView
-		private TextView introText = null;
 		private TextView nameText = null;
 		private TextView latitudeText = null;
-		private TextView longitudeText = null;
+		private TextView longitudeText = null;		
 		
 		//EditText
 		private EditText nameBox = null;
@@ -83,8 +81,6 @@ public class NewWayPointActivity extends Activity {
 					public void onLocationChanged(Location loc) {
 						currentLatitude = String.valueOf(loc.getLatitude());
 						currentLongitude = String.valueOf(loc.getLongitude());
-						Log.i("Latitude current","current la is "+currentLatitude);
-						Log.i("Longitude current","current long is "+currentLongitude);
 					}
 
 					@Override
@@ -110,21 +106,20 @@ public class NewWayPointActivity extends Activity {
 				//update location
 				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 				
-								
 				//TextView
-				introText = (TextView) findViewById(R.id.textView1);
-				introText.setContentDescription("The new waypoint information including name and position are set as default");
 				nameText = (TextView) findViewById(R.id.textView2);
-				nameText.setContentDescription("Name of the new waypoint");
+				nameText.setContentDescription("new waypoint name in the editbox below");
 				latitudeText = (TextView) findViewById(R.id.textView3);
-				latitudeText.setContentDescription("Latitude of the new waypoint");
+				latitudeText.setContentDescription("new waypoint latitude in the editbox below");
 				longitudeText = (TextView) findViewById(R.id.textView4);
-				longitudeText.setContentDescription("Longitude of the new waypoint");
-				
+				longitudeText.setContentDescription("new waypoint longitude in the editbox below");
 				//EditText
 				nameBox = (EditText) findViewById(R.id.editText1);
+				nameBox.setContentDescription("Name of the new waypoint");
 				latitudeBox = (EditText) findViewById(R.id.editText2);
+				latitudeBox.setContentDescription("Latitude of the new waypoint");
 				longitudeBox = (EditText) findViewById(R.id.editText3);
+				longitudeBox.setContentDescription("Longitude of the new waypoint");
 				
 				//receiving parameters from the waypoint activity when create a new waypoint
 				Intent intentFromWayPointAct = getIntent();
@@ -141,12 +136,21 @@ public class NewWayPointActivity extends Activity {
 				longitudeBox.setText("Waiting for GPS signal");
 				
 				//setOnclickListener
+				//nameBox
+				nameBox.setOnClickListener(new OnClickListener() {
+					//OnClick creation
+					@Override
+					public void onClick(View v) {
+						nameBox.setSelectAllOnFocus(true);
+					}
+				});
 				//latitudeBox
 				latitudeBox.setOnClickListener(new OnClickListener() {
 					//OnClick creation
 					@Override
 					public void onClick(View v) {
 						if(v==latitudeBox){
+							latitudeBox.setSelectAllOnFocus(true);
 							//update location
 							lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 							if(!currentLatitude.equals("")){
@@ -164,6 +168,7 @@ public class NewWayPointActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						if(v==longitudeBox){
+							longitudeBox.setSelectAllOnFocus(true);
 							//update location
 							lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 							if(!currentLongitude.equals("")){
