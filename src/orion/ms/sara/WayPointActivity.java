@@ -71,9 +71,7 @@ public class WayPointActivity extends Activity {
 		//current position
 		private String currentLatitude = "0.0";
 		private String currentLongitude = "0.0";
-		private float[] currentResult = new float[3];
-		private double currentDistance = 0.0;
-		
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -166,9 +164,11 @@ public class WayPointActivity extends Activity {
 											intentToMain.putExtra("actName",choosingWaypoint.getName());//name
 											intentToMain.putExtra("actLatitude", Double.parseDouble( choosingWaypoint.getLatitude()));//latitude
 											intentToMain.putExtra("actLongitude", Double.parseDouble(choosingWaypoint.getLongitude()));//longitude
+											intentToMain.putExtra("actDistance", choosingWaypoint.getDistance());//choosing waypoint distance to the current position
 											
 											//back to WayPoint activity and send some parameters to the activity
 											setResult(RESULT_OK, intentToMain);
+											Log.i("end act", "--------end waypoint act--------");
 											finish();
 										}
 	                				});//end activate button
@@ -224,7 +224,7 @@ public class WayPointActivity extends Activity {
 											//show the deleting dialog
 											deletingDialog.show();
 										}
-	                				});//end delete button	          
+	                				});//end delete button	
 	                				
 	                				//show the choosing dialog
 	                				choosingDialog.show();
@@ -243,7 +243,7 @@ public class WayPointActivity extends Activity {
 				
 
 	        });
-
+			
 			//"New Waypoint" button
 			//button creation
 			newWay = (Button) findViewById(R.id.button1);
@@ -319,13 +319,8 @@ public class WayPointActivity extends Activity {
 			lastNum = Integer.parseInt(n.substring(n.lastIndexOf("t")+1));//substring "waypoint" name to get the number after that
 			Log.i("NameNUM", "lastnum :"+lastNum);
 		}
-		//calculating the distance
-		Location.distanceBetween(Double.parseDouble(la), Double.parseDouble(lo), Double.parseDouble(currentLatitude), 
-						Double.parseDouble(currentLongitude), currentResult);
-		Log.i("cur dis", ""+currentResult[0]+"bearing"+currentResult[1]);
-		currentDistance = currentResult[0];
 		//Adding the new waypoint into the list
-		wList.add(new WP(n,la,lo,currentDistance,currentResult[1]));
+		wList.add(new WP(n,la,lo,0.0));//create new waypoint with assuming distance
 		sortingWaypointList(wList);//sorting the list
 	}
 	
@@ -372,6 +367,7 @@ public class WayPointActivity extends Activity {
     		newLongitude = intentFromAnother.getStringExtra("newLongitude");
    			addNewWPtoList(wayPointList, newName, newLatitude, newLongitude,0.0,0.0);
         }
+        
       //get parameters from the Modify activity and replace the old information
         if(requestCode == MODIFY_WAYPOINT && resultCode == RESULT_OK){
         	modName = intentFromAnother.getStringExtra("modName");
@@ -385,6 +381,7 @@ public class WayPointActivity extends Activity {
     		sortingWaypointList(wayPointList);
        		//Log.i("Receive from modify", "Name "+modName+" La "+modLatitude+" lo "+modLongitude);
         }
+        
 	}
 
 	  @Override

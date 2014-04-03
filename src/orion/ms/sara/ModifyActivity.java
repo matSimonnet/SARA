@@ -2,6 +2,7 @@ package orion.ms.sara;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -45,7 +46,6 @@ public class ModifyActivity extends Activity {
 			//receiving parameter arrays
 			private String[] nameArray = null;
 			private String[] latitudeArray = null;
-			@SuppressWarnings("unused")
 			private String[] longitudeArray = null;	
 			
 			private LocationManager lm = null;	
@@ -59,6 +59,9 @@ public class ModifyActivity extends Activity {
 			//current position
 			private String currentLatitude = "";
 			private String currentLongitude = "";
+			
+			//dialog for GPS signal if is disable
+			private AlertDialog.Builder gpsDisDialog = null; 
 			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,9 +120,6 @@ public class ModifyActivity extends Activity {
 		longitudeBox = (EditText) findViewById(R.id.editText3);
 		longitudeBox.setContentDescription("describes Longitude of the modifying waypoint");
 		
-		//CheckBox
-		currentPositionBox = (CheckBox) findViewById(R.id.checkBox1);
-		
 		//receiving parameters from the waypoint activity
 		Intent intentFromWayPointAct = getIntent();
 		nameArray = intentFromWayPointAct.getStringArrayExtra("nameArrayFromWP");
@@ -130,6 +130,11 @@ public class ModifyActivity extends Activity {
 		oldLatitude = intentFromWayPointAct.getStringExtra("modLatitude");
 		oldLongitude = intentFromWayPointAct.getStringExtra("modLongitude");
 		
+		//dialog creation
+		gpsDisDialog = new AlertDialog.Builder(this);
+		
+		//CheckBox
+		currentPositionBox = (CheckBox) findViewById(R.id.checkBox1);
 		//setOnclickListener of current position check box
 		currentPositionBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			//onCheckedChanged creation
@@ -142,6 +147,11 @@ public class ModifyActivity extends Activity {
 						//set each EditText with current position
 						latitudeBox.setText(currentLatitude);
 						longitudeBox.setText(currentLongitude);
+					}
+					else{
+						gpsDisDialog.setTitle("GPS disable or still waiting for signal");
+						gpsDisDialog.setPositiveButton("Dismiss", null);
+						gpsDisDialog.show();
 					}
 				}
 				else{
@@ -171,6 +181,11 @@ public class ModifyActivity extends Activity {
 			public void onClick(View v) {
 				if(v==latitudeBox){
 					latitudeBox.setSelectAllOnFocus(true);
+					if(!currentPositionBox.isChecked()){
+						//set each EditText with default position
+						latitudeBox.setText(oldLatitude);
+						longitudeBox.setText(oldLongitude);
+					}
 				}
 			}
 		});
@@ -181,6 +196,11 @@ public class ModifyActivity extends Activity {
 			public void onClick(View v) {
 				if(v==longitudeBox){
 					longitudeBox.setSelectAllOnFocus(true);
+					if(!currentPositionBox.isChecked()){
+						//set each EditText with default position
+						latitudeBox.setText(oldLatitude);
+						longitudeBox.setText(oldLongitude);
+					}
 				}
 			}
 		});
@@ -234,12 +254,12 @@ public class ModifyActivity extends Activity {
 		
 		public boolean isRecorded(String n, String la, String lo){
 			for(int i = 0;i<nameArray.length;i++){
-				if((latitudeArray[i].equalsIgnoreCase(la) && latitudeArray[i].equalsIgnoreCase(la)) || (nameArray[i].equalsIgnoreCase(n))){
+				if((latitudeArray[i].equalsIgnoreCase(la) && longitudeArray[i].equalsIgnoreCase(la)) || (nameArray[i].equalsIgnoreCase(n))){
 					if(nameArray[i].equalsIgnoreCase(n)){
 						// same name
 						Toast.makeText(ModifyActivity.this, "This name is in the list.", Toast.LENGTH_SHORT);
 					}//end if
-					if(latitudeArray[i].equalsIgnoreCase(la) && latitudeArray[i].equalsIgnoreCase(la)){
+					if(latitudeArray[i].equalsIgnoreCase(la) && longitudeArray[i].equalsIgnoreCase(la)){
 						//same position
 						Toast.makeText(ModifyActivity.this, "This position is in the list.", Toast.LENGTH_SHORT);
 					}//end if

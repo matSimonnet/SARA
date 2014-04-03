@@ -6,57 +6,49 @@
     tools:context="orion.ms.sara.ModifyActivity"
     tools:ignore="MergeRootFrame" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
         <EditText
             android:id="@+id/editText1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="22dp"
             android:ems="10"
             android:inputType="text" >
+
+            <requestFocus />
         </EditText>
 
         <CheckBox
             android:id="@+id/checkBox1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editText1"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="18dp"
             android:text="@string/current_checkedBox" />
 
         <EditText
             android:id="@+id/editText2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/checkBox1"
-            android:layout_centerHorizontal="true"
             android:ems="10"
             android:inputType="numberDecimal" />
 
         <EditText
             android:id="@+id/editText3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editText2"
-            android:layout_centerHorizontal="true"
             android:ems="10"
             android:inputType="numberDecimal" />
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/editText3"
             android:layout_marginTop="14dp"
             android:text="@string/modifyButton" />
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>

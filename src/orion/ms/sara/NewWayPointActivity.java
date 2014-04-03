@@ -2,6 +2,7 @@ package orion.ms.sara;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -40,7 +41,6 @@ public class NewWayPointActivity extends Activity {
 		//receiving parameter arrays
 		private String[] nameArray = null;
 		private String[] latitudeArray = null;
-		@SuppressWarnings("unused")
 		private String[] longitudeArray = null;	
 		
 		private LocationManager lm = null;	
@@ -51,12 +51,15 @@ public class NewWayPointActivity extends Activity {
 		private String currentLatitude = "";
 		private String currentLongitude = "";
 		
+		//dialog for GPS signal if is disable
+		private AlertDialog.Builder gpsDisDialog = null; 
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_way_point);
 		
-		//OnInitListener Creation
+			//OnInitListener Creation
 				OnInitListener onInitListener = new OnInitListener() {
 					@Override
 					public void onInit(int status) {
@@ -116,6 +119,8 @@ public class NewWayPointActivity extends Activity {
 				//receiving default name
 				defaultName = intentFromWayPointAct.getStringExtra("defaultNameFromWP");
 				
+				//dialog creation
+				gpsDisDialog = new AlertDialog.Builder(this);
 				//setOnclickListener
 				//nameBox
 				nameBox.setOnClickListener(new OnClickListener() {
@@ -141,6 +146,11 @@ public class NewWayPointActivity extends Activity {
 								latitudeBox.setText(currentLatitude);
 								longitudeBox.setText(currentLongitude);
 							}
+							else{
+								gpsDisDialog.setTitle("GPS disable or still waiting for signal");
+								gpsDisDialog.setPositiveButton("Dismiss", null);
+								gpsDisDialog.show();
+							}
 						}
 					}
 				});
@@ -158,6 +168,11 @@ public class NewWayPointActivity extends Activity {
 								//set each EditText default
 								latitudeBox.setText(currentLatitude);
 								longitudeBox.setText(currentLongitude);
+							}
+							else{
+								gpsDisDialog.setTitle("GPS disable or still waiting for signal");
+								gpsDisDialog.setPositiveButton("Dismiss", null);
+								gpsDisDialog.show();
 							}
 						}
 					}
@@ -224,7 +239,7 @@ public class NewWayPointActivity extends Activity {
 				tts.speak("This name is already recorded.", tts.QUEUE_FLUSH, null);
 				return true;
 			}//end if
-			if(latitudeArray[i].equalsIgnoreCase(la) && latitudeArray[i].equalsIgnoreCase(la)){
+			else if(latitudeArray[i].equalsIgnoreCase(la) && longitudeArray[i].equalsIgnoreCase(lo)){
 				//same position
 				Toast.makeText(NewWayPointActivity.this, "This position is already recorded.", Toast.LENGTH_SHORT);
 				tts.speak("This position is already recorded.", tts.QUEUE_FLUSH, null);
