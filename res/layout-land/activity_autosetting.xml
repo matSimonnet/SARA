@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/speedTresholdView"
-        android:layout_width="0dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/speedAutoCheckBox"
@@ -36,16 +36,15 @@
         android:id="@+id/IncreaseSpeedTresholdButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/speedAutoCheckBox"
+        android:layout_toLeftOf="@+id/speedTimeTresholdView3"
         android:text="@string/IncreaseButton" />
 
     <TextView
         android:id="@+id/speedTimeTresholdView3"
-        android:layout_width="wrap_content"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/IncreaseSpeedTresholdButton"
+        android:layout_below="@+id/speedAutoCheckBox"
         android:layout_toLeftOf="@+id/DecreaseSpeedTimeTresholdButton"
         android:gravity="center"
         android:text="@string/speedtimetreshold" />
@@ -54,9 +53,8 @@
         android:id="@+id/DecreaseSpeedTimeTresholdButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/IncreaseSpeedTresholdButton"
+        android:layout_below="@+id/speedAutoCheckBox"
         android:layout_toLeftOf="@+id/IncreaseSpeedTimeTresholdButton"
-        android:gravity="center"
         android:text="@string/DecreaseButton" />
 
     <Button
@@ -64,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/IncreaseSpeedTresholdButton"
+        android:layout_below="@+id/speedAutoCheckBox"
         android:gravity="center"
         android:text="@string/IncreaseButton" />
 
@@ -78,7 +76,7 @@
 
     <TextView
         android:id="@+id/HeadingTresholdView"
-        android:layout_width="0dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/headingAutoCheckBox"
@@ -99,17 +97,16 @@
         android:id="@+id/IncreaseHeadingTresholdButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/headingAutoCheckBox"
+        android:layout_toLeftOf="@+id/HeadingTimeTresholdView"
         android:gravity="center"
         android:text="@string/IncreaseButton" />
 
     <TextView
         android:id="@+id/HeadingTimeTresholdView"
-        android:layout_width="0dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/IncreaseHeadingTresholdButton"
+        android:layout_below="@+id/headingAutoCheckBox"
         android:layout_toLeftOf="@+id/DecreaseHeadingTimeTresholdButton"
         android:gravity="center"
         android:text="@string/headingtimetreshold" />
@@ -118,7 +115,7 @@
         android:id="@+id/DecreaseHeadingTimeTresholdButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/IncreaseHeadingTresholdButton"
+        android:layout_below="@+id/headingAutoCheckBox"
         android:layout_toLeftOf="@+id/IncreaseHeadingTimeTresholdButton"
         android:gravity="center"
         android:text="@string/DecreaseButton" />
@@ -128,7 +125,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/IncreaseHeadingTresholdButton"
+        android:layout_below="@+id/headingAutoCheckBox"
         android:gravity="center"
         android:text="@string/IncreaseButton" />
 
@@ -142,11 +139,10 @@
 
     <TextView
         android:id="@+id/DistanceTimeTresholdView"
-        android:layout_width="0dp"
+        android:layout_width="365dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/DistanceAutoCheckBox"
-        android:layout_toLeftOf="@+id/DecreaseDistanceTimeTresholdButton"
         android:gravity="center"
         android:text="@string/distancetimetreshold" />
 
@@ -155,7 +151,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/DistanceAutoCheckBox"
-        android:layout_toLeftOf="@+id/IncreaseDistanceTimeTresholdButton"
+        android:layout_toRightOf="@+id/DistanceTimeTresholdView"
         android:gravity="center"
         android:text="@string/DecreaseButton" />
 
@@ -163,8 +159,8 @@
         android:id="@+id/IncreaseDistanceTimeTresholdButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/DistanceAutoCheckBox"
+        android:layout_toRightOf="@+id/DecreaseDistanceTimeTresholdButton"
         android:gravity="center"
         android:text="@string/IncreaseButton" />
 
@@ -178,7 +174,7 @@
 
     <TextView
         android:id="@+id/BearingTresholdView"
-        android:layout_width="0dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/BearingAutoCheckBox"
@@ -199,17 +195,16 @@
         android:id="@+id/IncreaseBearingTresholdButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/BearingAutoCheckBox"
+        android:layout_toLeftOf="@+id/BearingTimeTresholdView"
         android:gravity="center"
         android:text="@string/IncreaseButton" />
 
     <TextView
         android:id="@+id/BearingTimeTresholdView"
-        android:layout_width="0dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/IncreaseBearingTresholdButton"
+        android:layout_below="@+id/BearingAutoCheckBox"
         android:layout_toLeftOf="@+id/DecreaseBearingTimeTresholdButton"
         android:gravity="center"
         android:text="@string/bearingtimetreshold" />
@@ -218,7 +213,7 @@
         android:id="@+id/DecreaseBearingTimeTresholdButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/IncreaseBearingTresholdButton"
+        android:layout_below="@+id/BearingAutoCheckBox"
         android:layout_toLeftOf="@+id/IncreaseBearingTimeTresholdButton"
         android:gravity="center"
         android:text="@string/DecreaseButton" />
@@ -228,7 +223,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/IncreaseBearingTresholdButton"
+        android:layout_below="@+id/BearingAutoCheckBox"
         android:gravity="center"
         android:text="@string/IncreaseButton" />
 

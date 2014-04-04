@@ -2,7 +2,6 @@ package orion.ms.sara;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.lang.Math;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -37,7 +36,6 @@ public class MainActivity extends Activity {
 
 	private Intent intent_AutoSetting_activity;
 	private Intent intent_Waypoint_activity;
-	//private Intent intentMain;
 
 	private TextView textViewSpeed = null;
 	private TextView textViewheading = null;
@@ -84,7 +82,7 @@ public class MainActivity extends Activity {
 	private Date bearingNow = null;
 	private Date bearingBefore = null;
 	
-	//private Location LastKnowLocation = null;
+	private Location location = null;
 	private double WaypointLatitude = 999;
 	private double WaypointLongitude = 999;
 	
@@ -92,13 +90,6 @@ public class MainActivity extends Activity {
 	private boolean isAutoHeading;
 	private boolean isAutoDistance;
 	private boolean isAutoBearing;
-
-	//positions : 
-	@SuppressWarnings("unused")
-	private String latitude = "";
-	@SuppressWarnings("unused")
-	private String longitude = "";
-	
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,14 +116,9 @@ public class MainActivity extends Activity {
 
         
         //intent creation
-		//intentMain = new Intent(MainActivity.this,MainActivity.class);
 		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
-		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSetting.class);
+		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
 
-        //DefaultValue
-        latitude =  getResources().getString(R.string.nosatelite);
-        longitude =  getResources().getString(R.string.nosatelite);
-        
         heading =  "No Satellite";
         speed =  "No Satellite";
         DistanceToCurrentWaypoint = "No Satellite";
@@ -159,10 +145,7 @@ public class MainActivity extends Activity {
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         ll = new MyLocationListener();		
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-	
-        // Last know location creation
-        //LastLocation = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
- 
+	 
         this.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
         this.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
     
@@ -198,10 +181,10 @@ public class MainActivity extends Activity {
         				startActivityForResult(intent, RESULT_SPEECH);
 	                } catch (ActivityNotFoundException a) {
 	                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.norecognition),Toast.LENGTH_SHORT).show();
-	                }//end of catch
+	                }// end of catch
 	            }// end of if button5
 	        }// end of onclick		
-		}; //end of new View.LocationListener	
+		}; // end of new View.LocationListener	
 	
 		// button activation
 		buttonReco.setOnClickListener(onclickListener);
@@ -259,15 +242,11 @@ public class MainActivity extends Activity {
 
         			this.speedTreshold = data.getDoubleExtra("speedTreshold", 1.0);
         			this.speedTimeTreshold = data.getLongExtra("speedTimeTreshold", 5);
-        			
         			this.headingTreshold = data.getDoubleExtra("headingTreshold", 10.0);
         			this.headingTimeTreshold = data.getLongExtra("headingTimeTreshold", 5);
-        			
         			this.distanceTimeTreshold = data.getLongExtra("distanceTimeTreshold", 5);
-        			
         			this.bearingTreshold = data.getDoubleExtra("bearingTreshold", 10.0);
         			this.bearingTimeTreshold = data.getLongExtra("bearingTimeTreshold", 5);
-        			
         			this.isAutoSpeed = data.getBooleanExtra("isAutoSpeed", true);
         			this.isAutoHeading = data.getBooleanExtra("isAutoHeading", true);
         			this.isAutoDistance = data.getBooleanExtra("isAutoDistance", true);
@@ -290,19 +269,25 @@ public class MainActivity extends Activity {
         	}// end of case
         	case RESULT_WAYPOINT : {
         		if (resultCode == RESULT_OK && null != data) {
-
+        			
+        	        location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        	        
         			this.WaypointLatitude = data.getDoubleExtra("actLatitude", 999);
         			this.WaypointLongitude = data.getDoubleExtra("actLongitude", 999);
         			
+        			Location.distanceBetween(WaypointLatitude, WaypointLongitude, location.getLatitude(), location.getLongitude(), distance);
+        			this.distanceTreshold = distance[0]/10000;
+
         			Log.i("Waypoint Latitude", this.WaypointLatitude+"");
         			Log.i("Waypoint Latitude", this.WaypointLongitude+"");
-       			
+        			Log.i("distance to waypoint", this.distance[0]/1000+"");
+        			Log.i("distance treshold", this.distanceTreshold+"");
         		}
         	break;
         	}// end of case
 
-        }//end of switch 
-    }//end of on Activity result 
+        }// end of switch 
+    }// end of on Activity result 
 	
 	//  action bar
 	@Override
@@ -327,54 +312,14 @@ public class MainActivity extends Activity {
 
 		return false;
 	}
-	// FOR NEW UTILS CLASS
-	
-	public static double RadToDeg(double radians)  
-    {  
-        return radians * (180 / Math.PI);  
-    }  
-
-    public static double DegToRad(double degrees)  
-    {  
-        return degrees * (Math.PI / 180);  
-    }  
-
-    public static double _Bearing(double lat1, double long1, double lat2, double long2)  
-    {  
-        //Convert input values to radians  
-        lat1 = DegToRad(lat1);  
-        long1 = DegToRad(long1);  
-        lat2 =  DegToRad(lat2);  
-        long2 = DegToRad(long2);  
-
-        double deltaLong = long2 - long1;  
-
-        double y = Math.sin(deltaLong) * Math.cos(lat2);  
-        double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLong);  
-        double bearing = Math.atan2(y, x);  
-        return ConvertToBearing(RadToDeg(bearing));  
-    }  
-
-    public static double ConvertToBearing(double deg)  
-    {  
-        return (deg + 360) % 360;  
-    }  
-    
-	//method to round 1 decimal
-	public double arrondiSpeed(double val) {return (Math.floor(val*10))/10;}
-	public double arrondiDistance(double val) {return (Math.floor(val*10))/10;}
-	public double arrondiBearing(double val) {return (Math.floor(val*10))/10;}
     
 	// FOR NEW MYLOCATION LISTENER CLASS
     
     public class MyLocationListener implements LocationListener {
 
 		@Override
-		public void onLocationChanged(Location loc) {
-			
-			latitude = String.valueOf(loc.getLatitude());
-			longitude = String.valueOf(loc.getLongitude());			
-			speed = String.valueOf(arrondiSpeed(loc.getSpeed()*(1.945)));
+		public void onLocationChanged(Location loc) {		
+			speed = String.valueOf(Utils.arrondiSpeed(loc.getSpeed()*(1.945)));
 			heading = String.valueOf((int)loc.getBearing());
 			
 			if(WaypointLatitude == 999 || WaypointLongitude == 999) {
@@ -386,13 +331,11 @@ public class MainActivity extends Activity {
 			else {
 				// calculate distance to the current waypoint
 				Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distance);
-				DistanceToCurrentWaypoint = String.valueOf(arrondiDistance(distance[0]/1000));
-				Log.i("distance", DistanceToCurrentWaypoint);
+				DistanceToCurrentWaypoint = String.valueOf(Utils.arrondiDistance(distance[0]/1000));
 				
 				// calculate bearing to the current waypoint						
-				bearing = _Bearing(loc.getLatitude(), loc.getLongitude(), WaypointLatitude, WaypointLongitude);
-				BearingToCurrentWaypoint = String.valueOf(arrondiBearing(bearing));
-				Log.i("bearing", BearingToCurrentWaypoint);
+				bearing = Utils._Bearing(loc.getLatitude(), loc.getLongitude(), WaypointLatitude, WaypointLongitude);
+				BearingToCurrentWaypoint = String.valueOf(Utils.arrondiBearing(bearing));
 				
 				if (isAutoBearing){
 					bearingAuto = (int) bearing;
@@ -406,6 +349,7 @@ public class MainActivity extends Activity {
 						tts.speak(getResources().getString(R.string.bearing)+ " : " + BearingToCurrentWaypoint + " " + getResources().getString(R.string.headingunit), TextToSpeech.QUEUE_ADD, null);
 						bearingLastAuto = bearingAuto;
 						bearingBefore = new Date();
+						Log.i("bearing", BearingToCurrentWaypoint);
 					}
 				}//end of if bearingAutoCheck...
 			
@@ -416,21 +360,22 @@ public class MainActivity extends Activity {
 					if 	((( distanceAuto < distanceLastAuto - distanceTreshold) || ( distanceAuto > distanceLastAuto + distanceTreshold))
 						&&	((distanceNow.getTime() - distanceBefore.getTime()) > distanceTimeTreshold*1000)){
 						tts.speak(getResources().getString(R.string.Distance)+ " : " + DistanceToCurrentWaypoint + " " + getResources().getString(R.string.DistanceUnit), TextToSpeech.QUEUE_ADD, null);
-				
 						distanceLastAuto = distanceAuto;
 						distanceBefore = new Date();
+						Log.i("distance", DistanceToCurrentWaypoint);
 					}
 				}//end of if distanceAutoCheck...
 			}// end of else..
 				
 			if (isAutoSpeed){
-				speedAuto = arrondiSpeed(loc.getSpeed()*(1.945));
+				speedAuto = Utils.arrondiSpeed(loc.getSpeed()*(1.945));
 				speedNow = new Date();
 				if 	((( speedAuto < speedLastAuto - speedTreshold ) || ( speedAuto > speedLastAuto + speedTreshold ))
 					&&	((speedNow.getTime() - speedBefore.getTime()) > speedTimeTreshold*1000)){
 				tts.speak(getResources().getString(R.string.speed)+ " : " + speed + " " + getResources().getString(R.string.speedunit), TextToSpeech.QUEUE_ADD, null);
 				speedLastAuto = speedAuto;
 				speedBefore = new Date();
+				Log.i("speed", speed);
 				}
 			}//end of if speedAutoCheck...
 
@@ -446,6 +391,8 @@ public class MainActivity extends Activity {
 				tts.speak(getResources().getString(R.string.heading)+ " : " + heading + " " + getResources().getString(R.string.headingunit), TextToSpeech.QUEUE_ADD, null);
 				headingLastAuto = headingAuto;
 				headingBefore = new Date();
+				Log.i("heading", heading);
+
 				}
 			}//end of if headingAutoCheck...
 				
@@ -479,8 +426,4 @@ public class MainActivity extends Activity {
 		}
     	
     } //end of MyLocationListener
-	
-
-	
- 
 }//end of Activity
