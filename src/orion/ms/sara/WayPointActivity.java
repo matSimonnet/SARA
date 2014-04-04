@@ -48,7 +48,7 @@ public class WayPointActivity extends Activity {
 		private String modLongitude = "";
 		
 		//Generating default number for a new waypoint's name
-		private int lastNum = 0;
+		public static int lastNum = 0;
 		
 		//code for communication between activity
 		protected int NEW_WAYPOINT = 7777777;
@@ -168,7 +168,6 @@ public class WayPointActivity extends Activity {
 											
 											//back to WayPoint activity and send some parameters to the activity
 											setResult(RESULT_OK, intentToMain);
-											Log.i("end act", "--------end waypoint act--------");
 											finish();
 										}
 	                				});//end activate button
@@ -317,7 +316,7 @@ public class WayPointActivity extends Activity {
 		//Get the latest number after adding a new waypoint
 		if(n.contains("Waypoint")){
 			lastNum = Integer.parseInt(n.substring(n.lastIndexOf("t")+1));//substring "waypoint" name to get the number after that
-			Log.i("NameNUM", "lastnum :"+lastNum);
+			Log.i("NameNUM", "---------------lastnum :"+lastNum+"----------------");
 		}
 		//Adding the new waypoint into the list
 		wList.add(new WP(n,la,lo,0.0));//create new waypoint with assuming distance
@@ -346,7 +345,7 @@ public class WayPointActivity extends Activity {
 				//Log.i("Cur dis for sort", "item "+i+" dis now="+tempResult[0]);
 			}
 			Collections.sort(wList);//Sorting the list by proximity
-
+			
 			//set array adapter of the list into the spinner
 			way = (Spinner) findViewById(R.id.spinner1);
 			arrAd = new ArrayAdapter<String>(WayPointActivity.this,
@@ -354,6 +353,7 @@ public class WayPointActivity extends Activity {
 							toNameArrayList(wList));
 			        
 			way.setAdapter(arrAd);
+			
 		}
 	
 	//Intent to handle receive parameters from NewWayPoint and Modify
@@ -379,7 +379,6 @@ public class WayPointActivity extends Activity {
     		choosingWaypoint.setLatitude(modLatitude);
     		choosingWaypoint.setLongitude(modLongitude);
     		sortingWaypointList(wayPointList);
-       		//Log.i("Receive from modify", "Name "+modName+" La "+modLatitude+" lo "+modLongitude);
         }
         
 	}
