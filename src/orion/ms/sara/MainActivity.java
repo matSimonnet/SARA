@@ -2,7 +2,6 @@ package orion.ms.sara;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.lang.Math;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -127,7 +126,7 @@ public class MainActivity extends Activity {
         //intent creation
 		//intentMain = new Intent(MainActivity.this,MainActivity.class);
 		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
-		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSetting.class);
+		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
 
         //DefaultValue
         latitude =  getResources().getString(R.string.nosatelite);
@@ -327,43 +326,6 @@ public class MainActivity extends Activity {
 
 		return false;
 	}
-	// FOR NEW UTILS CLASS
-	
-	public static double RadToDeg(double radians)  
-    {  
-        return radians * (180 / Math.PI);  
-    }  
-
-    public static double DegToRad(double degrees)  
-    {  
-        return degrees * (Math.PI / 180);  
-    }  
-
-    public static double _Bearing(double lat1, double long1, double lat2, double long2)  
-    {  
-        //Convert input values to radians  
-        lat1 = DegToRad(lat1);  
-        long1 = DegToRad(long1);  
-        lat2 =  DegToRad(lat2);  
-        long2 = DegToRad(long2);  
-
-        double deltaLong = long2 - long1;  
-
-        double y = Math.sin(deltaLong) * Math.cos(lat2);  
-        double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLong);  
-        double bearing = Math.atan2(y, x);  
-        return ConvertToBearing(RadToDeg(bearing));  
-    }  
-
-    public static double ConvertToBearing(double deg)  
-    {  
-        return (deg + 360) % 360;  
-    }  
-    
-	//method to round 1 decimal
-	public double arrondiSpeed(double val) {return (Math.floor(val*10))/10;}
-	public double arrondiDistance(double val) {return (Math.floor(val*10))/10;}
-	public double arrondiBearing(double val) {return (Math.floor(val*10))/10;}
     
 	// FOR NEW MYLOCATION LISTENER CLASS
     
@@ -374,7 +336,7 @@ public class MainActivity extends Activity {
 			
 			latitude = String.valueOf(loc.getLatitude());
 			longitude = String.valueOf(loc.getLongitude());			
-			speed = String.valueOf(arrondiSpeed(loc.getSpeed()*(1.945)));
+			speed = String.valueOf(Utils.arrondiSpeed(loc.getSpeed()*(1.945)));
 			heading = String.valueOf((int)loc.getBearing());
 			
 			if(WaypointLatitude == 999 || WaypointLongitude == 999) {
@@ -386,12 +348,12 @@ public class MainActivity extends Activity {
 			else {
 				// calculate distance to the current waypoint
 				Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distance);
-				DistanceToCurrentWaypoint = String.valueOf(arrondiDistance(distance[0]/1000));
+				DistanceToCurrentWaypoint = String.valueOf(Utils.arrondiDistance(distance[0]/1000));
 				Log.i("distance", DistanceToCurrentWaypoint);
 				
 				// calculate bearing to the current waypoint						
-				bearing = _Bearing(loc.getLatitude(), loc.getLongitude(), WaypointLatitude, WaypointLongitude);
-				BearingToCurrentWaypoint = String.valueOf(arrondiBearing(bearing));
+				bearing = Utils._Bearing(loc.getLatitude(), loc.getLongitude(), WaypointLatitude, WaypointLongitude);
+				BearingToCurrentWaypoint = String.valueOf(Utils.arrondiBearing(bearing));
 				Log.i("bearing", BearingToCurrentWaypoint);
 				
 				if (isAutoBearing){
@@ -424,7 +386,7 @@ public class MainActivity extends Activity {
 			}// end of else..
 				
 			if (isAutoSpeed){
-				speedAuto = arrondiSpeed(loc.getSpeed()*(1.945));
+				speedAuto = Utils.arrondiSpeed(loc.getSpeed()*(1.945));
 				speedNow = new Date();
 				if 	((( speedAuto < speedLastAuto - speedTreshold ) || ( speedAuto > speedLastAuto + speedTreshold ))
 					&&	((speedNow.getTime() - speedBefore.getTime()) > speedTimeTreshold*1000)){
