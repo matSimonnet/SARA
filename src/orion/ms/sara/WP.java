@@ -12,20 +12,12 @@ public class WP implements Comparable<WP>{
 		private double distance = 0.0;
 		private double bearing = 0.0;
 		
-		//constructor1
-		public WP(String n, String la, String lo, double dis, double bear){
+		//constructor
+		public WP(String n, String la, String lo, double dis){
 			this.name = n;
 			this.latitude = la;
 			this.longitude = lo;
 			this.distance = dis;
-			this.bearing = bear;
-		}
-		
-		//constructor2
-		public WP(String n,String la,String lo){
-			this.name = n;
-			this.latitude = la;
-			this.longitude = lo;
 		}
 
 		public String getName() {

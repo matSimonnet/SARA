@@ -2,6 +2,7 @@ package orion.ms.sara;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -10,14 +11,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("ShowToast")
@@ -27,13 +26,7 @@ public class NewWayPointActivity extends Activity {
 		//string for each attribute of the new waypoint
 		private String name = "";
 		private String latitude = "";
-		private String longitude = "";
-		
-		//TextView
-		private TextView introText = null;
-		private TextView nameText = null;
-		private TextView latitudeText = null;
-		private TextView longitudeText = null;
+		private String longitude = "";	
 		
 		//EditText
 		private EditText nameBox = null;
@@ -48,7 +41,6 @@ public class NewWayPointActivity extends Activity {
 		//receiving parameter arrays
 		private String[] nameArray = null;
 		private String[] latitudeArray = null;
-		@SuppressWarnings("unused")
 		private String[] longitudeArray = null;	
 		
 		private LocationManager lm = null;	
@@ -59,12 +51,15 @@ public class NewWayPointActivity extends Activity {
 		private String currentLatitude = "";
 		private String currentLongitude = "";
 		
+		//dialog for GPS signal if is disable
+		private AlertDialog.Builder gpsDisDialog = null; 
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_way_point);
 		
-		//OnInitListener Creation
+			//OnInitListener Creation
 				OnInitListener onInitListener = new OnInitListener() {
 					@Override
 					public void onInit(int status) {
@@ -83,8 +78,6 @@ public class NewWayPointActivity extends Activity {
 					public void onLocationChanged(Location loc) {
 						currentLatitude = String.valueOf(loc.getLatitude());
 						currentLongitude = String.valueOf(loc.getLongitude());
-						Log.i("Latitude current","current la is "+currentLatitude);
-						Log.i("Longitude current","current long is "+currentLongitude);
 					}
 
 					@Override
@@ -110,21 +103,13 @@ public class NewWayPointActivity extends Activity {
 				//update location
 				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 				
-								
-				//TextView
-				introText = (TextView) findViewById(R.id.textView1);
-				introText.setContentDescription("The new waypoint information including name and position are set as default");
-				nameText = (TextView) findViewById(R.id.textView2);
-				nameText.setContentDescription("Name of the new waypoint");
-				latitudeText = (TextView) findViewById(R.id.textView3);
-				latitudeText.setContentDescription("Latitude of the new waypoint");
-				longitudeText = (TextView) findViewById(R.id.textView4);
-				longitudeText.setContentDescription("Longitude of the new waypoint");
-				
-				//EditText
+				//EditText and description
 				nameBox = (EditText) findViewById(R.id.editText1);
+				nameBox.setContentDescription("describes Name of the new waypoint");
 				latitudeBox = (EditText) findViewById(R.id.editText2);
+				latitudeBox.setContentDescription("describes Latitude of the new waypoint");
 				longitudeBox = (EditText) findViewById(R.id.editText3);
+				longitudeBox.setContentDescription("describes Longitude of the new waypoint");
 				
 				//receiving parameters from the waypoint activity when create a new waypoint
 				Intent intentFromWayPointAct = getIntent();
@@ -133,26 +118,38 @@ public class NewWayPointActivity extends Activity {
 				longitudeArray = intentFromWayPointAct.getStringArrayExtra("longitudeArrayFromWP");
 				//receiving default name
 				defaultName = intentFromWayPointAct.getStringExtra("defaultNameFromWP");
-				//set default name
-				nameBox.setText(defaultName);
 				
-				//set each EditText default
-				latitudeBox.setText("Waiting for GPS signal");
-				longitudeBox.setText("Waiting for GPS signal");
-				
+				//dialog creation
+				gpsDisDialog = new AlertDialog.Builder(this);
 				//setOnclickListener
+				//nameBox
+				nameBox.setOnClickListener(new OnClickListener() {
+					//OnClick creation
+					@Override
+					public void onClick(View v) {
+						//set default name
+						nameBox.setText(defaultName);
+						nameBox.setSelectAllOnFocus(true);
+					}
+				});
 				//latitudeBox
 				latitudeBox.setOnClickListener(new OnClickListener() {
 					//OnClick creation
 					@Override
 					public void onClick(View v) {
 						if(v==latitudeBox){
+							latitudeBox.setSelectAllOnFocus(true);
 							//update location
 							lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 							if(!currentLatitude.equals("")){
 								//set each EditText default
 								latitudeBox.setText(currentLatitude);
 								longitudeBox.setText(currentLongitude);
+							}
+							else{
+								gpsDisDialog.setTitle("GPS disable or still waiting for signal");
+								gpsDisDialog.setPositiveButton("Dismiss", null);
+								gpsDisDialog.show();
 							}
 						}
 					}
@@ -164,12 +161,18 @@ public class NewWayPointActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						if(v==longitudeBox){
+							longitudeBox.setSelectAllOnFocus(true);
 							//update location
 							lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 							if(!currentLongitude.equals("")){
 								//set each EditText default
 								latitudeBox.setText(currentLatitude);
 								longitudeBox.setText(currentLongitude);
+							}
+							else{
+								gpsDisDialog.setTitle("GPS disable or still waiting for signal");
+								gpsDisDialog.setPositiveButton("Dismiss", null);
+								gpsDisDialog.show();
 							}
 						}
 					}
@@ -194,24 +197,31 @@ public class NewWayPointActivity extends Activity {
 								tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
 							}
 							else{
-								//sent the new waypoint information back to waypoint activity
-																
-								//notification
-								tts.speak("the new waypoint already saved", tts.QUEUE_ADD, null);
-								Toast.makeText(NewWayPointActivity.this,"new waypoint already saved", Toast.LENGTH_SHORT);
+								if(latitude.isEmpty() || longitude.isEmpty() || name.isEmpty()){
+									//prevent unfilled text box(es)
+									tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
+								}
+								else{
+									//sent the new waypoint information back to waypoint activity
+									
+									//notification
+									tts.speak("the new waypoint already saved", tts.QUEUE_ADD, null);
+									Toast.makeText(NewWayPointActivity.this,"new waypoint already saved", Toast.LENGTH_SHORT);
+									
+									//change back to the waypoint activity
+									Intent intentToWayPoint = new Intent(NewWayPointActivity.this,WayPointActivity.class);
+									//pass the parameters including name,latitude,longitude
+									intentToWayPoint.putExtra("newName",name);//name
+									intentToWayPoint.putExtra("newLatitude", latitude);//latitude
+									intentToWayPoint.putExtra("newLongitude", longitude);//longitude
+									
+									//back to WayPoint activity and send some parameters to the activity
+									setResult(RESULT_OK, intentToWayPoint);
+									finish();
+									
+								}//end else in if-else
 								
-								//change back to the waypoint activity
-								Intent intentToWayPoint = new Intent(NewWayPointActivity.this,WayPointActivity.class);
-								//pass the parameters including name,latitude,longitude
-								intentToWayPoint.putExtra("newName",name);//name
-								intentToWayPoint.putExtra("newLatitude", latitude);//latitude
-								intentToWayPoint.putExtra("newLongitude", longitude);//longitude
-								
-								//back to WayPoint activity and send some parameters to the activity
-								setResult(RESULT_OK, intentToWayPoint);
-								finish();
-								
-							}//end else
+							}//end else	
 						}	
 					}//end onClick
 				});
@@ -229,7 +239,7 @@ public class NewWayPointActivity extends Activity {
 				tts.speak("This name is already recorded.", tts.QUEUE_FLUSH, null);
 				return true;
 			}//end if
-			if(latitudeArray[i].equalsIgnoreCase(la) && latitudeArray[i].equalsIgnoreCase(la)){
+			else if(latitudeArray[i].equalsIgnoreCase(la) && longitudeArray[i].equalsIgnoreCase(lo)){
 				//same position
 				Toast.makeText(NewWayPointActivity.this, "This position is already recorded.", Toast.LENGTH_SHORT);
 				tts.speak("This position is already recorded.", tts.QUEUE_FLUSH, null);
