@@ -127,9 +127,13 @@ public class WayPointActivity extends Activity {
 			choosingDialog = new AlertDialog.Builder(this);
 			deletingDialog = new AlertDialog.Builder(this);
 			
+			//spinner set up
 			way.setContentDescription("Choose the waypoint in ");
+			
 			//setOnItemSelectedListener
 			way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
+				
+				 				
 				//OnItemSelectedListener creation
 	            @SuppressWarnings("static-access")
 				public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) { 
@@ -316,7 +320,7 @@ public class WayPointActivity extends Activity {
 		//Get the latest number after adding a new waypoint
 		if(n.contains("Waypoint")){
 			lastNum = Integer.parseInt(n.substring(n.lastIndexOf("t")+1));//substring "waypoint" name to get the number after that
-			Log.i("NameNUM", "---------------lastnum :"+lastNum+"----------------");
+			//Log.i("NameNUM", "---------------lastnum :"+lastNum+"----------------");
 		}
 		//Adding the new waypoint into the list
 		wList.add(new WP(n,la,lo,0.0));//create new waypoint with assuming distance
@@ -338,11 +342,19 @@ public class WayPointActivity extends Activity {
 			for(int i = 0;i< wList.size();i++){
 				tempWP = wList.get(i);
 				//calculate new distance
-				Location.distanceBetween(Double.parseDouble(tempWP.getLatitude()), Double.parseDouble(tempWP.getLongitude()), 
-						Double.parseDouble(currentLatitude), Double.parseDouble(currentLongitude), tempResult);
-				//set up the new distance into every waypoint in the list
+				Log.i("Sort", "++++++++++tempWP lati "+tempWP.getLatitude()+"+++++++++++++++++");
+				Log.i("Sort", "++++++++++tempWP longi "+tempWP.getLongitude()+"+++++++++++++++++");
+				Log.i("Sort", "++++++++++cur lati "+currentLatitude+"+++++++++++++++++");
+				Log.i("Sort", "++++++++++cur longi "+currentLongitude+"+++++++++++++++++");
+				double tempLa = Double.parseDouble(tempWP.getLatitude());
+				double tempLong = Double.parseDouble(tempWP.getLongitude());
+				double curLa = Double.parseDouble(currentLatitude);
+				double curLong = Double.parseDouble(currentLongitude);
+				
+				Location.distanceBetween(tempLa, tempLong, curLa, curLong, tempResult);
+				//set up the new distance from the current position into every waypoint in the list
 				wList.get(i).setDistance(tempResult[0]);
-				//Log.i("Cur dis for sort", "item "+i+" dis now="+tempResult[0]);
+				Log.i("Cur dis for sort", "===============item "+i+" dis now = "+tempResult[0]+"===============");
 			}
 			Collections.sort(wList);//Sorting the list by proximity
 			
@@ -353,8 +365,7 @@ public class WayPointActivity extends Activity {
 							toNameArrayList(wList));
 			        
 			way.setAdapter(arrAd);
-			
-		}
+		}//end sorting
 	
 	//Intent to handle receive parameters from NewWayPoint and Modify
 	@Override

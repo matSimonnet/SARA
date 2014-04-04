@@ -26,7 +26,7 @@ public class NewWayPointActivity extends Activity {
 		//string for each attribute of the new waypoint
 		private String name = "";
 		private String latitude = "";
-		private String longitude = "";	
+		private String longitude = "";
 		
 		//EditText
 		private EditText nameBox = null;
@@ -147,7 +147,7 @@ public class NewWayPointActivity extends Activity {
 								longitudeBox.setText(currentLongitude);
 							}
 							else{
-								gpsDisDialog.setTitle("GPS disable or still waiting for signal");
+								gpsDisDialog.setTitle("GPS disable");
 								gpsDisDialog.setPositiveButton("Dismiss", null);
 								gpsDisDialog.show();
 							}
@@ -170,7 +170,7 @@ public class NewWayPointActivity extends Activity {
 								longitudeBox.setText(currentLongitude);
 							}
 							else{
-								gpsDisDialog.setTitle("GPS disable or still waiting for signal");
+								gpsDisDialog.setTitle("GPS disable");
 								gpsDisDialog.setPositiveButton("Dismiss", null);
 								gpsDisDialog.show();
 							}

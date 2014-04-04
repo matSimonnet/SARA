@@ -11,6 +11,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical" >
+
+            <requestFocus />
+        </LinearLayout>
+
         <Spinner
             android:id="@+id/spinner1"
             android:layout_width="wrap_content"

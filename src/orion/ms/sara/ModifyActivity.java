@@ -149,7 +149,7 @@ public class ModifyActivity extends Activity {
 						longitudeBox.setText(currentLongitude);
 					}
 					else{
-						gpsDisDialog.setTitle("GPS disable or still waiting for signal");
+						gpsDisDialog.setTitle("GPS disable");
 						gpsDisDialog.setPositiveButton("Dismiss", null);
 						gpsDisDialog.show();
 					}
@@ -254,12 +254,12 @@ public class ModifyActivity extends Activity {
 		
 		public boolean isRecorded(String n, String la, String lo){
 			for(int i = 0;i<nameArray.length;i++){
-				if((latitudeArray[i].equalsIgnoreCase(la) && longitudeArray[i].equalsIgnoreCase(la)) || (nameArray[i].equalsIgnoreCase(n))){
+				if((latitudeArray[i].equalsIgnoreCase(la) && longitudeArray[i].equalsIgnoreCase(lo)) && (nameArray[i].equalsIgnoreCase(n))){
 					if(nameArray[i].equalsIgnoreCase(n)){
 						// same name
 						Toast.makeText(ModifyActivity.this, "This name is in the list.", Toast.LENGTH_SHORT);
 					}//end if
-					if(latitudeArray[i].equalsIgnoreCase(la) && longitudeArray[i].equalsIgnoreCase(la)){
+					if(latitudeArray[i].equalsIgnoreCase(la) && longitudeArray[i].equalsIgnoreCase(lo)){
 						//same position
 						Toast.makeText(ModifyActivity.this, "This position is in the list.", Toast.LENGTH_SHORT);
 					}//end if

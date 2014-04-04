@@ -6,14 +6,20 @@
     tools:context="orion.ms.sara.NewWayPointActivity"
     tools:ignore="MergeRootFrame" >
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical" >
+
+            <requestFocus />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/editText1"
@@ -22,8 +28,6 @@
             android:layout_marginTop="22dp"
             android:ems="10"
             android:inputType="text" >
-
-            <requestFocus />
         </EditText>
 
         <EditText
@@ -32,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
             android:ems="10"
-            android:inputType="numberDecimal" />
+            android:inputType="numberSigned|numberDecimal" />
 
         <EditText
             android:id="@+id/editText3"
@@ -40,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="29dp"
             android:ems="10"
-            android:inputType="numberDecimal" />
+            android:inputType="numberSigned|numberDecimal" />
 
         <Button
             android:id="@+id/button1"
