@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -37,59 +36,17 @@ public class MainActivity extends Activity {
 	private Intent intent_AutoSetting_activity;
 	private Intent intent_Waypoint_activity;
 
-	private TextView textViewSpeed = null;
-	private TextView textViewheading = null;
-	private TextView textViewDistance = null;
-	private TextView textViewBearing = null;
+	static TextView textViewSpeed = null;
+	static TextView textViewheading = null;
+	static TextView textViewDistance = null;
+	static TextView textViewBearing = null;
 
+	static TextToSpeech tts = null;
 	private ImageButton buttonReco = null;
-	private TextToSpeech tts = null;
 	
 	private LocationManager lm = null;
-	private LocationListener ll = null;
-	
-	private String speed = "";
-	private double speedAuto = 0.0;
-	private double speedLastAuto = 0.0;
-	private double speedTreshold = 1.0; 
-	private long speedTimeTreshold = 5;
-	private Date speedNow = null;
-	private Date speedBefore = null;
-	
-	private String heading = "";
-	private double headingAuto = 0.0;
-	private double headingLastAuto = 0.0;
-	private double headingTreshold = 10.0; 
-	private long headingTimeTreshold = 5;
-	private Date headingNow = null;
-	private Date headingBefore = null;
-	
-	private String DistanceToCurrentWaypoint = "";
-	private float[] distance = new float[1];
-	private double distanceAuto = 0.0;
-	private double distanceLastAuto = 0.0;
-	private double distanceTreshold = 0.0;
-	private long distanceTimeTreshold = 5;
-	private Date distanceNow = null;
-	private Date distanceBefore = null;
-	
-	private String BearingToCurrentWaypoint = "";
-	private double bearing = 0.0;
-	private double bearingAuto = 0.0;
-	private double bearingLastAuto = 0.0;
-	private double bearingTreshold = 10.0;
-	private long bearingTimeTreshold = 5;
-	private Date bearingNow = null;
-	private Date bearingBefore = null;
-	
+	private MyLocationListener ll = null;
 	private Location location = null;
-	private double WaypointLatitude = 999;
-	private double WaypointLongitude = 999;
-	
-	private boolean isAutoSpeed;
-	private boolean isAutoHeading;
-	private boolean isAutoDistance;
-	private boolean isAutoBearing;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,62 +57,61 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        // Restore preferences
-     	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-     	this.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
-     	this.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
-     	this.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
-     	this.headingTimeTreshold = settings.getLong("headingTimeTreshold", 5);
-     	this.distanceTimeTreshold = settings.getLong("distanceTimeTreshold", 5); 	    
-     	this.bearingTreshold = Double.parseDouble(settings.getString("bearingTreshold", "10.0"));
-     	this.bearingTimeTreshold = settings.getLong("bearingTimeTreshold", 5);	    
-     	this.isAutoSpeed = settings.getBoolean("isAutoSpeed", true);
-     	this.isAutoHeading = settings.getBoolean("isAutoHeading", true);
-     	this.isAutoDistance = settings.getBoolean("isAutoDistance", true);
-     	this.isAutoBearing = settings.getBoolean("isAutoBearing", true);
-
-        
-        //intent creation
-		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
-		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
-
-        heading =  "No Satellite";
-        speed =  "No Satellite";
-        DistanceToCurrentWaypoint = "No Satellite";
-        BearingToCurrentWaypoint = "No Satellite";
-
-        //TextView creation
-        textViewDistance = (TextView) findViewById(R.id.distanceView);
-        textViewDistance.setText(DistanceToCurrentWaypoint);
-        textViewDistance.setContentDescription("Distance is waiting for GPS signal");
-        
-        textViewBearing = (TextView) findViewById(R.id.bearingView);
-        textViewBearing.setText(BearingToCurrentWaypoint);
-        textViewBearing.setContentDescription("Bearing is waiting for GPS signal");
-            
-        textViewSpeed = (TextView) findViewById(R.id.speedView);
-        textViewSpeed.setText(speed);
-        textViewSpeed.setContentDescription("Speed is waiting for GPS signal");
-        
-        textViewheading = (TextView) findViewById(R.id.heading);
-        textViewheading.setText(heading);
-        textViewheading.setContentDescription("Heading is waiting for GPS signal");
-        
         //location manager creation
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         ll = new MyLocationListener();		
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+        
+        // Restore preferences
+     	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+     	MyLocationListener.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
+     	MyLocationListener.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
+     	MyLocationListener.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
+     	MyLocationListener.headingTimeTreshold = settings.getLong("headingTimeTreshold", 5);
+     	MyLocationListener.distanceTimeTreshold = settings.getLong("distanceTimeTreshold", 5); 	    
+     	MyLocationListener.bearingTreshold = Double.parseDouble(settings.getString("bearingTreshold", "10.0"));
+     	MyLocationListener.bearingTimeTreshold = settings.getLong("bearingTimeTreshold", 5);	    
+     	MyLocationListener.isAutoSpeed = settings.getBoolean("isAutoSpeed", true);
+     	MyLocationListener.isAutoHeading = settings.getBoolean("isAutoHeading", true);
+     	MyLocationListener.isAutoDistance = settings.getBoolean("isAutoDistance", true);
+     	MyLocationListener.isAutoBearing = settings.getBoolean("isAutoBearing", true);
+
+        //intent creation
+		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
+		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
+
+		MyLocationListener.heading =  "No Satellite";
+		MyLocationListener.speed =  "No Satellite";
+		MyLocationListener.DistanceToCurrentWaypoint = "No Satellite";
+		MyLocationListener.BearingToCurrentWaypoint = "No Satellite";
+
+        //TextView creation
+        textViewDistance = (TextView) findViewById(R.id.distanceView);
+        textViewDistance.setText(MyLocationListener.DistanceToCurrentWaypoint);
+        textViewDistance.setContentDescription("Distance is waiting for GPS signal");
+        
+        textViewBearing = (TextView) findViewById(R.id.bearingView);
+        textViewBearing.setText(MyLocationListener.BearingToCurrentWaypoint);
+        textViewBearing.setContentDescription("Bearing is waiting for GPS signal");
+            
+        textViewSpeed = (TextView) findViewById(R.id.speedView);
+        textViewSpeed.setText(MyLocationListener.speed);
+        textViewSpeed.setContentDescription("Speed is waiting for GPS signal");
+        
+        textViewheading = (TextView) findViewById(R.id.heading);
+        textViewheading.setText(MyLocationListener.heading);
+        textViewheading.setContentDescription("Heading is waiting for GPS signal");
 	 
-        this.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
-        this.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
+        MyLocationListener.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
+        MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
     
         //dates creation
-        speedBefore = new Date();
-        headingBefore = new Date();
-        distanceBefore = new Date();
-        bearingBefore = new Date();
+        MyLocationListener.speedBefore = new Date();
+        MyLocationListener.headingBefore = new Date();
+        MyLocationListener.distanceBefore = new Date();
+        MyLocationListener.bearingBefore = new Date();
         
-        //OnInitListener Creation
+		 //OnInitListener Creation
         OnInitListener onInitListener = new OnInitListener() {
         	@Override
         	public void onInit(int status) {
@@ -226,10 +182,10 @@ public class MainActivity extends Activity {
         		if (resultCode == RESULT_OK && null != data) {
         			ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 	if ( (text.get(0).equals(getResources().getString(R.string.speed)))){
-                		tts.speak(getResources().getString(R.string.speed)+ " : " + speed, TextToSpeech.QUEUE_ADD, null);
+                		tts.speak(getResources().getString(R.string.speed)+ " : " + MyLocationListener.speed, TextToSpeech.QUEUE_ADD, null);
                 	}
                 	else if ( (text.get(0).equals(getResources().getString(R.string.heading)))){
-                		tts.speak(getResources().getString(R.string.heading)+ " : " + heading, TextToSpeech.QUEUE_ADD, null);
+                		tts.speak(getResources().getString(R.string.heading)+ " : " + MyLocationListener.heading, TextToSpeech.QUEUE_ADD, null);
                 	}
                 	else {
                 		Toast.makeText(getApplicationContext(),text.get(0),Toast.LENGTH_SHORT).show();
@@ -240,30 +196,30 @@ public class MainActivity extends Activity {
         	case RESULT_AUTO_SETTING : {
         		if (resultCode == RESULT_OK && null != data) {
 
-        			this.speedTreshold = data.getDoubleExtra("speedTreshold", 1.0);
-        			this.speedTimeTreshold = data.getLongExtra("speedTimeTreshold", 5);
-        			this.headingTreshold = data.getDoubleExtra("headingTreshold", 10.0);
-        			this.headingTimeTreshold = data.getLongExtra("headingTimeTreshold", 5);
-        			this.distanceTimeTreshold = data.getLongExtra("distanceTimeTreshold", 5);
-        			this.bearingTreshold = data.getDoubleExtra("bearingTreshold", 10.0);
-        			this.bearingTimeTreshold = data.getLongExtra("bearingTimeTreshold", 5);
-        			this.isAutoSpeed = data.getBooleanExtra("isAutoSpeed", true);
-        			this.isAutoHeading = data.getBooleanExtra("isAutoHeading", true);
-        			this.isAutoDistance = data.getBooleanExtra("isAutoDistance", true);
-        			this.isAutoBearing = data.getBooleanExtra("isAutoBearing", true);
+        			MyLocationListener.speedTreshold = data.getDoubleExtra("speedTreshold", 1.0);
+        			MyLocationListener.speedTimeTreshold = data.getLongExtra("speedTimeTreshold", 5);
+        			MyLocationListener.headingTreshold = data.getDoubleExtra("headingTreshold", 10.0);
+        			MyLocationListener.headingTimeTreshold = data.getLongExtra("headingTimeTreshold", 5);
+        			MyLocationListener.distanceTimeTreshold = data.getLongExtra("distanceTimeTreshold", 5);
+        			MyLocationListener.bearingTreshold = data.getDoubleExtra("bearingTreshold", 10.0);
+        			MyLocationListener.bearingTimeTreshold = data.getLongExtra("bearingTimeTreshold", 5);
+        			MyLocationListener.isAutoSpeed = data.getBooleanExtra("isAutoSpeed", true);
+        			MyLocationListener.isAutoHeading = data.getBooleanExtra("isAutoHeading", true);
+        			MyLocationListener.isAutoDistance = data.getBooleanExtra("isAutoDistance", true);
+        			MyLocationListener.isAutoBearing = data.getBooleanExtra("isAutoBearing", true);
 
-        			Log.i("speed", this.speedTreshold+"");
-        			Log.i("speedtime", this.speedTimeTreshold+"");
-        			Log.i("heading", this.headingTreshold+"");
-        			Log.i("headingtime", this.headingTimeTreshold+"");
-        			Log.i("distancetime", this.distanceTimeTreshold+"");
-        			Log.i("bearing", this.bearingTreshold+"");
-        			Log.i("bearingtime", this.bearingTimeTreshold+"");
+        			Log.i("speed", MyLocationListener.speedTreshold+"");
+        			Log.i("speedtime", MyLocationListener.speedTimeTreshold+"");
+        			Log.i("heading", MyLocationListener.headingTreshold+"");
+        			Log.i("headingtime", MyLocationListener.headingTimeTreshold+"");
+        			Log.i("distancetime", MyLocationListener.distanceTimeTreshold+"");
+        			Log.i("bearing", MyLocationListener.bearingTreshold+"");
+        			Log.i("bearingtime", MyLocationListener.bearingTimeTreshold+"");
 
-        			Log.i("isSpeed", this.isAutoSpeed+"");
-        			Log.i("isheading", this.isAutoHeading+"");
-        			Log.i("isDistance", this.isAutoDistance+"");
-        			Log.i("isBearing", this.isAutoBearing+"");
+        			Log.i("isSpeed", MyLocationListener.isAutoSpeed+"");
+        			Log.i("isheading", MyLocationListener.isAutoHeading+"");
+        			Log.i("isDistance", MyLocationListener.isAutoDistance+"");
+        			Log.i("isBearing", MyLocationListener.isAutoBearing+"");
         		}
         	break;
         	}// end of case
@@ -272,16 +228,16 @@ public class MainActivity extends Activity {
         			
         	        location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         	        
-        			this.WaypointLatitude = data.getDoubleExtra("actLatitude", 999);
-        			this.WaypointLongitude = data.getDoubleExtra("actLongitude", 999);
+        	        MyLocationListener.WaypointLatitude = data.getDoubleExtra("actLatitude", 999);
+        	        MyLocationListener.WaypointLongitude = data.getDoubleExtra("actLongitude", 999);
         			
-        			Location.distanceBetween(WaypointLatitude, WaypointLongitude, location.getLatitude(), location.getLongitude(), distance);
-        			this.distanceTreshold = distance[0]/10000;
+        			Location.distanceBetween(MyLocationListener.WaypointLatitude, MyLocationListener.WaypointLongitude, location.getLatitude(), location.getLongitude(), MyLocationListener.distance);
+        			MyLocationListener.distanceTreshold = MyLocationListener.distance[0]/10000;
 
-        			Log.i("Waypoint Latitude", this.WaypointLatitude+"");
-        			Log.i("Waypoint Latitude", this.WaypointLongitude+"");
-        			Log.i("distance to waypoint", this.distance[0]/1000+"");
-        			Log.i("distance treshold", this.distanceTreshold+"");
+        			Log.i("Waypoint Latitude", MyLocationListener.WaypointLatitude+"");
+        			Log.i("Waypoint Latitude", MyLocationListener.WaypointLongitude+"");
+        			Log.i("distance to waypoint", MyLocationListener.distance[0]/1000+"");
+        			Log.i("distance treshold", MyLocationListener.distanceTreshold+"");
         		}
         	break;
         	}// end of case
@@ -292,9 +248,7 @@ public class MainActivity extends Activity {
 	//  action bar
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
-		
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -309,121 +263,7 @@ public class MainActivity extends Activity {
 		default:
 			break;
 		}
-
 		return false;
 	}
-    
-	// FOR NEW MYLOCATION LISTENER CLASS
-    
-    public class MyLocationListener implements LocationListener {
 
-		@Override
-		public void onLocationChanged(Location loc) {		
-			speed = String.valueOf(Utils.arrondiSpeed(loc.getSpeed()*(1.945)));
-			heading = String.valueOf((int)loc.getBearing());
-			
-			if(WaypointLatitude == 999 || WaypointLongitude == 999) {
-				textViewDistance.setText("No Waypoint");
-				textViewBearing.setText("No Waypoint");  
-		        textViewDistance.setContentDescription("Waypoint is not activated");
-		        textViewBearing.setContentDescription("Waypoint is not activated");
-			}
-			else {
-				// calculate distance to the current waypoint
-				Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distance);
-				DistanceToCurrentWaypoint = String.valueOf(Utils.arrondiDistance(distance[0]/1000));
-				
-				// calculate bearing to the current waypoint						
-				bearing = Utils._Bearing(loc.getLatitude(), loc.getLongitude(), WaypointLatitude, WaypointLongitude);
-				BearingToCurrentWaypoint = String.valueOf(Utils.arrondiBearing(bearing));
-				
-				if (isAutoBearing){
-					bearingAuto = (int) bearing;
-					bearingNow = new Date();
-				
-					int bearingDiff = java.lang.Math.abs((int)bearingLastAuto - (int)bearingAuto);
-					if (bearingDiff > 180) bearingDiff = java.lang.Math.abs(bearingDiff-360);
-				
-					if 	((( bearingDiff > bearingTreshold ))
-						&&	((bearingNow.getTime() - bearingBefore.getTime()) > bearingTimeTreshold*1000)){
-						tts.speak(getResources().getString(R.string.bearing)+ " : " + BearingToCurrentWaypoint + " " + getResources().getString(R.string.headingunit), TextToSpeech.QUEUE_ADD, null);
-						bearingLastAuto = bearingAuto;
-						bearingBefore = new Date();
-						Log.i("bearing", BearingToCurrentWaypoint);
-					}
-				}//end of if bearingAutoCheck...
-			
-				if (isAutoDistance){
-					distanceAuto = distance[0]/1000;
-					distanceNow = new Date();		
-				
-					if 	((( distanceAuto < distanceLastAuto - distanceTreshold) || ( distanceAuto > distanceLastAuto + distanceTreshold))
-						&&	((distanceNow.getTime() - distanceBefore.getTime()) > distanceTimeTreshold*1000)){
-						tts.speak(getResources().getString(R.string.Distance)+ " : " + DistanceToCurrentWaypoint + " " + getResources().getString(R.string.DistanceUnit), TextToSpeech.QUEUE_ADD, null);
-						distanceLastAuto = distanceAuto;
-						distanceBefore = new Date();
-						Log.i("distance", DistanceToCurrentWaypoint);
-					}
-				}//end of if distanceAutoCheck...
-			}// end of else..
-				
-			if (isAutoSpeed){
-				speedAuto = Utils.arrondiSpeed(loc.getSpeed()*(1.945));
-				speedNow = new Date();
-				if 	((( speedAuto < speedLastAuto - speedTreshold ) || ( speedAuto > speedLastAuto + speedTreshold ))
-					&&	((speedNow.getTime() - speedBefore.getTime()) > speedTimeTreshold*1000)){
-				tts.speak(getResources().getString(R.string.speed)+ " : " + speed + " " + getResources().getString(R.string.speedunit), TextToSpeech.QUEUE_ADD, null);
-				speedLastAuto = speedAuto;
-				speedBefore = new Date();
-				Log.i("speed", speed);
-				}
-			}//end of if speedAutoCheck...
-
-			if (isAutoHeading){
-				headingAuto = (int)loc.getBearing();
-				headingNow = new Date();
-				
-				int headingDiff = java.lang.Math.abs((int)headingLastAuto - (int)headingAuto);
-				if (headingDiff > 180) headingDiff = java.lang.Math.abs(headingDiff-360);
-				
-				if 	((( headingDiff > headingTreshold ))
-					&&	((headingNow.getTime() - headingBefore.getTime()) > headingTimeTreshold*1000)){
-				tts.speak(getResources().getString(R.string.heading)+ " : " + heading + " " + getResources().getString(R.string.headingunit), TextToSpeech.QUEUE_ADD, null);
-				headingLastAuto = headingAuto;
-				headingBefore = new Date();
-				Log.i("heading", heading);
-
-				}
-			}//end of if headingAutoCheck...
-				
-			//displaying value
-			textViewSpeed.setText(speed);
-			textViewheading.setText(heading);
-			textViewSpeed.setContentDescription(getResources().getString(R.string.speed) + " " + speed + " " + getResources().getString(R.string.speedunit));			
-		    textViewheading.setContentDescription(getResources().getString(R.string.heading)+ " "  + heading  + " " + getResources().getString(R.string.headingunit));
-			
-			if(WaypointLatitude != 999 && WaypointLongitude != 999) {
-				textViewDistance.setText(DistanceToCurrentWaypoint);
-				textViewBearing.setText(BearingToCurrentWaypoint);  
-		        textViewDistance.setContentDescription("Distance" + DistanceToCurrentWaypoint + " " + "kilometres");
-		        textViewBearing.setContentDescription("Bearing" + BearingToCurrentWaypoint + " " + "degrees");
-			}
-		}
-
-		@Override
-		public void onProviderDisabled(String provider) {
-			Toast.makeText( getApplicationContext(),"Gps Disabled",Toast.LENGTH_SHORT).show();	
-		}
-
-		@Override
-		public void onProviderEnabled(String provider) {
-			Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();	
-		}
-
-		@Override
-		public void onStatusChanged(String provider, int status, Bundle extras) {
-			//Log.i("LocationListener","onStatusChanged");
-		}
-    	
-    } //end of MyLocationListener
 }//end of Activity
