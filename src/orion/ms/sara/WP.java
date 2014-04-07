@@ -13,11 +13,10 @@ public class WP implements Comparable<WP>{
 		private double bearing = 0.0;
 		
 		//constructor
-		public WP(String n, String la, String lo, double dis){
+		public WP(String n, String la, String lo){
 			this.name = n;
 			this.latitude = la;
 			this.longitude = lo;
-			this.distance = dis;
 		}
 
 		public String getName() {

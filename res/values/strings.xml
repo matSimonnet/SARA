@@ -79,6 +79,7 @@
     <string name="bearingtreshold">bearing treshold</string>
     <string name="bearingtimetreshold">minimum bearing repetition</string>
     <string name="distancetimetreshold">minimum distance repetition</string>
+    <string name="save_last_num">0</string>
     
     
 

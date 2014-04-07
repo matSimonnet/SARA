@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.location.Location;
@@ -34,7 +35,7 @@ public class WayPointActivity extends Activity {
 				
 		private TextToSpeech tts = null;
 		
-		//a list of many waypoints sorted by proximity
+		//a list of many way points sorted by proximity
 		public static List<WP> wayPointList = new ArrayList<WP>();
 		
 		//Receiving parameter arrays
@@ -42,12 +43,12 @@ public class WayPointActivity extends Activity {
 		private String newLatitude = "";
 		private String newLongitude = "";
 		
-		//string for each attribute of the modifying waypoint
+		//string for each attribute of the modifying way point
 		private String modName = "";
 		private String modLatitude = "";
 		private String modLongitude = "";
 		
-		//Generating default number for a new waypoint's name
+		//Generating a number for a new waypoint's default name
 		public static int lastNum = 0;
 		
 		//code for communication between activity
@@ -58,10 +59,10 @@ public class WayPointActivity extends Activity {
 		private ArrayAdapter<String> arrAd = null;
 		
 		//alert dialog 
-		private AlertDialog.Builder choosingDialog = null;//after choosing the waypoint from the list
+		private AlertDialog.Builder choosingDialog = null;//after choosing the way point from the list
 		private AlertDialog.Builder deletingDialog = null;//after choosing delete button from the list
 		
-		//choosing waypoint
+		//choosing way point
 		private WP choosingWaypoint = null;
 		
 		//location handler
@@ -71,13 +72,20 @@ public class WayPointActivity extends Activity {
 		//current position
 		private String currentLatitude = "0.0";
 		private String currentLongitude = "0.0";
-	
+		
+		//shared preferences
+		SharedPreferences sharedPref ;
+		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 
 			setContentView(R.layout.activity_way_point);
 			
+			//load preferences
+			sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+			loadPref();
+					
 			//OnInitListener Creation
 			OnInitListener onInitListener = new OnInitListener() {
 				@Override
@@ -119,8 +127,8 @@ public class WayPointActivity extends Activity {
 
 			//update location
 			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-						
-			//sorting waypoint
+				
+			//sorting way point
 			sortingWaypointList(wayPointList);
 
 			//alert dialog creation
@@ -143,7 +151,7 @@ public class WayPointActivity extends Activity {
 	                				//notify
 	                				Toast.makeText(WayPointActivity.this,"You selected : "+toNameArrayList(wayPointList).get(i),Toast.LENGTH_SHORT).show();
 	        	      				tts.speak("Your Selected : "+toNameArrayList(wayPointList).get(i), tts.QUEUE_FLUSH, null);
-	                				//choosing waypoint
+	                				//choosing way point
 	        	      				choosingWaypoint = wayPointList.get(i);
 	        	      				
 	        	      				//dialog creation
@@ -164,7 +172,7 @@ public class WayPointActivity extends Activity {
 
 			                				//change back to the main activity
 											Intent intentToMain = new Intent(WayPointActivity.this,MainActivity.class);
-											//passing activate waypoint name and position
+											//passing activate way point name and position
 											intentToMain.putExtra("actName",choosingWaypoint.getName());//name
 											intentToMain.putExtra("actLatitude", Double.parseDouble( choosingWaypoint.getLatitude()));//latitude
 											intentToMain.putExtra("actLongitude", Double.parseDouble(choosingWaypoint.getLongitude()));//longitude
@@ -191,7 +199,7 @@ public class WayPointActivity extends Activity {
 											intentToModify.putExtra("nameArrayFromWP", nameArray(wayPointList));//name
 											intentToModify.putExtra("latitudeArrayFromWP", latitudeArray(wayPointList));//latitude
 											intentToModify.putExtra("longitudeArrayFromWP", longitudeArray(wayPointList));//longitude
-											//passing modifying waypoint name and position
+											//passing modifying way point name and position
 											intentToModify.putExtra("modName", choosingWaypoint.getName());//name
 											intentToModify.putExtra("modLatitude", choosingWaypoint.getLatitude());//latitude
 											intentToModify.putExtra("modLongitude", choosingWaypoint.getLongitude());//longitude
@@ -247,7 +255,7 @@ public class WayPointActivity extends Activity {
 
 	        });
 			
-			//"New Waypoint" button
+			//"New Way point" button
 			//button creation
 			newWay = (Button) findViewById(R.id.button1);
 					
@@ -269,18 +277,18 @@ public class WayPointActivity extends Activity {
 								intentToNewWayPoint.putExtra("nameArrayFromWP", nameArray(wayPointList));//name
 								intentToNewWayPoint.putExtra("latitudeArrayFromWP", latitudeArray(wayPointList));//latitude
 								intentToNewWayPoint.putExtra("longitudeArrayFromWP", longitudeArray(wayPointList));//longitude
-								//sending default name for a new waypoint
+								//sending default name for a new way point
 								intentToNewWayPoint.putExtra("defaultNameFromWP", String.valueOf("Waypoint"+(lastNum+1)));
 								//start NewWayPoint activity
 								startActivityForResult(intentToNewWayPoint, NEW_WAYPOINT);
 							}
 						}//end of onClick
 				    	
-				    });//end of newway clickListener	
+				    });//end of new way clickListener	
 	
 	}//end of OnCreate
 	
-	//to convert from array list of waypoint into name of the waypoint array list
+	//to convert from array list of way point into name of the way point array list
 	public static ArrayList<String> toNameArrayList(List<WP> wList){
 		ArrayList<String> nameList = new ArrayList<String>();
 		for(int i = 0;i<wList.size();i++){
@@ -290,7 +298,7 @@ public class WayPointActivity extends Activity {
 		return nameList;
 	}
 	
-	//to convert from array list of waypoint into name of the waypoint array
+	//to convert from array list of way point into name of the way point array
 	public String[] nameArray(List<WP> wList){
 		String[] arrayName = new String[wList.size()];
 		for(int i = 0;i<wList.size();i++){
@@ -298,7 +306,7 @@ public class WayPointActivity extends Activity {
 		}
 		return arrayName;
 	}
-	//to convert from array list of waypoint into latitude of the waypoint array
+	//to convert from array list of way point into latitude of the way point array
 	public String[] latitudeArray(List<WP> wList){
 		String[] arrayLatitude = new String[wList.size()];
 		for(int i = 0;i<wList.size();i++){
@@ -306,7 +314,7 @@ public class WayPointActivity extends Activity {
 		}
 		return arrayLatitude;
 	}
-	//to convert from array list of waypoint into longitude of the waypoint array
+	//to convert from array list of way point into longitude of the way point array
 	public String[] longitudeArray(List<WP> wList){
 		String[] arrayLongitude = new String[wList.size()];
 		for(int i = 0;i<wList.size();i++){
@@ -315,28 +323,28 @@ public class WayPointActivity extends Activity {
 		return arrayLongitude;
 	}
 	
-	//adding new waypoint into the waypoint list
+	//adding new way point into the way point list
 	public void addNewWPtoList(List<WP> wList,String n,String la,String lo,double dis,double bear){
-		//Get the latest number after adding a new waypoint
+		//Get the latest number after adding a new way point
 		if(n.contains("Waypoint")){
-			lastNum = Integer.parseInt(n.substring(n.lastIndexOf("t")+1));//substring "waypoint" name to get the number after that
+			lastNum = Integer.parseInt(n.substring(n.lastIndexOf("t")+1));//substring "way point" name to get the number after that
 			//Log.i("NameNUM", "---------------lastnum :"+lastNum+"----------------");
 		}
-		//Adding the new waypoint into the list
-		wList.add(new WP(n,la,lo,0.0));//create new waypoint with assuming distance
+		//Adding the new way point into the list
+		wList.add(new WP(n,la,lo));//create new way point with assuming distance
 		sortingWaypointList(wList);//sorting the list
 	}
 	
-	//deleting the waypoint from the waypoint list
+	//deleting the way point from the way point list
 	public void deleteWPfromList(List<WP> wList, WP del){
-		//Deleting the waypoint from the list
+		//Deleting the way point from the list
 		wList.remove(del);
 		sortingWaypointList(wList);//sorting the list
 	}
 	
-	//sorting the waypoint list by proximity calculated from current distance
+	//sorting the way point list by proximity calculated from current distance
 		private void sortingWaypointList(List<WP> wList){
-			//temp waypoint, distance and result
+			//temp way point, distance and result
 			WP tempWP = null;
 			float[] tempResult = new float[3];
 			for(int i = 0;i< wList.size();i++){
@@ -352,7 +360,7 @@ public class WayPointActivity extends Activity {
 				double curLong = Double.parseDouble(currentLongitude);
 				
 				Location.distanceBetween(tempLa, tempLong, curLa, curLong, tempResult);
-				//set up the new distance from the current position into every waypoint in the list
+				//set up the new distance from the current position into every way point in the list
 				wList.get(i).setDistance(tempResult[0]);
 				Log.i("Cur dis for sort", "===============item "+i+" dis now = "+tempResult[0]+"===============");
 			}
@@ -363,15 +371,77 @@ public class WayPointActivity extends Activity {
 			arrAd = new ArrayAdapter<String>(WayPointActivity.this,
 							android.R.layout.simple_spinner_item, 
 							toNameArrayList(wList));
-			        
+			arrAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);      
 			way.setAdapter(arrAd);
+			
+			//save the last number of default name value and attributes of way point in the list
+			savePref(lastNum,nameArray(wList),latitudeArray(wList),longitudeArray(wList));
+			
 		}//end sorting
+		
+		//load preferences
+		private void loadPref(){
+			//last number
+			int lnum = sharedPref.getInt(getString(R.string.save_last_num),0);
+			lastNum = lnum;
+			
+			//name array
+			int nameSize = sharedPref.getInt("nameArray" + "_size", 0);  
+		    String name[] = new String[nameSize];  
+		    for(int i=0;i<nameSize;i++)  
+		        name[i] = sharedPref.getString("nameArray" + "_" + i, null);
+		    
+		    //latitude array
+		    int latitudeSize = sharedPref.getInt("latitudeArray" + "_size", 0);  
+		  	String latitude[] = new String[latitudeSize];  
+		  	for(int i=0;i<latitudeSize;i++)  
+		  		latitude[i] = sharedPref.getString("latitudeArray" + "_" + i, null);
+		  	
+		  	//longitude array
+		    int longitudeSize = sharedPref.getInt("longitudeArray" + "_size", 0);  
+		  	String longitude[] = new String[longitudeSize];  
+		  	for(int i=0;i<longitudeSize;i++)  
+		  		longitude[i] = sharedPref.getString("longitudeArray" + "_" + i, null);
+		  	
+		  	//way point list
+		  	List<WP> wList = new ArrayList<WP>();
+		  	for(int i=0;i<nameSize;i++){
+			  	wList.add(new WP(name[i],latitude[i],longitude[i]));
+		  	}
+		  	
+		  	wayPointList = wList;
+		}
+		
+		//save preferences
+		private void savePref(int lnum, String[] name, String[] lati, String[] longi){
+			SharedPreferences.Editor editor = sharedPref.edit();
+			//last num
+			editor.putInt(getString(R.string.save_last_num), lnum);
+			
+			//name array
+			editor.putInt("nameArray" +"_size", name.length);  
+		    for(int i=0;i<name.length;i++)  
+		        editor.putString("nameArray" + "_" + i, name[i]);
+		    
+		    //latitude array
+		    editor.putInt("latitudeArray" +"_size", lati.length);  
+		    for(int i=0;i<lati.length;i++)  
+		        editor.putString("latitudeArray" + "_" + i, lati[i]);
+		    
+		    //longitude array
+		    editor.putInt("longitudeArray" +"_size", longi.length);  
+		    for(int i=0;i<longi.length;i++)  
+		        editor.putString("longitudeArray" + "_" + i, longi[i]);
+			editor.commit();
+		}
+		
 	
 	//Intent to handle receive parameters from NewWayPoint and Modify
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intentFromAnother){
         super.onActivityResult(requestCode, resultCode, intentFromAnother);
-    	//get parameters from the NewWayPoint activity when create a new waypoint
+		
+    	//get parameters from the NewWayPoint activity when create a new way point
         if(requestCode == NEW_WAYPOINT && resultCode == RESULT_OK){
         	newName = intentFromAnother.getStringExtra("newName");
     		newLatitude = intentFromAnother.getStringExtra("newLatitude");
@@ -393,6 +463,12 @@ public class WayPointActivity extends Activity {
         }
         
 	}
+	
+	//saving preferences including both last number value for default name and way point list
+	
+
+	
+	
 
 	  @Override
 	  protected void onPause() {
