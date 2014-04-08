@@ -6,8 +6,12 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnDismissListener;
+import android.content.DialogInterface.OnKeyListener;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -18,6 +22,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -142,14 +147,11 @@ public class WayPointActivity extends Activity {
 			//Intent creation
 			intentToMain = new Intent(WayPointActivity.this,MainActivity.class);
 
-			
 			//spinner set up
 			way.setContentDescription("Choose the waypoint in ");
 			
 			//setOnItemSelectedListener
 			way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
-				
-				 				
 				//OnItemSelectedListener creation
 	            @SuppressWarnings("static-access")
 				public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) { 
@@ -248,8 +250,7 @@ public class WayPointActivity extends Activity {
 	                				if(i!=0){
 	                					//show the choosing dialog if selected some way point from the list
 		                				choosingDialog.show();
-		                				//set back to default
-		                				i = 0;
+		                				sortingWaypointList(wayPointList);
 	                				}//end if
 	                			}//end switch case
 	                    }catch(Exception e){
