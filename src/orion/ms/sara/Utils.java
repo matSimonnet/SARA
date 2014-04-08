@@ -33,10 +33,22 @@ public class Utils {
         return (deg + 360) % 360;  
     }  
     
+    public static String precisionDistance(double distance) {
+		if(distance < 1) {
+			return String.valueOf((int) (distance * 1000));
+		}
+		if(distance >= 1 && distance < 10) {
+			return String.valueOf(arrondiDistance(distance));
+		}
+		else {
+			return String.valueOf((int) distance);
+		}
+    }
+    
 	//method to round 1 decimal
 	public static double arrondiSpeed(double val) {return (Math.floor(val*10))/10;}
 	public static double arrondiDistance(double val) {return (Math.floor(val*10))/10;}
 	public static double arrondiBearing(double val) {return (Math.floor(val*10))/10;}
-	public static double arrondiSpeedTreshold(double val) {return (Math.floor((val+0.00001)*10))/10;}
-	public static double arrondiHeadingTreshold(double val) {return (Math.floor((val+0.00001)*10))/10;}
+	public static double arrondiSpeedTreshold(double val) {return (Math.floor((val+0.000001)*10))/10;}
+	public static double arrondiHeadingTreshold(double val) {return (Math.floor((val+0.000001)*10))/10;}
 }

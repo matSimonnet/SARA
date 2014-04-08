@@ -26,6 +26,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
 	public static final String PREFS_NAME = "MyPrefsFile";
+    private static Context mContext;
 
 	// variables declarations
 	protected static final int RESULT_SPEECH = 1;
@@ -56,6 +57,7 @@ public class MainActivity extends Activity {
 		
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContext = this;
         
         //location manager creation
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -63,48 +65,34 @@ public class MainActivity extends Activity {
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
         
         // Restore preferences
-     	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-     	MyLocationListener.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
-     	MyLocationListener.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
-     	MyLocationListener.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
-     	MyLocationListener.headingTimeTreshold = settings.getLong("headingTimeTreshold", 5);
-     	MyLocationListener.distanceTimeTreshold = settings.getLong("distanceTimeTreshold", 5); 	    
-     	MyLocationListener.bearingTreshold = Double.parseDouble(settings.getString("bearingTreshold", "10.0"));
-     	MyLocationListener.bearingTimeTreshold = settings.getLong("bearingTimeTreshold", 5);	    
-     	MyLocationListener.isAutoSpeed = settings.getBoolean("isAutoSpeed", true);
-     	MyLocationListener.isAutoHeading = settings.getBoolean("isAutoHeading", true);
-     	MyLocationListener.isAutoDistance = settings.getBoolean("isAutoDistance", true);
-     	MyLocationListener.isAutoBearing = settings.getBoolean("isAutoBearing", true);
+        LoadPref();
 
         //intent creation
 		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
 		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
 
-		MyLocationListener.heading =  "No Satellite";
-		MyLocationListener.speed =  "No Satellite";
-		MyLocationListener.DistanceToCurrentWaypoint = "No Satellite";
-		MyLocationListener.BearingToCurrentWaypoint = "No Satellite";
+		MyLocationListener.heading =  getResources().getString(R.string.no_satellite);
+		MyLocationListener.speed =  getResources().getString(R.string.no_satellite);
+		MyLocationListener.DistanceToCurrentWaypoint = getResources().getString(R.string.no_satellite);
+		MyLocationListener.BearingToCurrentWaypoint = getResources().getString(R.string.no_satellite);
 
         //TextView creation
         textViewDistance = (TextView) findViewById(R.id.distanceView);
         textViewDistance.setText(MyLocationListener.DistanceToCurrentWaypoint);
-        textViewDistance.setContentDescription("Distance is waiting for GPS signal");
+        textViewDistance.setContentDescription(getResources().getString(R.string.distance) + " " + getResources().getString(R.string.waiting_gps));
         
         textViewBearing = (TextView) findViewById(R.id.bearingView);
         textViewBearing.setText(MyLocationListener.BearingToCurrentWaypoint);
-        textViewBearing.setContentDescription("Bearing is waiting for GPS signal");
+        textViewBearing.setContentDescription(getResources().getString(R.string.bearing) + " " + getResources().getString(R.string.waiting_gps));
             
         textViewSpeed = (TextView) findViewById(R.id.speedView);
         textViewSpeed.setText(MyLocationListener.speed);
-        textViewSpeed.setContentDescription("Speed is waiting for GPS signal");
+        textViewSpeed.setContentDescription(getResources().getString(R.string.speed) + " " + getResources().getString(R.string.waiting_gps));
         
         textViewheading = (TextView) findViewById(R.id.heading);
         textViewheading.setText(MyLocationListener.heading);
-        textViewheading.setContentDescription("Heading is waiting for GPS signal");
-	 
-        MyLocationListener.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
-        MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
-    
+        textViewheading.setContentDescription(getResources().getString(R.string.heading) + " " + getResources().getString(R.string.waiting_gps));
+	     
         //dates creation
         MyLocationListener.speedBefore = new Date();
         MyLocationListener.headingBefore = new Date();
@@ -151,14 +139,12 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-		//tts.speak("resume", TextToSpeech.QUEUE_FLUSH, null);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		lm.removeUpdates(ll);
-		//tts.speak("pause", TextToSpeech.QUEUE_FLUSH, null);
 	}
   
 	@Override
@@ -265,5 +251,26 @@ public class MainActivity extends Activity {
 		}
 		return false;
 	}
+	
+	public void LoadPref() {
+     	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+     	MyLocationListener.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
+     	MyLocationListener.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
+     	MyLocationListener.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
+     	MyLocationListener.headingTimeTreshold = settings.getLong("headingTimeTreshold", 5);
+     	MyLocationListener.distanceTimeTreshold = settings.getLong("distanceTimeTreshold", 5); 	    
+     	MyLocationListener.bearingTreshold = Double.parseDouble(settings.getString("bearingTreshold", "10.0"));
+     	MyLocationListener.bearingTimeTreshold = settings.getLong("bearingTimeTreshold", 5);	    
+     	MyLocationListener.isAutoSpeed = settings.getBoolean("isAutoSpeed", true);
+     	MyLocationListener.isAutoHeading = settings.getBoolean("isAutoHeading", true);
+     	MyLocationListener.isAutoDistance = settings.getBoolean("isAutoDistance", true);
+     	MyLocationListener.isAutoBearing = settings.getBoolean("isAutoBearing", true);
+     	
+        MyLocationListener.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
+        MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
+	}
+    public static Context getContext(){
+        return mContext;
+    }
 
 }//end of Activity

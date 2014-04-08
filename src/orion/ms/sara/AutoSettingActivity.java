@@ -105,22 +105,11 @@ public class AutoSettingActivity extends Activity{
 		setContentView(R.layout.activity_autosetting);
 		
 	    // Restore preferences
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		this.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
-	    this.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);   
-		this.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
-	    this.headingTimeTreshold = settings.getLong("headingTimeTreshold", 5);
-	    this.distanceTimeTreshold = settings.getLong("distanceTimeTreshold", 5);   
-	    this.bearingTreshold = Double.parseDouble(settings.getString("bearingTreshold", "10.0"));
-	    this.bearingTimeTreshold = settings.getLong("bearingTimeTreshold", 5);  
-	    this.isAutoSpeed = settings.getBoolean("isAutoSpeed", true);
-	    this.isAutoHeading = settings.getBoolean("isAutoHeading", true);
-	    this.isAutoDistance = settings.getBoolean("isAutoDistance", true);
-	    this.isAutoBearing = settings.getBoolean("isAutoBearing", true);
-    
+		LoadPref();
+		
 	    // save setting button
 		SaveSettingButton = (Button) findViewById(R.id.SaveSettingButton);
-		SaveSettingButton.setContentDescription("Save");
+		SaveSettingButton.setContentDescription(getResources().getString(R.string.savebutton));
 
 	    //setSilent(silent);
 		SpeedAutoCheckBox = (CheckBox) findViewById(R.id.speedAutoCheckBox);
@@ -142,38 +131,38 @@ public class AutoSettingActivity extends Activity{
 
 	    //speed treshold view
 		textViewSpeedTreshold = (TextView) findViewById(R.id.speedTresholdView);
-		textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + getResources().getString(R.string.SpeedUnit));
-	    textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.SpeedUnit));
+		textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + getResources().getString(R.string.speedunit));
+	    textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.speedunit));
 	    
 	    //speed time treshold view
 	    textViewSpeedTimeTreshold = (TextView) findViewById(R.id.speedTimeTresholdView3);
-		textViewSpeedTimeTreshold.setText(getResources().getString(R.string.speedtimetreshold)+ " "  + speedTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-	    textViewSpeedTimeTreshold.setContentDescription(getResources().getString(R.string.speedtimetreshold) + speedTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
+		textViewSpeedTimeTreshold.setText(getResources().getString(R.string.speedtimetreshold)+ " "  + speedTimeTreshold + " " + getResources().getString(R.string.timeunit));
+	    textViewSpeedTimeTreshold.setContentDescription(getResources().getString(R.string.speedtimetreshold) + speedTimeTreshold + " " + getResources().getString(R.string.timeunit));
 	    
 	    //heading treshold view
 	    textViewHeadingTreshold = (TextView) findViewById(R.id.HeadingTresholdView);
-		textViewHeadingTreshold.setText(getResources().getString(R.string.headingtreshold)+ " "  + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
-	    textViewHeadingTreshold.setContentDescription(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
+		textViewHeadingTreshold.setText(getResources().getString(R.string.headingtreshold)+ " "  + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit));
+	    textViewHeadingTreshold.setContentDescription(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit));
 	    
 	    //heading time treshold view
 	    textViewHeadingTimeTreshold = (TextView) findViewById(R.id.HeadingTimeTresholdView);
-		textViewHeadingTimeTreshold.setText(getResources().getString(R.string.headingtimetreshold)+ " "  + headingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-	    textViewHeadingTimeTreshold.setContentDescription(getResources().getString(R.string.headingtimetreshold) + headingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
+		textViewHeadingTimeTreshold.setText(getResources().getString(R.string.headingtimetreshold)+ " "  + headingTimeTreshold + " " + getResources().getString(R.string.timeunit));
+	    textViewHeadingTimeTreshold.setContentDescription(getResources().getString(R.string.headingtimetreshold) + headingTimeTreshold + " " + getResources().getString(R.string.timeunit));
 	    
 	    //distance time treshold view
 	    textViewDistanceTimeTreshold = (TextView) findViewById(R.id.DistanceTimeTresholdView);
-	    textViewDistanceTimeTreshold.setText(getResources().getString(R.string.distancetimetreshold)+ " "  + distanceTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-	    textViewDistanceTimeTreshold.setContentDescription(getResources().getString(R.string.distancetimetreshold) + distanceTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
+	    textViewDistanceTimeTreshold.setText(getResources().getString(R.string.distancetimetreshold)+ " "  + distanceTimeTreshold + " " + getResources().getString(R.string.timeunit));
+	    textViewDistanceTimeTreshold.setContentDescription(getResources().getString(R.string.distancetimetreshold) + distanceTimeTreshold + " " + getResources().getString(R.string.timeunit));
 	    
 	    //bearing treshold view
 	    textViewBearingTreshold = (TextView) findViewById(R.id.BearingTresholdView);
-	    textViewBearingTreshold.setText(getResources().getString(R.string.bearingtreshold)+ " "  + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
-	    textViewBearingTreshold.setContentDescription(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
+	    textViewBearingTreshold.setText(getResources().getString(R.string.bearingtreshold)+ " "  + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit));
+	    textViewBearingTreshold.setContentDescription(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit));
 	    
 	    //bearing time treshold view
 	    textViewBearingTimeTreshold = (TextView) findViewById(R.id.BearingTimeTresholdView);
-	    textViewBearingTimeTreshold.setText(getResources().getString(R.string.bearingtimetreshold)+ " "  + bearingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-	    textViewBearingTimeTreshold.setContentDescription(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
+	    textViewBearingTimeTreshold.setText(getResources().getString(R.string.bearingtimetreshold)+ " "  + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
+	    textViewBearingTimeTreshold.setContentDescription(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
 
 	    // increase&decrease speed treshold button
 		IncreaseSpeedTresholdButton = (Button) findViewById(R.id.IncreaseSpeedTresholdButton);
@@ -224,150 +213,150 @@ public class AutoSettingActivity extends Activity{
 				if (v== IncreaseSpeedTresholdButton){
 					if(speedTreshold >= 0.0 && speedTreshold < 3.0) {
 						speedTreshold = Utils.arrondiSpeedTreshold(speedTreshold + speedTresholdStep);
-						textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + getResources().getString(R.string.SpeedUnit));
-						textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.SpeedUnit));
-						tts.speak(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.SpeedUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + getResources().getString(R.string.speedunit));
+						textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.speedunit));
+						tts.speak(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.speedunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "inc speed");
 					}
 					else {
-						tts.speak("Speed treshold is 3.0 knots. Can't increase.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.maxspeedtreshold) + getResources().getString(R.string.cant_increase),TextToSpeech.QUEUE_FLUSH, null);
 					}
 		        }
 				if (v== DecreaseSpeedTresholdButton){
-					if(speedTreshold > 0.0 && speedTreshold <= 3.0) {
+ 					if(speedTreshold > 0.0 && speedTreshold <= 3.0) {
 						speedTreshold = Utils.arrondiSpeedTreshold(speedTreshold - speedTresholdStep);
-						textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + getResources().getString(R.string.SpeedUnit));
-						textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.SpeedUnit));
-						tts.speak(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.SpeedUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + getResources().getString(R.string.speedunit));
+						textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.speedunit));
+						tts.speak(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.speedunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "dec speed");
 					}
 					else {
-						tts.speak("Speed treshold is 0.0 knot. Can't decrease.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.minspeedtreshold) + getResources().getString(R.string.cant_decrease),TextToSpeech.QUEUE_FLUSH, null);
 					}
 		        }
 				if (v== IncreaseSpeedTimeTresholdButton){
 					if(speedTimeTreshold >= 0 && speedTimeTreshold < 30) {
 						speedTimeTreshold = speedTimeTreshold + speedTimeTresholdStep;
-						textViewSpeedTimeTreshold.setText(getResources().getString(R.string.speedtimetreshold)+ " "  + speedTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						textViewSpeedTimeTreshold.setContentDescription(getResources().getString(R.string.speedtimetreshold) + speedTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						tts.speak(getResources().getString(R.string.speedtimetreshold) + speedTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewSpeedTimeTreshold.setText(getResources().getString(R.string.speedtimetreshold)+ " "  + speedTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						textViewSpeedTimeTreshold.setContentDescription(getResources().getString(R.string.speedtimetreshold) + speedTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						tts.speak(getResources().getString(R.string.speedtimetreshold) + speedTimeTreshold + " " + getResources().getString(R.string.timeunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "increase speed time");
 					}
 					else {
-						tts.speak("Minimum speed repetition is 30 seconds. Can't increase.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.maxspeedtimetreshold) + getResources().getString(R.string.cant_increase),TextToSpeech.QUEUE_FLUSH, null);
 					}
 		        }
 				if (v== DecreaseSpeedTimeTresholdButton){
 					if(speedTimeTreshold > 0 && speedTimeTreshold <= 30) {
 						speedTimeTreshold = speedTimeTreshold - speedTimeTresholdStep;
-						textViewSpeedTimeTreshold.setText(getResources().getString(R.string.speedtimetreshold)+ " "  + speedTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						textViewSpeedTimeTreshold.setContentDescription(getResources().getString(R.string.speedtimetreshold) + speedTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						tts.speak(getResources().getString(R.string.speedtimetreshold) + speedTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewSpeedTimeTreshold.setText(getResources().getString(R.string.speedtimetreshold)+ " "  + speedTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						textViewSpeedTimeTreshold.setContentDescription(getResources().getString(R.string.speedtimetreshold) + speedTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						tts.speak(getResources().getString(R.string.speedtimetreshold) + speedTimeTreshold + " " + getResources().getString(R.string.timeunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "decrease speed time");
 					}
 					else {
-						tts.speak("Minimum speed repetition is 0 seconds. Can't decrease.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.minspeedtimetreshold) + getResources().getString(R.string.cant_decrease),TextToSpeech.QUEUE_FLUSH, null);
 					}
 		        }
 				if (v== IncreaseHeadingTresholdButton){
 					if(headingTreshold >= 0 && headingTreshold < 30) {
 						headingTreshold = Utils.arrondiHeadingTreshold(headingTreshold + headingTresholdStep);
-						textViewHeadingTreshold.setText(getResources().getString(R.string.headingtreshold)+ " "  + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
-						textViewHeadingTreshold.setContentDescription(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
-						tts.speak(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.HeadingUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewHeadingTreshold.setText(getResources().getString(R.string.headingtreshold)+ " "  + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit));
+						textViewHeadingTreshold.setContentDescription(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit));
+						tts.speak(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "inc heading");
 					}
 					else {
-						tts.speak("Heading treshold is 30 degrees. Can't increase.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.maxheadingtreshold) + getResources().getString(R.string.cant_increase),TextToSpeech.QUEUE_FLUSH, null);
 					}
 		        }	
 				if (v== DecreaseHeadingTresholdButton){
 					if(headingTreshold > 0 && headingTreshold <= 30) {
 						headingTreshold = Utils.arrondiHeadingTreshold(headingTreshold - headingTresholdStep);
-						textViewHeadingTreshold.setText(getResources().getString(R.string.headingtreshold)+ " "  + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
-						textViewHeadingTreshold.setContentDescription(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
-						tts.speak(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.HeadingUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewHeadingTreshold.setText(getResources().getString(R.string.headingtreshold)+ " "  + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit));
+						textViewHeadingTreshold.setContentDescription(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit));
+						tts.speak(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "dec heading");
 					}
 					else {
-						tts.speak("Heading treshold is 0 degrees. Can't decrease.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.minheadingtreshold) + getResources().getString(R.string.cant_decrease),TextToSpeech.QUEUE_FLUSH, null);
 					}
 					
 		        }
 				if (v== IncreaseHeadingTimeTresholdButton){
 					if(headingTimeTreshold >= 0 && headingTimeTreshold < 30) {
 						headingTimeTreshold = headingTimeTreshold + headingTimeTresholdStep;
-						textViewHeadingTimeTreshold.setText(getResources().getString(R.string.headingtimetreshold)+ " "  + headingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						textViewHeadingTimeTreshold.setContentDescription(getResources().getString(R.string.headingtimetreshold) + headingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						tts.speak(getResources().getString(R.string.headingtimetreshold) + headingTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewHeadingTimeTreshold.setText(getResources().getString(R.string.headingtimetreshold)+ " "  + headingTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						textViewHeadingTimeTreshold.setContentDescription(getResources().getString(R.string.headingtimetreshold) + headingTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						tts.speak(getResources().getString(R.string.headingtimetreshold) + headingTimeTreshold + " " + getResources().getString(R.string.timeunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "increase heading time");
 					}
 					else {
-						tts.speak("Minimum heading repetition is 30 seconds. Can't increase.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.maxheadingtimetreshold) + getResources().getString(R.string.cant_increase),TextToSpeech.QUEUE_FLUSH, null);
 					}
 					
 		        }
 				if (v== DecreaseHeadingTimeTresholdButton){
 					if(headingTimeTreshold > 0 && headingTimeTreshold <= 30) {
 						headingTimeTreshold = headingTimeTreshold - headingTimeTresholdStep;
-						textViewHeadingTimeTreshold.setText(getResources().getString(R.string.headingtimetreshold)+ " "  + headingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						textViewHeadingTimeTreshold.setContentDescription(getResources().getString(R.string.headingtimetreshold) + headingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						tts.speak(getResources().getString(R.string.headingtimetreshold) + headingTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewHeadingTimeTreshold.setText(getResources().getString(R.string.headingtimetreshold)+ " "  + headingTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						textViewHeadingTimeTreshold.setContentDescription(getResources().getString(R.string.headingtimetreshold) + headingTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						tts.speak(getResources().getString(R.string.headingtimetreshold) + headingTimeTreshold + " " + getResources().getString(R.string.timeunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "decrease heading time");
 					}
 					else {
-						tts.speak("Minimum heading repetition is 0 seconds. Can't decrease.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.minheadingtimetreshold) + getResources().getString(R.string.cant_decrease),TextToSpeech.QUEUE_FLUSH, null);
 					}
 					
 		        }
 				if (v== IncreaseBearingTresholdButton){
 					if(bearingTreshold >= 0 && bearingTreshold < 30) {
 						bearingTreshold = Utils.arrondiHeadingTreshold(bearingTreshold + bearingTresholdStep);
-						textViewBearingTreshold.setText(getResources().getString(R.string.bearingtreshold)+ " "  + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
-						textViewBearingTreshold.setContentDescription(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
-						tts.speak(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.HeadingUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewBearingTreshold.setText(getResources().getString(R.string.bearingtreshold)+ " "  + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit));
+						textViewBearingTreshold.setContentDescription(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit));
+						tts.speak(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "inc bearing");
 					}
 					else {
-						tts.speak("Bearing treshold is 30 degrees. Can't increase.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.maxbearingtreshold) + getResources().getString(R.string.cant_increase),TextToSpeech.QUEUE_FLUSH, null);
 					}
 		        }	
 				if (v== DecreaseBearingTresholdButton){
-					if(headingTreshold > 0 && headingTreshold <= 30) {
+					if(bearingTreshold > 0 && bearingTreshold <= 30) {
 						bearingTreshold = Utils.arrondiHeadingTreshold(bearingTreshold - bearingTresholdStep);
-						textViewBearingTreshold.setText(getResources().getString(R.string.bearingtreshold)+ " "  + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
-						textViewBearingTreshold.setContentDescription(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.HeadingUnit));
-						tts.speak(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.HeadingUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewBearingTreshold.setText(getResources().getString(R.string.bearingtreshold)+ " "  + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit));
+						textViewBearingTreshold.setContentDescription(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit));
+						tts.speak(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "dec bearing");
 					}
 					else {
-						tts.speak("Bearing treshold is 0 degrees. Can't decrease.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.minbearingtreshold) + getResources().getString(R.string.cant_decrease),TextToSpeech.QUEUE_FLUSH, null);
 					}
 					
 		        }
 				if (v== IncreaseBearingTimeTresholdButton){
 					if(bearingTimeTreshold >= 0 && bearingTimeTreshold < 30) {
 						bearingTimeTreshold = bearingTimeTreshold + bearingTimeTresholdStep;
-						textViewBearingTimeTreshold.setText(getResources().getString(R.string.bearingtimetreshold)+ " "  + bearingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						textViewBearingTimeTreshold.setContentDescription(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
+						textViewBearingTimeTreshold.setText(getResources().getString(R.string.bearingtimetreshold)+ " "  + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						textViewBearingTimeTreshold.setContentDescription(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
 						tts.speak(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "increase bearing time");
 					}
 					else {
-						tts.speak("Minimum bearing repetition is 30 seconds. Can't increase.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.maxbearingtimetreshold) + getResources().getString(R.string.cant_increase),TextToSpeech.QUEUE_FLUSH, null);
 					}
 					
 		        }
 				if (v== DecreaseBearingTimeTresholdButton){
 					if(bearingTimeTreshold > 0 && bearingTimeTreshold <= 30) {
 						bearingTimeTreshold = bearingTimeTreshold - bearingTimeTresholdStep;
-						textViewBearingTimeTreshold.setText(getResources().getString(R.string.bearingtimetreshold)+ " "  + bearingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						textViewBearingTimeTreshold.setContentDescription(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
+						textViewBearingTimeTreshold.setText(getResources().getString(R.string.bearingtimetreshold)+ " "  + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						textViewBearingTimeTreshold.setContentDescription(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
 						tts.speak(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "decrease bearing time");
 					}
 					else {
-						tts.speak("Minimum bearing repetition is 0 seconds. Can't decrease.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.minbearingtimetreshold) + getResources().getString(R.string.cant_decrease),TextToSpeech.QUEUE_FLUSH, null);
 					}
 					
 		        }
@@ -375,56 +364,56 @@ public class AutoSettingActivity extends Activity{
 				if (v== IncreaseDistanceTimeTresholdButton){
 					if(distanceTimeTreshold >= 0 && distanceTimeTreshold < 30) {
 						distanceTimeTreshold = distanceTimeTreshold + distanceTimeTresholdStep;
-						textViewDistanceTimeTreshold.setText(getResources().getString(R.string.distancetimetreshold)+ " "  + distanceTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						textViewDistanceTimeTreshold.setContentDescription(getResources().getString(R.string.distancetimetreshold) + distanceTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						tts.speak(getResources().getString(R.string.distancetimetreshold) + distanceTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewDistanceTimeTreshold.setText(getResources().getString(R.string.distancetimetreshold)+ " "  + distanceTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						textViewDistanceTimeTreshold.setContentDescription(getResources().getString(R.string.distancetimetreshold) + distanceTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						tts.speak(getResources().getString(R.string.distancetimetreshold) + distanceTimeTreshold + " " + getResources().getString(R.string.timeunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "increase distance time");
 					}
 					else {
-						tts.speak("Minimum distance repetition is 30 seconds. Can't increase.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.maxdistancetimetreshold) + getResources().getString(R.string.cant_increase),TextToSpeech.QUEUE_FLUSH, null);
 					}
 					
 		        }
 				if (v== DecreaseDistanceTimeTresholdButton){
 					if(distanceTimeTreshold > 0 && distanceTimeTreshold <= 30) {
 						distanceTimeTreshold = distanceTimeTreshold - distanceTimeTresholdStep;
-						textViewDistanceTimeTreshold.setText(getResources().getString(R.string.distancetimetreshold)+ " "  + distanceTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						textViewDistanceTimeTreshold.setContentDescription(getResources().getString(R.string.distancetimetreshold) + distanceTimeTreshold + " " + getResources().getString(R.string.TimeUnit));
-						tts.speak(getResources().getString(R.string.distancetimetreshold) + distanceTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewDistanceTimeTreshold.setText(getResources().getString(R.string.distancetimetreshold)+ " "  + distanceTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						textViewDistanceTimeTreshold.setContentDescription(getResources().getString(R.string.distancetimetreshold) + distanceTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						tts.speak(getResources().getString(R.string.distancetimetreshold) + distanceTimeTreshold + " " + getResources().getString(R.string.timeunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "decrease distance time");
 					}
 					else {
-						tts.speak("Minimum distance repetition is 0 seconds. Can't decrease.",TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.mindistancetimetreshold) + getResources().getString(R.string.cant_decrease),TextToSpeech.QUEUE_FLUSH, null);
 					}
 					
 		        }
 				if (v== SaveSettingButton){
 					  
-					  SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-				      SharedPreferences.Editor editor = settings.edit();
+					SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+					SharedPreferences.Editor editor = settings.edit();
 				      
-				      // put speed & speed time treshold
-				      editor.putString("speedTreshold", String.valueOf(speedTreshold));
-				      editor.putLong("speedTimeTreshold", speedTimeTreshold);
+				    // put speed & speed time treshold
+				    editor.putString("speedTreshold", String.valueOf(speedTreshold));
+				    editor.putLong("speedTimeTreshold", speedTimeTreshold);
 				      
-				      // put heading & heading treshold
-				      editor.putString("headingTreshold", String.valueOf(headingTreshold));
-				      editor.putLong("headingTimeTreshold", headingTimeTreshold);
+				    // put heading & heading treshold
+				    editor.putString("headingTreshold", String.valueOf(headingTreshold));
+				    editor.putLong("headingTimeTreshold", headingTimeTreshold);
 				      
-				      //put distance time treshold 
-				      editor.putLong("distanceTimeTreshold", distanceTimeTreshold);
+				    //put distance time treshold 
+				    editor.putLong("distanceTimeTreshold", distanceTimeTreshold);
 				      
-				      //put bearing & bearing time treshold
-				      editor.putString("bearingTreshold", String.valueOf(bearingTreshold));
-				      editor.putLong("bearingTimeTreshold", bearingTimeTreshold);
+				    //put bearing & bearing time treshold
+				    editor.putString("bearingTreshold", String.valueOf(bearingTreshold));
+				    editor.putLong("bearingTimeTreshold", bearingTimeTreshold);
 				      
-				      // put auto checkbox
-				      editor.putBoolean("isAutoSpeed", SpeedAutoCheckBox.isChecked());
-				      editor.putBoolean("isAutoHeading", HeadingAutoCheckBox.isChecked());
-				      editor.putBoolean("isAutoDistance", DistanceAutoCheckBox.isChecked());
-				      editor.putBoolean("isAutoBearing", BearingAutoCheckBox.isChecked());
+				    // put auto checkbox
+				    editor.putBoolean("isAutoSpeed", SpeedAutoCheckBox.isChecked());
+				    editor.putBoolean("isAutoHeading", HeadingAutoCheckBox.isChecked());
+				    editor.putBoolean("isAutoDistance", DistanceAutoCheckBox.isChecked());
+				    editor.putBoolean("isAutoBearing", BearingAutoCheckBox.isChecked());
 
-				      editor.commit();
+				    editor.commit();
 					intentMain.putExtra("speedTreshold", speedTreshold);
 					intentMain.putExtra("speedTimeTreshold", speedTimeTreshold);
 					intentMain.putExtra("headingTreshold", headingTreshold);
@@ -439,7 +428,6 @@ public class AutoSettingActivity extends Activity{
 					intentMain.putExtra("isAutoBearing", BearingAutoCheckBox.isChecked());
 
 					setResult(RESULT_OK, intentMain);
-					//tts.shutdown();
 					finish();
 				}
 		    }// end of onclick		
@@ -475,36 +463,51 @@ public class AutoSettingActivity extends Activity{
 		tts = new TextToSpeech(this, onInitListener);
 		tts.setSpeechRate((float) 1.0);
 			
-	}
+	} // end of onCreate
 	
-	  @Override
-	  protected void onResume() {
-	    super.onResume();
+	@Override
+	protected void onResume() {
+		super.onResume();
 	    //lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 	    //tts.speak("resume", TextToSpeech.QUEUE_FLUSH, null);
-	  }
+	}
 
-	  @Override
-	  protected void onPause() {
-	    super.onPause();
-	    //lm.removeUpdates(ll);
-	    //tts.speak("pause", TextToSpeech.QUEUE_FLUSH, null);
-
-	  }
+	@Override
+	protected void onPause() {
+		super.onPause();
+		//lm.removeUpdates(ll);
+		//tts.speak("pause", TextToSpeech.QUEUE_FLUSH, null);
+	}
 	  
-	  @Override
-	  protected void onStop() {
-		  super.onStop();
+	@Override
+	protected void onStop() {
+		super.onStop();
 		//tts.shutdown();
-	  }
+	}
 	  
-		@Override
-		protected void onDestroy() {
-			super.onDestroy();
-			tts.shutdown();
-			//lm.removeUpdates(ll);
-			//tts.shutdown();
-		}
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		tts.shutdown();
+		//lm.removeUpdates(ll);
+		//tts.shutdown();
+	}
+	
+	public void LoadPref() {
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		this.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
+	    this.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);   
+		this.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
+	    this.headingTimeTreshold = settings.getLong("headingTimeTreshold", 5);
+	    this.distanceTimeTreshold = settings.getLong("distanceTimeTreshold", 5);   
+	    this.bearingTreshold = Double.parseDouble(settings.getString("bearingTreshold", "10.0"));
+	    this.bearingTimeTreshold = settings.getLong("bearingTimeTreshold", 5);  
+	    this.isAutoSpeed = settings.getBoolean("isAutoSpeed", true);
+	    this.isAutoHeading = settings.getBoolean("isAutoHeading", true);
+	    this.isAutoDistance = settings.getBoolean("isAutoDistance", true);
+	    this.isAutoBearing = settings.getBoolean("isAutoBearing", true);
+	}
+	  
 	
 
 	

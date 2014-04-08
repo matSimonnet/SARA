@@ -23,10 +23,13 @@
     <string name="vocalrecognition">vocal recognition</string>
     
     <string name="speedunit">knots</string>
-    <string name="headingunit">degreess</string>
-    <string name="distance">meters</string>
+    <string name="headingunit">degrees</string>
     <string name="bearingunit">degrees</string>
     <string name="timeunit">seconds</string>
+    <string name="kilometres">kilometres</string>
+    <string name="m">m</string>
+    <string name="km">km</string>        
+    <string name="metres">metres</string> 
     
     <string name="title_activity_way_point">Waypoint Activity</string>
     <string name="action_settings">Settings</string>
@@ -48,12 +51,48 @@
     <string name="IncreaseButton">+</string>
     <string name="savesetting">save</string>
     
+    <string name="bearing">bearing</string>   
+    <string name="distance">distance</string>
     <string name="bearingtreshold">bearing treshold</string>
     <string name="bearingtimetreshold">minimum bearing repetition</string>
     <string name="distancetimetreshold">minimum distance repetition</string>
+    
     <string name="save_last_num">0</string>
     <string name="navigation_setting">Navigation</string>
-    <string name="using_map">Use location from the map</string>    
+    <string name="using_map">Use location from the map</string>
+    
+    <string name="no_satellite">No Satellite</string>
+    <string name="waiting_gps">is waiting for gps signal.</string> 
+    
+    <string name="closeButton">X</string>
+    
+    
+  
+    <string name="cant_decrease">Can not decrease</string>
+    <string name="cant_increase">Can not increase</string>
+    
+    <string name="maxspeedtreshold">Speed treshold is 3.0 knots</string>
+    <string name="minspeedtreshold">Speed treshold is 0.0 knot</string>
+    <string name="maxspeedtimetreshold">Minimum speed repetition is 30 seconds</string>
+    <string name="minspeedtimetreshold">Minimum speed repetition is 0 seconds</string>
+    
+    <string name="maxheadingtreshold">Heading treshold is 30 degrees</string>
+    <string name="minheadingtreshold">heading treshold is 0 degree</string>
+    <string name="maxheadingtimetreshold">Minimum heading repetition is 30 seconds</string>
+    <string name="minheadingtimetreshold">Minimum heading repetition is 0 seconds</string>
+
+	<string name="maxbearingtreshold">Bearing treshold is 30 degrees</string>
+    <string name="minbearingtreshold">Bearing treshold is 0 degree</string>
+    <string name="maxbearingtimetreshold">Minimum Bearing repetition is 30 seconds</string>
+    <string name="minbearingtimetreshold">Minimum Bearing repetition is 0 seconds</string>
+    
+    <string name="maxdistancetimetreshold">Minimum distance repetition is 30 seconds</string>
+    <string name="mindistancetimetreshold">Minimum distance repetition is 0 seconds</string>
+    
+    <string name="nowaypoint">No Waypoint</string>
+    <string name="notactivate">Waypoint is not activated</string>
+    
+    <string name="savebutton">save</string>
     
 
 </resources>
