@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -73,6 +75,9 @@ public class WayPointActivity extends Activity {
 		
 		//shared preferences
 		SharedPreferences sharedPref ;
+		
+		//intent
+		private Intent intentToMain;
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -133,6 +138,10 @@ public class WayPointActivity extends Activity {
 			choosingDialog = new AlertDialog.Builder(this);
 			deletingDialog = new AlertDialog.Builder(this);
 			
+			//Intent creation
+			intentToMain = new Intent(WayPointActivity.this,MainActivity.class);
+
+			
 			//spinner set up
 			way.setContentDescription("Choose the waypoint in ");
 			
@@ -169,7 +178,6 @@ public class WayPointActivity extends Activity {
 											tts.speak("Activate", tts.QUEUE_FLUSH, null);
 
 			                				//change back to the main activity
-											Intent intentToMain = new Intent(WayPointActivity.this,MainActivity.class);
 											//passing activate way point name and position
 											intentToMain.putExtra("actName",choosingWaypoint.getName());//name
 											intentToMain.putExtra("actLatitude", Double.parseDouble( choosingWaypoint.getLatitude()));//latitude
@@ -462,13 +470,6 @@ public class WayPointActivity extends Activity {
         }
         
 	}
-	
-	//saving preferences including both last number value for default name and way point list
-	
-
-	
-	
-
 	  @Override
 	  protected void onPause() {
 	    super.onPause();
@@ -485,5 +486,29 @@ public class WayPointActivity extends Activity {
 			tts.shutdown();
 		}
 		
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+
+			// Inflate the menu; this adds items to the action bar if it is present.
+			getMenuInflater().inflate(R.menu.way_point, menu);
+			return true;
+		}
+
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// Handle action bar item clicks here. The action bar will
+			// automatically handle clicks on the Home/Up button, so long
+			// as you specify a parent activity in AndroidManifest.xml.
+			switch (item.getItemId()) {
+			case R.id.navigation_setting:
+				//back to WayPoint activity and send some parameters to the activity
+				setResult(RESULT_OK, intentToMain);
+				finish();
+				break;
+			default:
+				break;
+			}
+			return false;
+		}
 
 }

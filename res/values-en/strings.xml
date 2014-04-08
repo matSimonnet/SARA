@@ -37,8 +37,7 @@
     <string name="longitudeText">Waypoint longitude is</string>
     <string name="saveText">Save</string>
     <string name="choosingTitle">You selected :</string>
-    <string name="closeButton">X</string>
-    <string name="title_activity_modify">ModifyActivity</string>
+    <string name="title_activity_modify">Modify Activity</string>
     <string name="modifyButton">Save modifying waypoint</string>
     <string name="current_checkedBox">Use current position</string>
     
@@ -53,6 +52,8 @@
     <string name="bearingtimetreshold">minimum bearing repetition</string>
     <string name="distancetimetreshold">minimum distance repetition</string>
     <string name="save_last_num">0</string>
+    <string name="navigation_setting">Navigation</string>
+    
 
 </resources>
 
