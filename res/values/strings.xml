@@ -47,7 +47,7 @@
     <string name="HeadingUnit">degrees</string>
     <string name="DistanceUnit">kilometre</string>
     <string name="BearingUnit">degrees</string>
-    <string name="TimeUnit">seconds</string>    
+    <string name="TimeUnit">seconds</string>
     
 
 </resources>

@@ -33,8 +33,10 @@ public class NewWayPointActivity extends Activity {
 		private EditText latitudeBox = null;
 		private EditText longitudeBox = null;
 		
-		//save button
+		//button
 		private Button saveButton = null;
+		private Button currentLoButton = null;
+		private Button mapLoButton = null;
 		
 		private TextToSpeech tts = null;
 		
@@ -82,6 +84,7 @@ public class NewWayPointActivity extends Activity {
 					public void onLocationChanged(Location loc) {
 						currentLatitude = String.valueOf(loc.getLatitude());
 						currentLongitude = String.valueOf(loc.getLongitude());
+						
 					}
 
 					@Override
@@ -109,11 +112,8 @@ public class NewWayPointActivity extends Activity {
 				
 				//EditText and description
 				nameBox = (EditText) findViewById(R.id.editText1);
-				nameBox.setContentDescription("describes Name of the new waypoint");
 				latitudeBox = (EditText) findViewById(R.id.editText2);
-				latitudeBox.setContentDescription("describes Latitude of the new waypoint");
 				longitudeBox = (EditText) findViewById(R.id.editText3);
-				longitudeBox.setContentDescription("describes Longitude of the new waypoint");
 				
 				//intent creation
 				intentFromWayPointAct = getIntent();
@@ -128,60 +128,48 @@ public class NewWayPointActivity extends Activity {
 				
 				//dialog creation
 				gpsDisDialog = new AlertDialog.Builder(this);
-				//setOnclickListener
+				
+				
 				//nameBox
-				nameBox.setOnClickListener(new OnClickListener() {
-					//OnClick creation
-					@Override
-					public void onClick(View v) {
-						//set default name
-						nameBox.setText(defaultName);
-						nameBox.setSelectAllOnFocus(true);
-					}
-				});
+				//set default name
+				nameBox.setText(defaultName);
+				nameBox.setSelectAllOnFocus(true);
 				//latitudeBox
-				latitudeBox.setOnClickListener(new OnClickListener() {
+				latitudeBox.setSelectAllOnFocus(true);	
+				//latitudeBox
+				longitudeBox.setSelectAllOnFocus(true);
+				
+				//button
+				//current location button
+				currentLoButton = (Button) findViewById(R.id.button2);
+				currentLoButton.setOnClickListener(new OnClickListener() {
 					//OnClick creation
 					@Override
 					public void onClick(View v) {
-						if(v==latitudeBox){
-							latitudeBox.setSelectAllOnFocus(true);
-							//update location
-							lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-							if(!currentLatitude.equals("")){
-								//set each EditText default
-								latitudeBox.setText(currentLatitude);
-								longitudeBox.setText(currentLongitude);
-							}
-							else{
-								gpsDisDialog.setTitle("GPS disable");
-								gpsDisDialog.setPositiveButton("Dismiss", null);
-								gpsDisDialog.show();
-							}
+						//update location
+						lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+						if(!currentLatitude.equals("")){
+							//GPS enable
+							//set each EditText with current position
+							latitudeBox.setText(currentLatitude);
+							longitudeBox.setText(currentLongitude);
+						}
+						else{
+							//show GPS disable dialog
+							gpsDisDialog.setTitle("GPS disable");
+							gpsDisDialog.setPositiveButton("Dismiss", null);
+							gpsDisDialog.show();
 						}
 					}
 				});
 				
-				//latitudeBox
-				longitudeBox.setOnClickListener(new OnClickListener() {
+				//map location button
+				mapLoButton = (Button) findViewById(R.id.button3);
+				mapLoButton.setOnClickListener(new OnClickListener() {
 					//OnClick creation
 					@Override
 					public void onClick(View v) {
-						if(v==longitudeBox){
-							longitudeBox.setSelectAllOnFocus(true);
-							//update location
-							lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-							if(!currentLongitude.equals("")){
-								//set each EditText default
-								latitudeBox.setText(currentLatitude);
-								longitudeBox.setText(currentLongitude);
-							}
-							else{
-								gpsDisDialog.setTitle("GPS disable");
-								gpsDisDialog.setPositiveButton("Dismiss", null);
-								gpsDisDialog.show();
-							}
-						}
+						Toast.makeText(NewWayPointActivity.this, "Show Map!!!!", Toast.LENGTH_SHORT);
 					}
 				});
 				
