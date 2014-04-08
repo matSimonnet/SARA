@@ -2,10 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="orion.ms.sara.ModifyActivity" >
 
-    <item
-        android:id="@+id/action_settings"
+     <item android:id="@+id/waypoint_setting"
+        android:title="@string/waypoint_setting"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:showAsAction="ifRoom">
+    </item>
 
 </menu>

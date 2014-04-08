@@ -17,11 +17,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("ShowToast")
 public class NewWayPointActivity extends Activity {
 	//variables declaration
+		//TextView
+		private TextView newNameText =null;
+		private TextView newLatitudeText =null;
+		private TextView newLongitudeText =null;
 	
 		//string for each attribute of the new waypoint
 		private String name = "";
@@ -109,6 +114,14 @@ public class NewWayPointActivity extends Activity {
 
 				//update location
 				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+				
+				//TextView
+				newNameText = (TextView) findViewById(R.id.textView1);
+				newNameText.setContentDescription("new waypoint name is");
+				newLatitudeText = (TextView) findViewById(R.id.textView2);
+				newLatitudeText.setContentDescription("new waypoint latitude is");
+				newLongitudeText = (TextView) findViewById(R.id.textView3);
+				newLongitudeText.setContentDescription("new waypoint longitude is");
 				
 				//EditText and description
 				nameBox = (EditText) findViewById(R.id.editText1);

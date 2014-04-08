@@ -84,6 +84,7 @@ public class WayPointActivity extends Activity {
 			super.onCreate(savedInstanceState);
 
 			setContentView(R.layout.activity_way_point);
+			setTitle(R.string.title_activity_way_point);
 			
 			//load preferences
 			sharedPref = this.getPreferences(Context.MODE_PRIVATE);
@@ -461,12 +462,13 @@ public class WayPointActivity extends Activity {
         	modName = intentFromAnother.getStringExtra("modName");
     		modLatitude = intentFromAnother.getStringExtra("modLatitude");
     		modLongitude = intentFromAnother.getStringExtra("modLongitude");
-
-    		//replace the old information with the modifying information
-    		choosingWaypoint.setName(modName);
-    		choosingWaypoint.setLatitude(modLatitude);
-    		choosingWaypoint.setLongitude(modLongitude);
-    		sortingWaypointList(wayPointList);
+    		if(!modName.equals("") && !modLatitude.equals("") && !modLongitude.equals("")){
+    			//replace the old information with the modifying information
+        		choosingWaypoint.setName(modName);
+        		choosingWaypoint.setLatitude(modLatitude);
+        		choosingWaypoint.setLongitude(modLongitude);
+        		sortingWaypointList(wayPointList);
+    		}
         }
         
 	}

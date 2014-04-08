@@ -17,8 +17,26 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical" >
-
         </LinearLayout>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/current_checkedBox" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/using_map" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nameText"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/editText1"
@@ -27,26 +45,37 @@
             android:layout_marginTop="22dp"
             android:ems="10"
             android:inputType="text" >
+
+            <requestFocus />
         </EditText>
 
-        <CheckBox
-            android:id="@+id/checkBox1"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="@string/current_checkedBox" />
+            android:text="@string/latitudeText"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/editText2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
             android:ems="10"
             android:inputType="numberSigned|numberDecimal" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/longitudeText"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/editText3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="29dp"
             android:ems="10"
             android:inputType="numberSigned|numberDecimal" />
 
@@ -54,7 +83,6 @@
             android:id="@+id/button1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
             android:text="@string/modifyButton" />
     </LinearLayout>
 

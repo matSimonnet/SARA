@@ -16,10 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ModifyActivity extends Activity {
@@ -30,16 +28,20 @@ public class ModifyActivity extends Activity {
 			private String modLatitude = "";
 			private String modLongitude = "";
 			
+			//TextView
+			private TextView modNameText =null;
+			private TextView modLatitudeText =null;
+			private TextView modLongitudeText =null;
+			
 			//EditText
 			private EditText nameBox = null;
 			private EditText latitudeBox = null;
 			private EditText longitudeBox = null;
 			
-			//CheckBox
-			private CheckBox currentPositionBox = null;
-			
-			//save button
+			//button
 			private Button saveButton = null;
+			private Button currentLoButton = null;
+			private Button mapLoButton = null;
 			
 			private TextToSpeech tts = null;
 			
@@ -62,6 +64,10 @@ public class ModifyActivity extends Activity {
 			
 			//dialog for GPS signal if is disable
 			private AlertDialog.Builder gpsDisDialog = null; 
+			
+			//Intent
+			private Intent intentToWayPoint;
+			private Intent intentFromWayPointAct;
 			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,17 +117,25 @@ public class ModifyActivity extends Activity {
 
 		//update location
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-						
+			
+		//TextView
+		modNameText = (TextView) findViewById(R.id.textView1);
+		modNameText.setContentDescription("mod waypoint name is");
+		modLatitudeText = (TextView) findViewById(R.id.textView2);
+		modLatitudeText.setContentDescription("mod waypoint latitude is");
+		modLongitudeText = (TextView) findViewById(R.id.textView3);
+		modLongitudeText.setContentDescription("mod waypoint longitude is");
+		
 		//EditText
 		nameBox = (EditText) findViewById(R.id.editText1);
-		nameBox.setContentDescription("describes Name of the modifying waypoint");
 		latitudeBox = (EditText) findViewById(R.id.editText2);
-		latitudeBox.setContentDescription("describes Latitude of the modifying waypoint");
 		longitudeBox = (EditText) findViewById(R.id.editText3);
-		longitudeBox.setContentDescription("describes Longitude of the modifying waypoint");
+		
+		//intent creation
+		intentFromWayPointAct = getIntent();
+		intentToWayPoint = new Intent(ModifyActivity.this,WayPointActivity.class);
 		
 		//receiving parameters from the waypoint activity
-		Intent intentFromWayPointAct = getIntent();
 		nameArray = intentFromWayPointAct.getStringArrayExtra("nameArrayFromWP");
 		latitudeArray = intentFromWayPointAct.getStringArrayExtra("latitudeArrayFromWP");
 		longitudeArray = intentFromWayPointAct.getStringArrayExtra("longitudeArrayFromWP");
@@ -133,75 +147,51 @@ public class ModifyActivity extends Activity {
 		//dialog creation
 		gpsDisDialog = new AlertDialog.Builder(this);
 		
-		//CheckBox
-		currentPositionBox = (CheckBox) findViewById(R.id.checkBox1);
-		//setOnclickListener of current position check box
-		currentPositionBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			//onCheckedChanged creation
+		
+		
+		//nameBox
+		//set default name
+		nameBox.setText(oldName);
+		nameBox.setSelectAllOnFocus(true);
+		//latitudeBox
+		latitudeBox.setText(oldLatitude);
+		latitudeBox.setSelectAllOnFocus(true);	
+		//latitudeBox
+		longitudeBox.setText(oldLongitude);
+		longitudeBox.setSelectAllOnFocus(true);
+		
+		//button
+		//current location button
+		currentLoButton = (Button) findViewById(R.id.button2);
+		currentLoButton.setOnClickListener(new OnClickListener() {
+			//OnClick creation
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if(isChecked){
-					//update location
-					lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-					if(!currentLatitude.equals("")){
-						//set each EditText with current position
-						latitudeBox.setText(currentLatitude);
-						longitudeBox.setText(currentLongitude);
-					}
-					else{
-						gpsDisDialog.setTitle("GPS disable");
-						gpsDisDialog.setPositiveButton("Dismiss", null);
-						gpsDisDialog.show();
-					}
+			public void onClick(View v) {
+				//update location
+				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+				if(!currentLatitude.equals("")){
+					//GPS enable
+					//set each EditText with current position
+					latitudeBox.setText(currentLatitude);
+					longitudeBox.setText(currentLongitude);
 				}
 				else{
-					//set each EditText with default position
-					latitudeBox.setText(oldLatitude);
-					longitudeBox.setText(oldLongitude);
+					//show GPS disable dialog
+					gpsDisDialog.setTitle("GPS disable");
+					gpsDisDialog.setPositiveButton("Dismiss", null);
+					gpsDisDialog.show();
 				}
 			}
 		});
 		
-		//setOnclickListener
-		//nameBox
-		nameBox.setOnClickListener(new OnClickListener() {
+		//map location button
+		mapLoButton = (Button) findViewById(R.id.button3);
+		mapLoButton.setOnClickListener(new OnClickListener() {
 			//OnClick creation
+			@SuppressLint("ShowToast")
 			@Override
 			public void onClick(View v) {
-				if(v==nameBox)
-					//set default name
-					nameBox.setText(oldName);
-					nameBox.setSelectAllOnFocus(true);
-			}
-		});
-		//latitudeBox
-		latitudeBox.setOnClickListener(new OnClickListener() {
-			//OnClick creation
-			@Override
-			public void onClick(View v) {
-				if(v==latitudeBox){
-					latitudeBox.setSelectAllOnFocus(true);
-					if(!currentPositionBox.isChecked()){
-						//set each EditText with default position
-						latitudeBox.setText(oldLatitude);
-						longitudeBox.setText(oldLongitude);
-					}
-				}
-			}
-		});
-		//longitudeBox
-		longitudeBox.setOnClickListener(new OnClickListener() {
-			//OnClick creation
-			@Override
-			public void onClick(View v) {
-				if(v==longitudeBox){
-					longitudeBox.setSelectAllOnFocus(true);
-					if(!currentPositionBox.isChecked()){
-						//set each EditText with default position
-						latitudeBox.setText(oldLatitude);
-						longitudeBox.setText(oldLongitude);
-					}
-				}
+				Toast.makeText(ModifyActivity.this, "Show Map!!!!", Toast.LENGTH_SHORT);
 			}
 		});
 
@@ -232,7 +222,6 @@ public class ModifyActivity extends Activity {
 						Toast.makeText(ModifyActivity.this,"New information of the waypoint is already modified", Toast.LENGTH_SHORT);
 						
 						//change back to the waypoint activity
-						Intent intentToWayPoint = new Intent(ModifyActivity.this,WayPointActivity.class);
 						//pass the parameters including name,latitude,longitude
 						intentToWayPoint.putExtra("modName",modName);//name
 						intentToWayPoint.putExtra("modLatitude", modLatitude);//latitude
@@ -306,11 +295,19 @@ public class ModifyActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		switch (item.getItemId()) {
+		case R.id.waypoint_setting:
+			//pass the parameters including name,latitude,longitude
+			intentToWayPoint.putExtra("modName","");//name
+			intentToWayPoint.putExtra("modLatitude", "");//latitude
+			intentToWayPoint.putExtra("modLongitude", "");//longitude
+			
+			setResult(RESULT_OK, intentToWayPoint);
+			finish();
+			break;
+		default:
+			break;
 		}
-		return super.onOptionsItemSelected(item);
+		return false;
 	}
-
 }
