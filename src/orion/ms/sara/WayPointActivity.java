@@ -162,10 +162,11 @@ public class WayPointActivity extends Activity {
 	                				//choosing way point
 	        	      				choosingWaypoint = wayPointList.get(i);
 	        	      				
+	        	      				
 	        	      				//dialog creation
 	        	      				choosingDialog.setTitle("You selected : "+choosingWaypoint.getName());
 	                				choosingDialog.setIcon(android.R.drawable.presence_busy);
-	                				choosingDialog.setMessage("What do you want to do with "+choosingWaypoint.getName());
+	                				choosingDialog.setMessage("What do you want to do with "+choosingWaypoint.getName()+"?");
 	                				
 	                				//setOnClickListener
 	                				
@@ -187,6 +188,7 @@ public class WayPointActivity extends Activity {
 											
 											//back to WayPoint activity and send some parameters to the activity
 											setResult(RESULT_OK, intentToMain);
+											
 											finish();
 										}
 	                				});//end activate button
@@ -243,13 +245,17 @@ public class WayPointActivity extends Activity {
 											deletingDialog.show();
 										}
 	                				});//end delete button	
-	                				
-	                				//show the choosing dialog
-	                				choosingDialog.show();
+	                				if(i!=0){
+	                					//show the choosing dialog if selected some way point from the list
+		                				choosingDialog.show();
+		                				//set back to default
+		                				i = 0;
+	                				}//end if
 	                			}//end switch case
 	                    }catch(Exception e){
 	                        e.printStackTrace();
-	                    }
+	                    }//end try-catch
+	      				
 	              	}
 
 					@SuppressWarnings("static-access")
@@ -335,7 +341,6 @@ public class WayPointActivity extends Activity {
 		//Get the latest number after adding a new way point
 		if(n.contains("Waypoint")){
 			lastNum = Integer.parseInt(n.substring(n.lastIndexOf("t")+1));//substring "way point" name to get the number after that
-			//Log.i("NameNUM", "---------------lastnum :"+lastNum+"----------------");
 		}
 		//Adding the new way point into the list
 		wList.add(new WP(n,la,lo));//create new way point with assuming distance
@@ -354,13 +359,14 @@ public class WayPointActivity extends Activity {
 			//temp way point, distance and result
 			WP tempWP = null;
 			float[] tempResult = new float[3];
-			for(int i = 0;i< wList.size();i++){
+			//default value
+			WP first = wList.remove(0);
+			first = new WP("Please selected a waypoint","","");
+			
+			//Recalculating distance in the list
+			for(int i = 1;i< wList.size();i++){
 				tempWP = wList.get(i);
 				//calculate new distance
-				Log.i("Sort", "++++++++++tempWP lati "+tempWP.getLatitude()+"+++++++++++++++++");
-				Log.i("Sort", "++++++++++tempWP longi "+tempWP.getLongitude()+"+++++++++++++++++");
-				Log.i("Sort", "++++++++++cur lati "+currentLatitude+"+++++++++++++++++");
-				Log.i("Sort", "++++++++++cur longi "+currentLongitude+"+++++++++++++++++");
 				double tempLa = Double.parseDouble(tempWP.getLatitude());
 				double tempLong = Double.parseDouble(tempWP.getLongitude());
 				double curLa = Double.parseDouble(currentLatitude);
@@ -372,7 +378,8 @@ public class WayPointActivity extends Activity {
 				Log.i("Cur dis for sort", "===============item "+i+" dis now = "+tempResult[0]+"===============");
 			}
 			Collections.sort(wList);//Sorting the list by proximity
-			
+			wList.add(0, first);
+
 			//set array adapter of the list into the spinner
 			way = (Spinner) findViewById(R.id.spinner1);
 			arrAd = new ArrayAdapter<String>(WayPointActivity.this,
@@ -472,6 +479,12 @@ public class WayPointActivity extends Activity {
         }
         
 	}
+	@Override
+	  protected void onResume() {
+	    super.onResume();
+	    Log.i("Resume the program", "=======================RESUME+++++++++++++++++++++");
+	    sortingWaypointList(wayPointList);
+	  }
 	  @Override
 	  protected void onPause() {
 	    super.onPause();

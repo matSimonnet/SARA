@@ -191,7 +191,7 @@ public class ModifyActivity extends Activity {
 			@SuppressLint("ShowToast")
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(ModifyActivity.this, "Show Map!!!!", Toast.LENGTH_SHORT);
+				Toast.makeText(ModifyActivity.this, "Show Map!!!!", Toast.LENGTH_SHORT).show();;
 			}
 		});
 

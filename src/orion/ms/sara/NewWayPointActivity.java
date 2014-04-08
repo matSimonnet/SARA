@@ -182,7 +182,7 @@ public class NewWayPointActivity extends Activity {
 					//OnClick creation
 					@Override
 					public void onClick(View v) {
-						Toast.makeText(NewWayPointActivity.this, "Show Map!!!!", Toast.LENGTH_SHORT);
+						Toast.makeText(NewWayPointActivity.this, "Show Map!!!!", Toast.LENGTH_SHORT).show();;
 					}
 				});
 				
