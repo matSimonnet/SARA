@@ -38,8 +38,8 @@ public class WayPointActivity extends Activity {
 		
 		//Receiving parameter arrays
 		private String newName = "Waypoint1";
-		private String newLatitude = "";
-		private String newLongitude = "";
+		private String newLatitude = "0.0";
+		private String newLongitude = "0.0";
 		
 		//string for each attribute of the modifying way point
 		private String modName = "";
@@ -444,7 +444,8 @@ public class WayPointActivity extends Activity {
         	newName = intentFromAnother.getStringExtra("newName");
     		newLatitude = intentFromAnother.getStringExtra("newLatitude");
     		newLongitude = intentFromAnother.getStringExtra("newLongitude");
-   			addNewWPtoList(wayPointList, newName, newLatitude, newLongitude,0.0,0.0);
+    		if(!newName.equals("") && !newLatitude.equals("") && !newLongitude.equals(""))
+    			addNewWPtoList(wayPointList, newName, newLatitude, newLongitude,0.0,0.0);
         }
         
       //get parameters from the Modify activity and replace the old information

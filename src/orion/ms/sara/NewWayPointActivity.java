@@ -54,6 +54,10 @@ public class NewWayPointActivity extends Activity {
 		//dialog for GPS signal if is disable
 		private AlertDialog.Builder gpsDisDialog = null; 
 		
+		//Intent
+		private Intent intentToWayPoint;
+		private Intent intentFromWayPointAct;
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -111,8 +115,11 @@ public class NewWayPointActivity extends Activity {
 				longitudeBox = (EditText) findViewById(R.id.editText3);
 				longitudeBox.setContentDescription("describes Longitude of the new waypoint");
 				
+				//intent creation
+				intentFromWayPointAct = getIntent();
+				intentToWayPoint = new Intent(NewWayPointActivity.this,WayPointActivity.class);
+
 				//receiving parameters from the waypoint activity when create a new waypoint
-				Intent intentFromWayPointAct = getIntent();
 				nameArray = intentFromWayPointAct.getStringArrayExtra("nameArrayFromWP");
 				latitudeArray = intentFromWayPointAct.getStringArrayExtra("latitudeArrayFromWP");
 				longitudeArray = intentFromWayPointAct.getStringArrayExtra("longitudeArrayFromWP");
@@ -209,7 +216,6 @@ public class NewWayPointActivity extends Activity {
 									Toast.makeText(NewWayPointActivity.this,"new waypoint already saved", Toast.LENGTH_SHORT);
 									
 									//change back to the waypoint activity
-									Intent intentToWayPoint = new Intent(NewWayPointActivity.this,WayPointActivity.class);
 									//pass the parameters including name,latitude,longitude
 									intentToWayPoint.putExtra("newName",name);//name
 									intentToWayPoint.putExtra("newLatitude", latitude);//latitude
@@ -287,11 +293,19 @@ public class NewWayPointActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		switch (item.getItemId()) {
+		case R.id.waypoint_setting:
+			//pass the parameters including name,latitude,longitude
+			intentToWayPoint.putExtra("newName","");//name
+			intentToWayPoint.putExtra("newLatitude", "");//latitude
+			intentToWayPoint.putExtra("newLongitude", "");//longitude
+			setResult(RESULT_OK, intentToWayPoint);
+			finish();
+			break;
+		default:
+			break;
 		}
-		return super.onOptionsItemSelected(item);
+		return false;
 	}
 
 }
