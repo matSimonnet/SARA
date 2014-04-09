@@ -98,8 +98,10 @@
    <string name="auto_setting">AUTO SETTING Menu</string>
    <string name="waypoint_setting">Waypoint Menu</string>
    <string name="navigation">Back to navigation</string>
+   <string name="navigation_title">NAVIGATION</string>
    
-    
+   <string name="autoaccuracy">auto accuracy</string>
+   <string name="accuracy">accuracy</string>
     
     
 

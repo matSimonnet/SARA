@@ -41,6 +41,7 @@ public class MainActivity extends Activity {
 	static TextView textViewheading = null;
 	static TextView textViewDistance = null;
 	static TextView textViewBearing = null;
+	static TextView textViewAccuracy = null;
 
 	static TextToSpeech tts = null;
 	private ImageButton buttonReco = null;
@@ -75,6 +76,7 @@ public class MainActivity extends Activity {
 		MyLocationListener.speed =  getResources().getString(R.string.no_satellite);
 		MyLocationListener.DistanceToCurrentWaypoint = getResources().getString(R.string.no_satellite);
 		MyLocationListener.BearingToCurrentWaypoint = getResources().getString(R.string.no_satellite);
+		MyLocationListener.accuracy = getResources().getString(R.string.no_satellite);
 
         //TextView creation
         textViewDistance = (TextView) findViewById(R.id.distanceView);
@@ -93,6 +95,10 @@ public class MainActivity extends Activity {
         textViewheading.setText(MyLocationListener.heading);
         textViewheading.setContentDescription(getResources().getString(R.string.heading) + " " + getResources().getString(R.string.waiting_gps));
 	     
+        textViewAccuracy = (TextView) findViewById(R.id.accuracyView);
+        textViewAccuracy.setText(MyLocationListener.accuracy);
+        textViewAccuracy.setContentDescription(getResources().getString(R.string.accuracy) + " " + getResources().getString(R.string.waiting_gps));
+        
         //dates creation
         MyLocationListener.speedBefore = new Date();
         MyLocationListener.headingBefore = new Date();
@@ -193,6 +199,7 @@ public class MainActivity extends Activity {
         			MyLocationListener.isAutoHeading = data.getBooleanExtra("isAutoHeading", true);
         			MyLocationListener.isAutoDistance = data.getBooleanExtra("isAutoDistance", true);
         			MyLocationListener.isAutoBearing = data.getBooleanExtra("isAutoBearing", true);
+        			MyLocationListener.isAutoAccuracy = data.getBooleanExtra("isAutoAccuracy", true);
 
         			Log.i("speed", MyLocationListener.speedTreshold+"");
         			Log.i("speedtime", MyLocationListener.speedTimeTreshold+"");
@@ -206,6 +213,8 @@ public class MainActivity extends Activity {
         			Log.i("isheading", MyLocationListener.isAutoHeading+"");
         			Log.i("isDistance", MyLocationListener.isAutoDistance+"");
         			Log.i("isBearing", MyLocationListener.isAutoBearing+"");
+        			Log.i("isAccuracy", MyLocationListener.isAutoAccuracy+"");
+
         		}
         	break;
         	}// end of case
@@ -265,7 +274,8 @@ public class MainActivity extends Activity {
      	MyLocationListener.isAutoHeading = settings.getBoolean("isAutoHeading", true);
      	MyLocationListener.isAutoDistance = settings.getBoolean("isAutoDistance", true);
      	MyLocationListener.isAutoBearing = settings.getBoolean("isAutoBearing", true);
-     	
+     	MyLocationListener.isAutoAccuracy = settings.getBoolean("isAutoAccuracy", true);
+
         MyLocationListener.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
         MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
 	}

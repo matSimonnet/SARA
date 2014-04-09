@@ -231,6 +231,14 @@
         android:layout_below="@+id/IncreaseBearingTresholdButton"
         android:gravity="center"
         android:text="@string/IncreaseButton" />
+    
+    <CheckBox
+        android:id="@+id/AccuracyAutoCheckBox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/IncreaseBearingTimeTresholdButton"
+        android:gravity="left"
+        android:text="@string/autoaccuracy" />
 
     <Button
         android:id="@+id/SaveSettingButton"
@@ -239,5 +247,6 @@
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:text="@string/savesetting" />
+    
 
 </RelativeLayout>

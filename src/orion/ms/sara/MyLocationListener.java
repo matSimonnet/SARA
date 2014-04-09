@@ -19,6 +19,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	static String DistanceToCurrentWaypoint = "";
 	static String distanceUnit = "";
 	static String BearingToCurrentWaypoint = "";
+	static String accuracy = "";
 	static double WaypointLatitude = 999;
 	static double WaypointLongitude = 999;
 	
@@ -41,6 +42,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 	static boolean isAutoHeading = true;
 	static boolean isAutoDistance = true;
 	static boolean isAutoBearing = true;
+	static boolean isAutoAccuracy = true;
+
+	static float accuracyAuto = 0;
 	
 	static double speedAuto = 0.0;
 	static double headingAuto = 0.0;
@@ -67,6 +71,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 		Resources resource = MainActivity.getContext().getResources();
 		speed = String.valueOf(Utils.arrondiSpeed(loc.getSpeed() * (1.945)));
 		heading = String.valueOf((int) loc.getBearing());
+		accuracy = String.valueOf((int) loc.getAccuracy());
+
 
 		if (WaypointLatitude == 999 || WaypointLongitude == 999) {
 			MainActivity.textViewDistance.setText(resource.getString(R.string.nowaypoint));
@@ -164,12 +170,28 @@ public class MyLocationListener extends Activity implements LocationListener {
 
 			}
 		}// end of if headingAutoCheck...
+		
+		if (isAutoAccuracy) {
+			accuracyAuto = loc.getAccuracy();
+			if (accuracyAuto > 5) {
+				MainActivity.tts.speak(resource.getString(R.string.accuracy) + " " + accuracy + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
+			}
+			if (accuracyAuto > 10) {
+				MainActivity.tts.speak(resource.getString(R.string.accuracy) + " " + accuracy + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
+			}
+			if (accuracyAuto < 10) {
+				MainActivity.tts.speak(resource.getString(R.string.accuracy) + " " + accuracy + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
+			}
+		}// end of if AccuracyAutoCheck...
+
 
 		// displaying value
 		MainActivity.textViewSpeed.setText(speed);
 		MainActivity.textViewheading.setText(heading);
+		MainActivity.textViewheading.setText(accuracy);
 		MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + " " + speed + " " + resource.getString(R.string.speedunit));
 		MainActivity.textViewheading.setContentDescription(resource.getString(R.string.heading) + " " + heading + " " + resource.getString(R.string.heading));
+		MainActivity.textViewheading.setContentDescription(resource.getString(R.string.accuracy) + " " + accuracy + " " + resource.getString(R.string.metres));
 	}
 
 	@Override

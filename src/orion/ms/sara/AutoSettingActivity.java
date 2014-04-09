@@ -28,6 +28,7 @@ public class AutoSettingActivity extends Activity{
 	private CheckBox HeadingAutoCheckBox = null;
 	private CheckBox DistanceAutoCheckBox = null;
 	private CheckBox BearingAutoCheckBox = null;
+	private CheckBox AccuracyAutoCheckBox = null;
 
 
 	private TextView textViewSpeedTreshold = null;
@@ -98,6 +99,7 @@ public class AutoSettingActivity extends Activity{
 	private boolean isAutoHeading = true;
 	private boolean isAutoDistance = true;
 	private boolean isAutoBearing = true;
+	private boolean isAutoAccuracy = true;
 
 	
 	@Override
@@ -125,11 +127,12 @@ public class AutoSettingActivity extends Activity{
 	    
 		BearingAutoCheckBox = (CheckBox) findViewById(R.id.BearingAutoCheckBox);
 	    BearingAutoCheckBox.setChecked(this.isAutoBearing);
+		
+	    AccuracyAutoCheckBox = (CheckBox) findViewById(R.id.AccuracyAutoCheckBox);
+	    AccuracyAutoCheckBox.setChecked(this.isAutoAccuracy);
 
 		//intent creation
 	    intentMain = new Intent(AutoSettingActivity.this,MainActivity.class);
-		//intentWaypoint_setting = new Intent(AutoSetting.this,Waypoint.class);
-		//intentAuto_setting = new Intent(AutoSetting.this,AutoSetting.class);
 
 	    //speed treshold view
 		textViewSpeedTreshold = (TextView) findViewById(R.id.speedTresholdView);
@@ -414,8 +417,10 @@ public class AutoSettingActivity extends Activity{
 				    editor.putBoolean("isAutoHeading", HeadingAutoCheckBox.isChecked());
 				    editor.putBoolean("isAutoDistance", DistanceAutoCheckBox.isChecked());
 				    editor.putBoolean("isAutoBearing", BearingAutoCheckBox.isChecked());
+				    editor.putBoolean("isAutoAccuracy", AccuracyAutoCheckBox.isChecked());
 
 				    editor.commit();
+				    
 					intentMain.putExtra("speedTreshold", speedTreshold);
 					intentMain.putExtra("speedTimeTreshold", speedTimeTreshold);
 					intentMain.putExtra("headingTreshold", headingTreshold);
@@ -428,6 +433,7 @@ public class AutoSettingActivity extends Activity{
 					intentMain.putExtra("isAutoHeading", HeadingAutoCheckBox.isChecked());
 					intentMain.putExtra("isAutoDistance", DistanceAutoCheckBox.isChecked());
 					intentMain.putExtra("isAutoBearing", BearingAutoCheckBox.isChecked());
+					intentMain.putExtra("isAutoAccuracy", AccuracyAutoCheckBox.isChecked());
 
 					setResult(RESULT_OK, intentMain);
 					finish();
@@ -508,6 +514,8 @@ public class AutoSettingActivity extends Activity{
 	    this.isAutoHeading = settings.getBoolean("isAutoHeading", true);
 	    this.isAutoDistance = settings.getBoolean("isAutoDistance", true);
 	    this.isAutoBearing = settings.getBoolean("isAutoBearing", true);
+	    this.isAutoAccuracy = settings.getBoolean("isAutoAccuracy", true);
+
 	}
 //  action bar
 	@Override
