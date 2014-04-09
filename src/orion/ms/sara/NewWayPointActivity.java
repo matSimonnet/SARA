@@ -80,39 +80,6 @@ public class NewWayPointActivity extends Activity {
 				tts = new TextToSpeech(this, onInitListener);
 				tts.setSpeechRate((float) 1.5);
 				
-				//location manager creation
-				lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-				ll = new LocationListener(){
-					//LocationListener creation
-					@Override
-					public void onLocationChanged(Location loc) {
-						currentLatitude = String.valueOf(loc.getLatitude());
-						currentLongitude = String.valueOf(loc.getLongitude());
-						
-					}
-
-					@Override
-					public void onProviderDisabled(String provider) {
-						Toast.makeText( getApplicationContext(),"Gps Disabled",Toast.LENGTH_SHORT).show();	
-						//set each EditText default
-						latitudeBox.setText(currentLatitude);
-						longitudeBox.setText(currentLongitude);
-					}
-
-					@Override
-					public void onProviderEnabled(String provider) {
-						Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();	
-					}
-
-					@Override
-					public void onStatusChanged(String provider, int status, Bundle extras) {
-
-					}
-					
-				};//end of locationListener creation
-
-				//update location
-				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 				
 				//TextView
 				newNameText = (TextView) findViewById(R.id.textView1);
@@ -155,9 +122,10 @@ public class NewWayPointActivity extends Activity {
 					//OnClick creation
 					@Override
 					public void onClick(View v) {
+						currentLatitude = MyLocationListener.WaypointLatitude+"";
+						currentLongitude = MyLocationListener.WaypointLongitude+"";
 						//update location
-						lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-						if(!currentLatitude.equals("")){
+						if(!currentLatitude.equals("999.0")){
 							//GPS enable
 							//set each EditText with current position
 							latitudeBox.setText(currentLatitude);
