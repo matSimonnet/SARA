@@ -1,5 +1,7 @@
 package orion.ms.sara;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -45,11 +47,6 @@ public class NewWayPointActivity extends Activity {
 		private Button mapLoButton = null;
 		
 		private TextToSpeech tts = null;
-		
-		//receiving parameter arrays
-		private String[] nameArray = null;
-		private String[] latitudeArray = null;
-		private String[] longitudeArray = null;	
 		
 		private LocationManager lm = null;	
 		private LocationListener ll = null;
@@ -135,10 +132,6 @@ public class NewWayPointActivity extends Activity {
 				intentToWayPoint = new Intent(NewWayPointActivity.this,WayPointActivity.class);
 				intentToNavigation = new Intent(NewWayPointActivity.this,MainActivity.class);
 
-				//receiving parameters from the waypoint activity when create a new waypoint
-				nameArray = intentFromWayPointAct.getStringArrayExtra("nameArrayFromWP");
-				latitudeArray = intentFromWayPointAct.getStringArrayExtra("latitudeArrayFromWP");
-				longitudeArray = intentFromWayPointAct.getStringArrayExtra("longitudeArrayFromWP");
 				//receiving default name
 				defaultName = intentFromWayPointAct.getStringExtra("defaultNameFromWP");
 				
@@ -286,14 +279,15 @@ public class NewWayPointActivity extends Activity {
 	@SuppressLint("ShowToast")
 	
 	public boolean isRecorded(String n, String la, String lo){
-		for(int i = 0;i<nameArray.length;i++){
-			if(nameArray[i].equalsIgnoreCase(n)){
+		List<WP> wList = WayPointActivity.getWayPointList();
+		for(int i = 1;i<wList.size();i++){
+			if(wList.get(i).getName().equalsIgnoreCase(n)){
 				// same name
 				Toast.makeText(NewWayPointActivity.this, "This name is already recorded.", Toast.LENGTH_SHORT);
 				tts.speak("This name is already recorded.", tts.QUEUE_FLUSH, null);
 				return true;
 			}//end if
-			else if(latitudeArray[i].equalsIgnoreCase(la) && longitudeArray[i].equalsIgnoreCase(lo)){
+			else if(wList.get(i).getLatitude().equalsIgnoreCase(la) && wList.get(i).getLongitude().equalsIgnoreCase(lo)){
 				//same position
 				Toast.makeText(NewWayPointActivity.this, "This position is already recorded.", Toast.LENGTH_SHORT);
 				tts.speak("This position is already recorded.", tts.QUEUE_FLUSH, null);

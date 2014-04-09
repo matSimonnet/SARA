@@ -1,5 +1,7 @@
 package orion.ms.sara;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,7 +25,7 @@ import android.widget.Toast;
 public class ModifyActivity extends Activity {
 	//variables declaration
 	
-			//string for each attribute of the modifying waypoint
+			//string for each attribute of the modifying way point
 			private String modName = "";
 			private String modLatitude = "";
 			private String modLongitude = "";
@@ -45,11 +47,6 @@ public class ModifyActivity extends Activity {
 			private Button mapLoButton = null;
 			
 			private TextToSpeech tts = null;
-			
-			//receiving parameter arrays
-			private String[] nameArray = null;
-			private String[] latitudeArray = null;
-			private String[] longitudeArray = null;	
 			
 			private LocationManager lm = null;	
 			private LocationListener ll = null;
@@ -138,10 +135,6 @@ public class ModifyActivity extends Activity {
 		intentToWayPoint = new Intent(ModifyActivity.this,WayPointActivity.class);
 		intentToNavigation = new Intent(ModifyActivity.this,MainActivity.class);
 		
-		//receiving parameters from the waypoint activity
-		nameArray = intentFromWayPointAct.getStringArrayExtra("nameArrayFromWP");
-		latitudeArray = intentFromWayPointAct.getStringArrayExtra("latitudeArrayFromWP");
-		longitudeArray = intentFromWayPointAct.getStringArrayExtra("longitudeArrayFromWP");
 		//receiving old name
 		oldName = intentFromWayPointAct.getStringExtra("modName");
 		oldLatitude = intentFromWayPointAct.getStringExtra("modLatitude");
@@ -289,13 +282,14 @@ public class ModifyActivity extends Activity {
 		@SuppressLint("ShowToast")
 		
 		public boolean isRecorded(String n, String la, String lo){
-			for(int i = 0;i<nameArray.length;i++){
-				if((latitudeArray[i].equalsIgnoreCase(la) && longitudeArray[i].equalsIgnoreCase(lo)) && (nameArray[i].equalsIgnoreCase(n))){
-					if(nameArray[i].equalsIgnoreCase(n)){
+			List<WP> wList = WayPointActivity.getWayPointList();
+			for(int i = 1;i<wList.size();i++){
+				if((wList.get(i).getLatitude().equalsIgnoreCase(la) && wList.get(i).getLongitude().equalsIgnoreCase(lo)) || (wList.get(i).getName().equalsIgnoreCase(n))){
+					if(wList.get(i).getName().equalsIgnoreCase(n)){
 						// same name
 						Toast.makeText(ModifyActivity.this, "This name is in the list.", Toast.LENGTH_SHORT);
 					}//end if
-					if(latitudeArray[i].equalsIgnoreCase(la) && longitudeArray[i].equalsIgnoreCase(lo)){
+					if(wList.get(i).getLatitude().equalsIgnoreCase(la) && wList.get(i).getLongitude().equalsIgnoreCase(lo)){
 						//same position
 						Toast.makeText(ModifyActivity.this, "This position is in the list.", Toast.LENGTH_SHORT);
 					}//end if
