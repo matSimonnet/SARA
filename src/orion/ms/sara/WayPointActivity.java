@@ -6,15 +6,11 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnDismissListener;
-import android.content.DialogInterface.OnKeyListener;
-import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,7 +18,6 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,6 +78,9 @@ public class WayPointActivity extends Activity {
 		
 		//intent
 		private Intent intentToMain;
+		
+		//selected way point item number
+		private int selectedItem = 0;
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -158,11 +156,14 @@ public class WayPointActivity extends Activity {
 	      				try{
 	                		switch(adapterView.getId()){
 	                		case R.id.spinner1: 
-	                				//notify
-	                				Toast.makeText(WayPointActivity.this,"You selected : "+toNameArrayList(wayPointList).get(i),Toast.LENGTH_SHORT).show();
-	        	      				tts.speak("Your Selected : "+toNameArrayList(wayPointList).get(i), tts.QUEUE_FLUSH, null);
+	                				if(i!=0){
+	                					//notify
+		                				Toast.makeText(WayPointActivity.this,"You selected : "+toNameArrayList(wayPointList).get(i),Toast.LENGTH_SHORT).show();
+		        	      				tts.speak("Your Selected : "+toNameArrayList(wayPointList).get(i), tts.QUEUE_FLUSH, null);
+		        	      				selectedItem = i;
+	                				}
 	                				//choosing way point
-	        	      				choosingWaypoint = wayPointList.get(i);
+	        	      				choosingWaypoint = wayPointList.get(selectedItem);
 	        	      				
 	        	      				
 	        	      				//dialog creation
@@ -256,7 +257,6 @@ public class WayPointActivity extends Activity {
 	                    }catch(Exception e){
 	                        e.printStackTrace();
 	                    }//end try-catch
-	      				
 	              	}
 
 					@SuppressWarnings("static-access")
@@ -361,7 +361,11 @@ public class WayPointActivity extends Activity {
 			WP tempWP = null;
 			float[] tempResult = new float[3];
 			//default value
-			WP first = wList.remove(0);
+			WP first = null;
+			//remove the first default way point before sorting
+			if(wList.size()>0){
+				first = wList.remove(0);
+			}
 			first = new WP("Please selected a waypoint","","");
 			
 			//Recalculating distance in the list
