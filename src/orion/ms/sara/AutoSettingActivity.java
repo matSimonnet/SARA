@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -506,6 +508,23 @@ public class AutoSettingActivity extends Activity{
 	    this.isAutoHeading = settings.getBoolean("isAutoHeading", true);
 	    this.isAutoDistance = settings.getBoolean("isAutoDistance", true);
 	    this.isAutoBearing = settings.getBoolean("isAutoBearing", true);
+	}
+//  action bar
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_autosetting, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem Item){
+		switch (Item.getItemId()) {
+		case R.id.navigation:
+			finish();
+			break;
+		default:
+			break;
+		}
+		return false;
 	}
 	  
 	

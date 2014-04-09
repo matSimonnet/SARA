@@ -94,6 +94,17 @@
     
     <string name="savebutton">save</string>
     
+    
+   <string name="title_autosetting">Auto Setting</string>
+   
+   <!-- Action bar --> 
+   <string name="auto_setting">AUTO SETTING Menu</string>
+   <string name="waypoint_setting">Waypoint Menu</string>
+   <string name="navigation">Back to navigation</string>
+   
+    
+    
+    
 
 </resources>
 
