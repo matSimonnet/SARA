@@ -43,7 +43,7 @@
     <string name="Distance">Distance</string>
     
     
-        <string name="SpeedUnit">knots</string>
+    <string name="SpeedUnit">knots</string>
     <string name="HeadingUnit">degrees</string>
     <string name="DistanceUnit">kilometre</string>
     <string name="BearingUnit">degrees</string>

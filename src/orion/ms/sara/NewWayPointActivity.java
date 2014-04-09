@@ -40,6 +40,7 @@ public class NewWayPointActivity extends Activity {
 		
 		//button
 		private Button saveButton = null;
+		private Button saveActButton = null;
 		private Button currentLoButton = null;
 		private Button mapLoButton = null;
 		
@@ -64,6 +65,7 @@ public class NewWayPointActivity extends Activity {
 		//Intent
 		private Intent intentToWayPoint;
 		private Intent intentFromWayPointAct;
+		private Intent intentToNavigation;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +133,7 @@ public class NewWayPointActivity extends Activity {
 				//intent creation
 				intentFromWayPointAct = getIntent();
 				intentToWayPoint = new Intent(NewWayPointActivity.this,WayPointActivity.class);
+				intentToNavigation = new Intent(NewWayPointActivity.this,MainActivity.class);
 
 				//receiving parameters from the waypoint activity when create a new waypoint
 				nameArray = intentFromWayPointAct.getStringArrayExtra("nameArrayFromWP");
@@ -232,6 +235,50 @@ public class NewWayPointActivity extends Activity {
 						}	
 					}//end onClick
 				});
+				
+				//save and activate button
+				saveActButton = (Button) findViewById(R.id.button4);
+				saveActButton.setOnClickListener(new OnClickListener() {
+					//onClick creation
+					@SuppressWarnings("static-access")
+					@Override
+					public void onClick(View v) {
+						if(v==saveActButton){
+							//get the new waypoint's name, latitude and longitude from the EditText
+							name = nameBox.getText().toString();
+							latitude = latitudeBox.getText().toString();
+							longitude = longitudeBox.getText().toString();
+							
+							//check if the filled name or the position (latitude and longitude) are already recorded
+							if(isRecorded(name, latitude, longitude)){
+								tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
+							}
+							else{
+								if(latitude.isEmpty() || longitude.isEmpty() || name.isEmpty()){
+									//prevent unfilled text box(es)
+									tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
+								}
+								else{
+									//sent the new waypoint information back to waypoint activity
+									//intent to way point
+									//pass the parameters including name,latitude,longitude
+									intentToWayPoint.putExtra("newName",name);//name
+									intentToWayPoint.putExtra("newLatitude", latitude);//latitude
+									intentToWayPoint.putExtra("newLongitude", longitude);//longitude
+									setResult(RESULT_OK, intentToWayPoint);
+									
+									//intent to navigation
+									//pass the parameters including name,latitude,longitude
+									//intentToNavigation.putExtra("newLatitude", latitude);//latitude
+									//intentToNavigation.putExtra("newLongitude", longitude);//longitude
+									//setResult(RESULT_OK,intentToNavigation);
+									finish();
+								}//end else in if-else
+							}//end else						
+						}//end if
+					}//end onClick
+				});//end setOnClick
+				
 	}//end of OnCreate
 
 	//to check if the filled name or the position (latitude and longitude) are already recorded
@@ -310,3 +357,4 @@ public class NewWayPointActivity extends Activity {
 	}
 
 }
+

@@ -40,6 +40,7 @@ public class ModifyActivity extends Activity {
 			
 			//button
 			private Button saveButton = null;
+			private Button saveActButton = null;
 			private Button currentLoButton = null;
 			private Button mapLoButton = null;
 			
@@ -68,6 +69,7 @@ public class ModifyActivity extends Activity {
 			//Intent
 			private Intent intentToWayPoint;
 			private Intent intentFromWayPointAct;
+			private Intent intentToNavigation;
 			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +136,7 @@ public class ModifyActivity extends Activity {
 		//intent creation
 		intentFromWayPointAct = getIntent();
 		intentToWayPoint = new Intent(ModifyActivity.this,WayPointActivity.class);
+		intentToNavigation = new Intent(ModifyActivity.this,MainActivity.class);
 		
 		//receiving parameters from the waypoint activity
 		nameArray = intentFromWayPointAct.getStringArrayExtra("nameArrayFromWP");
@@ -231,10 +234,54 @@ public class ModifyActivity extends Activity {
 						setResult(RESULT_OK, intentToWayPoint);
 						finish();
 						
-					}//end else
-				}	
+					}//end else in if-else
+				}//end if	
 			}//end onClick
 		});
+		
+		//save and activate button
+		saveActButton = (Button) findViewById(R.id.button4);
+		saveActButton.setOnClickListener(new OnClickListener() {
+			//onClick creation
+			@SuppressWarnings("static-access")
+			@SuppressLint("ShowToast")
+			@Override
+			public void onClick(View v) {
+				if(v==saveActButton){
+					//get the modifying waypoint's new name, latitude or longitude from the EditText
+					modName = nameBox.getText().toString();
+					modLatitude = latitudeBox.getText().toString();
+					modLongitude = longitudeBox.getText().toString();
+					
+					//check if the filled name or the position (latitude and longitude) are already recorded
+					if(!isRecorded(modName, modLatitude, modLongitude)){
+						tts.speak("Please fill the new information or create a new waypoint", tts.QUEUE_ADD, null);
+					}
+					else{
+						//sent the modifying waypoint information back to waypoint activity
+														
+						//notification
+						tts.speak("New information of the waypoint is already modified", tts.QUEUE_ADD, null);
+						Toast.makeText(ModifyActivity.this,"New information of the waypoint is already modified", Toast.LENGTH_SHORT);
+						
+						//intent to way point
+						//pass the parameters including name,latitude,longitude
+						intentToWayPoint.putExtra("modName",modName);//name
+						intentToWayPoint.putExtra("modLatitude", modLatitude);//latitude
+						intentToWayPoint.putExtra("modLongitude", modLongitude);//longitude
+						setResult(RESULT_OK, intentToWayPoint);
+						
+						//intent to navigation
+						//pass the parameters including name,latitude,longitude
+						//intentToNavigation.putExtra("modLatitude", modLatitude);//latitude
+						//intentToNavigation.putExtra("modLongitude", modLongitude);//longitude
+						//setResult(RESULT_OK,intentToNavigation);
+						finish();
+						
+					}//end else in if-else	
+				}//end if
+			}//end onClick
+		});//end setOnClick
 		
 	}//end of OnCreate
 	

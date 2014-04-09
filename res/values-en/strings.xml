@@ -90,7 +90,7 @@
     <string name="notactivate">Waypoint is not activated</string>
     
     <string name="savebutton">save</string>
-    
+    <string name="save_and_activateButton">Save &amp; Activate</string>
     
    <string name="title_autosetting">Auto Setting</string>
    
