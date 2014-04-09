@@ -58,14 +58,11 @@
     <string name="distancetimetreshold">minimum distance repetition</string>
     
     <string name="save_last_num">0</string>
-    <string name="navigation_setting">Navigation</string>
+    <string name="navigation_setting">Back to Navigation</string>
     <string name="using_map">Use location from the map</string>
     
     <string name="no_satellite">No Satellite</string>
-    <string name="waiting_gps">is waiting for gps signal.</string> 
-    
-    <string name="closeButton">X</string>
-    
+    <string name="waiting_gps">is waiting for gps signal.</string>     
     
   
     <string name="cant_decrease">Can not decrease</string>
