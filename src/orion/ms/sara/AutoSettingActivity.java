@@ -42,6 +42,8 @@ public class AutoSettingActivity extends Activity{
 	private TextView textViewBearingTreshold = null;
 	private TextView textViewBearingTimeTreshold = null;
 	
+	private TextView textViewAccuracyTimeTreshold = null;
+
 
 	private Button SaveSettingButton = null;
 
@@ -75,6 +77,10 @@ public class AutoSettingActivity extends Activity{
 	private Button IncreaseBearingTimeTresholdButton = null;
 	private Button DecreaseBearingTimeTresholdButton = null;
 	
+	// declare change accuracy time treshold buttons
+	private Button IncreaseAccuracyTimeTresholdButton = null;
+	private Button DecreaseAccuracyTimeTresholdButton = null;
+	
 
 	private double speedTreshold = 1.0; 
 	private long speedTimeTreshold = 5;
@@ -94,6 +100,10 @@ public class AutoSettingActivity extends Activity{
 	private long bearingTimeTreshold = 5;
 	private double bearingTresholdStep = 1.0;
 	private long bearingTimeTresholdStep = 1;
+	
+	private long accuracyTimeTreshold = 5;
+	private long accuracyTimeTresholdStep = 1;
+
 	
 	private boolean isAutoSpeed = true;
 	private boolean isAutoHeading = true;
@@ -169,6 +179,11 @@ public class AutoSettingActivity extends Activity{
 	    textViewBearingTimeTreshold.setText(getResources().getString(R.string.bearingtimetreshold)+ " "  + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
 	    textViewBearingTimeTreshold.setContentDescription(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
 
+	    //bearing time treshold view
+	    textViewAccuracyTimeTreshold = (TextView) findViewById(R.id.AccuracyTimeTresholdView);
+	    textViewAccuracyTimeTreshold.setText(getResources().getString(R.string.accuracytimetreshold)+ " "  + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit));
+	    textViewAccuracyTimeTreshold.setContentDescription(getResources().getString(R.string.accuracytimetreshold) + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit));
+
 	    // increase&decrease speed treshold button
 		IncreaseSpeedTresholdButton = (Button) findViewById(R.id.IncreaseSpeedTresholdButton);
 		IncreaseSpeedTresholdButton.setContentDescription(getResources().getString(R.string.increase) + " " + getResources().getString(R.string.speedtreshold));
@@ -210,6 +225,12 @@ public class AutoSettingActivity extends Activity{
 		IncreaseBearingTimeTresholdButton.setContentDescription(getResources().getString(R.string.increase) + " " + getResources().getString(R.string.bearingtimetreshold));
 		DecreaseBearingTimeTresholdButton = (Button) findViewById(R.id.DecreaseBearingTimeTresholdButton);
 		DecreaseBearingTimeTresholdButton.setContentDescription(getResources().getString(R.string.decrease) + " " + getResources().getString(R.string.bearingtimetreshold));
+		
+		// increase&decrease bearing time treshold button
+		IncreaseAccuracyTimeTresholdButton = (Button) findViewById(R.id.IncreaseAccuracyTimeTresholdButton);
+		IncreaseAccuracyTimeTresholdButton.setContentDescription(getResources().getString(R.string.increase) + " " + getResources().getString(R.string.accuracytimetreshold));
+		DecreaseAccuracyTimeTresholdButton = (Button) findViewById(R.id.DecreaseAccuracyTimeTresholdButton);
+		DecreaseAccuracyTimeTresholdButton.setContentDescription(getResources().getString(R.string.decrease) + " " + getResources().getString(R.string.accuracytimetreshold));
 		
 		// OnClickListener creation
 	    View.OnClickListener onclickListener = new View.OnClickListener() {
@@ -366,6 +387,33 @@ public class AutoSettingActivity extends Activity{
 					
 		        }
 				
+				if (v== IncreaseAccuracyTimeTresholdButton){
+					if(accuracyTimeTreshold >= 0 && accuracyTimeTreshold < 30) {
+						accuracyTimeTreshold = accuracyTimeTreshold + accuracyTimeTresholdStep;
+						textViewAccuracyTimeTreshold.setText(getResources().getString(R.string.accuracytimetreshold)+ " "  + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						textViewAccuracyTimeTreshold.setContentDescription(getResources().getString(R.string.accuracytimetreshold) + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						tts.speak(getResources().getString(R.string.accuracytimetreshold) + accuracyTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						Log.i("test", "increase accuracy time");
+					}
+					else {
+						tts.speak(getResources().getString(R.string.maxaccuracytimetreshold) + getResources().getString(R.string.cant_increase),TextToSpeech.QUEUE_FLUSH, null);
+					}
+					
+		        }
+				if (v== DecreaseAccuracyTimeTresholdButton){
+					if(accuracyTimeTreshold > 0 && accuracyTimeTreshold <= 30) {
+						accuracyTimeTreshold = accuracyTimeTreshold - accuracyTimeTresholdStep;
+						textViewAccuracyTimeTreshold.setText(getResources().getString(R.string.accuracytimetreshold)+ " "  + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						textViewAccuracyTimeTreshold.setContentDescription(getResources().getString(R.string.accuracytimetreshold) + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit));
+						tts.speak(getResources().getString(R.string.accuracytimetreshold) + accuracyTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						Log.i("test", "decrease accuracy time");
+					}
+					else {
+						tts.speak(getResources().getString(R.string.minaccuracytimetreshold) + getResources().getString(R.string.cant_decrease),TextToSpeech.QUEUE_FLUSH, null);
+					}
+					
+		        }
+				
 				if (v== IncreaseDistanceTimeTresholdButton){
 					if(distanceTimeTreshold >= 0 && distanceTimeTreshold < 30) {
 						distanceTimeTreshold = distanceTimeTreshold + distanceTimeTresholdStep;
@@ -411,6 +459,10 @@ public class AutoSettingActivity extends Activity{
 				    //put bearing & bearing time treshold
 				    editor.putString("bearingTreshold", String.valueOf(bearingTreshold));
 				    editor.putLong("bearingTimeTreshold", bearingTimeTreshold);
+				    
+				    //put accuracy time treshold 
+				    editor.putLong("accuracyTimeTreshold", accuracyTimeTreshold);
+
 				      
 				    // put auto checkbox
 				    editor.putBoolean("isAutoSpeed", SpeedAutoCheckBox.isChecked());
@@ -428,7 +480,8 @@ public class AutoSettingActivity extends Activity{
 					intentMain.putExtra("distanceTimeTreshold", distanceTimeTreshold);
 					intentMain.putExtra("bearingTreshold", bearingTreshold);
 					intentMain.putExtra("bearingTimeTreshold", bearingTimeTreshold);
-					
+					intentMain.putExtra("accuracyTimeTreshold", accuracyTimeTreshold);
+
 					intentMain.putExtra("isAutoSpeed", SpeedAutoCheckBox.isChecked());
 					intentMain.putExtra("isAutoHeading", HeadingAutoCheckBox.isChecked());
 					intentMain.putExtra("isAutoDistance", DistanceAutoCheckBox.isChecked());
@@ -457,6 +510,9 @@ public class AutoSettingActivity extends Activity{
 		DecreaseBearingTresholdButton.setOnClickListener(onclickListener);
 		IncreaseBearingTimeTresholdButton.setOnClickListener(onclickListener);
 		DecreaseBearingTimeTresholdButton.setOnClickListener(onclickListener);
+		
+		IncreaseAccuracyTimeTresholdButton.setOnClickListener(onclickListener);
+		DecreaseAccuracyTimeTresholdButton.setOnClickListener(onclickListener);	
 		
 		SaveSettingButton.setOnClickListener(onclickListener);
 
@@ -510,6 +566,8 @@ public class AutoSettingActivity extends Activity{
 	    this.distanceTimeTreshold = settings.getLong("distanceTimeTreshold", 5);   
 	    this.bearingTreshold = Double.parseDouble(settings.getString("bearingTreshold", "10.0"));
 	    this.bearingTimeTreshold = settings.getLong("bearingTimeTreshold", 5);  
+	    this.accuracyTimeTreshold = settings.getLong("accuracyTimeTreshold", 5);  
+
 	    this.isAutoSpeed = settings.getBoolean("isAutoSpeed", true);
 	    this.isAutoHeading = settings.getBoolean("isAutoHeading", true);
 	    this.isAutoDistance = settings.getBoolean("isAutoDistance", true);

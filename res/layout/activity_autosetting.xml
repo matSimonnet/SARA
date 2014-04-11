@@ -239,6 +239,35 @@
         android:layout_below="@+id/IncreaseBearingTimeTresholdButton"
         android:gravity="left"
         android:text="@string/autoaccuracy" />
+    
+   	<TextView
+        android:id="@+id/AccuracyTimeTresholdView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/AccuracyAutoCheckBox"
+        android:layout_toLeftOf="@+id/DecreaseAccuracyTimeTresholdButton"
+        android:gravity="center"
+        android:text="@string/accuracytimetreshold" />
+
+    <Button
+        android:id="@+id/DecreaseAccuracyTimeTresholdButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/AccuracyAutoCheckBox"
+        android:layout_toLeftOf="@+id/IncreaseAccuracyTimeTresholdButton"
+        android:gravity="center"
+        android:text="@string/DecreaseButton" />
+
+    <Button
+        android:id="@+id/IncreaseAccuracyTimeTresholdButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/AccuracyAutoCheckBox"
+        android:gravity="center"
+        android:text="@string/IncreaseButton" />
+    
 
     <Button
         android:id="@+id/SaveSettingButton"

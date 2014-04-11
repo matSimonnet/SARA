@@ -195,6 +195,8 @@ public class MainActivity extends Activity {
         			MyLocationListener.distanceTimeTreshold = data.getLongExtra("distanceTimeTreshold", 5);
         			MyLocationListener.bearingTreshold = data.getDoubleExtra("bearingTreshold", 10.0);
         			MyLocationListener.bearingTimeTreshold = data.getLongExtra("bearingTimeTreshold", 5);
+        			MyLocationListener.accuracyTimeTreshold = data.getLongExtra("accuracyTimeTreshold", 5);
+
         			MyLocationListener.isAutoSpeed = data.getBooleanExtra("isAutoSpeed", true);
         			MyLocationListener.isAutoHeading = data.getBooleanExtra("isAutoHeading", true);
         			MyLocationListener.isAutoDistance = data.getBooleanExtra("isAutoDistance", true);
@@ -208,6 +210,7 @@ public class MainActivity extends Activity {
         			Log.i("distancetime", MyLocationListener.distanceTimeTreshold+"");
         			Log.i("bearing", MyLocationListener.bearingTreshold+"");
         			Log.i("bearingtime", MyLocationListener.bearingTimeTreshold+"");
+        			Log.i("accuracytime", MyLocationListener.accuracyTimeTreshold+"");
 
         			Log.i("isSpeed", MyLocationListener.isAutoSpeed+"");
         			Log.i("isheading", MyLocationListener.isAutoHeading+"");
@@ -270,6 +273,7 @@ public class MainActivity extends Activity {
      	MyLocationListener.distanceTimeTreshold = settings.getLong("distanceTimeTreshold", 5); 	    
      	MyLocationListener.bearingTreshold = Double.parseDouble(settings.getString("bearingTreshold", "10.0"));
      	MyLocationListener.bearingTimeTreshold = settings.getLong("bearingTimeTreshold", 5);	    
+     	MyLocationListener.accuracyTimeTreshold = settings.getLong("accuracyTimeTreshold", 5);	    
      	MyLocationListener.isAutoSpeed = settings.getBoolean("isAutoSpeed", true);
      	MyLocationListener.isAutoHeading = settings.getBoolean("isAutoHeading", true);
      	MyLocationListener.isAutoDistance = settings.getBoolean("isAutoDistance", true);

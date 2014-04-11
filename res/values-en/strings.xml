@@ -102,6 +102,11 @@
    
    <string name="autoaccuracy">auto accuracy</string>
    <string name="accuracy">accuracy</string>
+   <string name="deg">deg</string>
+   <string name="knot">knot</string>
+   <string name="accuracytimetreshold">minimum accuracy repetition</string>
+   <string name="maxaccuracytimetreshold">Minimum accuracy repetition is 30 seconds</string>
+   <string name="minaccuracytimetreshold">Minimum accuracy repetition is 0 seconds</string>
     
     
 
