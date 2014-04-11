@@ -26,6 +26,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 	static double WaypointLatitude = 999;
 	static double WaypointLongitude = 999;
 	
+	static double currentLatitude = 0.0;
+	static double currentLongitude = 0.0;
+	
 	static float distance[] = new float[1];
 	static double bearing = 0.0;
 	
@@ -78,6 +81,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location loc) {
+		currentLatitude = loc.getLatitude();
+		currentLongitude = loc.getLongitude();
 		Resources resource = MainActivity.getContext().getResources();
 		speed = String.valueOf(Utils.arrondiSpeed(loc.getSpeed() * (1.945)));
 		heading = String.valueOf((int) loc.getBearing());
