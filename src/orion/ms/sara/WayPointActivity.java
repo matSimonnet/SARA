@@ -38,19 +38,18 @@ public class WayPointActivity extends Activity {
 		//a list of many way points sorted by proximity
 		public static List<WP> wayPointList = new ArrayList<WP>();
 		
-		//Receiving parameter arrays
+		//Receiving parameters from new waypoint
 		private String newName = "Waypoint1";
 		private String newLatitude = "0.0";
 		private String newLongitude = "0.0";
 		
-		//string for each attribute of the modifying way point
+		//strings for each attribute of the modifying way point
 		private String modName = "";
 		private String modLatitude = "";
 		private String modLongitude = "";
 		
 		//Generating a number for a new waypoint's default name
 		public static int lastNumberForWaypoint = 0;
-		public static int lastNumberForInstantWaypoint = 0;
 		
 		//code for communication between activity
 		protected int NEW_WAYPOINT = 7777777;
@@ -79,7 +78,6 @@ public class WayPointActivity extends Activity {
 		
 		//intent
 		private Intent intentToMain;
-		//private Intent intentFromMain;
 		
 		//selected way point item number
 		private int selectedItem = 0;
@@ -94,6 +92,13 @@ public class WayPointActivity extends Activity {
 			//load preferences
 			sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 			loadPref();
+			
+			//check if there is any instantWaypoint
+			if(MainActivity.instList.size()!=0){
+				//two lists combination
+				wayPointList.addAll(MainActivity.instList);
+				MainActivity.instList.clear();//empty the instant waypoint list
+			}
 					
 			//OnInitListener Creation
 			OnInitListener onInitListener = new OnInitListener() {
@@ -146,7 +151,6 @@ public class WayPointActivity extends Activity {
 			
 			//Intent creation
 			intentToMain = new Intent(WayPointActivity.this,MainActivity.class);
-			//intentFromMain = getIntent();
 
 			//spinner set up
 			way.setContentDescription("Choose the waypoint in ");
@@ -336,22 +340,12 @@ public class WayPointActivity extends Activity {
 		return wayPointList;
 	}
 
-	public static void setWayPointList(List<WP> wayPointList) {
-		WayPointActivity.wayPointList = wayPointList;
-	}
-
 	//adding new way point into the way point list
 	public void addNewWPtoList(List<WP> wList,String n,String la,String lo){
 		//Get the latest number after adding a new way point
 		if(n.substring(0,8).equalsIgnoreCase("waypoint")){
 			lastNumberForWaypoint = Integer.parseInt(n.substring(8));//substring "WayPoint" name to get the number after that
 		}
-		
-		//Get the latest number after adding a instant new way point
-		if(n.substring(0,15).equalsIgnoreCase("InstantWaypoint")){
-			lastNumberForInstantWaypoint = Integer.parseInt(n.substring(15));//substring "InstantWaypoint" name to get the number after that
-		}
-		
 		//Adding the new way point into the list
 		wList.add(new WP(n,la,lo));//create new way point with assuming distance
 		sortingWaypointList(wList);//sorting the list
@@ -443,7 +437,7 @@ public class WayPointActivity extends Activity {
 		//save preferences
 		private void savePref(int lnum, String[] name, String[] lati, String[] longi){
 			SharedPreferences.Editor editor = sharedPref.edit();
-			//last num
+			//last number for new waypoint 
 			editor.putInt(getString(R.string.save_last_num), lnum);
 			
 			//name array
@@ -461,6 +455,9 @@ public class WayPointActivity extends Activity {
 		    for(int i=0;i<longi.length;i++)  
 		        editor.putString("longitudeArray" + "_" + i, longi[i]);
 			editor.commit();
+			
+			//last number for instant waypoint
+			editor.putInt(getString(R.string.save_inst_num), MainActivity.lastNumberForInstantWaypoint);
 		}
 		
 	

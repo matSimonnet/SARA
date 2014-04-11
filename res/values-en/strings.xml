@@ -58,6 +58,8 @@
     <string name="distancetimetreshold">minimum distance repetition</string>
     
     <string name="save_last_num">0</string>
+    <string name="save_inst_num">1</string>    
+        
     <string name="navigation_setting">Back to Navigation</string>
     <string name="using_map">Use location from the map</string>
     
@@ -91,6 +93,7 @@
     
     <string name="savebutton">save</string>
     <string name="save_and_activateButton">Save &amp; Activate</string>
+    <string name="instant_waypoint">Instantly create a waypoint</string>
     
    <string name="title_autosetting">Auto Setting</string>
    

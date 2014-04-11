@@ -53,7 +53,7 @@
         android:gravity="center"
         android:textSize="75sp"
         tools:context=".MainActivity" 
-   	/>     
+   	/>
      
     <ImageButton 
         android:id="@+id/buttonSpeak"
@@ -64,6 +64,12 @@
         android:src="@+android:drawable/ic_btn_speak_now"
     	/>
 
-
+    <Button
+        android:id="@+id/instantButton"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="20"
+        android:textSize="50sp"
+        android:text="@string/instant_waypoint" />
     
 </LinearLayout>

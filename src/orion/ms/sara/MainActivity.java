@@ -2,6 +2,8 @@ package orion.ms.sara;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -18,6 +20,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +41,7 @@ public class MainActivity extends Activity {
 	private Intent intent_AutoSetting_activity;
 	private Intent intent_Waypoint_activity;
 
+
 	static TextView textViewSpeed = null;
 	static TextView textViewheading = null;
 	static TextView textViewDistance = null;
@@ -44,12 +49,19 @@ public class MainActivity extends Activity {
 	static TextView textViewAccuracy = null;
 
 	static TextToSpeech tts = null;
+	//button
 	private ImageButton buttonReco = null;
+	private Button instantButton = null;
 	
 	private LocationManager lm = null;
 	private MyLocationListener ll = null;
 	private Location location = null;
 	
+	//Generating a number for a new waypoint's default name
+	public static int lastNumberForInstantWaypoint = 0;
+	//temporary list to collect instant new waypoint
+	public static List<WP> instList = new ArrayList<WP>();
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		
@@ -96,8 +108,8 @@ public class MainActivity extends Activity {
         textViewheading.setContentDescription(getResources().getString(R.string.heading) + " " + getResources().getString(R.string.waiting_gps));
 	     
         textViewAccuracy = (TextView) findViewById(R.id.accuracyView);
-        textViewAccuracy.setText(MyLocationListener.accuracy);
-        textViewAccuracy.setContentDescription(getResources().getString(R.string.accuracy) + " " + getResources().getString(R.string.waiting_gps));
+        //textViewAccuracy.setText(MyLocationListener.accuracy);
+        //textViewAccuracy.setContentDescription(getResources().getString(R.string.accuracy) + " " + getResources().getString(R.string.waiting_gps));
         
         //dates creation
         MyLocationListener.speedBefore = new Date();
@@ -115,6 +127,26 @@ public class MainActivity extends Activity {
         // Text to speech creation
         tts = new TextToSpeech(this, onInitListener);
         tts.setSpeechRate((float) 2.0);
+        
+        //"Instantly create a waypoint" button
+        instantButton = (Button) findViewById(R.id.instantButton);
+        instantButton.setOnClickListener(new OnClickListener() {
+			//onClick creation
+			@Override
+			public void onClick(View v) {
+				if(v==instantButton){
+			        Log.i("Instant button", "pressed");
+			        //"create an new instant waypoint" button onClick listener
+			        lastNumberForInstantWaypoint += 1;
+			        instList.add(new WP("InstantWaypoint"+lastNumberForInstantWaypoint,//name
+			        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));
+			        //print all elements in the list
+			        for(int i = 0;i<instList.size();i++){
+			        	Log.i("List inst", "item "+i+" : "+instList.get(i).getName());
+			        }
+			    }//end if
+			}//end onClick
+		});//end setOnClick
 	
         // button creation
         buttonReco= new ImageButton(this);
