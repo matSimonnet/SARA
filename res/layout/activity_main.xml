@@ -12,7 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="100sp"
         tools:context=".MainActivity"/>
 
     <TextView
@@ -20,18 +20,16 @@
        	android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/speedView"
-        android:paddingTop="40dp"
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="100sp"
         tools:context=".MainActivity"/>
  	<TextView
     	android:id="@+id/bearingView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/heading"
-        android:paddingTop="40dp"           
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="100sp"
         tools:context=".MainActivity"/>
    		 	
     <TextView
@@ -39,9 +37,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bearingView"       
-        android:paddingTop="40dp"           
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="100sp"
         tools:context=".MainActivity"/>
     
     <TextView
@@ -49,28 +46,30 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/distanceView"       
-        android:paddingTop="40dp"           
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="100sp"
         tools:context=".MainActivity"/>
-	         
-    <ImageButton 
-    	android:id="@+id/buttonSpeak"
-    	android:layout_width="fill_parent"
-        android:layout_height="96dp"
-        android:layout_below="@+id/accuracyView"       
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:contentDescription="@string/vocalrecognition"
-        android:src="@+android:drawable/ic_btn_speak_now"/>
-
-    <Button
-        android:id="@+id/instantButton"
+	
+    <TableRow
         android:layout_width="fill_parent"
-        android:layout_height="96dp"
-        android:layout_below="@+id/accuracyView"       
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"        
-        android:textSize="20sp"
-        android:text="@string/instant_waypoint" />    
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/accuracyView" >
+        
+    	<ImageButton 
+    		android:id="@+id/buttonSpeak"
+    		android:layout_width="0dp"
+        	android:layout_height="fill_parent"
+        	android:layout_weight="1"
+        	android:contentDescription="@string/vocalrecognition"
+        	android:src="@+android:drawable/ic_btn_speak_now"/>
+
+    	<Button
+        	android:id="@+id/instantButton"
+        	android:layout_width="0dp"
+        	android:layout_height="fill_parent"
+        	android:layout_weight="1"
+        	android:textSize="20sp"
+        	android:text="@string/instant_waypoint" /> 
+    	</TableRow>
 </RelativeLayout>

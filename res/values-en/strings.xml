@@ -115,5 +115,7 @@
 
    <string name="general_setting">general setting menu</string>
    <string name="title_generalsetting">General Setting</string>
+   <string name="map">MAP</string>
+   
 </resources>
 
