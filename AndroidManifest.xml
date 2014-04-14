@@ -43,9 +43,7 @@
             android:name="orion.ms.sara.ModifyActivity"
             android:label="@string/title_activity_modify" >
         </activity>
-        
-        
-        
+               
         <activity
             android:name="orion.ms.sara.AutoSettingActivity"
             android:label="@string/title_autosetting" >
@@ -55,16 +53,14 @@
             </intent-filter>
         </activity>
         
-        <!-- activity
-            android:name="orion.ms.sara.Waypoint"
-            android:label="@string/app_name" >
+        <activity
+            android:name="orion.ms.sara.GeneralSettingActivity"
+            android:label="@string/title_generalsetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity-->
-        
-
+        </activity>
 
     </application>
 

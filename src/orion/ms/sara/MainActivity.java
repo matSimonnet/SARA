@@ -36,10 +36,12 @@ public class MainActivity extends Activity {
 	protected static final int RESULT_SPEECH = 1;
 	protected static final int RESULT_AUTO_SETTING = 2;
 	protected static final int RESULT_WAYPOINT = 3;
-	protected static final int RESULT_MAIN = 3;
+	protected static final int RESULT_GENERAL_SETTING = 4;
+
 
 	private Intent intent_AutoSetting_activity;
 	private Intent intent_Waypoint_activity;
+	private Intent intent_GeneralSetting_activity;
 
 
 	static TextView textViewSpeed = null;
@@ -83,6 +85,7 @@ public class MainActivity extends Activity {
         //intent creation
 		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
 		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
+		intent_GeneralSetting_activity = new Intent(MainActivity.this,GeneralSettingActivity.class);
 
 		MyLocationListener.heading =  getResources().getString(R.string.no_satellite);
 		MyLocationListener.speed =  getResources().getString(R.string.no_satellite);
@@ -289,6 +292,9 @@ public class MainActivity extends Activity {
 			break;
 		case R.id.waypoint_setting:
 			startActivityForResult(intent_Waypoint_activity, RESULT_WAYPOINT);
+			break;
+		case R.id.general_setting:
+			startActivityForResult(intent_GeneralSetting_activity, RESULT_GENERAL_SETTING);
 			break;
 		default:
 			break;

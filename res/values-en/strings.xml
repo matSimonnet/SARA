@@ -113,5 +113,7 @@
     
     
 
+   <string name="general_setting">general setting menu</string>
+   <string name="title_generalsetting">General Setting</string>
 </resources>
 
