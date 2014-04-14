@@ -456,8 +456,6 @@ public class WayPointActivity extends Activity {
 		        editor.putString("longitudeArray" + "_" + i, longi[i]);
 			editor.commit();
 			
-			//last number for instant waypoint
-			editor.putInt(getString(R.string.save_inst_num), MainActivity.lastNumberForInstantWaypoint);
 		}
 		
 	

@@ -59,6 +59,9 @@ public class MainActivity extends Activity {
 	private MyLocationListener ll = null;
 	private Location location = null;
 	
+	//shared preferences
+	SharedPreferences settings;
+	
 	//Generating a number for a new waypoint's default name
 	public static int lastNumberForInstantWaypoint = 0;
 	//temporary list to collect instant new waypoint
@@ -135,6 +138,7 @@ public class MainActivity extends Activity {
         instantButton = (Button) findViewById(R.id.instantButton);
         instantButton.setOnClickListener(new OnClickListener() {
 			//onClick creation
+			@SuppressWarnings("static-access")
 			@Override
 			public void onClick(View v) {
 				if(v==instantButton){
@@ -142,7 +146,12 @@ public class MainActivity extends Activity {
 			        //"create an new instant waypoint" button onClick listener
 			        lastNumberForInstantWaypoint += 1;
 			        instList.add(new WP("InstantWaypoint"+lastNumberForInstantWaypoint,//name
-			        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));
+			        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
+			        //Notify
+			        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", tts.QUEUE_ADD, null);
+			        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
+			        //save value
+			        savePref();
 			        //print all elements in the list
 			        for(int i = 0;i<instList.size();i++){
 			        	Log.i("List inst", "item "+i+" : "+instList.get(i).getName());
@@ -303,7 +312,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public void LoadPref() {
-     	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		settings = getSharedPreferences(PREFS_NAME, 0);
      	MyLocationListener.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
      	MyLocationListener.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
      	MyLocationListener.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
@@ -320,7 +329,20 @@ public class MainActivity extends Activity {
 
         MyLocationListener.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
         MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
+        lastNumberForInstantWaypoint = settings.getInt(getString(R.string.save_inst_num), 0);
 	}
+	
+	//save preferences
+	public void savePref(){
+		SharedPreferences.Editor editor = settings.edit();
+		//last number for instant waypoint
+		editor.putInt(getString(R.string.save_inst_num), lastNumberForInstantWaypoint);
+		editor.commit();
+
+		int linst = settings.getInt(getString(R.string.save_inst_num), lastNumberForInstantWaypoint);
+		Log.i("save pref", "last inst  =  "+linst);
+	}
+	
     public static Context getContext(){
         return mContext;
     }
