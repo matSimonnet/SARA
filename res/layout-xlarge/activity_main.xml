@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
@@ -20,7 +20,7 @@
        	android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/speedView"
-        android:paddingTop="40dp"
+        android:paddingTop="70dp"
         android:gravity="center"
         android:textSize="75sp"
         tools:context=".MainActivity"/>
@@ -29,7 +29,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/heading"
-        android:paddingTop="40dp"           
+        android:paddingTop="70dp"           
         android:gravity="center"
         android:textSize="75sp"
         tools:context=".MainActivity"/>
@@ -39,7 +39,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bearingView"       
-        android:paddingTop="40dp"           
+        android:paddingTop="70dp"           
         android:gravity="center"
         android:textSize="75sp"
         tools:context=".MainActivity"/>
@@ -49,17 +49,17 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/distanceView"       
-        android:paddingTop="40dp"           
+        android:paddingTop="70dp" 
+        android:paddingBottom="140dp"          
         android:gravity="center"
         android:textSize="75sp"
         tools:context=".MainActivity"/>
 	         
     <ImageButton 
     	android:id="@+id/buttonSpeak"
-    	android:layout_width="wrap_content"
-        android:layout_height="96dp"
+    	android:layout_width="400dp"
+        android:layout_height="56dp"
         android:layout_below="@+id/accuracyView"       
-        android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
        	android:layout_toLeftOf="@+id/instantButton"
         android:contentDescription="@string/vocalrecognition"
@@ -67,11 +67,11 @@
 
     <Button
         android:id="@+id/instantButton"
-        android:layout_width="wrap_content"
-        android:layout_height="96dp"
+        android:layout_width="400dp"
+        android:layout_height="56dp"
         android:layout_below="@+id/accuracyView"       
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"        
+        android:layout_alignParentBottom="true" 
+        android:layout_alignParentRight="true"       
         android:textSize="20sp"
         android:text="@string/instant_waypoint" />    
 </RelativeLayout>
