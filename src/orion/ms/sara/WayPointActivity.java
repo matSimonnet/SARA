@@ -92,14 +92,7 @@ public class WayPointActivity extends Activity {
 			//load preferences
 			sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 			loadPref();
-			
-			//check if there is any instantWaypoint
-			if(MainActivity.instList.size()!=0){
-				//two lists combination
-				wayPointList.addAll(MainActivity.instList);
-				MainActivity.instList.clear();//empty the instant waypoint list
-			}
-					
+								
 			//OnInitListener Creation
 			OnInitListener onInitListener = new OnInitListener() {
 				@Override
@@ -144,6 +137,15 @@ public class WayPointActivity extends Activity {
 				
 			//sorting way point
 			sortingWaypointList(wayPointList);
+			//check if there is any instantWaypoint
+			if(MainActivity.instList.size()>0){
+				//two lists combination
+				wayPointList.addAll(MainActivity.instList);
+				MainActivity.instList.clear();//empty the instant waypoint list
+				//sorting way point
+				sortingWaypointList(wayPointList);
+			}
+			
 
 			//alert dialog creation
 			choosingDialog = new AlertDialog.Builder(this);
@@ -381,7 +383,6 @@ public class WayPointActivity extends Activity {
 				Location.distanceBetween(tempLa, tempLong, curLa, curLong, tempResult);
 				//set up the new distance from the current position into every way point in the list
 				wList.get(i).setDistance(tempResult[0]);
-				Log.i("Cur dis for sort", "===============item "+i+" dis now = "+tempResult[0]+"===============");
 			}
 			Collections.sort(wList);//Sorting the list by proximity
 			wList.add(0, first);
@@ -517,6 +518,14 @@ public class WayPointActivity extends Activity {
 	    super.onResume();
 	    Log.i("Resume the program", "=======================RESUME+++++++++++++++++++++");
 	    sortingWaypointList(wayPointList);
+	    //check if there is any instantWaypoint
+		if(MainActivity.instList.size()>0){
+			//two lists combination
+			wayPointList.addAll(MainActivity.instList);
+			MainActivity.instList.clear();//empty the instant waypoint list
+			//sorting way point
+			sortingWaypointList(wayPointList);
+		}
 	  }
 	  @Override
 	  protected void onPause() {
