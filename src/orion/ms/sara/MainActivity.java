@@ -3,7 +3,7 @@ package orion.ms.sara;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 		
 		Log.i("test", "///////// onCreate \\\\\\\\\\");
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -142,24 +142,33 @@ public class MainActivity extends Activity {
         instantButton.setTextSize(30);
         instantButton.setOnClickListener(new OnClickListener() {
 			//onClick creation
+			@SuppressLint("ShowToast")
 			@SuppressWarnings("static-access")
 			@Override
 			public void onClick(View v) {
 				if(v==instantButton){
-			        Log.i("Instant button", "pressed");
-			        //"create an new instant waypoint" button onClick listener
-			        lastNumberForInstantWaypoint += 1;
-			        instList.add(new WP("InstantWaypoint"+lastNumberForInstantWaypoint,//name
-			        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
-			        //Notify
-			        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", tts.QUEUE_ADD, null);
-			        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
-			        //save value
-			        savePref();
-			        //print all elements in the list
-			        for(int i = 0;i<instList.size();i++){
-			        	Log.i("List inst", "item "+i+" : "+instList.get(i).getName());
-			        }
+					if(!MyLocationListener.currentLatitude.equals("") && !MyLocationListener.currentLongitude.equals("")){
+						Log.i("Instant button", "pressed");
+				        //"create an new instant waypoint" button onClick listener
+				        lastNumberForInstantWaypoint += 1;
+				        instList.add(new WP("InstantWaypoint"+lastNumberForInstantWaypoint,//name
+				        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
+				        //Notify
+				        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", tts.QUEUE_ADD, null);
+				        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
+				        //save value
+				        savePref();
+				        //print all elements in the list
+				        for(int i = 0;i<instList.size();i++){
+				        	Log.i("List inst", "item "+i+" : "+instList.get(i).getName());
+				        }
+					}//end if
+					else{
+						//GPS not available
+						Toast.makeText(MainActivity.this,"GPS is unavailable." , Toast.LENGTH_SHORT).show();
+						tts.speak("GPS is unavailable.", tts.QUEUE_FLUSH, null);
+					}
+			        
 			    }//end if
 			}//end onClick
 		});//end setOnClick

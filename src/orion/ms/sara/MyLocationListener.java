@@ -26,8 +26,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 	static double WaypointLatitude = 999;
 	static double WaypointLongitude = 999;
 	
-	static String currentLatitude = "0.0";
-	static String currentLongitude = "0.0";
+	static String currentLatitude = "";
+	static String currentLongitude = "";
 	
 	static float distance[] = new float[1];
 	static double bearing = 0.0;

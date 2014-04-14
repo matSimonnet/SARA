@@ -166,7 +166,7 @@ public class NewWayPointActivity extends Activity {
 						}
 						else{
 							//show GPS disable dialog
-							gpsDisDialog.setTitle("GPS disable");
+							gpsDisDialog.setTitle("GPS is unavailable");
 							gpsDisDialog.setPositiveButton("Dismiss", null);
 							gpsDisDialog.show();
 						}
