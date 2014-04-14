@@ -37,11 +37,13 @@ public class MainActivity extends Activity {
 	protected static final int RESULT_AUTO_SETTING = 2;
 	protected static final int RESULT_WAYPOINT = 3;
 	protected static final int RESULT_GENERAL_SETTING = 4;
+	protected static final int RESULT_MAP = 5;
 
 
 	private Intent intent_AutoSetting_activity;
 	private Intent intent_Waypoint_activity;
 	private Intent intent_GeneralSetting_activity;
+	private Intent intent_Map_activity;
 
 
 	static TextView textViewSpeed = null;
@@ -89,6 +91,7 @@ public class MainActivity extends Activity {
 		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
 		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
 		intent_GeneralSetting_activity = new Intent(MainActivity.this,GeneralSettingActivity.class);
+		intent_Map_activity = new Intent(MainActivity.this,MyMapActivity.class);
 
 		MyLocationListener.heading =  getResources().getString(R.string.no_satellite);
 		MyLocationListener.speed =  getResources().getString(R.string.no_satellite);
@@ -247,22 +250,6 @@ public class MainActivity extends Activity {
         			MyLocationListener.isAutoDistance = data.getBooleanExtra("isAutoDistance", true);
         			MyLocationListener.isAutoBearing = data.getBooleanExtra("isAutoBearing", true);
         			MyLocationListener.isAutoAccuracy = data.getBooleanExtra("isAutoAccuracy", true);
-
-        			Log.i("speed", MyLocationListener.speedTreshold+"");
-        			Log.i("speedtime", MyLocationListener.speedTimeTreshold+"");
-        			Log.i("heading", MyLocationListener.headingTreshold+"");
-        			Log.i("headingtime", MyLocationListener.headingTimeTreshold+"");
-        			Log.i("distancetime", MyLocationListener.distanceTimeTreshold+"");
-        			Log.i("bearing", MyLocationListener.bearingTreshold+"");
-        			Log.i("bearingtime", MyLocationListener.bearingTimeTreshold+"");
-        			Log.i("accuracytime", MyLocationListener.accuracyTimeTreshold+"");
-
-        			Log.i("isSpeed", MyLocationListener.isAutoSpeed+"");
-        			Log.i("isheading", MyLocationListener.isAutoHeading+"");
-        			Log.i("isDistance", MyLocationListener.isAutoDistance+"");
-        			Log.i("isBearing", MyLocationListener.isAutoBearing+"");
-        			Log.i("isAccuracy", MyLocationListener.isAutoAccuracy+"");
-
         		}
         	break;
         	}// end of case
@@ -305,6 +292,9 @@ public class MainActivity extends Activity {
 			break;
 		case R.id.general_setting:
 			startActivityForResult(intent_GeneralSetting_activity, RESULT_GENERAL_SETTING);
+			break;
+		case R.id.map:
+			startActivityForResult(intent_Map_activity, RESULT_MAP);
 			break;
 		default:
 			break;

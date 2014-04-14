@@ -78,6 +78,10 @@ public class MyLocationListener extends Activity implements LocationListener {
 	static long accuracyTimeTreshold = 5;
 
 	SpannableString msp = null;
+	
+	private boolean isMorePrecise5Announced = false;
+	private boolean isMorePrecise10Announced = false;
+	private boolean isLessPrecise10Announced = false;
 
 	@Override
 	public void onLocationChanged(Location loc) {
@@ -190,26 +194,33 @@ public class MyLocationListener extends Activity implements LocationListener {
 		if (isAutoAccuracy) {
 			accuracyAuto = loc.getAccuracy();
 			accuracyNow = new Date();
-			if (accuracyAuto < 5 
+			if (isMorePrecise5Announced == false && accuracyAuto < 5 
+				&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
+				MainActivity.tts.speak(resource.getString(R.string.accuracy) + " " + accuracy + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
+				accuracyBefore = new Date();
+				Log.i("accuracy", accuracy);
+				isMorePrecise5Announced = true;
+				isMorePrecise10Announced = false;
+				isLessPrecise10Announced = false;
+			}
+			else if (isMorePrecise10Announced == false && accuracyAuto >= 5 && accuracyAuto < 10
 				&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
 				
 				MainActivity.tts.speak(resource.getString(R.string.accuracy) + " " + accuracy + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
 				accuracyBefore = new Date();
 				Log.i("accuracy", accuracy);
+				isMorePrecise5Announced = false;
+				isMorePrecise10Announced = true;
+				isLessPrecise10Announced = false;
 			}
-			else if (accuracyAuto >= 5 && accuracyAuto < 10
-				&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
-				
-				MainActivity.tts.speak(resource.getString(R.string.accuracy) + " " + accuracy + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
-				accuracyBefore = new Date();
-				Log.i("accuracy", accuracy);
-			}
-			else if (accuracyAuto >= 10
+			else if (isLessPrecise10Announced == false && accuracyAuto >= 10
 				&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
 				MainActivity.tts.speak(resource.getString(R.string.accuracy) + " " + accuracy + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
 				accuracyBefore = new Date();
 				Log.i("accuracy", accuracy);
-			
+				isMorePrecise5Announced = false;
+				isMorePrecise10Announced = false;
+				isLessPrecise10Announced = true;
 			}
 		}// end of if AccuracyAutoCheck...
 
