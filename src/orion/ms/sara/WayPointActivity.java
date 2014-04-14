@@ -197,6 +197,7 @@ public class WayPointActivity extends Activity {
 
 			                				//change back to the main activity
 											//passing activate way point name and position
+											intentToMain.putExtra("actName", choosingWaypoint.getName());//name
 											intentToMain.putExtra("actLatitude", Double.parseDouble( choosingWaypoint.getLatitude()));//latitude
 											intentToMain.putExtra("actLongitude", Double.parseDouble(choosingWaypoint.getLongitude()));//longitude
 											
@@ -475,6 +476,7 @@ public class WayPointActivity extends Activity {
     		if(NewWayPointActivity.isAlsoActivateForNWP){
     			//change back to the main activity
 				//passing activate way point name and position
+				intentToMain.putExtra("actName", newName);//name
 				intentToMain.putExtra("actLatitude", Double.parseDouble(newLatitude));//latitude
 				intentToMain.putExtra("actLongitude", Double.parseDouble(newLongitude));//longitude
 				
@@ -502,6 +504,7 @@ public class WayPointActivity extends Activity {
     		if(ModifyActivity.isAlsoActivateForMWP){
     			//change back to the main activity
 				//passing activate way point name and position
+				intentToMain.putExtra("actName", modName);//name
 				intentToMain.putExtra("actLatitude", Double.parseDouble(modLatitude));//latitude
 				intentToMain.putExtra("actLongitude", Double.parseDouble(modLongitude));//longitude
 				
