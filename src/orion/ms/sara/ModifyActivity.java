@@ -67,6 +67,9 @@ public class ModifyActivity extends Activity {
 			private Intent intentToWayPoint;
 			private Intent intentFromWayPointAct;
 			
+			//status for check if save and activate button is pressed (modify waypoint)
+			public static boolean isAlsoActivateForMWP = false;
+			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -223,6 +226,7 @@ public class ModifyActivity extends Activity {
 						intentToWayPoint.putExtra("modName",modName);//name
 						intentToWayPoint.putExtra("modLatitude", modLatitude);//latitude
 						intentToWayPoint.putExtra("modLongitude", modLongitude);//longitude
+						isAlsoActivateForMWP = false;//change status
 						
 						//back to WayPoint activity and send some parameters to the activity
 						setResult(RESULT_OK, intentToWayPoint);
@@ -264,13 +268,9 @@ public class ModifyActivity extends Activity {
 						intentToWayPoint.putExtra("modName",modName);//name
 						intentToWayPoint.putExtra("modLatitude", modLatitude);//latitude
 						intentToWayPoint.putExtra("modLongitude", modLongitude);//longitude
-						setResult(RESULT_OK, intentToWayPoint);
+						isAlsoActivateForMWP = true;//status change
 						
-						//intent to navigation
-						//pass the parameters including name,latitude,longitude
-						//intentToNavigation.putExtra("modLatitude", modLatitude);//latitude
-						//intentToNavigation.putExtra("modLongitude", modLongitude);//longitude
-						//setResult(RESULT_OK,intentToNavigation);
+						setResult(RESULT_OK, intentToWayPoint);
 						finish();
 						
 					}//end else in if-else	

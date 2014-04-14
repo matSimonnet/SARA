@@ -191,10 +191,8 @@ public class WayPointActivity extends Activity {
 
 			                				//change back to the main activity
 											//passing activate way point name and position
-											intentToMain.putExtra("actName",choosingWaypoint.getName());//name
 											intentToMain.putExtra("actLatitude", Double.parseDouble( choosingWaypoint.getLatitude()));//latitude
 											intentToMain.putExtra("actLongitude", Double.parseDouble(choosingWaypoint.getLongitude()));//longitude
-											intentToMain.putExtra("actDistance", choosingWaypoint.getDistance());//choosing waypoint distance to the current position
 											
 											//back to WayPoint activity and send some parameters to the activity
 											setResult(RESULT_OK, intentToMain);
@@ -469,8 +467,21 @@ public class WayPointActivity extends Activity {
         	newName = intentFromAnother.getStringExtra("newName");
     		newLatitude = intentFromAnother.getStringExtra("newLatitude");
     		newLongitude = intentFromAnother.getStringExtra("newLongitude");
+    		//not from pressing menu item
     		if(!newName.equals("") && !newLatitude.equals("") && !newLongitude.equals(""))
     			addNewWPtoList(wayPointList, newName, newLatitude, newLongitude);
+    		//pressing save and activate
+    		if(NewWayPointActivity.isAlsoActivateForNWP){
+    			//change back to the main activity
+				//passing activate way point name and position
+				intentToMain.putExtra("actLatitude", newLatitude);//latitude
+				intentToMain.putExtra("actLongitude", newLongitude);//longitude
+				
+				//back to main activity and send some parameters to the activity
+				setResult(RESULT_OK, intentToMain);
+				
+				finish();
+    		}//end if for pressing save and activate
         }
         
       //get parameters from the Modify activity and replace the old information
@@ -478,6 +489,7 @@ public class WayPointActivity extends Activity {
         	modName = intentFromAnother.getStringExtra("modName");
     		modLatitude = intentFromAnother.getStringExtra("modLatitude");
     		modLongitude = intentFromAnother.getStringExtra("modLongitude");
+    		//not pressing from menu item
     		if(!modName.equals("") && !modLatitude.equals("") && !modLongitude.equals("")){
     			//replace the old information with the modifying information
         		choosingWaypoint.setName(modName);
@@ -485,6 +497,18 @@ public class WayPointActivity extends Activity {
         		choosingWaypoint.setLongitude(modLongitude);
         		sortingWaypointList(wayPointList);
     		}
+    		//pressing save and activate
+    		if(ModifyActivity.isAlsoActivateForMWP){
+    			//change back to the main activity
+				//passing activate way point name and position
+				intentToMain.putExtra("actLatitude", modLatitude);//latitude
+				intentToMain.putExtra("actLongitude", modLongitude);//longitude
+				
+				//back to main activity and send some parameters to the activity
+				setResult(RESULT_OK, intentToMain);
+				
+				finish();
+    		}//end if for pressing save and activate
         }
         
 	}

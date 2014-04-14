@@ -62,7 +62,9 @@ public class NewWayPointActivity extends Activity {
 		//Intent
 		private Intent intentToWayPoint;
 		private Intent intentFromWayPointAct;
-		
+
+		//status for check if save and activate button is pressed (new waypoint)
+		public static boolean isAlsoActivateForNWP = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,7 +114,6 @@ public class NewWayPointActivity extends Activity {
 				//update location
 				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 					
-
 				
 				//TextView
 				newNameText = (TextView) findViewById(R.id.textView1);
@@ -130,7 +131,7 @@ public class NewWayPointActivity extends Activity {
 				//intent creation
 				intentFromWayPointAct = getIntent();
 				intentToWayPoint = new Intent(NewWayPointActivity.this,WayPointActivity.class);
-
+				
 				//receiving default name
 				defaultName = intentFromWayPointAct.getStringExtra("defaultNameFromWP");
 				
@@ -219,7 +220,8 @@ public class NewWayPointActivity extends Activity {
 									intentToWayPoint.putExtra("newName",name);//name
 									intentToWayPoint.putExtra("newLatitude", latitude);//latitude
 									intentToWayPoint.putExtra("newLongitude", longitude);//longitude
-									
+									isAlsoActivateForNWP = false;//change status
+
 									//back to WayPoint activity and send some parameters to the activity
 									setResult(RESULT_OK, intentToWayPoint);
 									finish();
@@ -261,13 +263,10 @@ public class NewWayPointActivity extends Activity {
 									intentToWayPoint.putExtra("newName",name);//name
 									intentToWayPoint.putExtra("newLatitude", latitude);//latitude
 									intentToWayPoint.putExtra("newLongitude", longitude);//longitude
-									setResult(RESULT_OK, intentToWayPoint);
+									isAlsoActivateForNWP = true;//change the status
 									
-									//intent to navigation
-									//pass the parameters including name,latitude,longitude
-									//intentToNavigation.putExtra("newLatitude", latitude);//latitude
-									//intentToNavigation.putExtra("newLongitude", longitude);//longitude
-									//setResult(RESULT_OK,intentToNavigation);
+									//back to WayPoint activity and send some parameters to the activity
+									setResult(RESULT_OK, intentToWayPoint);
 									finish();
 								}//end else in if-else
 							}//end else						
