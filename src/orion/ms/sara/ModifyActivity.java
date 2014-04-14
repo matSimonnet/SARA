@@ -66,7 +66,6 @@ public class ModifyActivity extends Activity {
 			//Intent
 			private Intent intentToWayPoint;
 			private Intent intentFromWayPointAct;
-			private Intent intentToNavigation;
 			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +132,6 @@ public class ModifyActivity extends Activity {
 		//intent creation
 		intentFromWayPointAct = getIntent();
 		intentToWayPoint = new Intent(ModifyActivity.this,WayPointActivity.class);
-		intentToNavigation = new Intent(ModifyActivity.this,MainActivity.class);
 		
 		//receiving old name
 		oldName = intentFromWayPointAct.getStringExtra("modName");
@@ -159,6 +157,7 @@ public class ModifyActivity extends Activity {
 		//button
 		//current location button
 		currentLoButton = (Button) findViewById(R.id.button2);
+		currentLoButton.setTextSize(30);
 		currentLoButton.setOnClickListener(new OnClickListener() {
 			//OnClick creation
 			@Override
@@ -182,6 +181,7 @@ public class ModifyActivity extends Activity {
 		
 		//map location button
 		mapLoButton = (Button) findViewById(R.id.button3);
+		mapLoButton.setTextSize(30);
 		mapLoButton.setOnClickListener(new OnClickListener() {
 			//OnClick creation
 			@SuppressLint("ShowToast")
@@ -193,6 +193,7 @@ public class ModifyActivity extends Activity {
 
 		//"save" button
 		saveButton = (Button) findViewById(R.id.button1);
+		saveButton.setTextSize(30);
 		//setOnClickedListener
 		saveButton.setOnClickListener(new OnClickListener() {
 			//OnClickedListener creation
@@ -234,6 +235,7 @@ public class ModifyActivity extends Activity {
 		
 		//save and activate button
 		saveActButton = (Button) findViewById(R.id.button4);
+		saveActButton.setTextSize(30);
 		saveActButton.setOnClickListener(new OnClickListener() {
 			//onClick creation
 			@SuppressWarnings("static-access")

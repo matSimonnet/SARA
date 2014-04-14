@@ -136,6 +136,7 @@ public class MainActivity extends Activity {
         
         //"Instantly create a waypoint" button
         instantButton = (Button) findViewById(R.id.instantButton);
+        instantButton.setTextSize(30);
         instantButton.setOnClickListener(new OnClickListener() {
 			//onClick creation
 			@SuppressWarnings("static-access")
