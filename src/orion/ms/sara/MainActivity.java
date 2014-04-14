@@ -108,8 +108,8 @@ public class MainActivity extends Activity {
         textViewheading.setContentDescription(getResources().getString(R.string.heading) + " " + getResources().getString(R.string.waiting_gps));
 	     
         textViewAccuracy = (TextView) findViewById(R.id.accuracyView);
-        //textViewAccuracy.setText(MyLocationListener.accuracy);
-        //textViewAccuracy.setContentDescription(getResources().getString(R.string.accuracy) + " " + getResources().getString(R.string.waiting_gps));
+        textViewAccuracy.setText(MyLocationListener.accuracy);
+        textViewAccuracy.setContentDescription(getResources().getString(R.string.accuracy) + " " + getResources().getString(R.string.waiting_gps));
         
         //dates creation
         MyLocationListener.speedBefore = new Date();
