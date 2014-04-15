@@ -1,6 +1,13 @@
 package orion.ms.sara;
 
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
+import android.view.Gravity;
+
 public class Utils {
+	private static SpannableString msp = null;
+
 	
 	public static double RadToDeg(double radians)  
     {  
@@ -51,4 +58,89 @@ public class Utils {
 	public static double arrondiBearing(double val) {return (Math.floor(val*10))/10;}
 	public static double arrondiSpeedTreshold(double val) {return (Math.floor((val+0.000001)*10))/10;}
 	public static double arrondiHeadingTreshold(double val) {return (Math.floor((val+0.000001)*10))/10;}
+	
+	public static void setDistanceTextView(String value, String unit) {
+		String temp = "Distance" + "\n" + value + " " + unit;
+		msp = new SpannableString (temp);
+		int unitindex = temp.lastIndexOf(" ");
+		int titleindex = temp.lastIndexOf("\n");
+
+		if(unit != "") {
+			msp.setSpan (new RelativeSizeSpan (0.4f), unitindex, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		else {
+			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		MainActivity.textViewDistance.setText(msp);
+		MainActivity.textViewDistance.setGravity(Gravity.RIGHT);
+	}
+	public static void setHeadingTextView(String value, String unit) {
+		String temp = "Heading" + "\n" + value + " " + unit;
+		msp = new SpannableString (temp);
+		int unitindex = temp.lastIndexOf(" ");
+		int titleindex = temp.lastIndexOf("\n");
+
+		if(unit != "") {
+			msp.setSpan (new RelativeSizeSpan (0.4f), unitindex, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		else {
+			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		MainActivity.textViewheading.setText(msp);
+		MainActivity.textViewheading.setGravity(Gravity.RIGHT);
+	}	
+	public static void setBearingTextView(String value, String unit) {
+		String temp = "Bearing" + "\n" + value + " " + unit;
+		msp = new SpannableString (temp);
+		int unitindex = temp.lastIndexOf(" ");
+		int titleindex = temp.lastIndexOf("\n");
+
+		if(unit != "") {
+			msp.setSpan (new RelativeSizeSpan (0.4f), unitindex, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		else {
+			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		MainActivity.textViewBearing.setText(msp);
+		MainActivity.textViewBearing.setGravity(Gravity.LEFT);
+	}
+	public static void setSpeedTextView(String value, String unit) {
+		String temp = "Speed" + "\n" + value + " " + unit;
+		msp = new SpannableString (temp);
+		int unitindex = temp.lastIndexOf(" ");
+		int titleindex = temp.lastIndexOf("\n");
+		
+		if(unit != "") {
+			msp.setSpan (new RelativeSizeSpan (0.4f), unitindex, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		else {
+			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		MainActivity.textViewSpeed.setText(msp);
+		MainActivity.textViewSpeed.setGravity(Gravity.LEFT);
+	}
+	public static void setAccuracyTextView(String value, String unit) {
+		String temp = "Accuracy" + "\n" + value + " " + unit;
+		msp = new SpannableString (temp);
+		int unitindex = temp.lastIndexOf(" ");
+		int titleindex = temp.lastIndexOf("\n");
+
+		if(unit != "") {
+			msp.setSpan (new RelativeSizeSpan (0.4f), unitindex, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		else {
+			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		MainActivity.textViewAccuracy.setText(msp);
+		MainActivity.textViewAccuracy.setGravity(Gravity.LEFT);
+	}
 }

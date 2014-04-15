@@ -9,7 +9,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -101,23 +100,23 @@ public class MainActivity extends Activity {
 
         //TextView creation
         textViewDistance = (TextView) findViewById(R.id.distanceView);
-        textViewDistance.setText(MyLocationListener.DistanceToCurrentWaypoint);
+        Utils.setDistanceTextView(MyLocationListener.DistanceToCurrentWaypoint, "");
         textViewDistance.setContentDescription(getResources().getString(R.string.distance) + " " + getResources().getString(R.string.waiting_gps));
         
         textViewBearing = (TextView) findViewById(R.id.bearingView);
-        textViewBearing.setText(MyLocationListener.BearingToCurrentWaypoint);
+        Utils.setBearingTextView(MyLocationListener.BearingToCurrentWaypoint, "");
         textViewBearing.setContentDescription(getResources().getString(R.string.bearing) + " " + getResources().getString(R.string.waiting_gps));
             
         textViewSpeed = (TextView) findViewById(R.id.speedView);
-        textViewSpeed.setText(MyLocationListener.speed);
+        Utils.setSpeedTextView(MyLocationListener.speed, "");
         textViewSpeed.setContentDescription(getResources().getString(R.string.speed) + " " + getResources().getString(R.string.waiting_gps));
         
         textViewheading = (TextView) findViewById(R.id.heading);
-        textViewheading.setText(MyLocationListener.heading);
+        Utils.setHeadingTextView(MyLocationListener.heading, "");
         textViewheading.setContentDescription(getResources().getString(R.string.heading) + " " + getResources().getString(R.string.waiting_gps));
 	     
         textViewAccuracy = (TextView) findViewById(R.id.accuracyView);
-        textViewAccuracy.setText(MyLocationListener.accuracy);
+        Utils.setAccuracyTextView(MyLocationListener.accuracy, "");
         textViewAccuracy.setContentDescription(getResources().getString(R.string.accuracy) + " " + getResources().getString(R.string.waiting_gps));
         
         //dates creation

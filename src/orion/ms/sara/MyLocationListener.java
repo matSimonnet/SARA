@@ -8,9 +8,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -77,8 +74,6 @@ public class MyLocationListener extends Activity implements LocationListener {
 	static long bearingTimeTreshold = 5;
 	static long accuracyTimeTreshold = 5;
 
-	SpannableString msp = null;
-	
 	private boolean isMorePrecise5Announced = false;
 	private boolean isMorePrecise10Announced = false;
 	private boolean isLessPrecise10Announced = false;
@@ -94,8 +89,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 		
 		
 		if (WaypointLatitude == 999 || WaypointLongitude == 999) {
-			MainActivity.textViewDistance.setText(resource.getString(R.string.nowaypoint));
-			MainActivity.textViewBearing.setText(resource.getString(R.string.nowaypoint));
+			Utils.setDistanceTextView(resource.getString(R.string.nowaypoint), "");
+			Utils.setBearingTextView(resource.getString(R.string.nowaypoint), "");
 			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.notactivate));
 			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.notactivate));
 		} 
@@ -146,14 +141,14 @@ public class MyLocationListener extends Activity implements LocationListener {
 			}// end of if distanceAutoCheck...
 			
 			if(distance[0] < 1000) {
-				setDistanceTextView(DistanceToCurrentWaypoint, resource.getString(R.string.m));
-				setBearingTextView(BearingToCurrentWaypoint, resource.getString(R.string.deg));
+				Utils.setDistanceTextView(DistanceToCurrentWaypoint, resource.getString(R.string.m));
+				Utils.setBearingTextView(BearingToCurrentWaypoint, resource.getString(R.string.deg));
 				MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + DistanceToCurrentWaypoint + " " + resource.getString(R.string.metres));
 				MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + BearingToCurrentWaypoint + " " + resource.getString(R.string.bearingunit));
 			}
 			else {
-				setDistanceTextView(DistanceToCurrentWaypoint, resource.getString(R.string.km));
-				setBearingTextView(BearingToCurrentWaypoint, resource.getString(R.string.deg));
+				Utils.setDistanceTextView(DistanceToCurrentWaypoint, resource.getString(R.string.km));
+				Utils.setBearingTextView(BearingToCurrentWaypoint, resource.getString(R.string.deg));
 				MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + DistanceToCurrentWaypoint + " " + resource.getString(R.string.kilometres));
 				MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + BearingToCurrentWaypoint + " " + resource.getString(R.string.bearingunit));
 			}
@@ -226,9 +221,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 
 
 		// displaying value
-		setSpeedTextView(speed, resource.getString(R.string.knot));
-		setHeadingTextView(heading, resource.getString(R.string.deg));
-		setAccuracyTextView(accuracy, resource.getString(R.string.m));
+		Utils.setSpeedTextView(speed, resource.getString(R.string.knot));
+		Utils.setHeadingTextView(heading, resource.getString(R.string.deg));
+		Utils.setAccuracyTextView(accuracy, resource.getString(R.string.m));
 		
 		// set description for talkback
 		MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + " " + speed + " " + resource.getString(R.string.speedunit));
@@ -251,48 +246,6 @@ public class MyLocationListener extends Activity implements LocationListener {
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// Log.i("LocationListener","onStatusChanged");
-	}
-	
-	public void setDistanceTextView(String value, String unit) {
-		String temp = value + " " + unit;
-		msp = new SpannableString (temp);
-		int index = temp.lastIndexOf(" ");
-		msp.setSpan (new RelativeSizeSpan (0.4f), index, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-		MainActivity.textViewDistance.setText(msp);
-	}
-	public void setHeadingTextView(String value, String unit) {
-		String temp = value + " " + unit;
-		msp = new SpannableString (temp);
-		int index = temp.lastIndexOf(" ");
-		msp.setSpan (new RelativeSizeSpan (0.4f), index, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		
-		MainActivity.textViewheading.setText(msp);
-	}	
-	public void setBearingTextView(String value, String unit) {
-		
-		String temp = value + " " + unit;
-		msp = new SpannableString (temp);
-		int index = temp.lastIndexOf(" ");
-		msp.setSpan (new RelativeSizeSpan (0.4f), index, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		
-		MainActivity.textViewBearing.setText(msp);
-	}
-	public void setSpeedTextView(String value, String unit) {
-		String temp = value + " " + unit;
-		msp = new SpannableString (temp);
-		int index = temp.lastIndexOf(" ");
-		msp.setSpan (new RelativeSizeSpan (0.4f), index, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		
-		MainActivity.textViewSpeed.setText(msp);
-	}
-	public void setAccuracyTextView(String value, String unit) {
-		String temp = value + " " + unit;
-		msp = new SpannableString (temp);
-		int index = temp.lastIndexOf(" ");
-		msp.setSpan (new RelativeSizeSpan (0.4f), index, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-	
-		MainActivity.textViewAccuracy.setText(msp);
 	}
 	
 }
