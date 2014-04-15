@@ -55,25 +55,28 @@ public class MainActivity extends Activity {
 	//button
 	private ImageButton buttonReco = null;
 	private Button instantButton = null;
-	
+
 	private LocationManager lm = null;
 	private MyLocationListener ll = null;
 	private Location location = null;
-	
+
 	//shared preferences
 	SharedPreferences settings;
-	
+
 	//Generating a number for a new waypoint's default name
 	public static int lastNumberForInstantWaypoint = 0;
 	//temporary list to collect instant new waypoint
 	public static List<WP> instList = new ArrayList<WP>();
 
+	//activating waypoint name
+	private String waypointName = "";
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-		
+
 		Log.i("test", "///////// onCreate \\\\\\\\\\");
 		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		
+
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
@@ -114,7 +117,7 @@ public class MainActivity extends Activity {
         textViewheading = (TextView) findViewById(R.id.heading);
         Utils.setHeadingTextView(MyLocationListener.heading, "");
         textViewheading.setContentDescription(getResources().getString(R.string.heading) + " " + getResources().getString(R.string.waiting_gps));
-	     
+
         textViewAccuracy = (TextView) findViewById(R.id.accuracyView);
         Utils.setAccuracyTextView(MyLocationListener.accuracy, "");
         textViewAccuracy.setContentDescription(getResources().getString(R.string.accuracy) + " " + getResources().getString(R.string.waiting_gps));
@@ -131,7 +134,7 @@ public class MainActivity extends Activity {
         	public void onInit(int status) {
         	}
         };
-	
+
         // Text to speech creation
         tts = new TextToSpeech(this, onInitListener);
         tts.setSpeechRate((float) 2.0);
@@ -167,11 +170,11 @@ public class MainActivity extends Activity {
 						Toast.makeText(MainActivity.this,"GPS is unavailable." , Toast.LENGTH_SHORT).show();
 						tts.speak("GPS is unavailable.", tts.QUEUE_FLUSH, null);
 					}
-			        
+
 			    }//end if
 			}//end onClick
 		});//end setOnClick
-	
+
         // button creation
         buttonReco= new ImageButton(this);
         buttonReco = (ImageButton) findViewById(R.id.buttonSpeak);
@@ -191,12 +194,12 @@ public class MainActivity extends Activity {
 	            }// end of if button5
 	        }// end of onclick		
 		}; // end of new View.LocationListener	
-	
+
 		// button activation
 		buttonReco.setOnClickListener(onclickListener);
-	
+
 	}//end of oncreate
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -220,7 +223,7 @@ public class MainActivity extends Activity {
 		lm.removeUpdates(ll);
 		tts.shutdown();
 	}
-	
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -266,6 +269,8 @@ public class MainActivity extends Activity {
         			
         	        location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         	        
+        	        //activating waypoint name and location
+        	        waypointName = data.getStringExtra("actName");
         	        MyLocationListener.WaypointLatitude = data.getDoubleExtra("actLatitude", 999);
         	        MyLocationListener.WaypointLongitude = data.getDoubleExtra("actLongitude", 999);
         			
@@ -282,14 +287,14 @@ public class MainActivity extends Activity {
 
         }// end of switch 
     }// end of on Activity result 
-	
+
 	//  action bar
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem Item){
 		switch (Item.getItemId()) {
 		case R.id.auto_setting:
@@ -309,7 +314,7 @@ public class MainActivity extends Activity {
 		}
 		return false;
 	}
-	
+
 	public void LoadPref() {
 		settings = getSharedPreferences(PREFS_NAME, 0);
      	MyLocationListener.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
@@ -330,7 +335,7 @@ public class MainActivity extends Activity {
         MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
         lastNumberForInstantWaypoint = settings.getInt(getString(R.string.save_inst_num), 0);
 	}
-	
+
 	//save preferences
 	public void savePref(){
 		SharedPreferences.Editor editor = settings.edit();
@@ -341,7 +346,7 @@ public class MainActivity extends Activity {
 		int linst = settings.getInt(getString(R.string.save_inst_num), lastNumberForInstantWaypoint);
 		Log.i("save pref", "last inst  =  "+linst);
 	}
-	
+
     public static Context getContext(){
         return mContext;
     }

@@ -122,13 +122,19 @@ public class MyLocationListener extends Activity implements LocationListener {
 			}// end of if bearingAutoCheck...
 
 			if (isAutoDistance) {
-				distanceAuto = distance[0] / 1000;
+				distanceAuto = distance[0];
 				distanceNow = new Date();
+				
+				if(distanceAuto < 10) distanceTreshold = 1;
+				if(distanceAuto < 100) distanceTreshold = 10;
+				if(distanceAuto < 1000) distanceTreshold = 100;
+				if(distanceAuto < 10000) distanceTreshold = 1000;
+				if(distanceAuto >= 10000) distanceTreshold = 10000;
 
 				if (((distanceAuto < distanceLastAuto - distanceTreshold) || (distanceAuto > distanceLastAuto + distanceTreshold))
 					&& ((distanceNow.getTime() - distanceBefore.getTime()) > distanceTimeTreshold * 1000)) {
 					
-					if(distance[0] < 1000) {
+					if(distanceAuto < 1000) {
 						MainActivity.tts.speak(resource.getString(R.string.distance) + " " + DistanceToCurrentWaypoint + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
 					}
 					else {
