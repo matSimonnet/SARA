@@ -84,7 +84,7 @@
         
         <activity
             android:name="orion.ms.sara.AutoSpeedActivity"
-            android:label="@string/title_autosetting" >
+            android:label="@string/speedsetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -93,7 +93,7 @@
         
         <activity
             android:name="orion.ms.sara.AutoHeadingActivity"
-            android:label="@string/title_autosetting" >
+            android:label="@string/headingsetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -102,7 +102,7 @@
         
         <activity
             android:name="orion.ms.sara.AutoBearingActivity"
-            android:label="@string/title_autosetting" >
+            android:label="@string/bearingsetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -111,7 +111,7 @@
         
         <activity
             android:name="orion.ms.sara.AutoDistanceActivity"
-            android:label="@string/title_autosetting" >
+            android:label="@string/distancesetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -120,7 +120,7 @@
         
         <activity
             android:name="orion.ms.sara.AutoAccuracyActivity"
-            android:label="@string/title_autosetting" >
+            android:label="@string/accuracysetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

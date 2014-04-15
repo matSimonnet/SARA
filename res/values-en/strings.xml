@@ -122,6 +122,6 @@
    <string name="bearingsetting">Auto Bearing Setting</string>
    <string name="distancesetting">Auto Distance Setting</string>
    <string name="accuracysetting">Auto Accuracy Setting</string>
-   
+   <string name="backtoautosetting">Back to auto setting</string>
 </resources>
 
