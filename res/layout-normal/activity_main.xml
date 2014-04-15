@@ -71,7 +71,7 @@
         	android:layout_height="150dp"
         	android:layout_gravity="bottom"
         	android:layout_weight="1"
-        	android:textSize="20sp"
+        	android:textSize="30sp"
         	android:text="@string/instant_waypoint" /> 
     	</TableRow>
 </RelativeLayout>
