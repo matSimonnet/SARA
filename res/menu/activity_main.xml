@@ -1,28 +1,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <item android:id="@+id/auto_setting"
-        android:title="@string/auto_setting"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom">
-    </item>
-    
- 	<item android:id="@+id/general_setting"
-        android:title="@string/general_setting"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom">
-   	</item>
-
-    <item android:id="@+id/waypoint_setting"
-        android:title="@string/waypoint_setting"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom">
-    </item>
-
-  	<item android:id="@+id/map"
-        android:title="@string/map"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom">
-    </item>
-
-
+   <item android:id="@+id/menu" android:title="menu" android:showAsAction="ifRoom">
+        <menu>
+	    <item android:id="@+id/auto_setting"
+	        android:title="@string/auto_setting"
+	        android:orderInCategory="100"
+	        android:showAsAction="ifRoom">
+	    </item>
+	    
+	 	<item android:id="@+id/general_setting"
+	        android:title="@string/general_setting"
+	        android:orderInCategory="100"
+	        android:showAsAction="ifRoom">
+	   	</item>
+	
+	    <item android:id="@+id/waypoint_setting"
+	        android:title="@string/waypoint_setting"
+	        android:orderInCategory="100"
+	        android:showAsAction="ifRoom">
+	    </item>
+	
+	  	<item android:id="@+id/map"
+	        android:title="@string/map"
+	        android:orderInCategory="100"
+	        android:showAsAction="ifRoom">
+	    </item>
+		</menu>
+	</item>
 </menu>
+
+
