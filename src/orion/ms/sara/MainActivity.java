@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
 
         //intent creation
 		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
-		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
+		intent_AutoSetting_activity = new Intent(MainActivity.this,MainAutoSettingActivity.class);
 		intent_GeneralSetting_activity = new Intent(MainActivity.this,GeneralSettingActivity.class);
 		intent_Map_activity = new Intent(MainActivity.this,MyMapActivity.class);
 
@@ -246,21 +246,7 @@ public class MainActivity extends Activity {
         	}// end of case
         	case RESULT_AUTO_SETTING : {
         		if (resultCode == RESULT_OK && null != data) {
-
-        			MyLocationListener.speedTreshold = data.getDoubleExtra("speedTreshold", 1.0);
-        			MyLocationListener.speedTimeTreshold = data.getLongExtra("speedTimeTreshold", 5);
-        			MyLocationListener.headingTreshold = data.getDoubleExtra("headingTreshold", 10.0);
-        			MyLocationListener.headingTimeTreshold = data.getLongExtra("headingTimeTreshold", 5);
-        			MyLocationListener.distanceTimeTreshold = data.getLongExtra("distanceTimeTreshold", 5);
-        			MyLocationListener.bearingTreshold = data.getDoubleExtra("bearingTreshold", 10.0);
-        			MyLocationListener.bearingTimeTreshold = data.getLongExtra("bearingTimeTreshold", 5);
-        			MyLocationListener.accuracyTimeTreshold = data.getLongExtra("accuracyTimeTreshold", 5);
-
-        			MyLocationListener.isAutoSpeed = data.getBooleanExtra("isAutoSpeed", true);
-        			MyLocationListener.isAutoHeading = data.getBooleanExtra("isAutoHeading", true);
-        			MyLocationListener.isAutoDistance = data.getBooleanExtra("isAutoDistance", true);
-        			MyLocationListener.isAutoBearing = data.getBooleanExtra("isAutoBearing", true);
-        			MyLocationListener.isAutoAccuracy = data.getBooleanExtra("isAutoAccuracy", true);
+        			
         		}
         	break;
         	}// end of case

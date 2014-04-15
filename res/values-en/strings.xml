@@ -117,5 +117,11 @@
    <string name="title_generalsetting">General Setting</string>
    <string name="map">MAP</string>
    
+   <string name="speedsetting">Auto Speed Setting</string>
+   <string name="headingsetting">Auto Heading Setting</string>
+   <string name="bearingsetting">Auto Bearing Setting</string>
+   <string name="distancesetting">Auto Distance Setting</string>
+   <string name="accuracysetting">Auto Accuracy Setting</string>
+   
 </resources>
 

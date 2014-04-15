@@ -14,7 +14,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech.OnInitListener;
 
-public class AutoSettingActivity extends Activity{
+public class AutoSettingActivity extends Activity {
 	
 	public static final String PREFS_NAME = "MyPrefsFile";
 	

@@ -73,6 +73,60 @@
             </intent-filter>
         </activity>
         
+        <activity
+            android:name="orion.ms.sara.MainAutoSettingActivity"
+            android:label="@string/title_autosetting" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="orion.ms.sara.AutoSpeedActivity"
+            android:label="@string/title_autosetting" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="orion.ms.sara.AutoHeadingActivity"
+            android:label="@string/title_autosetting" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="orion.ms.sara.AutoBearingActivity"
+            android:label="@string/title_autosetting" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="orion.ms.sara.AutoDistanceActivity"
+            android:label="@string/title_autosetting" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="orion.ms.sara.AutoAccuracyActivity"
+            android:label="@string/title_autosetting" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
 
     </application>
 
