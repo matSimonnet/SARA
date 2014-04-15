@@ -153,13 +153,20 @@ public class MainActivity extends Activity {
 						Log.i("Instant button", "pressed");
 				        //"create an new instant waypoint" button onClick listener
 				        lastNumberForInstantWaypoint += 1;
-				        instList.add(new WP("InstantWaypoint"+lastNumberForInstantWaypoint,//name
-				        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
-				        //Notify
-				        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", tts.QUEUE_ADD, null);
-				        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
-				        //save value
-				        savePref();
+				        if(!ModifyActivity.isRecorded("InstantWaypoint", MyLocationListener.currentLatitude, MyLocationListener.currentLongitude)){
+				        	instList.add(new WP("InstantWaypoint"+lastNumberForInstantWaypoint,//name
+					        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
+					        //Notify
+					        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", tts.QUEUE_ADD, null);
+					        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
+					        //save value
+					        savePref();
+				        }
+				        else{
+				        	//Notify
+					        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay save.", tts.QUEUE_FLUSH, null);
+					        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay save.", Toast.LENGTH_SHORT).show();
+				        }
 				        //print all elements in the list
 				        for(int i = 0;i<instList.size();i++){
 				        	Log.i("List inst", "item "+i+" : "+instList.get(i).getName());

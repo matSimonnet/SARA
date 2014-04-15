@@ -283,18 +283,11 @@ public class ModifyActivity extends Activity {
 	//to check if the filled name or the position (latitude and longitude) are already recorded
 		@SuppressLint("ShowToast")
 		
-		public boolean isRecorded(String n, String la, String lo){
+		public static boolean isRecorded(String n, String la, String lo){
 			List<WP> wList = WayPointActivity.getWayPointList();
 			for(int i = 1;i<wList.size();i++){
-				if((wList.get(i).getLatitude().equalsIgnoreCase(la) && wList.get(i).getLongitude().equalsIgnoreCase(lo)) || (wList.get(i).getName().equalsIgnoreCase(n))){
-					if(wList.get(i).getName().equalsIgnoreCase(n)){
-						// same name
-						Toast.makeText(ModifyActivity.this, "This name is in the list.", Toast.LENGTH_SHORT);
-					}//end if
-					if(wList.get(i).getLatitude().equalsIgnoreCase(la) && wList.get(i).getLongitude().equalsIgnoreCase(lo)){
-						//same position
-						Toast.makeText(ModifyActivity.this, "This position is in the list.", Toast.LENGTH_SHORT);
-					}//end if
+				if((wList.get(i).getLatitude().equalsIgnoreCase(la) && wList.get(i).getLongitude().equalsIgnoreCase(lo)) 
+						|| (wList.get(i).getName().equalsIgnoreCase(n))){
 					return true;
 				}
 			}//end for

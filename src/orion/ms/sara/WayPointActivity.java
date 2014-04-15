@@ -40,8 +40,8 @@ public class WayPointActivity extends Activity {
 		
 		//Receiving parameters from new waypoint
 		private String newName = "Waypoint1";
-		private String newLatitude = "0.0";
-		private String newLongitude = "0.0";
+		private String newLatitude = "";
+		private String newLongitude = "";
 		
 		//strings for each attribute of the modifying way point
 		private String modName = "";
@@ -69,7 +69,7 @@ public class WayPointActivity extends Activity {
 		private LocationManager lm = null;	
 		private LocationListener ll = null;
 
-		//current position
+		//current default position
 		private String currentLatitude = "0.0";
 		private String currentLongitude = "0.0";
 		
@@ -137,16 +137,15 @@ public class WayPointActivity extends Activity {
 			//update location
 			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 				
-			//sorting way point
-			sortingWaypointList(wayPointList);
 			//check if there is any instantWaypoint
 			if(MainActivity.instList.size()>0){
 				//two lists combination
 				wayPointList.addAll(MainActivity.instList);
 				MainActivity.instList.clear();//empty the instant waypoint list
-				//sorting way point
-				sortingWaypointList(wayPointList);
 			}
+			
+			//sorting way point
+			sortingWaypointList(wayPointList);
 			
 
 			//alert dialog creation
@@ -307,7 +306,6 @@ public class WayPointActivity extends Activity {
 		ArrayList<String> nameList = new ArrayList<String>();
 		for(int i = 0;i<wList.size();i++){
 			nameList.add(wList.get(i).getName());
-			//Log.i("Name to show in the list :", nameList.get(i));
 		}
 		return nameList;
 	}
@@ -367,21 +365,20 @@ public class WayPointActivity extends Activity {
 			//default value
 			WP first = null;
 			//remove the first default way point before sorting
-			if(wList.size()>0){
+			if(wList.size()>0 && wList.get(0).getName().equals("Please selected a waypoint")){
 				first = wList.remove(0);
 			}
 			first = new WP("Please selected a waypoint","","");
 			
 			//Recalculating distance in the list
-			for(int i = 1;i< wList.size();i++){
+			for(int i = 0;i< wList.size();i++){
 				tempWP = wList.get(i);
 				//calculate new distance
 				double tempLa = Double.parseDouble(tempWP.getLatitude());
 				double tempLong = Double.parseDouble(tempWP.getLongitude());
-				double curLa = Double.parseDouble(currentLatitude);
-				double curLong = Double.parseDouble(currentLongitude);
 				
-				Location.distanceBetween(tempLa, tempLong, curLa, curLong, tempResult);
+				Location.distanceBetween(tempLa, tempLong, 
+						Double.parseDouble(currentLatitude), Double.parseDouble(currentLongitude), tempResult);
 				//set up the new distance from the current position into every way point in the list
 				wList.get(i).setDistance(tempResult[0]);
 			}
@@ -520,15 +517,14 @@ public class WayPointActivity extends Activity {
 	  protected void onResume() {
 	    super.onResume();
 	    Log.i("Resume the program", "=======================RESUME+++++++++++++++++++++");
-	    sortingWaypointList(wayPointList);
 	    //check if there is any instantWaypoint
 		if(MainActivity.instList.size()>0){
 			//two lists combination
 			wayPointList.addAll(MainActivity.instList);
 			MainActivity.instList.clear();//empty the instant waypoint list
-			//sorting way point
-			sortingWaypointList(wayPointList);
 		}
+		//sorting way point
+		sortingWaypointList(wayPointList);
 	  }
 	  @Override
 	  protected void onPause() {
