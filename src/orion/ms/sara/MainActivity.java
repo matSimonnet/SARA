@@ -3,12 +3,14 @@ package orion.ms.sara;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -75,7 +77,7 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 
 		Log.i("test", "///////// onCreate \\\\\\\\\\");
-		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -134,14 +136,12 @@ public class MainActivity extends Activity {
         	public void onInit(int status) {
         	}
         };
-
         // Text to speech creation
         tts = new TextToSpeech(this, onInitListener);
         tts.setSpeechRate((float) 2.0);
         
         //"Instantly create a waypoint" button
         instantButton = (Button) findViewById(R.id.instantButton);
-        instantButton.setTextSize(30);
         instantButton.setOnClickListener(new OnClickListener() {
 			//onClick creation
 			@SuppressLint("ShowToast")

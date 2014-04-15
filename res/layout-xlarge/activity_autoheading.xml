@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp" >
+
+    <CheckBox
+        android:id="@+id/headingAutoCheckBox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text="@string/autohead" />
+
+    <TextView
+        android:id="@+id/HeadingTresholdView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/headingAutoCheckBox"
+        android:layout_toLeftOf="@+id/DecreaseHeadingTresholdButton"
+        android:gravity="center"
+        android:text="@string/headingtreshold" />
+
+    <Button
+        android:id="@+id/DecreaseHeadingTresholdButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headingAutoCheckBox"
+        android:layout_toLeftOf="@+id/IncreaseHeadingTresholdButton"
+        android:gravity="center"
+        android:text="@string/DecreaseButton" />
+
+    <Button
+        android:id="@+id/IncreaseHeadingTresholdButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/headingAutoCheckBox"
+        android:gravity="center"
+        android:text="@string/IncreaseButton" />
+
+    <TextView
+        android:id="@+id/HeadingTimeTresholdView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/IncreaseHeadingTresholdButton"
+        android:layout_toLeftOf="@+id/DecreaseHeadingTimeTresholdButton"
+        android:gravity="center"
+        android:text="@string/headingtimetreshold" />
+
+    <Button
+        android:id="@+id/DecreaseHeadingTimeTresholdButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/IncreaseHeadingTresholdButton"
+        android:layout_toLeftOf="@+id/IncreaseHeadingTimeTresholdButton"
+        android:gravity="center"
+        android:text="@string/DecreaseButton" />
+
+    <Button
+        android:id="@+id/IncreaseHeadingTimeTresholdButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/IncreaseHeadingTresholdButton"
+        android:gravity="center"
+        android:text="@string/IncreaseButton" />
+
+    <Button
+        android:id="@+id/SaveSettingButton"
+        android:layout_width="fill_parent"
+        android:layout_height="96dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="@string/savesetting" />
+    
+
+</RelativeLayout>
