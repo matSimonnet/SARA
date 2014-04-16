@@ -142,5 +142,8 @@
     <string name="title_alertdialog_bearingsetting">Auto bearing setting was changed.</string>
     <string name="title_alertdialog_distancesetting">Auto distance setting was changed.</string>
     <string name="title_alertdialog_accuracysetting">Auto accuracy setting was changed.</string>
+    
+    <string name="kmperh">km/h</string>
+    
 </resources>
 

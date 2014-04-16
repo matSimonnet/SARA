@@ -43,7 +43,6 @@ public class AutoAccuracyActivity extends Activity {
 	
 	public SharedPreferences settings;
 	public SharedPreferences.Editor editor;
-
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

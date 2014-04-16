@@ -1,17 +1,13 @@
 package orion.ms.sara;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class GeneralSettingActivity extends Activity {
@@ -22,7 +18,6 @@ public class GeneralSettingActivity extends Activity {
 	private Button mapTypeButton = null;
 	private Button speechRateButton = null;
 	
-	//intent to another activity
 	private Intent intentToSpeed;
 	private Intent intentToBearing;
 	private Intent intentToDistance;
@@ -30,30 +25,18 @@ public class GeneralSettingActivity extends Activity {
 	private Intent intentToSpeech;	
 	
 	//code for intent
-	protected int SPEED_UNIT = 1;
-	protected int BEARING_UNIT = 2;
-	protected int DISTANCE_UNIT = 3;
-	protected int MAP_TYPE = 4;
-	protected int SPEECH_RATE = 5;
-	
-	//String with default value
-	public String speedUnit = "knots";
-	public String bearingUnit = "port";
-	public String portStarboard_Bearing = "0 on port";
-	public String distanceUnit = "NM";
-	public String mapType = "openSeaMap";
+	protected static final int SPEED_UNIT = 141;
+	protected static final int BEARING_UNIT = 362;
+	protected static final int DISTANCE_UNIT = 365;
+	protected static final int MAP_TYPE = 479;
+	protected static final int SPEECH_RATE = 512;
+
 	public static float speechRate = 1.5f;
-	
-	//temp unit
-	private String tempUnit = "";
-	
-	//confirmation alert dialog
-	private AlertDialog.Builder dialog;
-	
 	private TextToSpeech tts = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_generalsetting);
 		setTitle("General Setting");
@@ -70,19 +53,20 @@ public class GeneralSettingActivity extends Activity {
 		tts.setSpeechRate(speechRate);
 		
 		//Buttons and their description
-		speedUnitButton = (Button) findViewById(R.id.button1);
-		speedUnitButton.setContentDescription("Speed unit setting");
-		bearingUnitButton = (Button) findViewById(R.id.button2);
-		bearingUnitButton.setContentDescription("Bearing unit setting");
-		distanceUnitButton = (Button) findViewById(R.id.button3);
-		distanceUnitButton.setContentDescription("Distance unit setting");
-		mapTypeButton = (Button) findViewById(R.id.button4);
-		mapTypeButton.setContentDescription("Map type setting");
-		speechRateButton = (Button) findViewById(R.id.button5);
-		speechRateButton.setContentDescription("Speech rate setting");
+		this.speedUnitButton = (Button) findViewById(R.id.button1);
+		this.speedUnitButton.setContentDescription("Speed unit setting");
 		
-		//alert dialog creation
-		dialog = new AlertDialog.Builder(this);
+		this.bearingUnitButton = (Button) findViewById(R.id.button2);
+		this.bearingUnitButton.setContentDescription("Bearing unit setting");
+		
+		this.distanceUnitButton = (Button) findViewById(R.id.button3);
+		this.distanceUnitButton.setContentDescription("Distance unit setting");
+		
+		this.mapTypeButton = (Button) findViewById(R.id.button4);
+		this.mapTypeButton.setContentDescription("Map type setting");
+		
+		this.speechRateButton = (Button) findViewById(R.id.button5);
+		this.speechRateButton.setContentDescription("Speech rate setting");
 		
 		//intent creations
 		intentToSpeed = new Intent(GeneralSettingActivity.this,SpeedUnitActivity.class);
@@ -91,110 +75,62 @@ public class GeneralSettingActivity extends Activity {
 		intentToMapType = new Intent(GeneralSettingActivity.this,MapTypeActivity.class);
 		intentToSpeech = new Intent(GeneralSettingActivity.this,SpeechRateActivity.class);
 		
-		//onClickListener
-		speedUnitButton.setOnClickListener(new OnClickListener() {
-			//onClick creation
+	    View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//start speed setting
-				startActivityForResult(intentToSpeed, SPEED_UNIT);
-			}//end onClick
-		});//end setOnlick
-		
-		/*bearingUnitButton.setOnClickListener(new OnClickListener() {
-			//onClick creation
-			@Override
-			public void onClick(View v) {
-				//start bearing setting
-				startActivityForResult(intentToBearing, BEARING_UNIT);
-			}//end onClick
-		});//end setOnlick
-		
-		distanceUnitButton.setOnClickListener(new OnClickListener() {
-			//onClick creation
-			@Override
-			public void onClick(View v) {
-				//start distance setting
-				startActivityForResult(intentToDistance, DISTANCE_UNIT);
-			}//end onClick
-		});//end setOnlick
-		
-		mapTypeButton.setOnClickListener(new OnClickListener() {
-			//onClick creation
-			@Override
-			public void onClick(View v) {
-				//start map type setting
-				startActivityForResult(intentToMapType, MAP_TYPE);
-			}//end onClick
-		});//end setOnlick
-		
-		speechRateButton.setOnClickListener(new OnClickListener() {
-			//onClick creation
-			@Override
-			public void onClick(View v) {
-				//start speech rate setting
-				startActivityForResult(intentToSpeech, SPEECH_RATE);
-			}//end onClick
-		});//end setOnlick*/
+				if(v == speedUnitButton) {
+		            startActivityForResult(intentToSpeed, SPEED_UNIT);					
+				}
+				if(v == bearingUnitButton) {
+		            startActivityForResult(intentToBearing, BEARING_UNIT);					
+				}
+				if(v == distanceUnitButton) {
+		            startActivityForResult(intentToDistance, DISTANCE_UNIT);					
+				}
+				if(v == mapTypeButton) {
+		            startActivityForResult(intentToMapType, MAP_TYPE);					
+				}
+				if(v == speechRateButton) {
+		            startActivityForResult(intentToSpeech, SPEECH_RATE);					
+				}
+			}
+	    };
+	    speedUnitButton.setOnClickListener(onclickListener);
+	    bearingUnitButton.setOnClickListener(onclickListener);
+	    distanceUnitButton.setOnClickListener(onclickListener);
+	    mapTypeButton.setOnClickListener(onclickListener);
+	    speechRateButton.setOnClickListener(onclickListener);
 
-	}//end onCreate
+	} // end of on create
 	
-	//to calculate port/starboard
-	public void toPortStarboard(double angle){
-		double bearing = MyLocationListener.bearing;
-		double heading = Double.parseDouble(MyLocationListener.heading);
-		double angle_tmp = angle;
-		if (bearing - heading < 0 ) angle_tmp += 360;
-		if (angle_tmp < 180) portStarboard_Bearing = angle_tmp + "on starboard";
-		else portStarboard_Bearing = (360 - angle_tmp) + " on port";
-	}
 	
-	//Intent to handle receive parameters from other activities
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent intentFromAnother){
-	    super.onActivityResult(requestCode, resultCode, intentFromAnother);
-	    //from speed unit activity
-	    if(requestCode==SPEED_UNIT){
-	    	tempUnit = intentFromAnother.getStringExtra("choosingSpeedUnit");
-	    	if(!tempUnit.equals(speedUnit)){
-	    		//didn't save the change yet
-	    		dialog.setTitle("The speed unit changes to "+tempUnit);
-	    		dialog.setIcon(android.R.drawable.ic_menu_edit);
-	    		dialog.setMessage("Do you want to save?");
-	    		dialog.setPositiveButton("No", null);
-				Log.i("Speed unit: ", speedUnit);
-	    		dialog.setNeutralButton("Yes", new DialogInterface.OnClickListener() {
-	    			//save the changed speed unit
-					@SuppressWarnings("static-access")
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						speedUnit = tempUnit;
-						tts.speak("Speed Unit changes to "+speedUnit, tts.QUEUE_FLUSH, null);
-						Log.i("Speed unit: ", speedUnit);
-					}
-				});
-	    		dialog.show();
-	    	}//end if
-	    }//end speedUnit
-	    
-	    /*
-	    //from bearing unit activity
-	    else if(requestCode==BEARING_UNIT){
-	    	
-	    }
-	    //from distance unit activity
-	    else if(requestCode==DISTANCE_UNIT){
-	    	
-	    }
-	    //from map type activity
-	    else if(requestCode==MAP_TYPE){
-	    	
-	    }
-	    //from speech rate activity
-	    else if(requestCode==SPEECH_RATE){
-	    	//speechRate = intentFromAnother.getFloatExtra("speechRate", 2);
-	    }*/
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+	     switch (requestCode) {
+	     	case SPEED_UNIT : {
+	     		if (resultCode == RESULT_OK && null != data) {
+	     			MyLocationListener.isKnotsSelected = data.getBooleanExtra("isKnotsSelected", true);
+	     			MyLocationListener.isKmPerHrSelected = data.getBooleanExtra("isKmPerHrSelected", false);
+	     		}
+	     		break;
+	     	}
+	     	case BEARING_UNIT : {
+	     		break;
+	     	}
+	     	case DISTANCE_UNIT : {
+	     		break;
+	     	}
+	     	case MAP_TYPE : {
+	     		break;
+	     	}
+	     	case SPEECH_RATE : {
+	     		break;
+	     	}
+	     }
 	}
+
 
 	//  action bar
 	@Override

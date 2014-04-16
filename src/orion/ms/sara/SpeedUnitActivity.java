@@ -1,39 +1,34 @@
 package orion.ms.sara;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class SpeedUnitActivity extends Activity {
-	//TextView
-	private TextView speedUnitText;
+	
+	public static final String PREFS_NAME = "MyPrefsFile";
+
 	//radio group
 	private RadioGroup group;
-	//radio button
-	private RadioButton knots;
-	private RadioButton kmPerHr;
-	//Button
+	private RadioButton knotsRadioButton;
+	private RadioButton kmPerHrRadioButton;
+	
 	private Button saveButton;
-	
-	//intent
 	private Intent intentToGeneral;
-	//temp speed unit default
-	private String tempSpeedUnit = "knots";
-	
 	private TextToSpeech tts = null;
-
+	
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +36,26 @@ public class SpeedUnitActivity extends Activity {
 		setContentView(R.layout.activity_speed_unit);
 		setTitle("Speed Unit Setting");
 		
-		//components and descriptions
-		speedUnitText = (TextView) findViewById(R.id.textView1);
-		speedUnitText.setContentDescription("Choose the speed unit from the choices");
-		knots = (RadioButton) findViewById(R.id.radioButton1);
-		knots.setContentDescription("knots until");
-		kmPerHr = (RadioButton) findViewById(R.id.radioButton2);
-		kmPerHr.setContentDescription("kilometers per hour unit");
-		saveButton = (Button) findViewById(R.id.button1);
-		saveButton.setContentDescription("save the changing setting");
-		group = (RadioGroup) findViewById(R.id.radioGroup1);
-		group.setContentDescription("A group of speed unit");
+		//intent creation
+		intentToGeneral = new Intent(SpeedUnitActivity.this,GeneralSettingActivity.class);
+		
+		this.group = (RadioGroup) findViewById(R.id.radioGroup1);
+		this.group.setContentDescription("A group of speed unit");
+		
+		this.knotsRadioButton = (RadioButton) findViewById(R.id.radioButton1);
+		this.knotsRadioButton.setContentDescription("knots unit");
+		
+		this.kmPerHrRadioButton = (RadioButton) findViewById(R.id.radioButton2);
+		this.kmPerHrRadioButton.setContentDescription("kilometers per hour unit");
+		
+		this.saveButton = (Button) findViewById(R.id.button1);
+		this.saveButton.setContentDescription("save the changing setting");
+		
+	    // Restore preferences
+		this.settings = getSharedPreferences(PREFS_NAME, 0);
+		this.editor = settings.edit();
+		LoadPref();
+
 		
 		//OnInitListener Creation
 		OnInitListener onInitListener = new OnInitListener() {
@@ -64,51 +68,31 @@ public class SpeedUnitActivity extends Activity {
 		tts = new TextToSpeech(this, onInitListener);
 		tts.setSpeechRate(GeneralSettingActivity.speechRate);
 		
-		//intent creation
-		intentToGeneral = new Intent(SpeedUnitActivity.this,GeneralSettingActivity.class);
-		
-		//setOnClick
-		//knots
-		knots.setOnClickListener(new OnClickListener() {	
+	    View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(v==knots) tempSpeedUnit = "knots";
+				if(v == knotsRadioButton) {
+					Log.i("speedunit", "knot");
+				}
+				if(v == kmPerHrRadioButton) {
+					Log.i("speedunit", "km/hr");
+				}
+				if(v == saveButton) {
+				    editor.putBoolean("isKnotsSelected", knotsRadioButton.isChecked());
+				    editor.putBoolean("isKmPerHrSelected", kmPerHrRadioButton.isChecked());
+				    editor.commit();
+				    
+					intentToGeneral.putExtra("isKnotsSelected", knotsRadioButton.isChecked());
+					intentToGeneral.putExtra("isKmPerHrSelected", kmPerHrRadioButton.isChecked());
+					setResult(RESULT_OK, intentToGeneral);
+					finish();	
+				}
 			}
-		});
-		
-		//kilometers per hour
-		kmPerHr.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(v==kmPerHr) tempSpeedUnit = "km/hr";
-			}
-		});
-		
-		//save button
-		saveButton.setOnClickListener(new OnClickListener() {
-			//onClick creation
-			@SuppressWarnings("static-access")
-			@SuppressLint("ShowToast")
-			@Override
-			public void onClick(View v) {
-				if(v==saveButton){
-					if(knots.isChecked()){
-						tempSpeedUnit = "knots";
-						Toast.makeText(SpeedUnitActivity.this, "Speed unit changes to knots", Toast.LENGTH_SHORT);
-						tts.speak("Speed unit changes to knots", tts.QUEUE_FLUSH, null);
-					}
-					else if(kmPerHr.isChecked()){
-						tempSpeedUnit = "km/hr";
-						Toast.makeText(SpeedUnitActivity.this, "Speed unit changes to kilometers per hour", Toast.LENGTH_SHORT);
-						tts.speak("Speed unit changes to kilometers per hour", tts.QUEUE_FLUSH, null);
-					}
-					intentToGeneral.putExtra("choosingSpeedUnit", tempSpeedUnit);
-					setResult(RESULT_OK,intentToGeneral);
-					finish();
-				}//end if
-			}
-		});//end setOnClick
-		
+	    };
+	    knotsRadioButton.setOnClickListener(onclickListener);
+	    kmPerHrRadioButton.setOnClickListener(onclickListener);
+	    saveButton.setOnClickListener(onclickListener);
+
 	}//end onCreate
 
 	@Override
@@ -121,14 +105,8 @@ public class SpeedUnitActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.general_setting:
-			//pass the parameters
-			intentToGeneral.putExtra("choosingSpeedUnit",tempSpeedUnit);//speed unit
-			setResult(RESULT_OK, intentToGeneral);
 			finish();
 			break;
 		default:
@@ -136,5 +114,28 @@ public class SpeedUnitActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	public void LoadPref() {
+	    this.knotsRadioButton.setChecked(settings.getBoolean("isKnotsSelected", true));  
+	    this.kmPerHrRadioButton.setChecked(settings.getBoolean("isKmPerHrSelected", false));  
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+	  
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
+	  
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		tts.shutdown();
+	}
 }

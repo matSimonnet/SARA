@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 public class MyLocationListener extends Activity implements LocationListener {
 
-
 	static String speed = "";
 	static String heading = "";
 	static String DistanceToCurrentWaypoint = "";
@@ -49,7 +48,6 @@ public class MyLocationListener extends Activity implements LocationListener {
 	static boolean isAutoDistance = true;
 	static boolean isAutoBearing = true;
 	static boolean isAutoAccuracy = true;
-
 	
 	static double speedAuto = 0.0;
 	static double headingAuto = 0.0;
@@ -74,19 +72,35 @@ public class MyLocationListener extends Activity implements LocationListener {
 	static long bearingTimeTreshold = 5;
 	static long accuracyTimeTreshold = 5;
 
+	private String speedUnit = "";
 	private boolean isMorePrecise5Announced = false;
 	private boolean isMorePrecise10Announced = false;
 	private boolean isLessPrecise10Announced = false;
+	
+	static boolean isKnotsSelected = true;
+	static boolean isKmPerHrSelected = false;
 
 	@Override
 	public void onLocationChanged(Location loc) {
+		
+		Resources resource = MainActivity.getContext().getResources();
 		currentLatitude = String.valueOf(loc.getLatitude());
 		currentLongitude = String.valueOf(loc.getLongitude());
-		Resources resource = MainActivity.getContext().getResources();
-		speed = String.valueOf(Utils.arrondiSpeed(loc.getSpeed() * (1.945)));
 		heading = String.valueOf((int) loc.getBearing());
 		accuracy = String.valueOf((int) loc.getAccuracy());
 		
+		if(isKnotsSelected) {
+			speedUnit = resource.getString(R.string.knots);
+			speed = String.valueOf(Utils.arrondiSpeed(loc.getSpeed() * (1.944)));
+			Utils.setSpeedTextView(speed, speedUnit);
+			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + " " + speed + " " + speedUnit);
+		}
+		if(isKmPerHrSelected) {
+			speedUnit = resource.getString(R.string.kmperh);
+			speed = String.valueOf(Utils.arrondiSpeed(loc.getSpeed() * (3.6)));
+			Utils.setSpeedTextView(speed, speedUnit);
+			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + " " + speed + " " + resource.getString(R.string.km_per_hour));
+		}
 		
 		if (WaypointLatitude == 999 || WaypointLongitude == 999) {
 			Utils.setDistanceTextView(resource.getString(R.string.nowaypoint), "");
@@ -166,7 +180,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			if (((speedAuto < speedLastAuto - speedTreshold) || (speedAuto > speedLastAuto + speedTreshold))
 				&& ((speedNow.getTime() - speedBefore.getTime()) > speedTimeTreshold * 1000)) {
 				
-				MainActivity.tts.speak(resource.getString(R.string.speed) + " " + speed + " " + resource.getString(R.string.speedunit), TextToSpeech.QUEUE_ADD, null);
+				MainActivity.tts.speak(resource.getString(R.string.speed) + " " + speed + " " + speedUnit, TextToSpeech.QUEUE_ADD, null);
 				speedLastAuto = speedAuto;
 				speedBefore = new Date();
 				Log.i("speed", speed);
@@ -225,14 +239,11 @@ public class MyLocationListener extends Activity implements LocationListener {
 			}
 		}// end of if AccuracyAutoCheck...
 
-
 		// displaying value
-		Utils.setSpeedTextView(speed, resource.getString(R.string.knot));
 		Utils.setHeadingTextView(heading, resource.getString(R.string.deg));
 		Utils.setAccuracyTextView(accuracy, resource.getString(R.string.m));
 		
 		// set description for talkback
-		MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + " " + speed + " " + resource.getString(R.string.speedunit));
 		MainActivity.textViewheading.setContentDescription(resource.getString(R.string.heading) + " " + heading + " " + resource.getString(R.string.headingunit));
 		MainActivity.textViewAccuracy.setContentDescription(resource.getString(R.string.accuracy) + " " + accuracy + " " + resource.getString(R.string.metres));
 	}
