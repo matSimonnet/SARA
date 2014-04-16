@@ -3,6 +3,7 @@ package orion.ms.sara;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -41,7 +42,7 @@ public class MainAutoSettingActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_autosetting);
-
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		intentAutoSpeedActivity = new Intent(MainAutoSettingActivity.this,AutoSpeedActivity.class);
 		intentAutoHeadingActivity = new Intent(MainAutoSettingActivity.this,AutoHeadingActivity.class);
 		intentAutoBearingActivity = new Intent(MainAutoSettingActivity.this,AutoBearingActivity.class);

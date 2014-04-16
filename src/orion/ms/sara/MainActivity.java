@@ -9,6 +9,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -75,7 +76,7 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 
 		Log.i("test", "///////// onCreate \\\\\\\\\\");
-		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
