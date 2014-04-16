@@ -171,6 +171,8 @@ public class MainActivity extends Activity {
 				        //print all elements in the list
 				        for(int i = 0;i<instList.size();i++){
 				        	Log.i("List inst", "item "+i+" : "+instList.get(i).getName());
+				        	Log.i("latidue", ""+instList.get(i).getLatitude());
+				        	Log.i("Longitude", instList.get(i).getLongitude());
 				        }
 					}//end if
 					else{
@@ -217,7 +219,6 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		lm.removeUpdates(ll);
 	}
   
 	@Override

@@ -4,12 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -48,17 +43,9 @@ public class NewWayPointActivity extends Activity {
 		
 		private TextToSpeech tts = null;
 		
-		private LocationManager lm = null;	
-		private LocationListener ll = null;
-
 		//default name and current position
 		private String defaultName = "";
-		private String currentLatitude = "";
-		private String currentLongitude = "";
-		
-		//dialog for GPS signal if is disable
-		private AlertDialog.Builder gpsDisDialog = null; 
-		
+	
 		//Intent
 		private Intent intentToWayPoint;
 		private Intent intentFromWayPointAct;
@@ -81,40 +68,6 @@ public class NewWayPointActivity extends Activity {
 				tts = new TextToSpeech(this, onInitListener);
 				tts.setSpeechRate(GeneralSettingActivity.speechRate);
 				
-				//location manager creation
-				lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-				ll = new LocationListener(){
-					//LocationListener creation
-					@Override
-					public void onLocationChanged(Location loc) {
-						currentLatitude = String.valueOf(loc.getLatitude());
-						currentLongitude = String.valueOf(loc.getLongitude());
-					}
-
-					@Override
-					public void onProviderDisabled(String provider) {
-						Toast.makeText( getApplicationContext(),"Gps Disabled",Toast.LENGTH_SHORT).show();	
-						//set each EditText default
-						latitudeBox.setText(currentLatitude);
-						longitudeBox.setText(currentLongitude);
-					}
-
-					@Override
-					public void onProviderEnabled(String provider) {
-						Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();	
-					}
-
-					@Override
-					public void onStatusChanged(String provider, int status, Bundle extras) {
-
-					}
-					
-				};//end of locationListener creation
-
-				//update location
-				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-					
-				
 				//TextView
 				newNameText = (TextView) findViewById(R.id.textView1);
 				newNameText.setContentDescription("new waypoint name is");
@@ -135,10 +88,6 @@ public class NewWayPointActivity extends Activity {
 				//receiving default name
 				defaultName = intentFromWayPointAct.getStringExtra("defaultNameFromWP");
 				
-				//dialog creation
-				gpsDisDialog = new AlertDialog.Builder(this);
-				
-				
 				//nameBox
 				//set default name
 				nameBox.setText(defaultName);
@@ -156,20 +105,9 @@ public class NewWayPointActivity extends Activity {
 					//OnClick creation
 					@Override
 					public void onClick(View v) {
-						//update location
-						lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-						if(!currentLatitude.equals("")){
-							//GPS enable
-							//set each EditText with current position
-							latitudeBox.setText(currentLatitude);
-							longitudeBox.setText(currentLongitude);
-						}
-						else{
-							//show GPS disable dialog
-							gpsDisDialog.setTitle("GPS is unavailable");
-							gpsDisDialog.setPositiveButton("Dismiss", null);
-							gpsDisDialog.show();
-						}
+						//set each EditText with current position
+						latitudeBox.setText(MyLocationListener.currentLatitude);
+						longitudeBox.setText(MyLocationListener.currentLongitude);
 					}
 				});
 				
@@ -308,7 +246,6 @@ public class NewWayPointActivity extends Activity {
 	  @Override
 	  protected void onPause() {
 	    super.onPause();
-	    lm.removeUpdates(ll);
 	  }
 	  
 	  @Override
@@ -320,7 +257,6 @@ public class NewWayPointActivity extends Activity {
 		@Override
 		protected void onDestroy() {
 			super.onDestroy();
-			lm.removeUpdates(ll);
 			tts.shutdown();
 		}
 		

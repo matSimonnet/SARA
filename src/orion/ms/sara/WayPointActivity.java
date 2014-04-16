@@ -12,8 +12,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -65,14 +63,6 @@ public class WayPointActivity extends Activity {
 		//choosing way point
 		private WP choosingWaypoint = null;
 		
-		//location handler
-		private LocationManager lm = null;	
-		private LocationListener ll = null;
-
-		//current default position
-		private String currentLatitude = "0.0";
-		private String currentLongitude = "0.0";
-		
 		//shared preferences
 		SharedPreferences sharedPref ;
 		
@@ -91,6 +81,8 @@ public class WayPointActivity extends Activity {
 			setContentView(R.layout.activity_way_point);
 			setTitle(R.string.title_activity_way_point);
 			
+			Log.i("WaypointAct", "---------------OnCreate----------------");
+			
 			//load preferences
 			sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 			loadPref();
@@ -106,37 +98,6 @@ public class WayPointActivity extends Activity {
 			tts = new TextToSpeech(this, onInitListener);
 			tts.setSpeechRate(GeneralSettingActivity.speechRate);
 
-			
-			//location manager creation
-			lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-			ll = new LocationListener(){
-				//LocationListener creation
-				@Override
-				public void onLocationChanged(Location loc) {
-					currentLatitude = String.valueOf(loc.getLatitude());
-					currentLongitude = String.valueOf(loc.getLongitude());
-				}
-
-				@Override
-				public void onProviderDisabled(String provider) {
-					Toast.makeText( getApplicationContext(),"Gps Disabled",Toast.LENGTH_SHORT).show();	
-				}
-
-				@Override
-				public void onProviderEnabled(String provider) {
-					Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();	
-				}
-
-				@Override
-				public void onStatusChanged(String provider, int status, Bundle extras) {
-
-				}
-				
-			};//end of locationListener creation
-
-			//update location
-			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-				
 			//check if there is any instantWaypoint
 			if(MainActivity.instList.size()>0){
 				//two lists combination
@@ -144,10 +105,6 @@ public class WayPointActivity extends Activity {
 				MainActivity.instList.clear();//empty the instant waypoint list
 			}
 			
-			//sorting way point
-			sortingWaypointList(wayPointList);
-			
-
 			//alert dialog creation
 			choosingDialog = new AlertDialog.Builder(this);
 			deletingDialog = new AlertDialog.Builder(this);
@@ -157,6 +114,8 @@ public class WayPointActivity extends Activity {
 			intentToNewWayPoint = new Intent(WayPointActivity.this,NewWayPointActivity.class);
 			intentToModify = new Intent(WayPointActivity.this,ModifyActivity.class);
 
+			//sort the list
+			sortingWaypointList(wayPointList);
 			//spinner set up
 			way.setContentDescription("Choose the waypoint in ");
 			
@@ -257,7 +216,6 @@ public class WayPointActivity extends Activity {
 	                				if(i!=0){
 	                					//show the choosing dialog if selected some way point from the list
 		                				choosingDialog.show();
-		                				sortingWaypointList(wayPointList);
 	                				}//end if
 	                			}//end switch case
 	                    }catch(Exception e){
@@ -342,9 +300,10 @@ public class WayPointActivity extends Activity {
 	//adding new way point into the way point list
 	public void addNewWPtoList(List<WP> wList,String n,String la,String lo){
 		//Get the latest number after adding a new way point
-		if(n.substring(0,8).equalsIgnoreCase("waypoint")){
+		if(n.length()>8 && n.substring(0,8).equalsIgnoreCase("waypoint")){
 			lastNumberForWaypoint = Integer.parseInt(n.substring(8));//substring "WayPoint" name to get the number after that
 		}
+		else;
 		//Adding the new way point into the list
 		wList.add(new WP(n,la,lo));//create new way point with assuming distance
 		sortingWaypointList(wList);//sorting the list
@@ -369,7 +328,7 @@ public class WayPointActivity extends Activity {
 				first = wList.remove(0);
 			}
 			first = new WP("Please selected a waypoint","","");
-			
+			//update location
 			//Recalculating distance in the list
 			for(int i = 0;i< wList.size();i++){
 				tempWP = wList.get(i);
@@ -378,12 +337,13 @@ public class WayPointActivity extends Activity {
 				double tempLong = Double.parseDouble(tempWP.getLongitude());
 				
 				Location.distanceBetween(tempLa, tempLong, 
-						Double.parseDouble(currentLatitude), Double.parseDouble(currentLongitude), tempResult);
+						Double.parseDouble(MyLocationListener.currentLatitude), Double.parseDouble(MyLocationListener.currentLongitude), tempResult);
 				//set up the new distance from the current position into every way point in the list
 				wList.get(i).setDistance(tempResult[0]);
 			}
 			Collections.sort(wList);//Sorting the list by proximity
 			wList.add(0, first);
+			Log.i("Sort method", "Sorttttttttttttt");
 
 			//set array adapter of the list into the spinner
 			way = (Spinner) findViewById(R.id.spinner1);
@@ -517,12 +477,6 @@ public class WayPointActivity extends Activity {
 	  protected void onResume() {
 	    super.onResume();
 	    Log.i("Resume the program", "=======================RESUME+++++++++++++++++++++");
-	    //check if there is any instantWaypoint
-		if(MainActivity.instList.size()>0){
-			//two lists combination
-			wayPointList.addAll(MainActivity.instList);
-			MainActivity.instList.clear();//empty the instant waypoint list
-		}
 		//sorting way point
 		sortingWaypointList(wayPointList);
 	  }
@@ -540,6 +494,7 @@ public class WayPointActivity extends Activity {
 		protected void onDestroy() {
 			super.onDestroy();
 			tts.shutdown();
+			Log.i("shut down", "Waypoint shutdown");
 		}
 		
 		@Override
