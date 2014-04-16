@@ -5,10 +5,9 @@
     android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-	
-    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
@@ -17,27 +16,26 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/android:Theme.Holo">
-	
-		<activity
+        android:theme="@style/android:Theme.Holo" >
+        <activity
             android:name="orion.ms.sara.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="orion.ms.sara.WayPointActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-                <activity
+        <activity
             android:name="orion.ms.sara.NewWayPointActivity"
             android:label="@string/title_activity_new_way_point" >
         </activity>
@@ -45,89 +43,107 @@
             android:name="orion.ms.sara.ModifyActivity"
             android:label="@string/title_activity_modify" >
         </activity>
-               
         <activity
             android:name="orion.ms.sara.AutoSettingActivity"
             android:label="@string/title_autosetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="orion.ms.sara.GeneralSettingActivity"
             android:label="@string/title_generalsetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-       <activity
+        <activity
             android:name="orion.ms.sara.MyMapActivity"
             android:label="@string/map" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="orion.ms.sara.MainAutoSettingActivity"
             android:label="@string/title_autosetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="orion.ms.sara.AutoSpeedActivity"
             android:label="@string/speedsetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="orion.ms.sara.AutoHeadingActivity"
             android:label="@string/headingsetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="orion.ms.sara.AutoBearingActivity"
             android:label="@string/bearingsetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="orion.ms.sara.AutoDistanceActivity"
             android:label="@string/distancesetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="orion.ms.sara.AutoAccuracyActivity"
             android:label="@string/accuracysetting" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-
+        <activity
+            android:name="orion.ms.sara.SpeedUnitActivity"
+            android:label="@string/title_activity_speed_unit" >
+        </activity>
+        <activity
+            android:name="orion.ms.sara.BearingUnitActivity"
+            android:label="@string/title_activity_bearing_unit" >
+        </activity>
+        <activity
+            android:name="orion.ms.sara.DistanceUnitActivity"
+            android:label="@string/title_activity_distance_unit" >
+        </activity>
+        <activity
+            android:name="orion.ms.sara.MapTypeActivity"
+            android:label="@string/title_activity_map_type" >
+        </activity>
+        <activity
+            android:name="orion.ms.sara.SpeechRateActivity"
+            android:label="@string/title_activity_speech_rate" >
+        </activity>
     </application>
 
 </manifest>
