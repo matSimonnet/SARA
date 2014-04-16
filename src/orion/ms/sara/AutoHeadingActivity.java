@@ -232,8 +232,8 @@ public class AutoHeadingActivity extends Activity {
 		    
 			if(LastheadingTreshold != headingTreshold || LastheadingTimeTreshold != headingTimeTreshold || LastisAutoHeading != HeadingAutoCheckBox.isChecked()) {				
 				alertDialog = new AlertDialog.Builder(this);
-				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_autosetting));
-				alertDialog.setMessage(getResources().getString(R.string.message_alertdialog_headingsetting));
+				alertDialog.setTitle(getResources().getString(R.string.message_alertdialog_autosetting));
+				alertDialog.setMessage(getResources().getString(R.string.title_alertdialog_headingsetting));
 				alertDialog.setNegativeButton("YES", new OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

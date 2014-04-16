@@ -98,8 +98,8 @@
    <string name="title_autosetting">Auto Setting</string>
    
    <!-- Action bar --> 
-   <string name="auto_setting">AUTO SETTING Menu</string>
-   <string name="waypoint_setting">Waypoint Menu</string>
+   <string name="auto_setting">AUTO SETTING MENU</string>
+   <string name="waypoint_setting">WAYPOINT MENU</string>
    <string name="navigation">Back to navigation</string>
    <string name="navigation_title">NAVIGATION</string>
    
@@ -113,7 +113,7 @@
     
     
 
-   <string name="general_setting">general setting menu</string>
+   <string name="general_setting">GENERAL SETTING MENU</string>
    <string name="title_generalsetting">General Setting</string>
    <string name="map">MAP</string>
    
@@ -136,11 +136,11 @@
     <string name="km_per_hour">kilometers per hour</string>
     <string name="speedUnitIntro">Choose the speed unit from the choices</string>
     
-    <string name="title_alertdialog_autosetting">Do you want to save?</string>
-    <string name="message_alertdialog_speedsetting">Auto speed setting was changed.</string>
-    <string name="message_alertdialog_headingsetting">Auto heading setting was changed.</string>
-    <string name="message_alertdialog_bearingsetting">Auto bearing setting was changed.</string>
-    <string name="message_alertdialog_distancesetting">Auto distance setting was changed.</string>
-    <string name="message_alertdialog_accuracysetting">Auto accuracy setting was changed.</string>
+    <string name="message_alertdialog_autosetting">Do you want to save?</string>
+    <string name="title_alertdialog_speedsetting">Auto speed setting was changed.</string>
+    <string name="title_alertdialog_headingsetting">Auto heading setting was changed.</string>
+    <string name="title_alertdialog_bearingsetting">Auto bearing setting was changed.</string>
+    <string name="title_alertdialog_distancesetting">Auto distance setting was changed.</string>
+    <string name="title_alertdialog_accuracysetting">Auto accuracy setting was changed.</string>
 </resources>
 
