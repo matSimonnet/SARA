@@ -17,23 +17,22 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="@string/speedUnitIntro"
-            android:textSize="30dp" />
+            android:textSize="60dp" />
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:text="@string/savebutton"
-            android:textSize="40dp" />
+            android:textSize="50dp" />
 
         <RadioGroup
             android:id="@+id/radioGroup1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@+id/textView1"
             android:layout_centerHorizontal="true" >
 
@@ -44,7 +43,7 @@
                 android:layout_marginTop="30dp"
                 android:checked="true"
                 android:text="@string/knots"
-                android:textSize="30dp" />
+                android:textSize="50dp" />
 
             <RadioButton
                 android:id="@+id/radioButton2"
@@ -52,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="@string/km_per_hour"
-                android:textSize="30dp" />
+                android:textSize="50dp" />
         </RadioGroup>
 
     </RelativeLayout>
