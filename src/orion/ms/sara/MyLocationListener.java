@@ -126,10 +126,10 @@ public class MyLocationListener extends Activity implements LocationListener {
 				distanceNow = new Date();
 				
 				if(distanceAuto < 10) distanceTreshold = 1;
-				if(distanceAuto < 100) distanceTreshold = 10;
-				if(distanceAuto < 1000) distanceTreshold = 100;
-				if(distanceAuto < 10000) distanceTreshold = 1000;
-				if(distanceAuto >= 10000) distanceTreshold = 10000;
+				if(distanceAuto < 100 && distanceAuto >= 10) distanceTreshold = 10;
+				if(distanceAuto < 1000 && distanceAuto >= 100) distanceTreshold = 100;
+				if(distanceAuto < 10000 && distanceAuto >= 1000) distanceTreshold = 1000;
+				if(distanceAuto >= 10000 && distanceAuto >= 10000) distanceTreshold = 10000;
 
 				if (((distanceAuto < distanceLastAuto - distanceTreshold) || (distanceAuto > distanceLastAuto + distanceTreshold))
 					&& ((distanceNow.getTime() - distanceBefore.getTime()) > distanceTimeTreshold * 1000)) {
