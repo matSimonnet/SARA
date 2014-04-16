@@ -50,5 +50,6 @@
     <string name="title_activity_distance_unit">Distance Unit Setting</string>
     <string name="title_activity_map_type">Map Type Setting</string>
     <string name="title_activity_speech_rate">Speech Rate Setting</string>
+    <string name="general_setting">Back to general setting</string>
 
 </resources>

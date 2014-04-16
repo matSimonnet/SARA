@@ -104,7 +104,7 @@ public class WayPointActivity extends Activity {
 			
 		    // textToSpeech creation
 			tts = new TextToSpeech(this, onInitListener);
-			tts.setSpeechRate((float) 2.0);
+			tts.setSpeechRate(GeneralSettingActivity.speechRate);
 
 			
 			//location manager creation

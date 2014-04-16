@@ -84,7 +84,7 @@ public class ModifyActivity extends Activity {
 		
 	    // textToSpeech creation
 		tts = new TextToSpeech(this, onInitListener);
-		tts.setSpeechRate((float) 1.5);
+		tts.setSpeechRate(GeneralSettingActivity.speechRate);
 		
 		//location manager creation
 		lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);

@@ -6,33 +6,55 @@
     tools:context="orion.ms.sara.SpeedUnitActivity"
     tools:ignore="MergeRootFrame" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:textSize="45dp" >
+        android:layout_height="match_parent" >
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             android:text="@string/speedUnitIntro"
             android:textSize="30dp" />
 
-        <RadioButton
-            android:id="@+id/radioButton1"
+        <Button
+            android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/knots"
-            android:textSize="30dp" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/savebutton"
+            android:textSize="40dp" />
 
-        <RadioButton
-            android:id="@+id/radioButton2"
+        <RadioGroup
+            android:id="@+id/radioGroup1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/km_per_hour"
-            android:textSize="30dp" />
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textView1"
+            android:layout_centerHorizontal="true" >
 
-    </LinearLayout>
+            <RadioButton
+                android:id="@+id/radioButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:checked="true"
+                android:text="@string/knots"
+                android:textSize="30dp" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/km_per_hour"
+                android:textSize="30dp" />
+        </RadioGroup>
+
+    </RelativeLayout>
 
 </FrameLayout>

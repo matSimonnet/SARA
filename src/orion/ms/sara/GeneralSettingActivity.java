@@ -1,8 +1,13 @@
 package orion.ms.sara;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,18 +37,37 @@ public class GeneralSettingActivity extends Activity {
 	protected int SPEECH_RATE = 5;
 	
 	//String with default value
-	public String speedUnit = "knots";
+	public static String speedUnit = "knots";
 	public String bearingUnit = "port";
 	public String portStarboard_Bearing = "0 on port";
 	public String distanceUnit = "NM";
 	public String mapType = "openSeaMap";
-	public float speechRate = 2;
+	public static float speechRate = 1.5f;
+	
+	//temp unit
+	private String tempUnit = "";
+	
+	//confirmation alert dialog
+	private AlertDialog.Builder dialog;
+	
+	private TextToSpeech tts = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_generalsetting);
 		setTitle("General Setting");
+		
+		//OnInitListener Creation
+		OnInitListener onInitListener = new OnInitListener() {
+			@Override
+			public void onInit(int status) {
+			}
+		};
+		
+	    // textToSpeech creation
+		tts = new TextToSpeech(this, onInitListener);
+		tts.setSpeechRate(speechRate);
 		
 		//Buttons and their description
 		speedUnitButton = (Button) findViewById(R.id.button1);
@@ -56,6 +80,9 @@ public class GeneralSettingActivity extends Activity {
 		mapTypeButton.setContentDescription("Map type setting");
 		speechRateButton = (Button) findViewById(R.id.button5);
 		speechRateButton.setContentDescription("Speech rate setting");
+		
+		//alert dialog creation
+		dialog = new AlertDialog.Builder(this);
 		
 		//intent creations
 		intentToSpeed = new Intent(GeneralSettingActivity.this,SpeedUnitActivity.class);
@@ -121,10 +148,6 @@ public class GeneralSettingActivity extends Activity {
 		if (angle_tmp < 180) portStarboard_Bearing = angle_tmp + "on starboard";
 		else portStarboard_Bearing = (360 - angle_tmp) + " on port";
 	}
-
-	public void setSpeechRate(float speechRate) {
-		this.speechRate = speechRate;
-	}
 	
 	//Intent to handle receive parameters from other activities
 	@Override
@@ -132,8 +155,27 @@ public class GeneralSettingActivity extends Activity {
 	    super.onActivityResult(requestCode, resultCode, intentFromAnother);
 	    //from speed unit activity
 	    if(requestCode==SPEED_UNIT){
-	    	
-	    }
+	    	tempUnit = intentFromAnother.getStringExtra("choosingSpeedUnit");
+	    	if(!tempUnit.equals("NONE")){
+	    		//didn't save the change yet
+	    		dialog.setTitle("The speed unit changes to "+tempUnit);
+	    		dialog.setIcon(android.R.drawable.ic_menu_edit);
+	    		dialog.setMessage("Do you want to save?");
+	    		dialog.setPositiveButton("No", null);
+	    		dialog.setNeutralButton("Yes", new DialogInterface.OnClickListener() {
+	    			//save the changed speed unit
+					@SuppressWarnings("static-access")
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						speedUnit = tempUnit;
+						tts.speak("Speed Unit changes to "+speedUnit, tts.QUEUE_FLUSH, null);
+						//Log.i("Speed unit change", speedUnit);
+					}
+				});
+	    		dialog.show();
+	    	}//end if
+	    }//end speedUnit
+	    
 	    //from bearing unit activity
 	    else if(requestCode==BEARING_UNIT){
 	    	
