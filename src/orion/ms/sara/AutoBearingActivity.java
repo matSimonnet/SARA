@@ -1,8 +1,10 @@
 package orion.ms.sara;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.app.AlertDialog;
 
 public class AutoBearingActivity extends Activity {
 	
@@ -46,7 +49,11 @@ public class AutoBearingActivity extends Activity {
 	private long bearingTimeTresholdStep = 1;
 
 	private boolean isAutoBearing = true;
-
+	
+	private AlertDialog.Builder alertDialog;
+	
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,8 @@ public class AutoBearingActivity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 	    // Restore preferences
+		this.settings = getSharedPreferences(PREFS_NAME, 0);
+		this.editor = settings.edit();
 		LoadPref();
 		
 	    // save setting button
@@ -146,10 +155,6 @@ public class AutoBearingActivity extends Activity {
 					
 		        }
 				if (v== SaveSettingButton){
-					  
-					SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-					SharedPreferences.Editor editor = settings.edit();
-				      
 				    //put bearing & bearing time treshold
 				    editor.putString("bearingTreshold", String.valueOf(bearingTreshold));
 				    editor.putLong("bearingTimeTreshold", bearingTimeTreshold);
@@ -189,36 +194,27 @@ public class AutoBearingActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-	    //lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-	    //tts.speak("resume", TextToSpeech.QUEUE_FLUSH, null);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		//lm.removeUpdates(ll);
-		//tts.speak("pause", TextToSpeech.QUEUE_FLUSH, null);
 	}
 	  
 	@Override
 	protected void onStop() {
 		super.onStop();
-		//tts.shutdown();
 	}
 	  
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		tts.shutdown();
-		//lm.removeUpdates(ll);
-		//tts.shutdown();
 	}
 	
 	public void LoadPref() {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);   
 	    this.bearingTreshold = Double.parseDouble(settings.getString("bearingTreshold", "10.0"));
 	    this.bearingTimeTreshold = settings.getLong("bearingTimeTreshold", 5);  
-
 	    this.isAutoBearing = settings.getBoolean("isAutoBearing", true);
 	}
 //  action bar
@@ -230,14 +226,50 @@ public class AutoBearingActivity extends Activity {
 	
 	public boolean onOptionsItemSelected(MenuItem Item){
 		switch (Item.getItemId()) {
-		case R.id.navigation:
-			finish();
+		case R.id.backtoautosetting:
+
+		    Double LastbearingTreshold = Double.parseDouble(settings.getString("bearingTreshold", "10.0"));
+		    long LastbearingTimeTreshold = settings.getLong("bearingTimeTreshold", 5);  
+		    boolean LastisAutoBearing = settings.getBoolean("isAutoBearing", true);
+		    
+			if(LastbearingTreshold != bearingTreshold || LastbearingTimeTreshold != bearingTimeTreshold || LastisAutoBearing != BearingAutoCheckBox.isChecked()) {				
+				alertDialog = new AlertDialog.Builder(this);
+				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_autosetting));
+				alertDialog.setMessage(getResources().getString(R.string.message_alertdialog_bearingsetting));
+				alertDialog.setNegativeButton("YES", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					    editor.putString("bearingTreshold", String.valueOf(bearingTreshold));
+					    editor.putLong("bearingTimeTreshold", bearingTimeTreshold);
+					    editor.putBoolean("isAutoBearing", BearingAutoCheckBox.isChecked());
+					    editor.commit();
+					    
+						intentMainAutoSetting.putExtra("bearingTreshold", bearingTreshold);
+						intentMainAutoSetting.putExtra("bearingTimeTreshold", bearingTimeTreshold);
+						intentMainAutoSetting.putExtra("isAutoBearing", BearingAutoCheckBox.isChecked());
+						setResult(RESULT_OK, intentMainAutoSetting);
+						finish();					
+					}
+				});
+				alertDialog.setPositiveButton("No", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+				alertDialog.setIcon(android.R.drawable.presence_busy);
+				alertDialog.show();
+			}
+			else {
+				finish();
+			}
 			break;
 		default:
 			break;
 		}
 		return false;
 	}
+	  
 	  
 	
 

@@ -135,5 +135,12 @@
      <string name="knots">knots</string>
     <string name="km_per_hour">kilometers per hour</string>
     <string name="speedUnitIntro">Choose the speed unit from the choices</string>
+    
+    <string name="title_alertdialog_autosetting">Do you want to save?</string>
+    <string name="message_alertdialog_speedsetting">Auto speed setting was changed.</string>
+    <string name="message_alertdialog_headingsetting">Auto heading setting was changed.</string>
+    <string name="message_alertdialog_bearingsetting">Auto bearing setting was changed.</string>
+    <string name="message_alertdialog_distancesetting">Auto distance setting was changed.</string>
+    <string name="message_alertdialog_accuracysetting">Auto accuracy setting was changed.</string>
 </resources>
 

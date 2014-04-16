@@ -1,8 +1,10 @@
 package orion.ms.sara;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.app.AlertDialog;
 
 public class AutoHeadingActivity extends Activity {
 	
@@ -45,13 +48,21 @@ public class AutoHeadingActivity extends Activity {
 
 	private boolean isAutoHeading = true;
 	
+	private AlertDialog.Builder alertDialog;
+	
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_autoheading);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	    // Restore preferences
+	    
+		// Restore preferences
+		this.settings = getSharedPreferences(PREFS_NAME, 0);
+		this.editor = settings.edit();
 		LoadPref();
 		
 	    // save setting button
@@ -143,14 +154,9 @@ public class AutoHeadingActivity extends Activity {
 					
 		        }
 				if (v== SaveSettingButton){
-					  
-					SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-					SharedPreferences.Editor editor = settings.edit();
-				      
 				    // put heading & heading treshold
 				    editor.putString("headingTreshold", String.valueOf(headingTreshold));
 				    editor.putLong("headingTimeTreshold", headingTimeTreshold);
-				    // put auto checkbox
 				    editor.putBoolean("isAutoHeading", HeadingAutoCheckBox.isChecked());
 				    editor.commit();
 
@@ -205,7 +211,6 @@ public class AutoHeadingActivity extends Activity {
 	}
 	
 	public void LoadPref() {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0); 
 		this.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
 	    this.headingTimeTreshold = settings.getLong("headingTimeTreshold", 5);
 	    this.isAutoHeading = settings.getBoolean("isAutoHeading", true);
@@ -219,8 +224,44 @@ public class AutoHeadingActivity extends Activity {
 	
 	public boolean onOptionsItemSelected(MenuItem Item){
 		switch (Item.getItemId()) {
-		case R.id.navigation:
-			finish();
+		case R.id.backtoautosetting:
+			
+			Double LastheadingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
+		    long LastheadingTimeTreshold = settings.getLong("headingTimeTreshold", 5);
+		    boolean LastisAutoHeading = settings.getBoolean("isAutoHeading", true);
+		    
+			if(LastheadingTreshold != headingTreshold || LastheadingTimeTreshold != headingTimeTreshold || LastisAutoHeading != HeadingAutoCheckBox.isChecked()) {				
+				alertDialog = new AlertDialog.Builder(this);
+				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_autosetting));
+				alertDialog.setMessage(getResources().getString(R.string.message_alertdialog_headingsetting));
+				alertDialog.setNegativeButton("YES", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					    editor.putString("headingTreshold", String.valueOf(headingTreshold));
+					    editor.putLong("headingTimeTreshold", headingTimeTreshold);
+					    editor.putBoolean("isAutoHeading", HeadingAutoCheckBox.isChecked());
+					    editor.commit();
+
+						intentMainAutoSetting.putExtra("headingTreshold", headingTreshold);
+						intentMainAutoSetting.putExtra("headingTimeTreshold", headingTimeTreshold);
+						intentMainAutoSetting.putExtra("isAutoHeading", HeadingAutoCheckBox.isChecked());
+
+						setResult(RESULT_OK, intentMainAutoSetting);
+						finish();					
+					}
+				});
+				alertDialog.setPositiveButton("No", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+				alertDialog.setIcon(android.R.drawable.presence_busy);
+				alertDialog.show();
+			}
+			else {
+				finish();
+			}
 			break;
 		default:
 			break;

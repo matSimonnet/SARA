@@ -1,8 +1,10 @@
 package orion.ms.sara;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.app.AlertDialog;
 
 public class AutoAccuracyActivity extends Activity {
 	
@@ -35,6 +38,11 @@ public class AutoAccuracyActivity extends Activity {
 	private long accuracyTimeTresholdStep = 1;
 
 	private boolean isAutoAccuracy = true;
+	
+	private AlertDialog.Builder alertDialog;
+	
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
 
 	
 	@Override
@@ -45,8 +53,10 @@ public class AutoAccuracyActivity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 	    // Restore preferences
+		this.settings = getSharedPreferences(PREFS_NAME, 0);
+		this.editor = settings.edit();
 		LoadPref();
-		
+
 	    // save setting button
 		SaveSettingButton = (Button) findViewById(R.id.SaveSettingButton);
 		SaveSettingButton.setContentDescription(getResources().getString(R.string.savebutton));
@@ -100,14 +110,9 @@ public class AutoAccuracyActivity extends Activity {
 					
 		        }
 				if (v== SaveSettingButton){
-					  
-					SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-					SharedPreferences.Editor editor = settings.edit();
-	
 				    editor.putLong("accuracyTimeTreshold", accuracyTimeTreshold);
 				    editor.putBoolean("isAutoAccuracy", AccuracyAutoCheckBox.isChecked());
 				    editor.commit();
-				    
 
 					intentMainAutoSetting.putExtra("accuracyTimeTreshold", accuracyTimeTreshold);
 					intentMainAutoSetting.putExtra("isAutoAccuracy", AccuracyAutoCheckBox.isChecked());
@@ -156,10 +161,8 @@ public class AutoAccuracyActivity extends Activity {
 	}
 	
 	public void LoadPref() {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0); 
 	    this.accuracyTimeTreshold = settings.getLong("accuracyTimeTreshold", 5);  
 	    this.isAutoAccuracy = settings.getBoolean("isAutoAccuracy", true);
-
 	}
 //  action bar
 	@Override
@@ -170,8 +173,40 @@ public class AutoAccuracyActivity extends Activity {
 	
 	public boolean onOptionsItemSelected(MenuItem Item){
 		switch (Item.getItemId()) {
-		case R.id.navigation:
-			finish();
+		case R.id.backtoautosetting:
+			
+		    long LastaccuracyTimeTreshold = settings.getLong("accuracyTimeTreshold", 5);  
+		    boolean LastisAutoAccuracy = settings.getBoolean("isAutoAccuracy", true);
+		    
+			if(LastaccuracyTimeTreshold != accuracyTimeTreshold || LastisAutoAccuracy != AccuracyAutoCheckBox.isChecked()) {				
+				alertDialog = new AlertDialog.Builder(this);
+				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_autosetting));
+				alertDialog.setMessage(getResources().getString(R.string.message_alertdialog_accuracysetting));
+				alertDialog.setNegativeButton("YES", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					    editor.putLong("accuracyTimeTreshold", accuracyTimeTreshold);
+					    editor.putBoolean("isAutoAccuracy", AccuracyAutoCheckBox.isChecked());
+					    editor.commit();
+
+						intentMainAutoSetting.putExtra("accuracyTimeTreshold", accuracyTimeTreshold);
+						intentMainAutoSetting.putExtra("isAutoAccuracy", AccuracyAutoCheckBox.isChecked());
+						setResult(RESULT_OK, intentMainAutoSetting);
+						finish();					
+					}
+				});
+				alertDialog.setPositiveButton("No", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+				alertDialog.setIcon(android.R.drawable.presence_busy);
+				alertDialog.show();
+			}
+			else {
+				finish();
+			}
 			break;
 		default:
 			break;

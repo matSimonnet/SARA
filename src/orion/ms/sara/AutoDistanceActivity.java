@@ -1,8 +1,10 @@
 package orion.ms.sara;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.app.AlertDialog;
 
 public class AutoDistanceActivity extends Activity {
 	
@@ -39,14 +42,21 @@ public class AutoDistanceActivity extends Activity {
 	private long distanceTimeTresholdStep = 1;
 
 	private boolean isAutoDistance = true;
-
+	
+	private AlertDialog.Builder alertDialog;
+	
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_autodistance);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 	    // Restore preferences
+		this.settings = getSharedPreferences(PREFS_NAME, 0);
+		this.editor = settings.edit();
 		LoadPref();
 		
 	    // save setting button
@@ -102,9 +112,6 @@ public class AutoDistanceActivity extends Activity {
 					
 		        }
 				if (v== SaveSettingButton){
-					SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-					SharedPreferences.Editor editor = settings.edit();
-
 				    editor.putLong("distanceTimeTreshold", distanceTimeTreshold);
 				    editor.putBoolean("isAutoDistance", DistanceAutoCheckBox.isChecked());
 				    editor.commit();
@@ -157,7 +164,6 @@ public class AutoDistanceActivity extends Activity {
 	}
 	
 	public void LoadPref() {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 	    this.distanceTimeTreshold = settings.getLong("distanceTimeTreshold", 5);   
 	    this.isAutoDistance = settings.getBoolean("isAutoDistance", true);
 	}
@@ -170,14 +176,47 @@ public class AutoDistanceActivity extends Activity {
 	
 	public boolean onOptionsItemSelected(MenuItem Item){
 		switch (Item.getItemId()) {
-		case R.id.navigation:
-			finish();
+		case R.id.backtoautosetting:
+			
+		    long LastdistanceTimeTreshold = settings.getLong("distanceTimeTreshold", 5);   
+		    boolean LastisAutoDistance = settings.getBoolean("isAutoDistance", true);
+		    
+			if(LastdistanceTimeTreshold != distanceTimeTreshold || LastisAutoDistance != DistanceAutoCheckBox.isChecked()) {				
+				alertDialog = new AlertDialog.Builder(this);
+				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_autosetting));
+				alertDialog.setMessage(getResources().getString(R.string.message_alertdialog_distancesetting));
+				alertDialog.setNegativeButton("YES", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					    editor.putLong("distanceTimeTreshold", distanceTimeTreshold);
+					    editor.putBoolean("isAutoDistance", DistanceAutoCheckBox.isChecked());
+					    editor.commit();
+					    
+						intentMainAutoSetting.putExtra("distanceTimeTreshold", distanceTimeTreshold);
+						intentMainAutoSetting.putExtra("isAutoDistance", DistanceAutoCheckBox.isChecked());
+						setResult(RESULT_OK, intentMainAutoSetting);
+						finish();					
+					}
+				});
+				alertDialog.setPositiveButton("No", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+				alertDialog.setIcon(android.R.drawable.presence_busy);
+				alertDialog.show();
+			}
+			else {
+				finish();
+			}
 			break;
 		default:
 			break;
 		}
 		return false;
 	}
+	
 	  
 	
 

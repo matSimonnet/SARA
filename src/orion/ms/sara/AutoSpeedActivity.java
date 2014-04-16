@@ -1,8 +1,10 @@
 package orion.ms.sara;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.app.AlertDialog;
 
 public class AutoSpeedActivity extends Activity {
 	
@@ -42,6 +45,11 @@ public class AutoSpeedActivity extends Activity {
 	private long speedTimeTresholdStep = 1;
 
 	private boolean isAutoSpeed = true;
+	
+	private AlertDialog.Builder alertDialog;
+	
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
 
 	
 	@Override
@@ -50,7 +58,10 @@ public class AutoSpeedActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_autospeed);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	    // Restore preferences
+	    
+		// Restore preferences
+		this.settings = getSharedPreferences(PREFS_NAME, 0);
+		this.editor = settings.edit();
 		LoadPref();
 		
 	    // save setting button
@@ -139,12 +150,8 @@ public class AutoSpeedActivity extends Activity {
 					}
 		        }
 				if (v== SaveSettingButton){
-					SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-					SharedPreferences.Editor editor = settings.edit();
-				    // put speed & speed time treshold
 				    editor.putString("speedTreshold", String.valueOf(speedTreshold));
 				    editor.putLong("speedTimeTreshold", speedTimeTreshold);
-				    // put auto checkbox
 				    editor.putBoolean("isAutoSpeed", SpeedAutoCheckBox.isChecked());
 				    editor.commit();
 				    
@@ -199,9 +206,9 @@ public class AutoSpeedActivity extends Activity {
 	}
 	
 	public void LoadPref() {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		this.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
-	    this.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);   
+	    this.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
+	    this.isAutoSpeed = settings.getBoolean("isAutoSpeed", true);
 	}
 //  action bar
 	@Override
@@ -212,8 +219,44 @@ public class AutoSpeedActivity extends Activity {
 	
 	public boolean onOptionsItemSelected(MenuItem Item){
 		switch (Item.getItemId()) {
-		case R.id.navigation:
-			finish();
+		case R.id.backtoautosetting:
+			
+			Double LastspeedTreshold = Double.parseDouble(settings.getString("speedTreshold", "10.0"));
+			long LastspeedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
+			boolean LastisAutoSpeed = settings.getBoolean("isAutoSpeed", true);
+			
+			if(LastspeedTreshold != speedTreshold || LastspeedTimeTreshold != speedTimeTreshold || LastisAutoSpeed != SpeedAutoCheckBox.isChecked()) {
+				alertDialog = new AlertDialog.Builder(this);
+				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_autosetting));
+				alertDialog.setMessage(getResources().getString(R.string.message_alertdialog_speedsetting));
+				alertDialog.setNegativeButton("YES", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					    editor.putString("speedTreshold", String.valueOf(speedTreshold));
+					    editor.putLong("speedTimeTreshold", speedTimeTreshold);
+					    editor.putBoolean("isAutoSpeed", SpeedAutoCheckBox.isChecked());
+					    editor.commit();
+					    
+						intentMainAutoSetting.putExtra("speedTreshold", speedTreshold);
+						intentMainAutoSetting.putExtra("speedTimeTreshold", speedTimeTreshold);
+						intentMainAutoSetting.putExtra("isAutoSpeed", SpeedAutoCheckBox.isChecked());
+
+						setResult(RESULT_OK, intentMainAutoSetting);
+						finish();					
+					}
+				});
+				alertDialog.setPositiveButton("No", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+				alertDialog.setIcon(android.R.drawable.presence_busy);
+				alertDialog.show();
+			}
+			else {
+				finish();
+			}
 			break;
 		default:
 			break;
