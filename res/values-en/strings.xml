@@ -134,7 +134,7 @@
     <!-- speed unit -->
      <string name="knots">knots</string>
     <string name="km_per_hour">kilometers per hour</string>
-    <string name="speedUnitIntro">Choose the speed unit from the choices</string>
+    <string name="speedUnitIntro">Choose the speed unit</string>
     
     <string name="message_alertdialog_autosetting">Do you want to save?</string>
     <string name="title_alertdialog_speedsetting">Auto speed setting was changed.</string>

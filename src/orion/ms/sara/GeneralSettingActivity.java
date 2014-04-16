@@ -37,7 +37,7 @@ public class GeneralSettingActivity extends Activity {
 	protected int SPEECH_RATE = 5;
 	
 	//String with default value
-	public static String speedUnit = "knots";
+	public String speedUnit = "knots";
 	public String bearingUnit = "port";
 	public String portStarboard_Bearing = "0 on port";
 	public String distanceUnit = "NM";
@@ -101,7 +101,7 @@ public class GeneralSettingActivity extends Activity {
 			}//end onClick
 		});//end setOnlick
 		
-		bearingUnitButton.setOnClickListener(new OnClickListener() {
+		/*bearingUnitButton.setOnClickListener(new OnClickListener() {
 			//onClick creation
 			@Override
 			public void onClick(View v) {
@@ -135,7 +135,7 @@ public class GeneralSettingActivity extends Activity {
 				//start speech rate setting
 				startActivityForResult(intentToSpeech, SPEECH_RATE);
 			}//end onClick
-		});//end setOnlick
+		});//end setOnlick*/
 
 	}//end onCreate
 	
@@ -156,12 +156,13 @@ public class GeneralSettingActivity extends Activity {
 	    //from speed unit activity
 	    if(requestCode==SPEED_UNIT){
 	    	tempUnit = intentFromAnother.getStringExtra("choosingSpeedUnit");
-	    	if(!tempUnit.equals("NONE")){
+	    	if(!tempUnit.equals(speedUnit)){
 	    		//didn't save the change yet
 	    		dialog.setTitle("The speed unit changes to "+tempUnit);
 	    		dialog.setIcon(android.R.drawable.ic_menu_edit);
 	    		dialog.setMessage("Do you want to save?");
 	    		dialog.setPositiveButton("No", null);
+				Log.i("Speed unit: ", speedUnit);
 	    		dialog.setNeutralButton("Yes", new DialogInterface.OnClickListener() {
 	    			//save the changed speed unit
 					@SuppressWarnings("static-access")
@@ -169,13 +170,14 @@ public class GeneralSettingActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						speedUnit = tempUnit;
 						tts.speak("Speed Unit changes to "+speedUnit, tts.QUEUE_FLUSH, null);
-						//Log.i("Speed unit change", speedUnit);
+						Log.i("Speed unit: ", speedUnit);
 					}
 				});
 	    		dialog.show();
 	    	}//end if
 	    }//end speedUnit
 	    
+	    /*
 	    //from bearing unit activity
 	    else if(requestCode==BEARING_UNIT){
 	    	
@@ -191,7 +193,7 @@ public class GeneralSettingActivity extends Activity {
 	    //from speech rate activity
 	    else if(requestCode==SPEECH_RATE){
 	    	//speechRate = intentFromAnother.getFloatExtra("speechRate", 2);
-	    }
+	    }*/
 	}
 
 	//  action bar

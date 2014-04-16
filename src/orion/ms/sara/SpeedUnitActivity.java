@@ -93,16 +93,16 @@ public class SpeedUnitActivity extends Activity {
 			public void onClick(View v) {
 				if(v==saveButton){
 					if(knots.isChecked()){
-						GeneralSettingActivity.speedUnit = "knots";
+						tempSpeedUnit = "knots";
 						Toast.makeText(SpeedUnitActivity.this, "Speed unit changes to knots", Toast.LENGTH_SHORT);
 						tts.speak("Speed unit changes to knots", tts.QUEUE_FLUSH, null);
 					}
 					else if(kmPerHr.isChecked()){
-						GeneralSettingActivity.speedUnit = "km/hr";
+						tempSpeedUnit = "km/hr";
 						Toast.makeText(SpeedUnitActivity.this, "Speed unit changes to kilometers per hour", Toast.LENGTH_SHORT);
 						tts.speak("Speed unit changes to kilometers per hour", tts.QUEUE_FLUSH, null);
 					}
-					intentToGeneral.putExtra("choosingSpeedUnit", "NONE");
+					intentToGeneral.putExtra("choosingSpeedUnit", tempSpeedUnit);
 					setResult(RESULT_OK,intentToGeneral);
 					finish();
 				}//end if
@@ -127,7 +127,7 @@ public class SpeedUnitActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.general_setting:
 			//pass the parameters
-			intentToGeneral.putExtra("choosingSpeedUnit",tempSpeedUnit);//unit
+			intentToGeneral.putExtra("choosingSpeedUnit",tempSpeedUnit);//speed unit
 			setResult(RESULT_OK, intentToGeneral);
 			finish();
 			break;
