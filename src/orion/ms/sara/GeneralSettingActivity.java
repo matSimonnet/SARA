@@ -12,6 +12,7 @@ public class GeneralSettingActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_generalsetting);
+		setTitle("General Setting");
 
 	}
 //  action bar

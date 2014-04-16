@@ -123,5 +123,12 @@
    <string name="distancesetting">Auto Distance Setting</string>
    <string name="accuracysetting">Auto Accuracy Setting</string>
    <string name="backtoautosetting">Back to auto setting</string>
+   
+   <!-- general setting -->
+    <string name="speed_unit_setting">Speed Unit Setting</string>
+    <string name="bearing_unit_setting">Bearing Unit Setting</string>
+    <string name="distance_unit_setting">Distance Unit Setting</string>
+    <string name="map_type_setting">Map Type Setting</string>
+    <string name="speech_rate_setting">Speech Rate Setting</string>
 </resources>
 
