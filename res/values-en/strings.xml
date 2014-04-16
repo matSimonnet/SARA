@@ -130,5 +130,10 @@
     <string name="distance_unit_setting">Distance Unit Setting</string>
     <string name="map_type_setting">Map Type Setting</string>
     <string name="speech_rate_setting">Speech Rate Setting</string>
+    
+    <!-- speed unit -->
+     <string name="knots">knots</string>
+    <string name="km_per_hour">kilometers per hour</string>
+    <string name="speedUnitIntro">Choose the speed unit from the choices</string>
 </resources>
 

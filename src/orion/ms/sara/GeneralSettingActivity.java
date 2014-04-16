@@ -121,13 +121,35 @@ public class GeneralSettingActivity extends Activity {
 		if (angle_tmp < 180) portStarboard_Bearing = angle_tmp + "on starboard";
 		else portStarboard_Bearing = (360 - angle_tmp) + " on port";
 	}
-	
-	public float getSpeechRate() {
-		return speechRate;
-	}
 
 	public void setSpeechRate(float speechRate) {
 		this.speechRate = speechRate;
+	}
+	
+	//Intent to handle receive parameters from other activities
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intentFromAnother){
+	    super.onActivityResult(requestCode, resultCode, intentFromAnother);
+	    //from speed unit activity
+	    if(requestCode==SPEED_UNIT){
+	    	
+	    }
+	    //from bearing unit activity
+	    else if(requestCode==BEARING_UNIT){
+	    	
+	    }
+	    //from distance unit activity
+	    else if(requestCode==DISTANCE_UNIT){
+	    	
+	    }
+	    //from map type activity
+	    else if(requestCode==MAP_TYPE){
+	    	
+	    }
+	    //from speech rate activity
+	    else if(requestCode==SPEECH_RATE){
+	    	//speechRate = intentFromAnother.getFloatExtra("speechRate", 2);
+	    }
 	}
 
 	//  action bar
