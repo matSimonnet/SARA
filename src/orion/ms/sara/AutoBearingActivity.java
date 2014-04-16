@@ -234,8 +234,8 @@ public class AutoBearingActivity extends Activity {
 		    
 			if(LastbearingTreshold != bearingTreshold || LastbearingTimeTreshold != bearingTimeTreshold || LastisAutoBearing != BearingAutoCheckBox.isChecked()) {				
 				alertDialog = new AlertDialog.Builder(this);
-				alertDialog.setTitle(getResources().getString(R.string.message_alertdialog_autosetting));
-				alertDialog.setMessage(getResources().getString(R.string.title_alertdialog_bearingsetting));
+				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_bearingsetting));
+				alertDialog.setMessage(getResources().getString(R.string.message_alertdialog_autosetting));
 				alertDialog.setNegativeButton("YES", new OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
