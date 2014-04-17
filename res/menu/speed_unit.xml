@@ -6,6 +6,6 @@
         android:id="@+id/general_setting"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="@string/general_setting"/>
+        android:title="@string/backtogeneralsetting"/>
 
 </menu>

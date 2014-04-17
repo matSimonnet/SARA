@@ -1,13 +1,15 @@
 package orion.ms.sara;
 
+import android.content.res.Resources;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.view.Gravity;
 
 public class Utils {
+	
 	private static SpannableString msp = null;
-
+	public static Resources resource = MainActivity.getContext().getResources();
 	
 	public static double RadToDeg(double radians)  
     {  
@@ -19,7 +21,7 @@ public class Utils {
         return degrees * (Math.PI / 180);  
     }  
 
-    public static double _Bearing(double lat1, double long1, double lat2, double long2)  
+    public static String _Bearing(double lat1, double long1, double lat2, double long2)  
     {  
         //Convert input values to radians  
         lat1 = DegToRad(lat1);  
@@ -32,7 +34,7 @@ public class Utils {
         double y = Math.sin(deltaLong) * Math.cos(lat2);  
         double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLong);  
         double bearing = Math.atan2(y, x);  
-        return ConvertToBearing(RadToDeg(bearing));  
+        return String.valueOf((int) ConvertToBearing(RadToDeg(bearing)));  
     }  
 
     public static double ConvertToBearing(double deg)  
@@ -60,16 +62,18 @@ public class Utils {
 	public static double arrondiHeadingTreshold(double val) {return (Math.floor((val+0.000001)*10))/10;}
 	
 	public static void setDistanceTextView(String value, String unit) {
-		String temp = "Distance" + "\n" + value + " " + unit;
-		msp = new SpannableString (temp);
-		int unitindex = temp.lastIndexOf(" ");
-		int titleindex = temp.lastIndexOf("\n");
-
 		if(unit != "") {
+			String temp = "Distance" + " to " + MyLocationListener.WaypointName + "\n" + value + " " + unit;
+			msp = new SpannableString (temp);
+			int titleindex = temp.lastIndexOf("\n");
+			int unitindex = temp.lastIndexOf(" ");
 			msp.setSpan (new RelativeSizeSpan (0.4f), unitindex, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		else {
+			String temp = "Distance" + "\n" + value + " " + unit;
+			msp = new SpannableString (temp);
+			int titleindex = temp.lastIndexOf("\n");
 			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		
@@ -94,16 +98,18 @@ public class Utils {
 		MainActivity.textViewheading.setGravity(Gravity.RIGHT);
 	}	
 	public static void setBearingTextView(String value, String unit) {
-		String temp = "Bearing" + "\n" + value + " " + unit;
-		msp = new SpannableString (temp);
-		int unitindex = temp.lastIndexOf(" ");
-		int titleindex = temp.lastIndexOf("\n");
-
 		if(unit != "") {
+			String temp = "Bearing" + " to " + MyLocationListener.WaypointName + "\n" + value + " " + unit;
+			msp = new SpannableString (temp);
+			int unitindex = temp.lastIndexOf(" ");
+			int titleindex = temp.lastIndexOf("\n");
 			msp.setSpan (new RelativeSizeSpan (0.4f), unitindex, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		else {
+			String temp = "Bearing" + "\n" + value + " " + unit;
+			msp = new SpannableString (temp);
+			int titleindex = temp.lastIndexOf("\n");
 			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		
@@ -143,4 +149,43 @@ public class Utils {
 		MainActivity.textViewAccuracy.setText(msp);
 		MainActivity.textViewAccuracy.setGravity(Gravity.LEFT);
 	}
+	
+	public static void setSpeedTextViewDescription(String value, String unit) {
+		if(unit == resource.getString(R.string.knots)) {
+			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + " " + value + " " + resource.getString(R.string.knots));
+		}
+		if(unit == resource.getString(R.string.kmperh)) {
+			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + " " + value + " " + resource.getString(R.string.km_per_hour));
+		}
+	}
+	
+	public static void setHeadingTextViewDescription(String value) {
+		MainActivity.textViewheading.setContentDescription(resource.getString(R.string.heading) + " " + value + " " + resource.getString(R.string.headingunit));
+	}
+	
+	public static void setAccuracyTextViewDescription(String value) {
+		MainActivity.textViewAccuracy.setContentDescription(resource.getString(R.string.accuracy) + " " + value + " " + resource.getString(R.string.metres));
+	}
+	
+	public static void setDistanceTextViewDescription(String value, String unit) {
+		if(unit == "") {
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.notactivate));
+		}
+		if(unit == resource.getString(R.string.m)) {
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + value + " " + resource.getString(R.string.metres));
+		}
+		if(unit == resource.getString(R.string.km)) {
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + value + " " + resource.getString(R.string.kilometres));			
+		}
+	}
+	
+	public static void setBearingTextViewDescription(String value, String unit) {
+		if(unit == "") {
+			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.notactivate));
+		}
+		if(unit == resource.getString(R.string.deg)) {
+			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + value + " " + resource.getString(R.string.bearingunit));
+		}
+	}
+
 }

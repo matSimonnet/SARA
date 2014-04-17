@@ -3,7 +3,6 @@ package orion.ms.sara;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -20,7 +19,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -68,9 +66,6 @@ public class MainActivity extends Activity {
 	public static int lastNumberForInstantWaypoint = 0;
 	//temporary list to collect instant new waypoint
 	public static List<WP> instList = new ArrayList<WP>();
-
-	//activating waypoint name
-	private String waypointName = "";
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -143,47 +138,6 @@ public class MainActivity extends Activity {
         //"Instantly create a waypoint" button
         instantButton = (Button) findViewById(R.id.instantButton);
         instantButton.setTextSize(30);
-        instantButton.setOnClickListener(new OnClickListener() {
-			//onClick creation
-			@SuppressLint("ShowToast")
-			@SuppressWarnings("static-access")
-			@Override
-			public void onClick(View v) {
-				if(v==instantButton){
-					if(!MyLocationListener.currentLatitude.equals("") && !MyLocationListener.currentLongitude.equals("")){
-						Log.i("Instant button", "pressed");
-				        //"create an new instant waypoint" button onClick listener
-				        lastNumberForInstantWaypoint += 1;
-				        if(!ModifyActivity.isRecorded("InstantWaypoint", MyLocationListener.currentLatitude, MyLocationListener.currentLongitude)){
-				        	instList.add(new WP("InstantWaypoint"+lastNumberForInstantWaypoint,//name
-					        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
-					        //Notify
-					        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", tts.QUEUE_ADD, null);
-					        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
-					        //save value
-					        savePref();
-				        }
-				        else{
-				        	//Notify
-					        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay save.", tts.QUEUE_FLUSH, null);
-					        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay save.", Toast.LENGTH_SHORT).show();
-				        }
-				        //print all elements in the list
-				        for(int i = 0;i<instList.size();i++){
-				        	Log.i("List inst", "item "+i+" : "+instList.get(i).getName());
-				        	Log.i("latidue", ""+instList.get(i).getLatitude());
-				        	Log.i("Longitude", instList.get(i).getLongitude());
-				        }
-					}//end if
-					else{
-						//GPS not available
-						Toast.makeText(MainActivity.this,"GPS is unavailable." , Toast.LENGTH_SHORT).show();
-						tts.speak("GPS is unavailable.", tts.QUEUE_FLUSH, null);
-					}
-
-			    }//end if
-			}//end onClick
-		});//end setOnClick
 
         // button creation
         buttonReco= new ImageButton(this);
@@ -200,15 +154,48 @@ public class MainActivity extends Activity {
         				startActivityForResult(intent, RESULT_SPEECH);
 	                } catch (ActivityNotFoundException a) {
 	                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.norecognition),Toast.LENGTH_SHORT).show();
-	                }// end of catch
-	            }// end of if button5
-	        }// end of onclick		
+	                }
+	            }
+				if(v==instantButton){
+					if(!MyLocationListener.currentLatitude.equals("") && !MyLocationListener.currentLongitude.equals("")){
+						Log.i("Instant button", "pressed");
+				        //"create an new instant waypoint" button onClick listener
+				        lastNumberForInstantWaypoint += 1;
+				        if(!ModifyActivity.isRecorded("InstantWaypoint", MyLocationListener.currentLatitude, MyLocationListener.currentLongitude)){
+				        	instList.add(new WP("InstantWaypoint"+lastNumberForInstantWaypoint,//name
+					        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
+					        //Notify
+					        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", TextToSpeech.QUEUE_ADD, null);
+					        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
+					        //save value
+					        savePref();
+				        }
+				        else{
+				        	//Notify
+					        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay save.", TextToSpeech.QUEUE_FLUSH, null);
+					        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay save.", Toast.LENGTH_SHORT).show();
+				        }
+				        //print all elements in the list
+				        for(int i = 0;i<instList.size();i++){
+				        	Log.i("List inst", "item "+i+" : "+instList.get(i).getName());
+				        	Log.i("latidue", ""+instList.get(i).getLatitude());
+				        	Log.i("Longitude", instList.get(i).getLongitude());
+				        }
+					}//end if
+					else{
+						//GPS not available
+						Toast.makeText(MainActivity.this,"GPS is unavailable." , Toast.LENGTH_SHORT).show();
+						tts.speak("GPS is unavailable.", TextToSpeech.QUEUE_FLUSH, null);
+					}
+			    }
+	        }// end of on click		
 		}; // end of new View.LocationListener	
 
 		// button activation
 		buttonReco.setOnClickListener(onclickListener);
+		instantButton.setOnClickListener(onclickListener);
 
-	}//end of oncreate
+	}//end of on create
 
 	@Override
 	protected void onResume() {
@@ -264,7 +251,7 @@ public class MainActivity extends Activity {
         	        location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         	        
         	        //activating waypoint name and location
-        	        waypointName = data.getStringExtra("actName");
+        	        MyLocationListener.WaypointName = data.getStringExtra("actName");
         	        MyLocationListener.WaypointLatitude = data.getDoubleExtra("actLatitude", 999);
         	        MyLocationListener.WaypointLongitude = data.getDoubleExtra("actLongitude", 999);
         			

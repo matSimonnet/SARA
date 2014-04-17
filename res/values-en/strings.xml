@@ -144,6 +144,6 @@
     <string name="title_alertdialog_accuracysetting">Auto accuracy setting was changed.</string>
     
     <string name="kmperh">km/h</string>
-    
+    <string name="backtogeneralsetting">BACK TO GENERAL SETTING</string>
 </resources>
 
