@@ -145,5 +145,9 @@
     
     <string name="kmperh">km/h</string>
     <string name="backtogeneralsetting">BACK TO GENERAL SETTING</string>
+    
+    <string name="cardinal">cardinal</string>
+    <string name="portandstarboard">port/starboard</string>
+        
 </resources>
 
