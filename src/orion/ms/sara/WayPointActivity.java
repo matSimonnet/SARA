@@ -88,6 +88,15 @@ public class WayPointActivity extends Activity {
 			//load preferences
 			sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 			loadPref();
+	        Log.i("inst list from waypoint before combine",""+MainActivity.instList.size());
+			//check if there is any instantWaypoint
+			if(MainActivity.instList.size()!=0){
+				//two lists combination
+				wayPointList.addAll(MainActivity.instList);
+		        Log.i("inst list from waypoint after combine",""+MainActivity.instList.size());
+				MainActivity.instList.clear();//empty the instant waypoint list
+		        Log.i("inst list from waypoint after clearrrr",""+MainActivity.instList.size());
+			}
 								
 			//OnInitListener Creation
 			OnInitListener onInitListener = new OnInitListener() {
@@ -104,12 +113,7 @@ public class WayPointActivity extends Activity {
 	        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
 
-			//check if there is any instantWaypoint
-			if(MainActivity.instList.size()>0){
-				//two lists combination
-				wayPointList.addAll(MainActivity.instList);
-				MainActivity.instList.clear();//empty the instant waypoint list
-			}
+			
 			
 			//alert dialog creation
 			choosingDialog = new AlertDialog.Builder(this);
@@ -121,8 +125,10 @@ public class WayPointActivity extends Activity {
 			intentToModify = new Intent(WayPointActivity.this,ModifyActivity.class);
 
 			//sort the list
-			sortingWaypointList(wayPointList);
+			//sortingWaypointList(wayPointList);
+			Log.i("from on create", "sort from on create");
 			//spinner set up
+			way = (Spinner) findViewById(R.id.spinner1);
 			way.setContentDescription("Choose the waypoint in ");
 			
 			//setOnItemSelectedListener
@@ -496,6 +502,7 @@ public class WayPointActivity extends Activity {
 	    Log.i("Resume the program", "=======================RESUME+++++++++++++++++++++");
 		//sorting way point
 		sortingWaypointList(wayPointList);
+		Log.i("sort from on resume", "sort from on resume");
 	  }
 	  @Override
 	  protected void onPause() {

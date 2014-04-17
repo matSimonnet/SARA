@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -50,6 +51,10 @@ public class ModifyActivity extends Activity {
 			private String oldName = "";
 			private String oldLatitude = "";
 			private String oldLongitude = "";
+			
+			//current location
+			private String currentLatitude = "";
+			private String currentLongitude = "";
 			
 			//Intent
 			private Intent intentToWayPoint;
@@ -119,9 +124,23 @@ public class ModifyActivity extends Activity {
 			//OnClick creation
 			@Override
 			public void onClick(View v) {
-				//set each EditText with current position
-				latitudeBox.setText(MyLocationListener.currentLatitude);
-				longitudeBox.setText(MyLocationListener.currentLongitude);
+				//update location
+		        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
+		        currentLatitude = MyLocationListener.currentLatitude;
+				currentLongitude = MyLocationListener.currentLongitude;
+				if(currentLatitude.equals("")){
+					//GPS unavailable
+					AlertDialog.Builder dialog = new AlertDialog.Builder(ModifyActivity.this);
+					dialog.setTitle("GPS is unavailable,please wait.");
+					dialog.setNeutralButton("OK", null);
+					dialog.show();
+				}
+				else{
+					//GPS available
+					//set each EditText with current position
+					latitudeBox.setText(currentLatitude);
+					longitudeBox.setText(currentLongitude);
+				}
 			}
 		});
 		

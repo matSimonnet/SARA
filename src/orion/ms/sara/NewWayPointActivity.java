@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -118,10 +119,14 @@ public class NewWayPointActivity extends Activity {
 				        currentLatitude = MyLocationListener.currentLatitude;
 						currentLongitude = MyLocationListener.currentLongitude;
 						if(currentLatitude.equals("")){
-							currentLatitude = MyLocationListener.currentLatitude;
-							currentLongitude = MyLocationListener.currentLongitude;
+							//GPS unavailable
+							AlertDialog.Builder dialog = new AlertDialog.Builder(NewWayPointActivity.this);
+							dialog.setTitle("GPS is unavailable,please wait.");
+							dialog.setNeutralButton("OK", null);
+							dialog.show();
 						}
 						else{
+							//GPS available
 							//set each EditText with current position
 							latitudeBox.setText(currentLatitude);
 							longitudeBox.setText(currentLongitude);

@@ -168,13 +168,14 @@ public class MainActivity extends Activity {
 					        //Notify
 					        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", TextToSpeech.QUEUE_ADD, null);
 					        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
+					        Log.i("inst list from main",""+instList.size());
 					        //save value
 					        savePref();
 				        }
 				        else{
 				        	//Notify
-					        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay save.", TextToSpeech.QUEUE_FLUSH, null);
-					        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay save.", Toast.LENGTH_SHORT).show();
+					        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay saved before.", TextToSpeech.QUEUE_FLUSH, null);
+					        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay saved before.", Toast.LENGTH_SHORT).show();
 				        }
 				        //print all elements in the list
 				        for(int i = 0;i<instList.size();i++){
