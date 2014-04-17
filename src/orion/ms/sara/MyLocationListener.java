@@ -29,7 +29,6 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public static String currentLongitude = "";
 
 	public static float distance[] = new float[1];
-	public static double bearing = 0.0;
 
 	public static Date speedNow = null;
 	public static Date speedBefore = new Date();
@@ -129,7 +128,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		Utils.setAccuracyTextViewDescription(accuracy);
 
 		if (isAutoBearing) {
-			bearingAuto = (int) bearing;
+			bearingAuto = Integer.parseInt(BearingToCurrentWaypoint);
 			bearingNow = new Date();
 
 			int bearingDiff = java.lang.Math.abs((int) bearingLastAuto - (int) bearingAuto);
@@ -154,7 +153,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			if (distanceAuto < 100 && distanceAuto >= 10) distanceTreshold = 10;
 			if (distanceAuto < 1000 && distanceAuto >= 100) distanceTreshold = 100;
 			if (distanceAuto < 10000 && distanceAuto >= 1000) distanceTreshold = 1000;
-			if (distanceAuto >= 10000 && distanceAuto >= 10000) distanceTreshold = 10000;
+			if (distanceAuto >= 10000) distanceTreshold = 10000;
 
 			if (((distanceAuto < distanceLastAuto - distanceTreshold) || (distanceAuto > distanceLastAuto + distanceTreshold))
 					&& ((distanceNow.getTime() - distanceBefore.getTime()) > distanceTimeTreshold * 1000)) {
