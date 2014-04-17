@@ -510,8 +510,8 @@ public class WayPointActivity extends Activity {
 		@Override
 		protected void onDestroy() {
 			super.onDestroy();
+			lm.removeUpdates(MainActivity.ll);
 			tts.shutdown();
-			Log.i("shut down", "Waypoint shutdown");
 		}
 		
 		@Override

@@ -76,6 +76,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
+        MyLocationListener.isInMain = true;
         
         //location manager creation
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -201,16 +202,19 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+        MyLocationListener.isInMain = true;
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		lm.removeUpdates(ll);
+        MyLocationListener.isInMain = false;
 	}
   
 	@Override
 	protected void onStop() {
+        MyLocationListener.isInMain = false;
 		super.onStop();
 	}
   
@@ -219,6 +223,7 @@ public class MainActivity extends Activity {
 		super.onDestroy();
 		lm.removeUpdates(ll);
 		tts.shutdown();
+        MyLocationListener.isInMain = false;
 	}
 
     @Override

@@ -48,6 +48,8 @@ public class NewWayPointActivity extends Activity {
 		
 		//default name and current position
 		private String defaultName = "";
+		private String currentLatitude = "";
+		private String currentLongitude = "";
 	
 		//Intent
 		private Intent intentToWayPoint;
@@ -73,7 +75,6 @@ public class NewWayPointActivity extends Activity {
 				
 				//location manager creation
 		        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
 				
 				//TextView
 				newNameText = (TextView) findViewById(R.id.textView1);
@@ -112,11 +113,21 @@ public class NewWayPointActivity extends Activity {
 					//OnClick creation
 					@Override
 					public void onClick(View v) {
-						//set each EditText with current position
-						latitudeBox.setText(MyLocationListener.currentLatitude);
-						longitudeBox.setText(MyLocationListener.currentLongitude);
-					}
-				});
+						//update location
+				        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
+				        currentLatitude = MyLocationListener.currentLatitude;
+						currentLongitude = MyLocationListener.currentLongitude;
+						if(currentLatitude.equals("")){
+							currentLatitude = MyLocationListener.currentLatitude;
+							currentLongitude = MyLocationListener.currentLongitude;
+						}
+						else{
+							//set each EditText with current position
+							latitudeBox.setText(currentLatitude);
+							longitudeBox.setText(currentLongitude);
+						}
+					}//end onClick
+				});//end setOnClick
 				
 				//map location button
 				mapLoButton = (Button) findViewById(R.id.button3);
@@ -247,7 +258,6 @@ public class NewWayPointActivity extends Activity {
 	@Override
 	  protected void onResume() {
 	    super.onResume();
-	    //lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 	  }
 
 	  @Override
@@ -264,6 +274,7 @@ public class NewWayPointActivity extends Activity {
 		@Override
 		protected void onDestroy() {
 			super.onDestroy();
+			lm.removeUpdates(MainActivity.ll);
 			tts.shutdown();
 		}
 		
