@@ -12,6 +12,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -32,6 +33,7 @@ public class WayPointActivity extends Activity {
 		private Spinner way = null;	
 				
 		private TextToSpeech tts = null;
+		private LocationManager lm = null;
 		
 		//a list of many way points sorted by proximity
 		public static List<WP> wayPointList = new ArrayList<WP>();
@@ -97,6 +99,10 @@ public class WayPointActivity extends Activity {
 		    // textToSpeech creation
 			tts = new TextToSpeech(this, onInitListener);
 			tts.setSpeechRate(GeneralSettingActivity.speechRate);
+			
+			//location manager creation
+	        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
 
 			//check if there is any instantWaypoint
 			if(MainActivity.instList.size()>0){
@@ -329,21 +335,30 @@ public class WayPointActivity extends Activity {
 			}
 			first = new WP("Please selected a waypoint","","");
 			//update location
-			//Recalculating distance in the list
-			for(int i = 0;i< wList.size();i++){
-				tempWP = wList.get(i);
-				//calculate new distance
-				double tempLa = Double.parseDouble(tempWP.getLatitude());
-				double tempLong = Double.parseDouble(tempWP.getLongitude());
-				
-				Location.distanceBetween(tempLa, tempLong, 
-						Double.parseDouble(MyLocationListener.currentLatitude), Double.parseDouble(MyLocationListener.currentLongitude), tempResult);
-				//set up the new distance from the current position into every way point in the list
-				wList.get(i).setDistance(tempResult[0]);
-			}
-			Collections.sort(wList);//Sorting the list by proximity
+	        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
+	        if(MyLocationListener.currentLatitude.equals("")){
+	        	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+	        	dialog.setTitle("GPS is unavailable.Please wait");
+	        	dialog.setNeutralButton("OK", null);
+	        	dialog.show();
+	        }
+	        else{
+	        	//Recalculating distance in the list
+				for(int i = 0;i< wList.size();i++){
+					tempWP = wList.get(i);
+					//calculate new distance
+					double tempLa = Double.parseDouble(tempWP.getLatitude());
+					double tempLong = Double.parseDouble(tempWP.getLongitude());
+					
+					Location.distanceBetween(tempLa, tempLong, 
+							Double.parseDouble(MyLocationListener.currentLatitude), Double.parseDouble(MyLocationListener.currentLongitude), tempResult);
+					//set up the new distance from the current position into every way point in the list
+					wList.get(i).setDistance(tempResult[0]);
+					Collections.sort(wList);//Sorting the list by proximity
+					Log.i("Sort method", "Sorttttttttttttt");
+				}
+	        }
 			wList.add(0, first);
-			Log.i("Sort method", "Sorttttttttttttt");
 
 			//set array adapter of the list into the spinner
 			way = (Spinner) findViewById(R.id.spinner1);

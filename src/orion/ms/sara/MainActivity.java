@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 	private Button instantButton = null;
 
 	private LocationManager lm = null;
-	private MyLocationListener ll = null;
+	static MyLocationListener ll = null;
 	private Location location = null;
 
 	//shared preferences
@@ -206,6 +206,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		lm.removeUpdates(ll);
 	}
   
 	@Override

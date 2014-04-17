@@ -4,7 +4,9 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -42,6 +44,7 @@ public class NewWayPointActivity extends Activity {
 		private Button mapLoButton = null;
 		
 		private TextToSpeech tts = null;
+		private LocationManager lm = null;
 		
 		//default name and current position
 		private String defaultName = "";
@@ -67,6 +70,10 @@ public class NewWayPointActivity extends Activity {
 			    // textToSpeech creation
 				tts = new TextToSpeech(this, onInitListener);
 				tts.setSpeechRate(GeneralSettingActivity.speechRate);
+				
+				//location manager creation
+		        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
 				
 				//TextView
 				newNameText = (TextView) findViewById(R.id.textView1);
