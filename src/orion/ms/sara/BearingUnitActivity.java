@@ -16,8 +16,6 @@ import android.widget.RadioGroup;
 
 public class BearingUnitActivity extends Activity {
 	
-	public static final String PREFS_NAME = "MyPrefsFile";
-
 	//radio group
 	private RadioGroup group;
 	private RadioButton knotsRadioButton;
@@ -52,10 +50,9 @@ public class BearingUnitActivity extends Activity {
 		this.saveButton.setContentDescription("save the changing setting");
 		
 	    // Restore preferences
-		this.settings = getSharedPreferences(PREFS_NAME, 0);
+		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
 		this.editor = settings.edit();
 		LoadPref();
-
 		
 		//OnInitListener Creation
 		OnInitListener onInitListener = new OnInitListener() {

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class GeneralSettingActivity extends Activity {
+	
 	//Button
 	private Button speedUnitButton = null;
 	private Button bearingUnitButton = null;

@@ -19,9 +19,7 @@ import android.speech.tts.TextToSpeech.OnInitListener;
 import android.app.AlertDialog;
 
 public class AutoHeadingActivity extends Activity {
-	
-	public static final String PREFS_NAME = "MyPrefsFile";
-	
+		
 	private Intent intentMainAutoSetting;
 	
 	private TextToSpeech tts = null;
@@ -61,7 +59,7 @@ public class AutoHeadingActivity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	    
 		// Restore preferences
-		this.settings = getSharedPreferences(PREFS_NAME, 0);
+		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
 		this.editor = settings.edit();
 		LoadPref();
 		

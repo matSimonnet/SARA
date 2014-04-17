@@ -13,65 +13,67 @@ import android.widget.Toast;
 
 public class MyLocationListener extends Activity implements LocationListener {
 
-	static String speed = "";
-	static String heading = "";
-	static String DistanceToCurrentWaypoint = "";
-	static String BearingToCurrentWaypoint = "";
-	static String accuracy = "";
+	public static final String PREFS_NAME = "MyPrefsFile";
 
-	static String WaypointName = "";
-	static double WaypointLatitude = 999;
-	static double WaypointLongitude = 999;
+	public static String speed = "";
+	public static String heading = "";
+	public static String DistanceToCurrentWaypoint = "";
+	public static String BearingToCurrentWaypoint = "";
+	public static String accuracy = "";
 
-	static String currentLatitude = "";
-	static String currentLongitude = "";
+	public static String WaypointName = "";
+	public static double WaypointLatitude = 999;
+	public static double WaypointLongitude = 999;
 
-	static float distance[] = new float[1];
-	static double bearing = 0.0;
+	public static String currentLatitude = "";
+	public static String currentLongitude = "";
 
-	static Date speedNow = null;
-	static Date speedBefore = new Date();
+	public static float distance[] = new float[1];
+	public static double bearing = 0.0;
 
-	static Date headingNow = null;
-	static Date headingBefore = new Date();
+	public static Date speedNow = null;
+	public static Date speedBefore = new Date();
 
-	static Date distanceNow = null;
-	static Date distanceBefore = new Date();
+	public static Date headingNow = null;
+	public static Date headingBefore = new Date();
 
-	static Date bearingNow = null;
-	static Date bearingBefore = new Date();
+	public Date distanceNow = null;
+	public static Date distanceBefore = new Date();
 
-	static Date accuracyNow = null;
-	static Date accuracyBefore = new Date();
+	public static Date bearingNow = null;
+	public static Date bearingBefore = new Date();
 
-	static boolean isAutoSpeed = true;
-	static boolean isAutoHeading = true;
-	static boolean isAutoDistance = true;
-	static boolean isAutoBearing = true;
-	static boolean isAutoAccuracy = true;
+	public static Date accuracyNow = null;
+	public static Date accuracyBefore = new Date();
 
-	static double speedAuto = 0.0;
-	static double headingAuto = 0.0;
-	static double distanceAuto = 0.0;
-	static double bearingAuto = 0.0;
-	static double accuracyAuto = 0;
+	public static boolean isAutoSpeed = true;
+	public static boolean isAutoHeading = true;
+	public static boolean isAutoDistance = true;
+	public static boolean isAutoBearing = true;
+	public static boolean isAutoAccuracy = true;
 
-	static double speedLastAuto = 0.0;
-	static double headingLastAuto = 0.0;
-	static double distanceLastAuto = 0.0;
-	static double bearingLastAuto = 0.0;
-	static double accuracyLastAuto = 0;
+	public static double speedAuto = 0.0;
+	public static double headingAuto = 0.0;
+	public static double distanceAuto = 0.0;
+	public static double bearingAuto = 0.0;
+	public static double accuracyAuto = 0;
 
-	static double speedTreshold = 1.0;
-	static double headingTreshold = 10.0;
-	static double distanceTreshold = 0.0;
-	static double bearingTreshold = 10.0;
+	public static double speedLastAuto = 0.0;
+	public static double headingLastAuto = 0.0;
+	public static double distanceLastAuto = 0.0;
+	public static double bearingLastAuto = 0.0;
+	public static double accuracyLastAuto = 0;
 
-	static long speedTimeTreshold = 5;
-	static long headingTimeTreshold = 5;
-	static long distanceTimeTreshold = 5;
-	static long bearingTimeTreshold = 5;
-	static long accuracyTimeTreshold = 5;
+	public static double speedTreshold = 1.0;
+	public static double headingTreshold = 10.0;
+	public static double distanceTreshold = 0.0;
+	public static double bearingTreshold = 10.0;
+
+	public static long speedTimeTreshold = 5;
+	public static long headingTimeTreshold = 5;
+	public static long distanceTimeTreshold = 5;
+	public static long bearingTimeTreshold = 5;
+	public static long accuracyTimeTreshold = 5;
 
 	private String speedUnit = "";
 	private String distanceUnit = "";
@@ -83,10 +85,10 @@ public class MyLocationListener extends Activity implements LocationListener {
 	private boolean isMorePrecise10Announced = false;
 	private boolean isLessPrecise10Announced = false;
 
-	static boolean isKnotsSelected = true;
-	static boolean isKmPerHrSelected = false;
+	public static boolean isKnotsSelected = true;
+	public static boolean isKmPerHrSelected = false;
 
-	static boolean isInMain = true;
+	public static boolean isInMain = true;
 
 	public Resources resource = MainActivity.getContext().getResources();
 

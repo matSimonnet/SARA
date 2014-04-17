@@ -27,7 +27,6 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	public static final String PREFS_NAME = "MyPrefsFile";
     private static Context mContext;
 
 	// variables declarations
@@ -304,7 +303,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void LoadPref() {
-		settings = getSharedPreferences(PREFS_NAME, 0);
+		settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
      	MyLocationListener.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
      	MyLocationListener.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
      	MyLocationListener.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
@@ -318,7 +317,8 @@ public class MainActivity extends Activity {
      	MyLocationListener.isAutoDistance = settings.getBoolean("isAutoDistance", true);
      	MyLocationListener.isAutoBearing = settings.getBoolean("isAutoBearing", true);
      	MyLocationListener.isAutoAccuracy = settings.getBoolean("isAutoAccuracy", true);
-
+     	MyLocationListener.isKnotsSelected = settings.getBoolean("isKnotsSelected", true);  
+     	MyLocationListener.isKmPerHrSelected = settings.getBoolean("isKmPerHrSelected", false); 
         MyLocationListener.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
         MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
         lastNumberForInstantWaypoint = settings.getInt(getString(R.string.save_inst_num), 0);
