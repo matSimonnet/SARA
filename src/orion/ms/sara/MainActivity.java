@@ -3,6 +3,8 @@ package orion.ms.sara;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -160,21 +162,22 @@ public class MainActivity extends Activity {
 					if(!MyLocationListener.currentLatitude.equals("") && !MyLocationListener.currentLongitude.equals("")){
 						Log.i("Instant button", "pressed");
 				        //"create an new instant waypoint" button onClick listener
-				        lastNumberForInstantWaypoint += 1;
-				        if(!ModifyActivity.isRecorded("InstantWaypoint", MyLocationListener.currentLatitude, MyLocationListener.currentLongitude)){
-				        	instList.add(new WP("InstantWaypoint"+lastNumberForInstantWaypoint,//name
+				        if(!ModifyActivity.isRecorded("H"+lastNumberForInstantWaypoint, MyLocationListener.currentLatitude, MyLocationListener.currentLongitude) //same as location as waypoint list items
+				        		&& !isRecorded(MyLocationListener.currentLatitude, MyLocationListener.currentLongitude)){//same as instant list items
+				        	lastNumberForInstantWaypoint += 1;
+				        	instList.add(new WP("H"+lastNumberForInstantWaypoint,//name
 					        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
 					        //Notify
-					        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", TextToSpeech.QUEUE_ADD, null);
-					        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
+					        tts.speak("H"+lastNumberForInstantWaypoint+" is saved here.", TextToSpeech.QUEUE_ADD, null);
+					        Toast.makeText(MainActivity.this, "H"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
 					        Log.i("inst list from main",""+instList.size());
 					        //save value
 					        savePref();
 				        }
 				        else{
 				        	//Notify
-					        tts.speak("InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay saved before.", TextToSpeech.QUEUE_FLUSH, null);
-					        Toast.makeText(MainActivity.this, "InstantWaypoint"+lastNumberForInstantWaypoint+" is alreay saved before.", Toast.LENGTH_SHORT).show();
+					        tts.speak("This waypoint is already saved before.", TextToSpeech.QUEUE_FLUSH, null);
+					        Toast.makeText(MainActivity.this, "This waypoint is already saved before.", Toast.LENGTH_SHORT).show();
 				        }
 				        //print all elements in the list
 				        for(int i = 0;i<instList.size();i++){
@@ -197,6 +200,17 @@ public class MainActivity extends Activity {
 		instantButton.setOnClickListener(onclickListener);
 
 	}//end of on create
+	
+	//to check if the filled name or the position (latitude and longitude) are already recorded
+	@SuppressLint("ShowToast")		
+	public static boolean isRecorded(String la, String lo){
+		for(int i = 0;i<instList.size();i++){
+			if( instList.get(i).getLatitude().equalsIgnoreCase(la) && instList.get(i).getLongitude().equalsIgnoreCase(lo) ){
+				return true;
+			}
+		}//end for
+		return false;
+	}//end isRecored
 
 	@Override
 	protected void onResume() {

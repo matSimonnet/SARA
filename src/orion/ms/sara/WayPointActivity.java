@@ -161,7 +161,7 @@ public class WayPointActivity extends Activity {
 	        	      				//dialog creation
 	        	      				choosingDialog.setTitle("You selected : "+choosingWaypoint.getName());
 	                				choosingDialog.setIcon(android.R.drawable.presence_busy);
-	                				choosingDialog.setMessage("What do you want to do with "+choosingWaypoint.getName()+"?");
+	                				//choosingDialog.setMessage("What do you want to do with "+choosingWaypoint.getName()+"?");
 	                				
 	                				//setOnClickListener
 	                				
@@ -273,7 +273,7 @@ public class WayPointActivity extends Activity {
 								tts.speak("create a new waypoint", tts.QUEUE_FLUSH, null);
 								
 								//sending default name for a new way point
-								intentToNewWayPoint.putExtra("defaultNameFromWP", String.valueOf("Waypoint"+(lastNumberForWaypoint+1)));
+								intentToNewWayPoint.putExtra("defaultNameFromWP", String.valueOf("WP"+(lastNumberForWaypoint+1)));
 								//start NewWayPoint activity
 								startActivityForResult(intentToNewWayPoint, NEW_WAYPOINT);
 							}
@@ -324,8 +324,8 @@ public class WayPointActivity extends Activity {
 	//adding new way point into the way point list
 	public void addNewWPtoList(List<WP> wList,String n,String la,String lo){
 		//Get the latest number after adding a new way point
-		if(n.length()>8 && n.substring(0,8).equalsIgnoreCase("waypoint")){
-			lastNumberForWaypoint = Integer.parseInt(n.substring(8));//substring "WayPoint" name to get the number after that
+		if(n.length()>2 && n.substring(0,2).equalsIgnoreCase("wp")){
+			lastNumberForWaypoint = Integer.parseInt(n.substring(2));//substring "WP" name to get the number after that
 		}
 		else;
 		//Adding the new way point into the list
