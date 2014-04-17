@@ -79,6 +79,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	private String bearingUnit = "";
 	private String headingUnit = "";
 	private String accuracyUnit = "";
+	private boolean isWaypointActivated = false;
 
 	private boolean isMorePrecise5Announced = false;
 	private boolean isMorePrecise10Announced = false;
@@ -94,6 +95,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	@Override
 	public void onLocationChanged(Location loc) {
 
+		this.isWaypointActivated();
 		currentLatitude = String.valueOf(loc.getLatitude());
 		currentLongitude = String.valueOf(loc.getLongitude());
 
@@ -127,7 +129,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		Utils.setDistanceTextViewDescription(DistanceToCurrentWaypoint, distanceUnit);
 		Utils.setAccuracyTextViewDescription(accuracy);
 
-		if (isAutoBearing) {
+		if (isAutoBearing && isWaypointActivated) {
 			bearingAuto = Integer.parseInt(BearingToCurrentWaypoint);
 			bearingNow = new Date();
 
@@ -145,7 +147,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			}
 		}// end of if bearingAutoCheck...
 
-		if (isAutoDistance) {
+		if (isAutoDistance && isWaypointActivated) {
 			distanceAuto = distance[0];
 			distanceNow = new Date();
 
@@ -321,6 +323,15 @@ public class MyLocationListener extends Activity implements LocationListener {
 			return "";
 		} else {
 			return resource.getString(R.string.deg);
+		}
+	}
+	
+	public void isWaypointActivated() {
+		if (WaypointLatitude == 999 || WaypointLongitude == 999) {
+			this.isWaypointActivated = false;
+		}
+		else {
+			this.isWaypointActivated = true;
 		}
 	}
 
