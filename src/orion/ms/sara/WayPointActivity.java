@@ -222,6 +222,8 @@ public class WayPointActivity extends Activity {
 	                				if(i!=0){
 	                					//show the choosing dialog if selected some way point from the list
 		                				choosingDialog.show();
+		                				//sort the list
+		                				sortingWaypointList(wayPointList);
 	                				}//end if
 	                			}//end switch case
 	                    }catch(Exception e){
