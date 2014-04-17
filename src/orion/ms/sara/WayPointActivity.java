@@ -125,7 +125,16 @@ public class WayPointActivity extends Activity {
 			intentToModify = new Intent(WayPointActivity.this,ModifyActivity.class);
 
 			//sort the list
-			//sortingWaypointList(wayPointList);
+			if(MyLocationListener.currentLatitude.equals("")){
+				//GPS unavailable
+	        	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+	        	dialog.setTitle("GPS is unavailable.Waypoint list is not sort");
+	        	dialog.setNeutralButton("OK", null);
+	        	dialog.show();
+	        }
+			else{
+				sortingWaypointList(wayPointList);
+			}
 			Log.i("from on create", "sort from on create");
 			//spinner set up
 			way = (Spinner) findViewById(R.id.spinner1);
@@ -230,6 +239,7 @@ public class WayPointActivity extends Activity {
 		                				choosingDialog.show();
 		                				//sort the list
 		                				sortingWaypointList(wayPointList);
+		                				i = 0;
 	                				}//end if
 	                			}//end switch case
 	                    }catch(Exception e){
@@ -344,13 +354,8 @@ public class WayPointActivity extends Activity {
 			first = new WP("Please selected a waypoint","","");
 			//update location
 	        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
-	        if(MyLocationListener.currentLatitude.equals("")){
-	        	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-	        	dialog.setTitle("GPS is unavailable.Please wait");
-	        	dialog.setNeutralButton("OK", null);
-	        	dialog.show();
-	        }
-	        else{
+	        if(!MyLocationListener.currentLatitude.equals("")){
+				//GPS unavailable not sort by proximity
 	        	//Recalculating distance in the list
 				for(int i = 0;i< wList.size();i++){
 					tempWP = wList.get(i);
@@ -362,12 +367,12 @@ public class WayPointActivity extends Activity {
 							Double.parseDouble(MyLocationListener.currentLatitude), Double.parseDouble(MyLocationListener.currentLongitude), tempResult);
 					//set up the new distance from the current position into every way point in the list
 					wList.get(i).setDistance(tempResult[0]);
-					Collections.sort(wList);//Sorting the list by proximity
-					Log.i("Sort method", "Sorttttttttttttt");
 				}
-	        }
-			wList.add(0, first);
-
+				Collections.sort(wList);//Sorting the list by proximity
+	        }//end if
+	        
+	        wList.add(0, first);//add default back into the list
+	        
 			//set array adapter of the list into the spinner
 			way = (Spinner) findViewById(R.id.spinner1);
 			arrAd = new ArrayAdapter<String>(WayPointActivity.this,
