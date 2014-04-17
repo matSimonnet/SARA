@@ -2,6 +2,7 @@ package orion.ms.sara;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -40,7 +41,7 @@ public class GeneralSettingActivity extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_generalsetting);
-		setTitle("General Setting");
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		//OnInitListener Creation
 		OnInitListener onInitListener = new OnInitListener() {
