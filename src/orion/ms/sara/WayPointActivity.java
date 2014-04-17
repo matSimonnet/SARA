@@ -149,10 +149,7 @@ public class WayPointActivity extends Activity {
 	                		switch(adapterView.getId()){
 	                		case R.id.spinner1: 
 	                				if(i!=0){
-	                					//notify
-		                				Toast.makeText(WayPointActivity.this,"You selected : "+toNameArrayList(wayPointList).get(i),Toast.LENGTH_SHORT).show();
-		        	      				tts.speak("Your Selected : "+toNameArrayList(wayPointList).get(i), tts.QUEUE_FLUSH, null);
-		        	      				selectedItem = i;
+	                					selectedItem = i;
 	                				}
 	                				//choosing way point
 	        	      				choosingWaypoint = wayPointList.get(selectedItem);
@@ -238,7 +235,7 @@ public class WayPointActivity extends Activity {
 	                					//show the choosing dialog if selected some way point from the list
 		                				choosingDialog.show();
 		                				//sort the list
-		                				sortingWaypointList(wayPointList);
+		                				//sortingWaypointList(wayPointList);
 		                				i = 0;
 	                				}//end if
 	                			}//end switch case

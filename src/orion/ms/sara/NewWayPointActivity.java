@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -127,10 +128,23 @@ public class NewWayPointActivity extends Activity {
 						}
 						else{
 							//GPS available
-							//set each EditText with current position
-							latitudeBox.setText(currentLatitude);
-							longitudeBox.setText(currentLongitude);
-						}
+							if(!latitudeBox.getText().equals(currentLatitude) || !longitudeBox.getText().equals(currentLongitude)){
+								//if the location change
+								AlertDialog.Builder dialog = new AlertDialog.Builder(NewWayPointActivity.this);
+								dialog.setTitle("Are you sure changing to the current position?");
+								dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface arg0, int arg1) {
+										//if the user want to change
+										//set each EditText with current position
+										latitudeBox.setText(currentLatitude);
+										longitudeBox.setText(currentLongitude);
+									}
+								});//end onClick
+								dialog.setPositiveButton("Cancel", null);//don't want to change
+								dialog.show();
+							}//end if
+						}//end else
 					}//end onClick
 				});//end setOnClick
 				
@@ -298,13 +312,53 @@ public class NewWayPointActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.waypoint_setting:
-			//pass the parameters including name,latitude,longitude
-			intentToWayPoint.putExtra("newName","");//name
-			intentToWayPoint.putExtra("newLatitude", "");//latitude
-			intentToWayPoint.putExtra("newLongitude", "");//longitude
-			setResult(RESULT_OK, intentToWayPoint);
-			finish();
+			//get the waypoint's new name, latitude or longitude from the EditText
+			name = nameBox.getText().toString();
+			latitude = latitudeBox.getText().toString();
+			longitude = longitudeBox.getText().toString();
+			
+			//check if some values change without saving
+			if(!latitude.equals("") || !longitude.equals("")){
+				AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+				dialog.setTitle("Some values change, do you want to save?");
+				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						//pass the parameters including name,latitude,longitude
+						intentToWayPoint.putExtra("newName",name);//name
+						intentToWayPoint.putExtra("newLatitude", latitude);//latitude
+						intentToWayPoint.putExtra("newLongitude", longitude);//longitude
+						isAlsoActivateForNWP = false;//change status
+
+						//back to WayPoint activity and send some parameters to the activity
+						setResult(RESULT_OK, intentToWayPoint);
+						finish();
+					}
+					
+				});
+				dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						//don't save use the old name and position
+						//pass the parameters including name,latitude,longitude
+						intentToWayPoint.putExtra("newName","");//name
+						intentToWayPoint.putExtra("newLatitude", "");//latitude
+						intentToWayPoint.putExtra("newLongitude", "");//longitude
+						setResult(RESULT_OK, intentToWayPoint);
+						finish();
+					}
+				});
+				dialog.show();
+			}
+			else{
+				//pass the parameters including name,latitude,longitude
+				intentToWayPoint.putExtra("newName","");//name
+				intentToWayPoint.putExtra("newLatitude", "");//latitude
+				intentToWayPoint.putExtra("newLongitude", "");//longitude
+				setResult(RESULT_OK, intentToWayPoint);
+				finish();
 			break;
+			}
 		default:
 			break;
 		}

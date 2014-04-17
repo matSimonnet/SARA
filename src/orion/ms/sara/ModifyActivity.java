@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -105,6 +106,11 @@ public class ModifyActivity extends Activity {
 		oldLatitude = intentFromWayPointAct.getStringExtra("modLatitude");
 		oldLongitude = intentFromWayPointAct.getStringExtra("modLongitude");
 		
+		//set default modifying name and position as the old ones
+		modName = oldName;
+		modLatitude = oldLatitude;
+		modLongitude = oldLongitude;
+		
 		//nameBox
 		//set default name
 		nameBox.setText(oldName);
@@ -137,9 +143,22 @@ public class ModifyActivity extends Activity {
 				}
 				else{
 					//GPS available
-					//set each EditText with current position
-					latitudeBox.setText(currentLatitude);
-					longitudeBox.setText(currentLongitude);
+					if(!latitudeBox.getText().equals(currentLatitude) || !longitudeBox.getText().equals(currentLongitude)){
+						//if the location change
+						AlertDialog.Builder dialog = new AlertDialog.Builder(ModifyActivity.this);
+						dialog.setTitle("Are you sure changing to the current position?");
+						dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								//if the user want to change
+								//set each EditText with current position
+								latitudeBox.setText(currentLatitude);
+								longitudeBox.setText(currentLongitude);
+							}
+						});//end onClick
+						dialog.setPositiveButton("Cancel", null);//don't want to change
+						dialog.show();
+					}//end if
 				}
 			}
 		});
@@ -294,13 +313,54 @@ public class ModifyActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.waypoint_setting:
-			//pass the parameters including name,latitude,longitude
-			intentToWayPoint.putExtra("modName","");//name
-			intentToWayPoint.putExtra("modLatitude", "");//latitude
-			intentToWayPoint.putExtra("modLongitude", "");//longitude
+			//get the modifying waypoint's new name, latitude or longitude from the EditText
+			modName = nameBox.getText().toString();
+			modLatitude = latitudeBox.getText().toString();
+			modLongitude = longitudeBox.getText().toString();
 			
-			setResult(RESULT_OK, intentToWayPoint);
-			finish();
+			//check if some values change without saving
+			if(!oldName.equals(modName) || !oldLatitude.equals(modLatitude) || !oldLongitude.equals(modLongitude)){
+				AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+				dialog.setTitle("Some values change, do you want to save?");
+				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						//pass the parameters including name,latitude,longitude
+						intentToWayPoint.putExtra("modName",modName);//name
+						intentToWayPoint.putExtra("modLatitude", modLatitude);//latitude
+						intentToWayPoint.putExtra("modLongitude", modLongitude);//longitude
+						isAlsoActivateForMWP = true;//status change
+						
+						setResult(RESULT_OK, intentToWayPoint);
+						finish();
+					}
+					
+				});
+				dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						//don't save use the old name and position
+						//pass the parameters including name,latitude,longitude
+						intentToWayPoint.putExtra("modName",oldName);//name
+						intentToWayPoint.putExtra("modLatitude", oldLatitude);//latitude
+						intentToWayPoint.putExtra("modLongitude", oldLongitude);//longitude
+						isAlsoActivateForMWP = false;//change status 
+						setResult(RESULT_OK, intentToWayPoint);
+						finish();
+					}
+				});
+				dialog.show();
+			}
+			else{
+				//pass the parameters including name,latitude,longitude
+				intentToWayPoint.putExtra("modName","");//name
+				intentToWayPoint.putExtra("modLatitude", "");//latitude
+				intentToWayPoint.putExtra("modLongitude", "");//longitude
+				isAlsoActivateForMWP = false;//change status 
+				setResult(RESULT_OK, intentToWayPoint);
+				finish();
+			}
+			
 			break;
 		default:
 			break;
