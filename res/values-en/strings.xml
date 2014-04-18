@@ -148,8 +148,8 @@
     
     <string name="cardinal">cardinal</string>
     <string name="portandstarboard">port/starboard</string>
-    <string name="onport">onport</string>
-    <string name="onstarboard">onstarboard</string>
+    <string name="onport">on port</string>
+    <string name="onstarboard">on starboard</string>
     <string name="degrees">degrees</string>
     
         
