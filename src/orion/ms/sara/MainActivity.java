@@ -38,30 +38,26 @@ public class MainActivity extends Activity {
 	protected static final int RESULT_GENERAL_SETTING = 4;
 	protected static final int RESULT_MAP = 5;
 
-
 	private Intent intent_AutoSetting_activity;
 	private Intent intent_Waypoint_activity;
 	private Intent intent_GeneralSetting_activity;
 	private Intent intent_Map_activity;
 
+	public static TextView textViewSpeed = null;
+	public static TextView textViewheading = null;
+	public static TextView textViewDistance = null;
+	public static TextView textViewBearing = null;
+	public static TextView textViewAccuracy = null;
+	public static TextToSpeech tts = null;
 
-	static TextView textViewSpeed = null;
-	static TextView textViewheading = null;
-	static TextView textViewDistance = null;
-	static TextView textViewBearing = null;
-	static TextView textViewAccuracy = null;
-
-	static TextToSpeech tts = null;
-	//button
 	private ImageButton buttonReco = null;
 	private Button instantButton = null;
 
 	private LocationManager lm = null;
-	static MyLocationListener ll = null;
-	private Location location = null;
+	public static MyLocationListener ll = null;
 
-	//shared preferences
-	SharedPreferences settings;
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
 
 	//Generating a number for a new waypoint's default name
 	public static int lastNumberForInstantWaypoint = 0;
@@ -86,8 +82,10 @@ public class MainActivity extends Activity {
         ll = new MyLocationListener();		
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
         
-        // Restore preferences
-        LoadPref();
+	    // Restore preferences
+		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
+		this.editor = settings.edit();
+		LoadPref();
 
         //intent creation
 		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
@@ -269,22 +267,20 @@ public class MainActivity extends Activity {
         	}// end of case
         	case RESULT_WAYPOINT : {
         		if (resultCode == RESULT_OK && null != data) {
-        			
-        	        location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-        	        
-        	        //activating waypoint name and location
+        		        	        
+        	        //activating way point name and location
         	        MyLocationListener.WaypointName = data.getStringExtra("actName");
         	        MyLocationListener.WaypointLatitude = data.getDoubleExtra("actLatitude", 999);
         	        MyLocationListener.WaypointLongitude = data.getDoubleExtra("actLongitude", 999);
         			actItem = data.getIntExtra("actItem", 0);
         			
-        			Location.distanceBetween(MyLocationListener.WaypointLatitude, MyLocationListener.WaypointLongitude, location.getLatitude(), location.getLongitude(), MyLocationListener.distance);
-        			MyLocationListener.distanceTreshold = MyLocationListener.distance[0]/10000;
-
+				    editor.putString("WaypointLatitude", String.valueOf(MyLocationListener.WaypointLatitude));
+				    editor.putString("WaypointLongitude", String.valueOf(MyLocationListener.WaypointLongitude));
+				    editor.putString("WaypointName", MyLocationListener.WaypointName);
+				    editor.commit();
+				    
         			Log.i("Waypoint Latitude", MyLocationListener.WaypointLatitude+"");
         			Log.i("Waypoint Latitude", MyLocationListener.WaypointLongitude+"");
-        			Log.i("distance to waypoint", MyLocationListener.distance[0]/1000+"");
-        			Log.i("distance treshold", MyLocationListener.distanceTreshold+"");
         		}
         	break;
         	}// end of case
@@ -322,7 +318,6 @@ public class MainActivity extends Activity {
 	}
 
 	public void LoadPref() {
-		settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
      	MyLocationListener.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
      	MyLocationListener.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
      	MyLocationListener.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
@@ -342,6 +337,7 @@ public class MainActivity extends Activity {
      	MyLocationListener.isCardinalSelected = settings.getBoolean("isCardinalSelected", false);
      	MyLocationListener.isKilometreSelected = settings.getBoolean("isKilometreSelected", true);
      	MyLocationListener.isNMSelected = settings.getBoolean("isNMSelected", false);
+     	MyLocationListener.WaypointName = settings.getString("WaypointName", "defValue");
         MyLocationListener.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
         MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
         lastNumberForInstantWaypoint = settings.getInt(getString(R.string.save_inst_num), 0);

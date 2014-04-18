@@ -79,8 +79,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 	private String bearingUnit = "";
 	private String headingUnit = "";
 	private String accuracyUnit = "";
+	
 	private boolean isWaypointActivated = false;
-
 	private boolean isMorePrecise5Announced = false;
 	private boolean isMorePrecise10Announced = false;
 	private boolean isLessPrecise10Announced = false;
@@ -93,7 +93,6 @@ public class MyLocationListener extends Activity implements LocationListener {
 	
 	public static boolean isKilometreSelected = true;
 	public static boolean isNMSelected = false;
-
 
 	public static boolean isInMain = true;
 
