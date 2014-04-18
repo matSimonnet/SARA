@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/distanceView"       
         android:paddingTop="70dp" 
-        android:paddingBottom="140dp"          
+        android:paddingBottom="50dp"          
         android:gravity="center"
         android:textSize="75sp"
         tools:context=".MainActivity"/>
@@ -58,7 +58,7 @@
     <ImageButton 
     	android:id="@+id/buttonSpeak"
     	android:layout_width="400dp"
-        android:layout_height="56dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/accuracyView"       
         android:layout_alignParentBottom="true"
        	android:layout_toLeftOf="@+id/instantButton"
@@ -68,10 +68,10 @@
     <Button
         android:id="@+id/instantButton"
         android:layout_width="400dp"
-        android:layout_height="56dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/accuracyView"       
         android:layout_alignParentBottom="true" 
         android:layout_alignParentRight="true"       
-        android:textSize="30sp"
+        android:textSize="50dp"
         android:text="@string/instant_waypoint" />    
 </RelativeLayout>
