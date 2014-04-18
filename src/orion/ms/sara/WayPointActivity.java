@@ -149,8 +149,6 @@ public class WayPointActivity extends Activity {
 			//spinner set up
 			way = (Spinner) findViewById(R.id.spinner1);
 			way.setContentDescription("Choose the waypoint in ");
-			way.setTop(selectedItem);
-			Log.i("top list", way.getTop()+"");
 			//setOnItemSelectedListener
 			way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
 				//OnItemSelectedListener creation
@@ -172,7 +170,7 @@ public class WayPointActivity extends Activity {
 	                				//choosingDialog.setMessage("What do you want to do with "+choosingWaypoint.getName()+"?");
 	                				
 	                				//setOnClickListener
-	                				
+	                	
 	                				//activate button OnClickListener
 	                				choosingDialog.setNegativeButton("Activate", new OnClickListener(){
 	                					//activate button OnClickListener creation
@@ -244,7 +242,7 @@ public class WayPointActivity extends Activity {
 											deletingDialog.show();
 										}
 	                				});//end delete button	
-	                				if(!choosingWaypoint.getName().equals("Please selected a waypoint")){
+	                				if(!choosingWaypoint.getName().equals("Please selected a waypoint") && i!=0){
 	                					//show the choosing dialog if selected some way points from the list
 		                				choosingDialog.setCancelable(true);
 	                					choosingDialog.show();
@@ -353,17 +351,27 @@ public class WayPointActivity extends Activity {
 			//temp way point, distance and result
 			WP tempWP = null;
 			float[] tempResult = new float[3];
-			//default value
-			WP first = null;
-			//remove the first default way point before sorting
-			if(wList.size()>0 && wList.get(0).getName().equals("Please selected a waypoint")){
-				first = wList.remove(0);
-			}
-			first = new WP("Please selected a waypoint","","");
+			//default value if no waypoint in the list yet
+			WP first = new WP("Please selected a waypoint","","");
+			
 			//update location
 	        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
-	        if(!MyLocationListener.currentLatitude.equals("")){
-				//GPS unavailable not sort by proximity
+	        
+	        //empty list
+	        if(wList.size()==0){
+				wList.add(first);
+	        }
+	        
+	      //GPS available -> sort by proximity
+	        if(!MyLocationListener.currentLatitude.equals("") && wList.size()>0){
+	        	//remove the default value before sorting
+	        	int defaultItem = 0;
+	        	for(int i = 0;i<2;i++){
+	        		if(wList.get(i).getName().equals("Please selected a waypoint"))
+	        			defaultItem = i;
+	        	}
+	        	wList.remove(defaultItem);
+	        	
 	        	//Recalculating distance in the list
 				for(int i = 0;i< wList.size();i++){
 					tempWP = wList.get(i);
@@ -377,10 +385,17 @@ public class WayPointActivity extends Activity {
 					wList.get(i).setDistance(tempResult[0]);
 				}
 				Collections.sort(wList);//Sorting the list by proximity
+				//add the default value back on the top of the list
+				wList.add(0, first);
 	        }//end if
 	        
-	        wList.add(0, first);//add default back into the list
-	        
+	        //back from main activity after activating
+	        if(selectedItem!=0){
+	        	//get the selected waypoint and add it on the top of the list
+	        	tempWP = wList.remove(selectedItem);
+	        	wList.add(0,tempWP);
+	        }
+	        	        
 			//set array adapter of the list into the spinner
 			way = (Spinner) findViewById(R.id.spinner1);
 			arrAd = new ArrayAdapter<String>(WayPointActivity.this,
