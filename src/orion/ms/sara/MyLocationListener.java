@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -146,7 +145,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			if (((bearingDiff > bearingTreshold))
 					&& ((bearingNow.getTime() - bearingBefore.getTime()) > bearingTimeTreshold * 1000)) {
 				
-				speakBearingTextView(BearingToCurrentWaypoint, bearingUnit);
+				Utils.speakBearingTextView(BearingToCurrentWaypoint, bearingUnit);
 				bearingLastAuto = bearingAuto;
 				bearingBefore = new Date();
 				Log.i("bearing", BearingToCurrentWaypoint);
@@ -166,7 +165,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			if (((distanceAuto < distanceLastAuto - distanceTreshold) || (distanceAuto > distanceLastAuto + distanceTreshold))
 					&& ((distanceNow.getTime() - distanceBefore.getTime()) > distanceTimeTreshold * 1000)) {
 
-				speakDistanceTextView(DistanceToCurrentWaypoint, distanceUnit);
+				Utils.speakDistanceTextView(DistanceToCurrentWaypoint, distanceUnit);
 				distanceLastAuto = distanceAuto;
 				distanceBefore = new Date();
 				Log.i("distance", DistanceToCurrentWaypoint);
@@ -179,7 +178,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			if (((speedAuto < speedLastAuto - speedTreshold) || (speedAuto > speedLastAuto + speedTreshold))
 					&& ((speedNow.getTime() - speedBefore.getTime()) > speedTimeTreshold * 1000)) {
 
-				speakSpeedTextView(speed, speedUnit);
+				Utils.speakSpeedTextView(speed, speedUnit);
 				speedLastAuto = speedAuto;
 				speedBefore = new Date();
 				Log.i("speed", speed);
@@ -196,7 +195,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			if (((headingDiff > headingTreshold))
 					&& ((headingNow.getTime() - headingBefore.getTime()) > headingTimeTreshold * 1000)) {
 
-				speakHeadingTextView(heading, headingUnit);
+				Utils.speakHeadingTextView(heading, headingUnit);
 				headingLastAuto = headingAuto;
 				headingBefore = new Date();
 				Log.i("heading", heading);
@@ -209,7 +208,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			if (isMorePrecise5Announced == false && accuracyAuto < 5 
 					&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
 				
-				speakAccuracyTextView(accuracy, accuracyUnit);
+				Utils.speakAccuracyTextView(accuracy, accuracyUnit);
 				accuracyBefore = new Date();
 				Log.i("accuracy", accuracy);
 				isMorePrecise5Announced = true;
@@ -219,7 +218,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			else if (isMorePrecise10Announced == false && accuracyAuto >= 5 && accuracyAuto < 10 
 					&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
 
-				speakAccuracyTextView(accuracy, accuracyUnit);
+				Utils.speakAccuracyTextView(accuracy, accuracyUnit);
 				accuracyBefore = new Date();
 				Log.i("accuracy", accuracy);
 				isMorePrecise5Announced = false;
@@ -228,7 +227,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			} else if (isLessPrecise10Announced == false && accuracyAuto >= 10
 					&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
 				
-				speakAccuracyTextView(accuracy, accuracyUnit);
+				Utils.speakAccuracyTextView(accuracy, accuracyUnit);
 				accuracyBefore = new Date();
 				Log.i("accuracy", accuracy);
 				isMorePrecise5Announced = false;
@@ -362,44 +361,6 @@ public class MyLocationListener extends Activity implements LocationListener {
 		}
 		else {
 			this.isWaypointActivated = true;
-		}
-	}
-	
-	public void speakBearingTextView(String value, String unit) {
-		if(unit == resource.getString(R.string.deg)) {
-			MainActivity.tts.speak(resource.getString(R.string.bearing) + " " + value + " " + resource.getString(R.string.bearingunit), TextToSpeech.QUEUE_ADD, null);
-		}
-		else { // on starboard/port
-			MainActivity.tts.speak(resource.getString(R.string.bearing) + " " + value + " " + bearingUnit, TextToSpeech.QUEUE_ADD, null);
-		}
-	}
-	
-	public void speakSpeedTextView(String value, String unit) {
-		if(unit == resource.getString(R.string.knots)) {
-			MainActivity.tts.speak(resource.getString(R.string.speed) + " " + value + " " + resource.getString(R.string.knots), TextToSpeech.QUEUE_ADD, null);
-		}
-		if(unit == resource.getString(R.string.kmperh)) {
-			MainActivity.tts.speak(resource.getString(R.string.speed) + " " + value + " " + resource.getString(R.string.km_per_hour), TextToSpeech.QUEUE_ADD, null);
-		}
-	}
-	
-	public void speakHeadingTextView(String value, String unit) {
-		MainActivity.tts.speak(resource.getString(R.string.heading) + " " + value + " " + resource.getString(R.string.degrees), TextToSpeech.QUEUE_ADD, null);
-	}
-	
-	public void speakAccuracyTextView(String value, String unit) {
-		MainActivity.tts.speak(resource.getString(R.string.accuracy) + " " + value + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
-	}
-	
-	public void speakDistanceTextView(String value, String unit) {
-		if(unit == resource.getString(R.string.m)) {
-			MainActivity.tts.speak(resource.getString(R.string.distance) + " " + value + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
-		} 
-		if(unit == resource.getString(R.string.km)){
-			MainActivity.tts.speak(resource.getString(R.string.distance) + " " + value + " " + resource.getString(R.string.kilometres), TextToSpeech.QUEUE_ADD, null);
-		}
-		if(unit == resource.getString(R.string.nm)){
-			MainActivity.tts.speak(resource.getString(R.string.distance) + " " + value + " " + resource.getString(R.string.nauticalmiles), TextToSpeech.QUEUE_ADD, null);
 		}
 	}
 }
