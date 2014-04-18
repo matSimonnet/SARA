@@ -103,8 +103,14 @@ public class Utils {
 			msp = new SpannableString (temp);
 			int unitindex = temp.lastIndexOf(" ");
 			int titleindex = temp.lastIndexOf("\n");
-			msp.setSpan (new RelativeSizeSpan (0.4f), unitindex, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			if(MyLocationListener.isCardinalSelected) {
+				msp.setSpan (new RelativeSizeSpan (0.4f), unitindex, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+			else {
+				msp.setSpan (new RelativeSizeSpan (0.4f), unitindex-2, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
 		}
 		else {
 			String temp = "Bearing" + "\n" + value + " " + unit;

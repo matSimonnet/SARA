@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:checked="true"
-            android:text="@string/cardinal"
+            android:text="@string/portandstarboard"
             android:textSize="40sp" />
 
         <RadioButton
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/portandstarboard"
+            android:text="@string/cardinal"
             android:textSize="40sp" />
     </RadioGroup>
     

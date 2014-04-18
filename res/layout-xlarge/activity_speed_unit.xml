@@ -7,21 +7,10 @@
     android:paddingRight="10dp"
     android:paddingTop="10dp" >
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/savebutton"
-        android:textSize="50dp" />
-
     <RadioGroup
         android:id="@+id/radioGroup1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true" >
 
         <RadioButton
@@ -31,7 +20,7 @@
             android:layout_marginTop="30dp"
             android:checked="true"
             android:text="@string/knots"
-            android:textSize="50dp" />
+            android:textSize="40sp" />
 
         <RadioButton
             android:id="@+id/radioButton2"
@@ -39,7 +28,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="@string/km_per_hour"
-            android:textSize="50dp" />
+            android:textSize="40sp" />
     </RadioGroup>
+    
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/savebutton"/>
 
 </RelativeLayout>

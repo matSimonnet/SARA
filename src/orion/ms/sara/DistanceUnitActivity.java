@@ -10,9 +10,7 @@ public class DistanceUnitActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_distance_unit);
-		setTitle("Distance Setting");
-		
+		setContentView(R.layout.activity_distance_unit);		
 	}
 
 	@Override

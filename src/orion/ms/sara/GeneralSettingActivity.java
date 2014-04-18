@@ -119,6 +119,10 @@ public class GeneralSettingActivity extends Activity {
 	     		break;
 	     	}
 	     	case BEARING_UNIT : {
+	     		if (resultCode == RESULT_OK && null != data) {
+	     			MyLocationListener.isPortandstarboardSelected = data.getBooleanExtra("isPortandstarboardSelected", true);
+	     			MyLocationListener.isCardinalSelected = data.getBooleanExtra("isCardinalSelected", false);
+	     		}
 	     		break;
 	     	}
 	     	case DISTANCE_UNIT : {
