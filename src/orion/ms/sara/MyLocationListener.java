@@ -90,6 +90,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 	
 	public static boolean isPortandstarboardSelected = true;
 	public static boolean isCardinalSelected = false;
+	
+	public static boolean isKilometreSelected = true;
+	public static boolean isNMSelected = false;
 
 
 	public static boolean isInMain = true;

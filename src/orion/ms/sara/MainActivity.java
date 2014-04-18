@@ -340,6 +340,8 @@ public class MainActivity extends Activity {
      	MyLocationListener.isKmPerHrSelected = settings.getBoolean("isKmPerHrSelected", false);
      	MyLocationListener.isPortandstarboardSelected = settings.getBoolean("isPortandstarboardSelected", true);
      	MyLocationListener.isCardinalSelected = settings.getBoolean("isCardinalSelected", false);
+     	MyLocationListener.isKilometreSelected = settings.getBoolean("isKilometreSelected", true);
+     	MyLocationListener.isNMSelected = settings.getBoolean("isNMSelected", false);
         MyLocationListener.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
         MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
         lastNumberForInstantWaypoint = settings.getInt(getString(R.string.save_inst_num), 0);

@@ -126,8 +126,11 @@ public class GeneralSettingActivity extends Activity {
 	     		break;
 	     	}
 	     	case DISTANCE_UNIT : {
-	     		break;
-	     	}
+	     		if (resultCode == RESULT_OK && null != data) {
+	     			MyLocationListener.isKilometreSelected = data.getBooleanExtra("isKilometreSelected", true);
+	     			MyLocationListener.isNMSelected = data.getBooleanExtra("isNMSelected", false);
+	     		}
+	     		break;	     	}
 	     	case MAP_TYPE : {
 	     		break;
 	     	}
