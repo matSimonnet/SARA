@@ -190,7 +190,13 @@ public class Utils {
 			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.notactivate));
 		}
 		if(unit == resource.getString(R.string.deg)) {
-			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + value + " " + resource.getString(R.string.bearingunit));
+			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + value + " " + resource.getString(R.string.degrees));
+		}
+		if(unit == resource.getString(R.string.onport)) {
+			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + value + " " + resource.getString(R.string.onport));
+		}
+		if(unit == resource.getString(R.string.onstarboard)) {
+			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + value + " " + resource.getString(R.string.onstarboard));
 		}
 	}
 

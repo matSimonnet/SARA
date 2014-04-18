@@ -336,8 +336,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 			return resource.getString(R.string.deg);
 		}
 		else { // port&starboard selected
-			if (Integer.parseInt(BearingToCurrentWaypoint) < 180) return "on starboard";
-			else return "on port";
+			if (Integer.parseInt(BearingToCurrentWaypoint) < 180) return resource.getString(R.string.onstarboard);
+			else return resource.getString(R.string.onport);
 		}
 	}
 	
