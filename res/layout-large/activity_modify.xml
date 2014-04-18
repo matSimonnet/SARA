@@ -97,7 +97,7 @@
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="400dp"
+            android:layout_width="300dp"
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/editText3"
@@ -105,7 +105,7 @@
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="400dp"
+            android:layout_width="300dp"
             android:layout_height="100dp"
             android:layout_alignBaseline="@+id/button1"
             android:layout_alignBottom="@+id/button1"

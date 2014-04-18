@@ -151,6 +151,10 @@
     <string name="onport">on port</string>
     <string name="onstarboard">on starboard</string>
     <string name="degrees">degrees</string>
+    <string name="KMandM">Kilometre and metre</string>
+    <string name="nauticalmile">nautical mile</string>
+    <string name="nauticalmiles">nautical miles</string>
+    <string name="nm">NM</string>
     
         
         

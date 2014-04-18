@@ -177,6 +177,9 @@ public class Utils {
 		if(unit == "") {
 			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.notactivate));
 		}
+		if(unit == resource.getString(R.string.nm)) {
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + value + " " + resource.getString(R.string.nauticalmiles));
+		}
 		if(unit == resource.getString(R.string.m)) {
 			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + value + " " + resource.getString(R.string.metres));
 		}

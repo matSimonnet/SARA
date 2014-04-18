@@ -114,7 +114,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		headingUnit = getHeadingUnit();
 
 		BearingToCurrentWaypoint = getBearing(loc);
-		bearingUnit = getBearingUnit();
+		bearingUnit = getBearingUnit(loc);
 
 		DistanceToCurrentWaypoint = getDistance(loc);
 		distanceUnit = getDistanceUnit();
@@ -295,7 +295,12 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public String getDistance(Location loc) {
 		if (WaypointLatitude == 999 || WaypointLongitude == 999) {
 			return resource.getString(R.string.nowaypoint);
-		} else {
+		}
+		if (isNMSelected) {
+			Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distance);
+			return String.valueOf(Utils.arrondiDistance(((distance[0] / 1000) * 0.54)));
+		}
+		else { // kilometre and Metre
 			Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distance);
 			return Utils.precisionDistance(distance[0] / 1000);
 		}
@@ -305,11 +310,13 @@ public class MyLocationListener extends Activity implements LocationListener {
 		if (WaypointLatitude == 999 || WaypointLongitude == 999) {
 			return "";
 		}
-		if (distance[0] < 1000) {
-			return resource.getString(R.string.m);
-		} else {
-			return resource.getString(R.string.km);
+		if (isNMSelected) {
+			return resource.getString(R.string.nm);
 		}
+		else {
+			if (distance[0] < 1000) return resource.getString(R.string.m);
+			else return resource.getString(R.string.km);
+		}	
 	}
 
 	public String getBearing(Location loc) {
@@ -331,7 +338,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		}
 	}
 
-	public String getBearingUnit() {
+	public String getBearingUnit(Location loc) {
 		if (WaypointLatitude == 999 || WaypointLongitude == 999) {
 			return "";
 		}
@@ -339,9 +346,15 @@ public class MyLocationListener extends Activity implements LocationListener {
 			return resource.getString(R.string.deg);
 		}
 		else { // port&starboard selected
-			if (Integer.parseInt(BearingToCurrentWaypoint) < 180) return resource.getString(R.string.onstarboard);
+			String cardinal_bearing = Utils._Bearing(loc.getLatitude(), loc.getLongitude(), WaypointLatitude, WaypointLongitude);
+			int angle_tmp = Integer.valueOf(cardinal_bearing) - (int)loc.getBearing();
+			if (angle_tmp < 0) {
+				angle_tmp = angle_tmp + 360;
+			}
+
+			if (angle_tmp < 180) return resource.getString(R.string.onstarboard);
 			else return resource.getString(R.string.onport);
-		}
+		}			
 	}
 	
 	public void isWaypointActivated() {
@@ -363,11 +376,16 @@ public class MyLocationListener extends Activity implements LocationListener {
 	}
 	
 	public void speakSpeedTextView(String value, String unit) {
-		MainActivity.tts.speak(resource.getString(R.string.speed) + " " + value + " " + unit, TextToSpeech.QUEUE_ADD, null);
+		if(unit == resource.getString(R.string.knots)) {
+			MainActivity.tts.speak(resource.getString(R.string.speed) + " " + value + " " + resource.getString(R.string.knots), TextToSpeech.QUEUE_ADD, null);
+		}
+		if(unit == resource.getString(R.string.kmperh)) {
+			MainActivity.tts.speak(resource.getString(R.string.speed) + " " + value + " " + resource.getString(R.string.km_per_hour), TextToSpeech.QUEUE_ADD, null);
+		}
 	}
 	
 	public void speakHeadingTextView(String value, String unit) {
-		MainActivity.tts.speak(resource.getString(R.string.heading) + " " + value + " " + resource.getString(R.string.headingunit), TextToSpeech.QUEUE_ADD, null);
+		MainActivity.tts.speak(resource.getString(R.string.heading) + " " + value + " " + resource.getString(R.string.degrees), TextToSpeech.QUEUE_ADD, null);
 	}
 	
 	public void speakAccuracyTextView(String value, String unit) {
@@ -380,6 +398,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 		} 
 		if(unit == resource.getString(R.string.km)){
 			MainActivity.tts.speak(resource.getString(R.string.distance) + " " + value + " " + resource.getString(R.string.kilometres), TextToSpeech.QUEUE_ADD, null);
+		}
+		if(unit == resource.getString(R.string.nm)){
+			MainActivity.tts.speak(resource.getString(R.string.distance) + " " + value + " " + resource.getString(R.string.nauticalmiles), TextToSpeech.QUEUE_ADD, null);
 		}
 	}
 }
