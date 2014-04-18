@@ -178,7 +178,7 @@ public class WayPointActivity extends Activity {
 										public void onClick(DialogInterface arg0, int arg1) {
 			                				//notify
 											Toast.makeText(WayPointActivity.this,"Activate",Toast.LENGTH_SHORT).show();
-											tts.speak("Activate", tts.QUEUE_FLUSH, null);
+											tts.speak("Activate", tts.QUEUE_ADD, null);
 
 			                				//change back to the main activity
 											//passing activate way point name and position
