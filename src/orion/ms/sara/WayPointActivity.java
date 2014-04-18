@@ -39,7 +39,7 @@ public class WayPointActivity extends Activity {
 		public static List<WP> wayPointList = new ArrayList<WP>();
 		
 		//Receiving parameters from new waypoint
-		private String newName = "Waypoint1";
+		private String newName = "WP1";
 		private String newLatitude = "";
 		private String newLongitude = "";
 		
@@ -289,6 +289,35 @@ public class WayPointActivity extends Activity {
 	
 	}//end of OnCreate
 	
+	@Override
+	  protected void onResume() {
+	    super.onResume();
+	    Log.i("Resume the program", "=======================RESUME+++++++++++++++++++++");
+	    if(way.getChildCount()==0 && selectedItem==0){
+		    //sorting way point when list is empty
+			sortingWaypointList(wayPointList);
+			way.setTop(selectedItem);
+			Log.i("sort from on resume", "sort from on resume");
+			Log.i("top resume list", ""+way.getTop());
+	    }
+	  }
+	  @Override
+	  protected void onPause() {
+	    super.onPause();
+	  }
+	  
+	  @Override
+	  protected void onStop() {
+	    super.onStop();
+	  }
+	  
+		@Override
+		protected void onDestroy() {
+			super.onDestroy();
+			lm.removeUpdates(MainActivity.ll);
+			tts.shutdown();
+		}
+		
 	//to convert from array list of way point into name of the way point array list
 	public static ArrayList<String> toNameArrayList(List<WP> wList){
 		ArrayList<String> nameList = new ArrayList<String>();
@@ -409,62 +438,6 @@ public class WayPointActivity extends Activity {
 			
 		}//end sorting
 		
-		//load preferences
-		private void loadPref(){
-			//last number
-			int lnum = sharedPref.getInt(getString(R.string.save_last_num),0);
-			lastNumberForWaypoint = lnum;
-			
-			//name array
-			int nameSize = sharedPref.getInt("nameArray" + "_size", 0);  
-		    String name[] = new String[nameSize];  
-		    for(int i=0;i<nameSize;i++)  
-		        name[i] = sharedPref.getString("nameArray" + "_" + i, null);
-		    
-		    //latitude array
-		    int latitudeSize = sharedPref.getInt("latitudeArray" + "_size", 0);  
-		  	String latitude[] = new String[latitudeSize];  
-		  	for(int i=0;i<latitudeSize;i++)  
-		  		latitude[i] = sharedPref.getString("latitudeArray" + "_" + i, null);
-		  	
-		  	//longitude array
-		    int longitudeSize = sharedPref.getInt("longitudeArray" + "_size", 0);  
-		  	String longitude[] = new String[longitudeSize];  
-		  	for(int i=0;i<longitudeSize;i++)  
-		  		longitude[i] = sharedPref.getString("longitudeArray" + "_" + i, null);
-		  	
-		  	//way point list
-		  	List<WP> wList = new ArrayList<WP>();
-		  	for(int i=0;i<nameSize;i++){
-			  	wList.add(new WP(name[i],latitude[i],longitude[i]));
-		  	}
-		  	
-		  	wayPointList = wList;
-		}
-		
-		//save preferences
-		private void savePref(int lnum, String[] name, String[] lati, String[] longi){
-			SharedPreferences.Editor editor = sharedPref.edit();
-			//last number for new waypoint 
-			editor.putInt(getString(R.string.save_last_num), lnum);
-			
-			//name array
-			editor.putInt("nameArray" +"_size", name.length);  
-		    for(int i=0;i<name.length;i++)  
-		        editor.putString("nameArray" + "_" + i, name[i]);
-		    
-		    //latitude array
-		    editor.putInt("latitudeArray" +"_size", lati.length);  
-		    for(int i=0;i<lati.length;i++)  
-		        editor.putString("latitudeArray" + "_" + i, lati[i]);
-		    
-		    //longitude array
-		    editor.putInt("longitudeArray" +"_size", longi.length);  
-		    for(int i=0;i<longi.length;i++)  
-		        editor.putString("longitudeArray" + "_" + i, longi[i]);
-			editor.commit();
-			
-		}
 		
 	
 	//Intent to handle receive parameters from NewWayPoint and Modify
@@ -487,7 +460,13 @@ public class WayPointActivity extends Activity {
 				intentToMain.putExtra("actName", newName);//name
 				intentToMain.putExtra("actLatitude", Double.parseDouble(newLatitude));//latitude
 				intentToMain.putExtra("actLongitude", Double.parseDouble(newLongitude));//longitude
-				
+				//find the selected item location
+				for(int i = 0;i<wayPointList.size();i++){
+					if(wayPointList.get(i).getName().equals(newName))
+						selectedItem = i;
+				}
+				intentToMain.putExtra("actItem", selectedItem);
+				Log.i("selected", "i="+selectedItem+" name"+wayPointList.get(selectedItem).getName());
 				//back to main activity and send some parameters to the activity
 				setResult(RESULT_OK, intentToMain);
 				
@@ -515,6 +494,13 @@ public class WayPointActivity extends Activity {
 				intentToMain.putExtra("actName", modName);//name
 				intentToMain.putExtra("actLatitude", Double.parseDouble(modLatitude));//latitude
 				intentToMain.putExtra("actLongitude", Double.parseDouble(modLongitude));//longitude
+				//find the selected item location
+				for(int i = 0;i<wayPointList.size();i++){
+					if(wayPointList.get(i).getName().equals(modName))
+						selectedItem = i;
+				}
+				intentToMain.putExtra("actItem", selectedItem);
+				Log.i("selected", "i="+selectedItem+" name"+wayPointList.get(selectedItem).getName());
 				
 				//back to main activity and send some parameters to the activity
 				setResult(RESULT_OK, intentToMain);
@@ -524,34 +510,63 @@ public class WayPointActivity extends Activity {
         }
         
 	}
-	@Override
-	  protected void onResume() {
-	    super.onResume();
-	    Log.i("Resume the program", "=======================RESUME+++++++++++++++++++++");
-	    if(way.getChildCount()==0 && selectedItem==0){
-		    //sorting way point when list is empty
-			sortingWaypointList(wayPointList);
-			way.setTop(selectedItem);
-			Log.i("sort from on resume", "sort from on resume");
-			Log.i("top resume list", ""+way.getTop());
-	    }
-	  }
-	  @Override
-	  protected void onPause() {
-	    super.onPause();
-	  }
-	  
-	  @Override
-	  protected void onStop() {
-	    super.onStop();
-	  }
-	  
-		@Override
-		protected void onDestroy() {
-			super.onDestroy();
-			lm.removeUpdates(MainActivity.ll);
-			tts.shutdown();
-		}
+	
+	//load preferences
+			private void loadPref(){
+				//last number
+				int lnum = sharedPref.getInt(getString(R.string.save_last_num),0);
+				lastNumberForWaypoint = lnum;
+				
+				//name array
+				int nameSize = sharedPref.getInt("nameArray" + "_size", 0);  
+			    String name[] = new String[nameSize];  
+			    for(int i=0;i<nameSize;i++)  
+			        name[i] = sharedPref.getString("nameArray" + "_" + i, null);
+			    
+			    //latitude array
+			    int latitudeSize = sharedPref.getInt("latitudeArray" + "_size", 0);  
+			  	String latitude[] = new String[latitudeSize];  
+			  	for(int i=0;i<latitudeSize;i++)  
+			  		latitude[i] = sharedPref.getString("latitudeArray" + "_" + i, null);
+			  	
+			  	//longitude array
+			    int longitudeSize = sharedPref.getInt("longitudeArray" + "_size", 0);  
+			  	String longitude[] = new String[longitudeSize];  
+			  	for(int i=0;i<longitudeSize;i++)  
+			  		longitude[i] = sharedPref.getString("longitudeArray" + "_" + i, null);
+			  	
+			  	//way point list
+			  	List<WP> wList = new ArrayList<WP>();
+			  	for(int i=0;i<nameSize;i++){
+				  	wList.add(new WP(name[i],latitude[i],longitude[i]));
+			  	}
+			  	
+			  	wayPointList = wList;
+			}
+			
+			//save preferences
+			private void savePref(int lnum, String[] name, String[] lati, String[] longi){
+				SharedPreferences.Editor editor = sharedPref.edit();
+				//last number for new waypoint 
+				editor.putInt(getString(R.string.save_last_num), lnum);
+				
+				//name array
+				editor.putInt("nameArray" +"_size", name.length);  
+			    for(int i=0;i<name.length;i++)  
+			        editor.putString("nameArray" + "_" + i, name[i]);
+			    
+			    //latitude array
+			    editor.putInt("latitudeArray" +"_size", lati.length);  
+			    for(int i=0;i<lati.length;i++)  
+			        editor.putString("latitudeArray" + "_" + i, lati[i]);
+			    
+			    //longitude array
+			    editor.putInt("longitudeArray" +"_size", longi.length);  
+			    for(int i=0;i<longi.length;i++)  
+			        editor.putString("longitudeArray" + "_" + i, longi[i]);
+				editor.commit();
+				
+			}
 		
 		@Override
 		public boolean onCreateOptionsMenu(Menu menu) {

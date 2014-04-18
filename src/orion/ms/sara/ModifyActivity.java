@@ -22,47 +22,47 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ModifyActivity extends Activity {
-			//variables declaration
-	
-			//string for each attribute of the modifying way point
-			private String modName = "";
-			private String modLatitude = "";
-			private String modLongitude = "";
-			
-			//TextView
-			private TextView modNameText =null;
-			private TextView modLatitudeText =null;
-			private TextView modLongitudeText =null;
-			
-			//EditText
-			private EditText nameBox = null;
-			private EditText latitudeBox = null;
-			private EditText longitudeBox = null;
-			
-			//button
-			private Button saveButton = null;
-			private Button saveActButton = null;
-			private Button currentLoButton = null;
-			private Button mapLoButton = null;
-			
-			private TextToSpeech tts = null;
-			private LocationManager lm = null;
+	//variables declaration
 
-			//old name and position
-			private String oldName = "";
-			private String oldLatitude = "";
-			private String oldLongitude = "";
-			
-			//current location
-			private String currentLatitude = "";
-			private String currentLongitude = "";
-			
-			//Intent
-			private Intent intentToWayPoint;
-			private Intent intentFromWayPointAct;
-			
-			//status for check if save and activate button is pressed (modify waypoint)
-			public static boolean isAlsoActivateForMWP = false;
+	//string for each attribute of the modifying way point
+	private String modName = "";
+	private String modLatitude = "";
+	private String modLongitude = "";
+	
+	//TextView
+	private TextView modNameText =null;
+	private TextView modLatitudeText =null;
+	private TextView modLongitudeText =null;
+	
+	//EditText
+	private EditText nameBox = null;
+	private EditText latitudeBox = null;
+	private EditText longitudeBox = null;
+	
+	//button
+	private Button saveButton = null;
+	private Button saveActButton = null;
+	private Button currentLoButton = null;
+	private Button mapLoButton = null;
+	
+	private TextToSpeech tts = null;
+	private LocationManager lm = null;
+
+	//old name and position
+	private String oldName = "";
+	private String oldLatitude = "";
+	private String oldLongitude = "";
+	
+	//current location
+	private String currentLatitude = "";
+	private String currentLongitude = "";
+	
+	//Intent
+	private Intent intentToWayPoint;
+	private Intent intentFromWayPointAct;
+	
+	//status for check if save and activate button is pressed (modify waypoint)
+	public static boolean isAlsoActivateForMWP = false;
 			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
