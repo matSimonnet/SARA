@@ -18,8 +18,8 @@ public class BearingUnitActivity extends Activity {
 	
 	//radio group
 	private RadioGroup group;
-	private RadioButton knotsRadioButton;
-	private RadioButton kmPerHrRadioButton;
+	private RadioButton portandstarboardRadioButton;
+	private RadioButton cardinalRadioButton;
 	
 	private Button saveButton;
 	private Intent intentToGeneral;
@@ -38,16 +38,16 @@ public class BearingUnitActivity extends Activity {
 		intentToGeneral = new Intent(BearingUnitActivity.this,GeneralSettingActivity.class);
 		
 		this.group = (RadioGroup) findViewById(R.id.radioGroup1);
-		this.group.setContentDescription("A group of speed unit");
+		this.group.setContentDescription("A group of bearing unit");
 		
-		this.knotsRadioButton = (RadioButton) findViewById(R.id.radioButton1);
-		this.knotsRadioButton.setContentDescription("knots unit");
+		this.portandstarboardRadioButton = (RadioButton) findViewById(R.id.radioButton1);
+		this.portandstarboardRadioButton.setContentDescription("port and starboard unit");
 		
-		this.kmPerHrRadioButton = (RadioButton) findViewById(R.id.radioButton2);
-		this.kmPerHrRadioButton.setContentDescription("kilometers per hour unit");
+		this.cardinalRadioButton = (RadioButton) findViewById(R.id.radioButton2);
+		this.cardinalRadioButton.setContentDescription("cardinal unit");
 		
 		this.saveButton = (Button) findViewById(R.id.button1);
-		this.saveButton.setContentDescription("save the changing setting");
+		this.saveButton.setContentDescription("save");
 		
 	    // Restore preferences
 		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
@@ -68,26 +68,26 @@ public class BearingUnitActivity extends Activity {
 	    View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(v == knotsRadioButton) {
-					Log.i("speedunit", "knot");
+				if(v == portandstarboardRadioButton) {
+					Log.i("bearingunit", "port and starboard");
 				}
-				if(v == kmPerHrRadioButton) {
-					Log.i("speedunit", "km/hr");
+				if(v == cardinalRadioButton) {
+					Log.i("bearingunit", "cardinal");
 				}
 				if(v == saveButton) {
-				    editor.putBoolean("isKnotsSelected", knotsRadioButton.isChecked());
-				    editor.putBoolean("isKmPerHrSelected", kmPerHrRadioButton.isChecked());
+				    editor.putBoolean("isPortandstarboardSelected", portandstarboardRadioButton.isChecked());
+				    editor.putBoolean("isCardinalSelected", cardinalRadioButton.isChecked());
 				    editor.commit();
 				    
-					intentToGeneral.putExtra("isKnotsSelected", knotsRadioButton.isChecked());
-					intentToGeneral.putExtra("isKmPerHrSelected", kmPerHrRadioButton.isChecked());
+					intentToGeneral.putExtra("isPortandstarboardSelected", portandstarboardRadioButton.isChecked());
+					intentToGeneral.putExtra("isCardinalSelected", cardinalRadioButton.isChecked());
 					setResult(RESULT_OK, intentToGeneral);
 					finish();	
 				}
 			}
 	    };
-	    knotsRadioButton.setOnClickListener(onclickListener);
-	    kmPerHrRadioButton.setOnClickListener(onclickListener);
+	    portandstarboardRadioButton.setOnClickListener(onclickListener);
+	    cardinalRadioButton.setOnClickListener(onclickListener);
 	    saveButton.setOnClickListener(onclickListener);
 
 	}//end onCreate
@@ -112,8 +112,8 @@ public class BearingUnitActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	public void LoadPref() {
-	    this.knotsRadioButton.setChecked(settings.getBoolean("isKnotsSelected", true));  
-	    this.kmPerHrRadioButton.setChecked(settings.getBoolean("isKmPerHrSelected", false));  
+	    this.portandstarboardRadioButton.setChecked(settings.getBoolean("isPortandstarboardSelected", true));  
+	    this.cardinalRadioButton.setChecked(settings.getBoolean("isCardinalSelected", false));  
 	}
 	@Override
 	protected void onResume() {
