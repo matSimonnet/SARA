@@ -88,14 +88,15 @@ public class WayPointActivity extends Activity {
 			//load preferences
 			sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 			loadPref();
-	        Log.i("inst list from waypoint before combine",""+MainActivity.instList.size());
+			
+	        //Log.i("inst list from waypoint before combine",""+MainActivity.instList.size());
 			//check if there is any instantWaypoint
 			if(MainActivity.instList.size()!=0){
 				//two lists combination
 				wayPointList.addAll(MainActivity.instList);
-		        Log.i("inst list from waypoint after combine",""+MainActivity.instList.size());
+		        //Log.i("inst list from waypoint after combine",""+MainActivity.instList.size());
 				MainActivity.instList.clear();//empty the instant waypoint list
-		        Log.i("inst list from waypoint after clearrrr",""+MainActivity.instList.size());
+		        //Log.i("inst list from waypoint after clearrrr",""+MainActivity.instList.size());
 			}
 								
 			//OnInitListener Creation
@@ -112,8 +113,6 @@ public class WayPointActivity extends Activity {
 			//location manager creation
 	        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
-
-			
 			
 			//alert dialog creation
 			choosingDialog = new AlertDialog.Builder(this);
@@ -124,22 +123,34 @@ public class WayPointActivity extends Activity {
 			intentToNewWayPoint = new Intent(WayPointActivity.this,NewWayPointActivity.class);
 			intentToModify = new Intent(WayPointActivity.this,ModifyActivity.class);
 
+			//get selected item from main
+			Intent intentFromMain = getIntent();
+			selectedItem = intentFromMain.getIntExtra("actItem", 0);
+			
 			//sort the list
-			if(MyLocationListener.currentLatitude.equals("")){
+			if(MyLocationListener.currentLatitude.equals("") && selectedItem==0){
 				//GPS unavailable
 	        	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 	        	dialog.setTitle("GPS is unavailable.Waypoint list is not sort");
 	        	dialog.setNeutralButton("OK", null);
 	        	dialog.show();
+	        	//maybe do this soon :)
+	        	/*ProgressDialog progdialog = new ProgressDialog(WayPointActivity.this);
+	        	progdialog.setMessage("GPS is unavailable. Please wait...");
+	        	progdialog.setIndeterminate(!MyLocationListener.currentLatitude.equals(""));
+	        	progdialog.setCancelable(true);
+	        	progdialog.show();*/
 	        }
 			else{
 				sortingWaypointList(wayPointList);
 			}
 			Log.i("from on create", "sort from on create");
+			
 			//spinner set up
 			way = (Spinner) findViewById(R.id.spinner1);
 			way.setContentDescription("Choose the waypoint in ");
-			
+			way.setTop(selectedItem);
+			Log.i("top list", way.getTop()+"");
 			//setOnItemSelectedListener
 			way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
 				//OnItemSelectedListener creation
@@ -176,6 +187,8 @@ public class WayPointActivity extends Activity {
 											intentToMain.putExtra("actName", choosingWaypoint.getName());//name
 											intentToMain.putExtra("actLatitude", Double.parseDouble( choosingWaypoint.getLatitude()));//latitude
 											intentToMain.putExtra("actLongitude", Double.parseDouble(choosingWaypoint.getLongitude()));//longitude
+											intentToMain.putExtra("actItem", selectedItem);
+											Log.i("selected", "i="+selectedItem+" name"+choosingWaypoint.getName());
 											
 											//back to WayPoint activity and send some parameters to the activity
 											setResult(RESULT_OK, intentToMain);
@@ -231,12 +244,10 @@ public class WayPointActivity extends Activity {
 											deletingDialog.show();
 										}
 	                				});//end delete button	
-	                				if(i!=0){
-	                					//show the choosing dialog if selected some way point from the list
-		                				choosingDialog.show();
-		                				//sort the list
-		                				//sortingWaypointList(wayPointList);
-		                				i = 0;
+	                				if(!choosingWaypoint.getName().equals("Please selected a waypoint")){
+	                					//show the choosing dialog if selected some way points from the list
+		                				choosingDialog.setCancelable(true);
+	                					choosingDialog.show();
 	                				}//end if
 	                			}//end switch case
 	                    }catch(Exception e){
@@ -254,7 +265,7 @@ public class WayPointActivity extends Activity {
 
 	        });
 			
-			//"New Way point" button
+			//"New Waypoint" button
 			//button creation
 			newWay = (Button) findViewById(R.id.button1);
 					
@@ -502,9 +513,13 @@ public class WayPointActivity extends Activity {
 	  protected void onResume() {
 	    super.onResume();
 	    Log.i("Resume the program", "=======================RESUME+++++++++++++++++++++");
-		//sorting way point
-		sortingWaypointList(wayPointList);
-		Log.i("sort from on resume", "sort from on resume");
+	    if(way.getChildCount()==0 && selectedItem==0){
+		    //sorting way point when list is empty
+			sortingWaypointList(wayPointList);
+			way.setTop(selectedItem);
+			Log.i("sort from on resume", "sort from on resume");
+			Log.i("top resume list", ""+way.getTop());
+	    }
 	  }
 	  @Override
 	  protected void onPause() {

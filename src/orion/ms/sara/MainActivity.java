@@ -67,6 +67,8 @@ public class MainActivity extends Activity {
 	public static int lastNumberForInstantWaypoint = 0;
 	//temporary list to collect instant new waypoint
 	public static List<WP> instList = new ArrayList<WP>();
+	//activating way point item from the list
+	private int actItem = 0;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -170,7 +172,7 @@ public class MainActivity extends Activity {
 					        //Notify
 					        tts.speak("H"+lastNumberForInstantWaypoint+" is saved here.", TextToSpeech.QUEUE_ADD, null);
 					        Toast.makeText(MainActivity.this, "H"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
-					        Log.i("inst list from main",""+instList.size());
+					        //Log.i("inst list from main",""+instList.size());
 					        //save value
 					        savePref();
 				        }
@@ -274,6 +276,7 @@ public class MainActivity extends Activity {
         	        MyLocationListener.WaypointName = data.getStringExtra("actName");
         	        MyLocationListener.WaypointLatitude = data.getDoubleExtra("actLatitude", 999);
         	        MyLocationListener.WaypointLongitude = data.getDoubleExtra("actLongitude", 999);
+        			actItem = data.getIntExtra("actItem", 0);
         			
         			Location.distanceBetween(MyLocationListener.WaypointLatitude, MyLocationListener.WaypointLongitude, location.getLatitude(), location.getLongitude(), MyLocationListener.distance);
         			MyLocationListener.distanceTreshold = MyLocationListener.distance[0]/10000;
@@ -302,6 +305,8 @@ public class MainActivity extends Activity {
             startActivityForResult(intent_AutoSetting_activity, RESULT_AUTO_SETTING);
 			break;
 		case R.id.waypoint_setting:
+			intent_Waypoint_activity.putExtra("actItem", actItem);
+			Log.i("Activate item", actItem+"");
 			startActivityForResult(intent_Waypoint_activity, RESULT_WAYPOINT);
 			break;
 		case R.id.general_setting:

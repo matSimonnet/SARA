@@ -5,8 +5,10 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -319,7 +321,7 @@ public class NewWayPointActivity extends Activity {
 			
 			//check if some values change without saving
 			if(!latitude.equals("") || !longitude.equals("")){
-				AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+				final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 				dialog.setTitle("Some values change, do you want to save?");
 				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
 					@Override
@@ -334,8 +336,8 @@ public class NewWayPointActivity extends Activity {
 						setResult(RESULT_OK, intentToWayPoint);
 						finish();
 					}
-					
 				});
+				
 				dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
