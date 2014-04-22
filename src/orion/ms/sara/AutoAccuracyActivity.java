@@ -132,7 +132,7 @@ public class AutoAccuracyActivity extends Activity {
 		
 	    // tts creation
 		tts = new TextToSpeech(this, onInitListener);
-		tts.setSpeechRate((float) 1.0);
+		tts.setSpeechRate(GeneralSettingActivity.speechRate);
 			
 	} // end of onCreate
 	
