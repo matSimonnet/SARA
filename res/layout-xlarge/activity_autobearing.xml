@@ -28,7 +28,7 @@
 
     <Button
         android:id="@+id/DecreaseBearingTresholdButton"
-         android:layout_width="80dp"
+        android:layout_width="80dp"
         android:layout_height="80dp"
         android:textSize="50dp"
         android:layout_below="@+id/BearingAutoCheckBox"
