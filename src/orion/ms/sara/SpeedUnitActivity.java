@@ -136,7 +136,7 @@ public class SpeedUnitActivity extends Activity {
 						finish();					
 					}
 				});
-				alertDialog.setPositiveButton("No", new OnClickListener(){
+				alertDialog.setPositiveButton("NO", new OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						finish();

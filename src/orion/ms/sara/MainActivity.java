@@ -134,7 +134,7 @@ public class MainActivity extends Activity {
 
         // Text to speech creation
         tts = new TextToSpeech(this, onInitListener);
-        tts.setSpeechRate((float) 2.0);
+        tts.setSpeechRate(GeneralSettingActivity.speechRate);
         
         //"Instantly create a waypoint" button
         instantButton = (Button) findViewById(R.id.instantButton);
@@ -340,6 +340,9 @@ public class MainActivity extends Activity {
         MyLocationListener.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
         MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
         lastNumberForInstantWaypoint = settings.getInt(getString(R.string.save_inst_num), 0);
+        
+        //speech rate
+        GeneralSettingActivity.speechRate = settings.getFloat("speechRate", 1.5f);
 	}
 
 	//save preferences
