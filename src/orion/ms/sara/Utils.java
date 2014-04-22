@@ -9,7 +9,7 @@ import android.view.Gravity;
 
 public class Utils {
 	
-	private static SpannableString msp = null;
+	private static SpannableString msp;
 	public static Resources resource = MainActivity.getContext().getResources();
 	
 	public static double RadToDeg(double radians)  
