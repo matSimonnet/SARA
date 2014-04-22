@@ -89,7 +89,10 @@ public class WayPointActivity extends Activity {
 			sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 			loadPref();
 			
-	        //Log.i("inst list from waypoint before combine",""+MainActivity.instList.size());
+			for(int i = 0;i<wayPointList.size();i++){
+				Log.i("waypoint list", "item "+i+": "+wayPointList.get(i).getName());
+			}
+			
 			//check if there is any instantWaypoint
 			if(MainActivity.instList.size()!=0){
 				//two lists combination
@@ -131,7 +134,7 @@ public class WayPointActivity extends Activity {
 			if(MyLocationListener.currentLatitude.equals("") && selectedItem==0){
 				//GPS unavailable
 	        	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-	        	dialog.setTitle("GPS is unavailable.Waypoint list is not sort");
+	        	dialog.setTitle("GPS is unavailable Waypoint list is not sort Please wait");
 	        	dialog.setNeutralButton("OK", null);
 	        	dialog.show();
 	        	//maybe do this soon :)
@@ -142,9 +145,10 @@ public class WayPointActivity extends Activity {
 	        	progdialog.show();*/
 	        }
 			else{
+				//GPS available
 				sortingWaypointList(wayPointList);
+				Log.i("from on create", "sort from on create");
 			}
-			Log.i("from on create", "sort from on create");
 			
 			//spinner set up
 			way = (Spinner) findViewById(R.id.spinner1);
@@ -294,7 +298,7 @@ public class WayPointActivity extends Activity {
 	    super.onResume();
 	    Log.i("Resume the program", "=======================RESUME+++++++++++++++++++++");
 	    if(way.getChildCount()==0 && selectedItem==0){
-		    //sorting way point when list is empty
+	    	//set array adapter of the list into the spinner
 			sortingWaypointList(wayPointList);
 			way.setTop(selectedItem);
 			Log.i("sort from on resume", "sort from on resume");
@@ -385,14 +389,12 @@ public class WayPointActivity extends Activity {
 			
 			//update location
 	        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
-	        
 	        //empty list
 	        if(wList.size()==0){
 				wList.add(first);
 	        }
-	        
-	      //GPS available -> sort by proximity
-	        if(!MyLocationListener.currentLatitude.equals("") && wList.size()>0){
+	        //GPS available -> sort by proximity
+	        if(!MyLocationListener.currentLatitude.equals("") && wList.size()>1){
 	        	//remove the default value before sorting
 	        	int defaultItem = 0;
 	        	for(int i = 0;i<2;i++){
@@ -418,6 +420,7 @@ public class WayPointActivity extends Activity {
 				wList.add(0, first);
 	        }//end if
 	        
+	        Log.i("sortttt", "in the sort");
 	        //back from main activity after activating
 	        if(selectedItem!=0){
 	        	//get the selected waypoint and add it on the top of the list
@@ -512,61 +515,61 @@ public class WayPointActivity extends Activity {
 	}
 	
 	//load preferences
-			private void loadPref(){
-				//last number
-				int lnum = sharedPref.getInt(getString(R.string.save_last_num),0);
-				lastNumberForWaypoint = lnum;
-				
-				//name array
-				int nameSize = sharedPref.getInt("nameArray" + "_size", 0);  
-			    String name[] = new String[nameSize];  
-			    for(int i=0;i<nameSize;i++)  
-			        name[i] = sharedPref.getString("nameArray" + "_" + i, null);
-			    
-			    //latitude array
-			    int latitudeSize = sharedPref.getInt("latitudeArray" + "_size", 0);  
-			  	String latitude[] = new String[latitudeSize];  
-			  	for(int i=0;i<latitudeSize;i++)  
-			  		latitude[i] = sharedPref.getString("latitudeArray" + "_" + i, null);
-			  	
-			  	//longitude array
-			    int longitudeSize = sharedPref.getInt("longitudeArray" + "_size", 0);  
-			  	String longitude[] = new String[longitudeSize];  
-			  	for(int i=0;i<longitudeSize;i++)  
-			  		longitude[i] = sharedPref.getString("longitudeArray" + "_" + i, null);
-			  	
-			  	//way point list
-			  	List<WP> wList = new ArrayList<WP>();
-			  	for(int i=0;i<nameSize;i++){
-				  	wList.add(new WP(name[i],latitude[i],longitude[i]));
-			  	}
-			  	
-			  	wayPointList = wList;
-			}
+		private void loadPref(){
+			//last number
+			int lnum = sharedPref.getInt(getString(R.string.save_last_num),0);
+			lastNumberForWaypoint = lnum;
 			
-			//save preferences
-			private void savePref(int lnum, String[] name, String[] lati, String[] longi){
-				SharedPreferences.Editor editor = sharedPref.edit();
-				//last number for new waypoint 
-				editor.putInt(getString(R.string.save_last_num), lnum);
-				
-				//name array
-				editor.putInt("nameArray" +"_size", name.length);  
-			    for(int i=0;i<name.length;i++)  
-			        editor.putString("nameArray" + "_" + i, name[i]);
-			    
-			    //latitude array
-			    editor.putInt("latitudeArray" +"_size", lati.length);  
-			    for(int i=0;i<lati.length;i++)  
-			        editor.putString("latitudeArray" + "_" + i, lati[i]);
-			    
-			    //longitude array
-			    editor.putInt("longitudeArray" +"_size", longi.length);  
-			    for(int i=0;i<longi.length;i++)  
-			        editor.putString("longitudeArray" + "_" + i, longi[i]);
-				editor.commit();
-				
-			}
+			//name array
+			int nameSize = sharedPref.getInt("nameArray" + "_size", 0);  
+		    String name[] = new String[nameSize];  
+		    for(int i=0;i<nameSize;i++)  
+		        name[i] = sharedPref.getString("nameArray" + "_" + i, null);
+		    
+		    //latitude array
+		    int latitudeSize = sharedPref.getInt("latitudeArray" + "_size", 0);  
+		  	String latitude[] = new String[latitudeSize];  
+		  	for(int i=0;i<latitudeSize;i++)  
+		  		latitude[i] = sharedPref.getString("latitudeArray" + "_" + i, null);
+		  	
+		  	//longitude array
+		    int longitudeSize = sharedPref.getInt("longitudeArray" + "_size", 0);  
+		  	String longitude[] = new String[longitudeSize];  
+		  	for(int i=0;i<longitudeSize;i++)  
+		  		longitude[i] = sharedPref.getString("longitudeArray" + "_" + i, null);
+		  	
+		  	//way point list
+		  	List<WP> wList = new ArrayList<WP>();
+		  	for(int i=0;i<nameSize;i++){
+			  	wList.add(new WP(name[i],latitude[i],longitude[i]));
+		  	}
+		  	
+		  	wayPointList = wList;
+		}
+		
+		//save preferences
+		private void savePref(int lnum, String[] name, String[] lati, String[] longi){
+			SharedPreferences.Editor editor = sharedPref.edit();
+			//last number for new waypoint 
+			editor.putInt(getString(R.string.save_last_num), lnum);
+			
+			//name array
+			editor.putInt("nameArray" +"_size", name.length);  
+		    for(int i=0;i<name.length;i++)  
+		        editor.putString("nameArray" + "_" + i, name[i]);
+		    
+		    //latitude array
+		    editor.putInt("latitudeArray" +"_size", lati.length);  
+		    for(int i=0;i<lati.length;i++)  
+		        editor.putString("latitudeArray" + "_" + i, lati[i]);
+		    
+		    //longitude array
+		    editor.putInt("longitudeArray" +"_size", longi.length);  
+		    for(int i=0;i<longi.length;i++)  
+		        editor.putString("longitudeArray" + "_" + i, longi[i]);
+			editor.commit();
+			
+		}
 		
 		@Override
 		public boolean onCreateOptionsMenu(Menu menu) {
