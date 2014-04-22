@@ -161,8 +161,8 @@ public class MainActivity extends Activity {
 					if(!MyLocationListener.currentLatitude.equals("") && !MyLocationListener.currentLongitude.equals("")){
 						Log.i("Instant button", "pressed");
 				        //"create an new instant waypoint" button onClick listener
-				        if(!ModifyActivity.isRecorded("H"+lastNumberForInstantWaypoint, MyLocationListener.currentLatitude, MyLocationListener.currentLongitude) //same as location as waypoint list items
-				        		&& !isRecorded(MyLocationListener.currentLatitude, MyLocationListener.currentLongitude)){//same as instant list items
+				        if(!isRecorded("H"+lastNumberForInstantWaypoint, MyLocationListener.currentLatitude, MyLocationListener.currentLongitude)){
+				        	//same as instant list and waypoint list items
 				        	lastNumberForInstantWaypoint += 1;
 				        	instList.add(new WP("H"+lastNumberForInstantWaypoint,//name
 					        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
@@ -170,6 +170,10 @@ public class MainActivity extends Activity {
 					        tts.speak("H"+lastNumberForInstantWaypoint+" is saved here.", TextToSpeech.QUEUE_ADD, null);
 					        Toast.makeText(MainActivity.this, "H"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
 					        //Log.i("inst list from main",""+instList.size());
+					        WayPointActivity.wayPointList.addAll(instList);
+					        for(int i=0;i<WayPointActivity.wayPointList.size();i++){
+					        	Log.i("waypoint list", "item "+i+" : "+WayPointActivity.wayPointList.get(i).getName());
+					        }
 					        //save value
 					        savePref();
 				        }
@@ -178,13 +182,7 @@ public class MainActivity extends Activity {
 					        tts.speak("This waypoint is already saved before.", TextToSpeech.QUEUE_FLUSH, null);
 					        Toast.makeText(MainActivity.this, "This waypoint is already saved before.", Toast.LENGTH_SHORT).show();
 				        }
-				        //print all elements in the list
-				        for(int i = 0;i<instList.size();i++){
-				        	Log.i("List inst", "item "+i+" : "+instList.get(i).getName());
-				        	Log.i("latidue", ""+instList.get(i).getLatitude());
-				        	Log.i("Longitude", instList.get(i).getLongitude());
-				        }
-					}//end if
+					}//end if in if-else
 					else{
 						//GPS not available
 						Toast.makeText(MainActivity.this,"GPS is unavailable." , Toast.LENGTH_SHORT).show();
@@ -202,12 +200,17 @@ public class MainActivity extends Activity {
 	
 	//to check if the filled name or the position (latitude and longitude) are already recorded
 	@SuppressLint("ShowToast")		
-	public static boolean isRecorded(String la, String lo){
+	public static boolean isRecorded(String n,String la, String lo){
 		for(int i = 0;i<instList.size();i++){
 			if( instList.get(i).getLatitude().equalsIgnoreCase(la) && instList.get(i).getLongitude().equalsIgnoreCase(lo) ){
 				return true;
 			}
 		}//end for
+		for(int i = 0;i<WayPointActivity.wayPointList.size();i++){
+			WP temp = WayPointActivity.wayPointList.get(i);
+			if(temp.getName().equals(n) && temp.getLatitude().equals(la) && temp.getLongitude().equals(lo))
+				return true;
+		}
 		return false;
 	}//end isRecored
 
@@ -343,6 +346,33 @@ public class MainActivity extends Activity {
         
         //speech rate
         GeneralSettingActivity.speechRate = settings.getFloat("speechRate", 1.5f);
+        
+        //waypoinList
+        //name array
+		int nameSize = settings.getInt("nameArray" + "_size", 0);  
+	    String name[] = new String[nameSize];  
+	    for(int i=0;i<nameSize;i++)  
+	        name[i] = settings.getString("nameArray" + "_" + i, null);
+	    
+	    //latitude array
+	    int latitudeSize = settings.getInt("latitudeArray" + "_size", 0);  
+	  	String latitude[] = new String[latitudeSize];  
+	  	for(int i=0;i<latitudeSize;i++)  
+	  		latitude[i] = settings.getString("latitudeArray" + "_" + i, null);
+	  	
+	  	//longitude array
+	    int longitudeSize = settings.getInt("longitudeArray" + "_size", 0);  
+	  	String longitude[] = new String[longitudeSize];  
+	  	for(int i=0;i<longitudeSize;i++)  
+	  		longitude[i] = settings.getString("longitudeArray" + "_" + i, null);
+	  	
+	  	//way point list
+	  	List<WP> wList = new ArrayList<WP>();
+	  	for(int i=0;i<nameSize;i++){
+		  	wList.add(new WP(name[i],latitude[i],longitude[i]));
+	  	}
+	  	
+	  	WayPointActivity.wayPointList = wList;
 	}
 
 	//save preferences
@@ -350,10 +380,28 @@ public class MainActivity extends Activity {
 		SharedPreferences.Editor editor = settings.edit();
 		//last number for instant waypoint
 		editor.putInt(getString(R.string.save_inst_num), lastNumberForInstantWaypoint);
+		
+		String[] name = WayPointActivity.nameArray(WayPointActivity.wayPointList);
+		String[] lati = WayPointActivity.latitudeArray(WayPointActivity.wayPointList);
+		String[] longi = WayPointActivity.longitudeArray(WayPointActivity.wayPointList);
+		
+		//waypoint list
+		//name array
+		editor.putInt("nameArray" +"_size", name.length);  
+	    for(int i=0;i<name.length;i++)  
+	        editor.putString("nameArray" + "_" + i, name[i]);
+	    
+	    //latitude array
+	    editor.putInt("latitudeArray" +"_size", lati.length);  
+	    for(int i=0;i<lati.length;i++)  
+	        editor.putString("latitudeArray" + "_" + i, lati[i]);
+	    
+	    //longitude array
+	    editor.putInt("longitudeArray" +"_size", longi.length);  
+	    for(int i=0;i<longi.length;i++)  
+	        editor.putString("longitudeArray" + "_" + i, longi[i]);
+	    
 		editor.commit();
-
-		int linst = settings.getInt(getString(R.string.save_inst_num), lastNumberForInstantWaypoint);
-		Log.i("save pref", "last inst  =  "+linst);
 	}
 
     public static Context getContext(){
