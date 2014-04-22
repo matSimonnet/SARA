@@ -20,7 +20,7 @@
             android:layout_marginTop="30dp"
             android:checked="true"
             android:text="@string/portandstarboard"
-            android:textSize="40sp" />
+            android:textSize="60dp" />
 
         <RadioButton
             android:id="@+id/radioButton2"
