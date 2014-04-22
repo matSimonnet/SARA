@@ -7,12 +7,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class SpeechRateActivity extends Activity {
+	private float speechRate = 2.0f;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_speech_rate);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
+		//set default as the old value
+		this.speechRate = GeneralSettingActivity.speechRate;
+		
 	}
 
 	@Override
@@ -28,11 +33,14 @@ public class SpeechRateActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		switch (item.getItemId()) {
+		case R.id.general_setting:
+			finish();
+			break;
+		default:
+			break;
 		}
-		return super.onOptionsItemSelected(item);
+		return false;
 	}
 
 }

@@ -161,7 +161,8 @@
     <string name="title_alertdialog_distanceunit">Distance unit was changed.Do you want to save?</string>
     <string name="yes">yes</string>
     
-        
-        
+    <!-- speech rate setting -->
+    <string name="speechIntro">Adjust the speech rate below</string>
+          
 </resources>
 
