@@ -12,12 +12,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
+        android:textSize="30dp"
         android:text="@string/autobearing" />
 
     <TextView
         android:id="@+id/BearingTresholdView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="30dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/BearingAutoCheckBox"
         android:layout_toLeftOf="@+id/DecreaseBearingTresholdButton"
@@ -26,8 +28,9 @@
 
     <Button
         android:id="@+id/DecreaseBearingTresholdButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+         android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:textSize="50dp"
         android:layout_below="@+id/BearingAutoCheckBox"
         android:layout_toLeftOf="@+id/IncreaseBearingTresholdButton"
         android:gravity="center"
@@ -35,8 +38,9 @@
 
     <Button
         android:id="@+id/IncreaseBearingTresholdButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+         android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:textSize="50dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/BearingAutoCheckBox"
         android:gravity="center"
@@ -44,8 +48,9 @@
 
     <TextView
         android:id="@+id/BearingTimeTresholdView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="30dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/IncreaseBearingTresholdButton"
         android:layout_toLeftOf="@+id/DecreaseBearingTimeTresholdButton"
@@ -54,8 +59,9 @@
 
     <Button
         android:id="@+id/DecreaseBearingTimeTresholdButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+         android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:textSize="50dp"
         android:layout_below="@+id/IncreaseBearingTresholdButton"
         android:layout_toLeftOf="@+id/IncreaseBearingTimeTresholdButton"
         android:gravity="center"
@@ -63,8 +69,9 @@
 
     <Button
         android:id="@+id/IncreaseBearingTimeTresholdButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:textSize="50dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/IncreaseBearingTresholdButton"
         android:gravity="center"
@@ -73,7 +80,8 @@
     <Button
         android:id="@+id/SaveSettingButton"
         android:layout_width="fill_parent"
-        android:layout_height="96dp"
+        android:layout_height="150dp"
+        android:textSize="50dp"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:text="@string/savesetting" />

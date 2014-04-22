@@ -12,7 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="90dp"
         tools:context=".MainActivity"/>
 
     <TextView
@@ -20,18 +20,18 @@
        	android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/speedView"
-        android:paddingTop="70dp"
+        android:paddingTop="40dp"
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="90dp"
         tools:context=".MainActivity"/>
  	<TextView
     	android:id="@+id/bearingView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/heading"
-        android:paddingTop="70dp"           
+        android:paddingTop="40dp"           
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="90dp"
         tools:context=".MainActivity"/>
    		 	
     <TextView
@@ -39,9 +39,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bearingView"       
-        android:paddingTop="70dp"           
+        android:paddingTop="40dp"           
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="90dp"
         tools:context=".MainActivity"/>
     
     <TextView
@@ -49,10 +49,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/distanceView"       
-        android:paddingTop="70dp" 
+        android:paddingTop="40dp" 
         android:paddingBottom="50dp"          
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="90dp"
         tools:context=".MainActivity"/>
 	         
     <ImageButton 
