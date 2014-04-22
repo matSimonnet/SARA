@@ -396,7 +396,7 @@ public class WayPointActivity extends Activity {
 	        if(!MyLocationListener.currentLatitude.equals("") && wList.size()>1){
 	        	//remove the default value before sorting
 	        	int defaultItem = 0;
-	        	for(int i = 0;i<2;i++){
+	        	for(int i = 0;i<wList.size();i++){
 	        		if(wList.get(i).getName().equals("Please selected a waypoint"))
 	        			defaultItem = i;
 	        	}

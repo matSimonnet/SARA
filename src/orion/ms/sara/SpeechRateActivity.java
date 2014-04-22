@@ -64,7 +64,7 @@ public class SpeechRateActivity extends Activity {
 		
 		//minus button
 		minus = (Button) findViewById(R.id.button3);
-		minus.setContentDescription("slow speech rate down");
+		minus.setContentDescription("decrease speech rate");
 		//set onClickListener
 		minus.setOnClickListener(new OnClickListener() {
 			@SuppressWarnings("static-access")
@@ -78,14 +78,14 @@ public class SpeechRateActivity extends Activity {
 					speechRate = Utils.arrondiSpeedTreshold(speechRate);
 					tts.setSpeechRate((float) Utils.arrondiSpeedTreshold(speechRate));
 					rate.setText(Utils.arrondiSpeedTreshold(speechRate)+"");
-					tts.speak("speech rate changes to"+speechRate, tts.QUEUE_FLUSH, null);
+					tts.speak("speech rate "+speechRate, tts.QUEUE_FLUSH, null);
 				}
 			}
 		});
 		
 		//plus button
 		plus = (Button) findViewById(R.id.button2);
-		plus.setContentDescription("speed speech rate up");
+		plus.setContentDescription("increase speech rate");
 		//set onClickListener
 		plus.setOnClickListener(new OnClickListener() {
 			@SuppressWarnings("static-access")
@@ -99,7 +99,7 @@ public class SpeechRateActivity extends Activity {
 					speechRate = Utils.arrondiSpeedTreshold(speechRate);
 					tts.setSpeechRate((float) Utils.arrondiSpeedTreshold(speechRate));
 					rate.setText(Utils.arrondiSpeedTreshold(speechRate)+"");
-					tts.speak("speech rate changes to"+speechRate, tts.QUEUE_FLUSH, null);
+					tts.speak("speech rate "+speechRate, tts.QUEUE_FLUSH, null);
 				}
 				
 			}
