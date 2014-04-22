@@ -112,6 +112,7 @@ public class AutoDistanceActivity extends Activity {
 				    editor.putBoolean("isAutoDistance", DistanceAutoCheckBox.isChecked());
 				    editor.commit();
 				    
+					intentMainAutoSetting.putExtra("distanceLastAuto", 0.0);
 					intentMainAutoSetting.putExtra("distanceTimeTreshold", distanceTimeTreshold);
 					intentMainAutoSetting.putExtra("isAutoDistance", DistanceAutoCheckBox.isChecked());
 					setResult(RESULT_OK, intentMainAutoSetting);
@@ -188,6 +189,7 @@ public class AutoDistanceActivity extends Activity {
 					    editor.putBoolean("isAutoDistance", DistanceAutoCheckBox.isChecked());
 					    editor.commit();
 					    
+						intentMainAutoSetting.putExtra("distanceLastAuto", 0.0);
 						intentMainAutoSetting.putExtra("distanceTimeTreshold", distanceTimeTreshold);
 						intentMainAutoSetting.putExtra("isAutoDistance", DistanceAutoCheckBox.isChecked());
 						setResult(RESULT_OK, intentMainAutoSetting);

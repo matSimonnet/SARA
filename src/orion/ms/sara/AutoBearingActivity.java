@@ -157,6 +157,7 @@ public class AutoBearingActivity extends Activity {
 				    editor.putBoolean("isAutoBearing", BearingAutoCheckBox.isChecked());
 				    editor.commit();
 				    
+					intentMainAutoSetting.putExtra("bearingLastAuto", 0.0);
 					intentMainAutoSetting.putExtra("bearingTreshold", bearingTreshold);
 					intentMainAutoSetting.putExtra("bearingTimeTreshold", bearingTimeTreshold);
 					intentMainAutoSetting.putExtra("isAutoBearing", BearingAutoCheckBox.isChecked());
@@ -240,6 +241,7 @@ public class AutoBearingActivity extends Activity {
 					    editor.putBoolean("isAutoBearing", BearingAutoCheckBox.isChecked());
 					    editor.commit();
 					    
+						intentMainAutoSetting.putExtra("bearingLastAuto", 0.0);
 						intentMainAutoSetting.putExtra("bearingTreshold", bearingTreshold);
 						intentMainAutoSetting.putExtra("bearingTimeTreshold", bearingTimeTreshold);
 						intentMainAutoSetting.putExtra("isAutoBearing", BearingAutoCheckBox.isChecked());

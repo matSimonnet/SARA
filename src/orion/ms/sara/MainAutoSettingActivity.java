@@ -123,6 +123,7 @@ public class MainAutoSettingActivity extends Activity {
 	     switch (requestCode) {
 	     	case RESULT_AUTOSPEED : {
 	     		if (resultCode == RESULT_OK && null != data) {
+	     			MyLocationListener.speedLastAuto = data.getDoubleExtra("speedLastAuto", 0.0);
 	     			MyLocationListener.speedTreshold = data.getDoubleExtra("speedTreshold", 1.0);
 	        		MyLocationListener.speedTimeTreshold = data.getLongExtra("speedTimeTreshold", 5);
 	        		MyLocationListener.isAutoSpeed = data.getBooleanExtra("isAutoSpeed", true);
@@ -148,6 +149,7 @@ public class MainAutoSettingActivity extends Activity {
 	        }// end of case
 	     	case RESULT_AUTOBEARING : {
 	     		if (resultCode == RESULT_OK && null != data) {
+	     			MyLocationListener.bearingLastAuto = data.getDoubleExtra("bearingLastAuto", 0.0);
         			MyLocationListener.bearingTreshold = data.getDoubleExtra("bearingTreshold", 10.0);
         			MyLocationListener.bearingTimeTreshold = data.getLongExtra("bearingTimeTreshold", 5);
         			MyLocationListener.isAutoBearing = data.getBooleanExtra("isAutoBearing", true);
@@ -160,6 +162,7 @@ public class MainAutoSettingActivity extends Activity {
 	        }// end of case
 	     	case RESULT_AUTODISTANCE : {
 	     		if (resultCode == RESULT_OK && null != data) {
+        			MyLocationListener.distanceLastAuto = data.getDoubleExtra("distanceLastAuto", 0.0);
         			MyLocationListener.distanceTimeTreshold = data.getLongExtra("distanceTimeTreshold", 5);
         			MyLocationListener.isAutoDistance = data.getBooleanExtra("isAutoDistance", true);
         			

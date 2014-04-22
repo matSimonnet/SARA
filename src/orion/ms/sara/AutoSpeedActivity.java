@@ -41,13 +41,15 @@ public class AutoSpeedActivity extends Activity {
 	private long speedTimeTreshold = 5;
 	private double speedTresholdStep = 0.1;
 	private long speedTimeTresholdStep = 1;
-
+	private String speedUnit = "";
+	
 	private boolean isAutoSpeed = true;
 	
 	private AlertDialog.Builder alertDialog;
 	
 	public SharedPreferences settings;
 	public SharedPreferences.Editor editor;
+	
 
 	
 	@Override
@@ -74,9 +76,10 @@ public class AutoSpeedActivity extends Activity {
 	    intentMainAutoSetting = new Intent(AutoSpeedActivity.this,MainAutoSettingActivity.class);
 
 	    //speed treshold view
+	    speedUnit = getSpeedUnit();
 		textViewSpeedTreshold = (TextView) findViewById(R.id.speedTresholdView);
-		textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + getResources().getString(R.string.speedunit));
-	    textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.speedunit));
+		textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + speedUnit);
+	    textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + speedUnit);
 	    
 	    //speed time treshold view
 	    textViewSpeedTimeTreshold = (TextView) findViewById(R.id.speedTimeTresholdView3);
@@ -102,9 +105,9 @@ public class AutoSpeedActivity extends Activity {
 				if (v== IncreaseSpeedTresholdButton){
 					if(speedTreshold >= 0.0 && speedTreshold < 3.0) {
 						speedTreshold = Utils.arrondiSpeedTreshold(speedTreshold + speedTresholdStep);
-						textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + getResources().getString(R.string.speedunit));
-						textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.speedunit));
-						tts.speak(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.speedunit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + speedUnit);
+						textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + speedUnit);
+						tts.speak(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + speedUnit ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "inc speed");
 					}
 					else {
@@ -114,9 +117,9 @@ public class AutoSpeedActivity extends Activity {
 				if (v== DecreaseSpeedTresholdButton){
  					if(speedTreshold > 0.0 && speedTreshold <= 3.0) {
 						speedTreshold = Utils.arrondiSpeedTreshold(speedTreshold - speedTresholdStep);
-						textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + getResources().getString(R.string.speedunit));
-						textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.speedunit));
-						tts.speak(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + getResources().getString(R.string.speedunit) ,TextToSpeech.QUEUE_FLUSH, null);
+						textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + speedUnit);
+						textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + speedUnit);
+						tts.speak(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + speedUnit ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "dec speed");
 					}
 					else {
@@ -153,6 +156,7 @@ public class AutoSpeedActivity extends Activity {
 				    editor.putBoolean("isAutoSpeed", SpeedAutoCheckBox.isChecked());
 				    editor.commit();
 				    
+					intentMainAutoSetting.putExtra("speedLastAuto", 0.0);
 					intentMainAutoSetting.putExtra("speedTreshold", speedTreshold);
 					intentMainAutoSetting.putExtra("speedTimeTreshold", speedTimeTreshold);
 					intentMainAutoSetting.putExtra("isAutoSpeed", SpeedAutoCheckBox.isChecked());
@@ -219,10 +223,10 @@ public class AutoSpeedActivity extends Activity {
 		switch (Item.getItemId()) {
 		case R.id.backtoautosetting:
 			
-			Double LastspeedTreshold = Double.parseDouble(settings.getString("speedTreshold", "10.0"));
+			Double LastspeedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
 			long LastspeedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
 			boolean LastisAutoSpeed = settings.getBoolean("isAutoSpeed", true);
-			
+			Log.i("spth", LastspeedTreshold+"");
 			if(LastspeedTreshold != speedTreshold || LastspeedTimeTreshold != speedTimeTreshold || LastisAutoSpeed != SpeedAutoCheckBox.isChecked()) {
 				alertDialog = new AlertDialog.Builder(this);
 				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_accuracysetting));
@@ -235,6 +239,7 @@ public class AutoSpeedActivity extends Activity {
 					    editor.putBoolean("isAutoSpeed", SpeedAutoCheckBox.isChecked());
 					    editor.commit();
 					    
+						intentMainAutoSetting.putExtra("speedLastAuto", 0.0);
 						intentMainAutoSetting.putExtra("speedTreshold", speedTreshold);
 						intentMainAutoSetting.putExtra("speedTimeTreshold", speedTimeTreshold);
 						intentMainAutoSetting.putExtra("isAutoSpeed", SpeedAutoCheckBox.isChecked());
@@ -260,6 +265,10 @@ public class AutoSpeedActivity extends Activity {
 			break;
 		}
 		return false;
+	}
+	public String getSpeedUnit() {
+		if(MyLocationListener.isKnotsSelected) return getResources().getString(R.string.knots);
+		else return getResources().getString(R.string.kmperh);
 	}
 	  
 	

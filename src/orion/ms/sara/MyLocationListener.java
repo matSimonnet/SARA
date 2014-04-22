@@ -60,7 +60,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public static double headingLastAuto = 0.0;
 	public static double distanceLastAuto = 0.0;
 	public static double bearingLastAuto = 0.0;
-	public static double accuracyLastAuto = 0;
+	public static double accuracyLastAuto = 0.0;
 
 	public static double speedTreshold = 1.0;
 	public static double headingTreshold = 10.0;
@@ -153,14 +153,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 		}// end of if bearingAutoCheck...
 
 		if (isAutoDistance && isWaypointActivated) {
-			distanceAuto = distance[0];
+			distanceAuto = Double.parseDouble(DistanceToCurrentWaypoint);
 			distanceNow = new Date();
-
-			if (distanceAuto < 10) distanceTreshold = 1;
-			if (distanceAuto < 100 && distanceAuto >= 10) distanceTreshold = 10;
-			if (distanceAuto < 1000 && distanceAuto >= 100) distanceTreshold = 100;
-			if (distanceAuto < 10000 && distanceAuto >= 1000) distanceTreshold = 1000;
-			if (distanceAuto >= 10000) distanceTreshold = 10000;
+			distanceTreshold = getDistanceTreshold();
 
 			if (((distanceAuto < distanceLastAuto - distanceTreshold) || (distanceAuto > distanceLastAuto + distanceTreshold))
 					&& ((distanceNow.getTime() - distanceBefore.getTime()) > distanceTimeTreshold * 1000)) {
@@ -173,7 +168,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		}// end of if distanceAutoCheck...
 
 		if (isAutoSpeed) {
-			speedAuto = Utils.arrondiSpeed(loc.getSpeed() * (1.945));
+			speedAuto = Double.parseDouble(speed);
 			speedNow = new Date();
 			if (((speedAuto < speedLastAuto - speedTreshold) || (speedAuto > speedLastAuto + speedTreshold))
 					&& ((speedNow.getTime() - speedBefore.getTime()) > speedTimeTreshold * 1000)) {
@@ -186,7 +181,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		}// end of if speedAutoCheck...
 
 		if (isAutoHeading) {
-			headingAuto = (int) loc.getBearing();
+			headingAuto = Integer.parseInt(heading);
 			headingNow = new Date();
 
 			int headingDiff = java.lang.Math.abs((int) headingLastAuto - (int) headingAuto);
@@ -362,5 +357,22 @@ public class MyLocationListener extends Activity implements LocationListener {
 		else {
 			this.isWaypointActivated = true;
 		}
+	}
+	
+	public double getSpeedAuto(Location loc) {
+		if (isKnotsSelected) {
+			return Utils.arrondiSpeed(loc.getSpeed() * (1.945));
+		}
+		else { // km/h
+			return Utils.arrondiSpeed(loc.getSpeed() * (3.6));
+		}
+	}
+	
+	public int getDistanceTreshold() {
+		if (distanceAuto < 10) return 1;
+		if (distanceAuto < 100 && distanceAuto >= 10) return 10;
+		if (distanceAuto < 1000 && distanceAuto >= 100) return 100;
+		if (distanceAuto < 10000 && distanceAuto >= 1000) return 1000;
+		else return 10000;
 	}
 }
