@@ -97,9 +97,7 @@ public class WayPointActivity extends Activity {
 			if(MainActivity.instList.size()!=0){
 				//two lists combination
 				wayPointList.addAll(MainActivity.instList);
-		        //Log.i("inst list from waypoint after combine",""+MainActivity.instList.size());
 				MainActivity.instList.clear();//empty the instant waypoint list
-		        //Log.i("inst list from waypoint after clearrrr",""+MainActivity.instList.size());
 			}
 								
 			//OnInitListener Creation
@@ -167,7 +165,6 @@ public class WayPointActivity extends Activity {
 	                				//choosing way point
 	        	      				choosingWaypoint = wayPointList.get(selectedItem);
 	        	      				
-	        	      				
 	        	      				//dialog creation
 	        	      				choosingDialog.setTitle("You selected : "+choosingWaypoint.getName());
 	                				choosingDialog.setIcon(android.R.drawable.presence_busy);
@@ -182,7 +179,7 @@ public class WayPointActivity extends Activity {
 										public void onClick(DialogInterface arg0, int arg1) {
 			                				//notify
 											Toast.makeText(WayPointActivity.this,"Activate",Toast.LENGTH_SHORT).show();
-											tts.speak("Activate", tts.QUEUE_ADD, null);
+											tts.speak("Activate", tts.QUEUE_FLUSH, null);
 
 			                				//change back to the main activity
 											//passing activate way point name and position
@@ -248,7 +245,6 @@ public class WayPointActivity extends Activity {
 	                				});//end delete button	
 	                				if(!choosingWaypoint.getName().equals("Please selected a waypoint") && i!=0){
 	                					//show the choosing dialog if selected some way points from the list
-		                				choosingDialog.setCancelable(true);
 	                					choosingDialog.show();
 	                				}//end if
 	                			}//end switch case
