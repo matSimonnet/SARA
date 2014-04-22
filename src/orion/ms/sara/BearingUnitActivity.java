@@ -1,8 +1,11 @@
 package orion.ms.sara;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -28,6 +31,9 @@ public class BearingUnitActivity extends Activity {
 	
 	public SharedPreferences settings;
 	public SharedPreferences.Editor editor;
+	
+	private AlertDialog.Builder alertDialog;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +85,7 @@ public class BearingUnitActivity extends Activity {
 				    editor.putBoolean("isCardinalSelected", cardinalRadioButton.isChecked());
 				    editor.commit();
 				    
+				    intentToGeneral.putExtra("bearingLastAuto", 0.0);
 					intentToGeneral.putExtra("isPortandstarboardSelected", portandstarboardRadioButton.isChecked());
 					intentToGeneral.putExtra("isCardinalSelected", cardinalRadioButton.isChecked());
 					setResult(RESULT_OK, intentToGeneral);
@@ -102,7 +109,40 @@ public class BearingUnitActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.general_setting:
-			finish();
+			
+		    boolean LastIsPortandstarboardSelected = settings.getBoolean("isPortandstarboardSelected", true);
+		    boolean LastIsCardinalSelected = settings.getBoolean("isCardinalSelected", false);
+		    
+			if(LastIsPortandstarboardSelected != portandstarboardRadioButton.isChecked() || LastIsCardinalSelected != cardinalRadioButton.isChecked()) {	
+				
+				alertDialog = new AlertDialog.Builder(this);
+				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_bearingunit));
+				alertDialog.setNegativeButton("YES", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					    editor.putBoolean("isPortandstarboardSelected", portandstarboardRadioButton.isChecked());
+					    editor.putBoolean("isCardinalSelected", cardinalRadioButton.isChecked());
+					    editor.commit();
+					    
+					    intentToGeneral.putExtra("bearingLastAuto", 0.0);
+						intentToGeneral.putExtra("isPortandstarboardSelected", portandstarboardRadioButton.isChecked());
+						intentToGeneral.putExtra("isCardinalSelected", cardinalRadioButton.isChecked());
+						setResult(RESULT_OK, intentToGeneral);
+						finish();					
+					}
+				});
+				alertDialog.setPositiveButton("No", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+				alertDialog.setIcon(android.R.drawable.presence_busy);
+				alertDialog.show();
+			}
+			else {
+				finish();
+			}			
 			break;
 		default:
 			break;

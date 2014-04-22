@@ -112,7 +112,6 @@ public class AutoDistanceActivity extends Activity {
 				    editor.putBoolean("isAutoDistance", DistanceAutoCheckBox.isChecked());
 				    editor.commit();
 				    
-					intentMainAutoSetting.putExtra("distanceLastAuto", 0.0);
 					intentMainAutoSetting.putExtra("distanceTimeTreshold", distanceTimeTreshold);
 					intentMainAutoSetting.putExtra("isAutoDistance", DistanceAutoCheckBox.isChecked());
 					setResult(RESULT_OK, intentMainAutoSetting);
@@ -181,7 +180,6 @@ public class AutoDistanceActivity extends Activity {
 			if(LastdistanceTimeTreshold != distanceTimeTreshold || LastisAutoDistance != DistanceAutoCheckBox.isChecked()) {				
 				alertDialog = new AlertDialog.Builder(this);
 				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_distancesetting));
-				alertDialog.setMessage(getResources().getString(R.string.message_alertdialog_autosetting));
 				alertDialog.setNegativeButton("YES", new OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -189,7 +187,6 @@ public class AutoDistanceActivity extends Activity {
 					    editor.putBoolean("isAutoDistance", DistanceAutoCheckBox.isChecked());
 					    editor.commit();
 					    
-						intentMainAutoSetting.putExtra("distanceLastAuto", 0.0);
 						intentMainAutoSetting.putExtra("distanceTimeTreshold", distanceTimeTreshold);
 						intentMainAutoSetting.putExtra("isAutoDistance", DistanceAutoCheckBox.isChecked());
 						setResult(RESULT_OK, intentMainAutoSetting);

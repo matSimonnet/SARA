@@ -1,8 +1,11 @@
 package orion.ms.sara;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -28,6 +31,9 @@ public class SpeedUnitActivity extends Activity {
 	
 	public SharedPreferences settings;
 	public SharedPreferences.Editor editor;
+	
+	private AlertDialog.Builder alertDialog;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +87,7 @@ public class SpeedUnitActivity extends Activity {
 				    editor.putBoolean("isKmPerHrSelected", kmPerHrRadioButton.isChecked());
 				    editor.commit();
 				    
+				    intentToGeneral.putExtra("speedLastAuto", 0.0);
 					intentToGeneral.putExtra("isKnotsSelected", knotsRadioButton.isChecked());
 					intentToGeneral.putExtra("isKmPerHrSelected", kmPerHrRadioButton.isChecked());
 					setResult(RESULT_OK, intentToGeneral);
@@ -106,7 +113,41 @@ public class SpeedUnitActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.general_setting:
-			finish();
+			
+		    boolean LastIsKnotsSelected = settings.getBoolean("isKnotsSelected", true);
+		    boolean LastIsKmPerHrSelected = settings.getBoolean("isKmPerHrSelected", false);
+		    
+			if(LastIsKnotsSelected != knotsRadioButton.isChecked() || LastIsKmPerHrSelected != kmPerHrRadioButton.isChecked()) {	
+				
+				alertDialog = new AlertDialog.Builder(this);
+				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_speedunit));
+				alertDialog.setNegativeButton("YES", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+					    editor.putBoolean("isKnotsSelected", knotsRadioButton.isChecked());
+					    editor.putBoolean("isKmPerHrSelected", kmPerHrRadioButton.isChecked());
+					    editor.commit();
+					    
+					    intentToGeneral.putExtra("speedLastAuto", 0.0);
+						intentToGeneral.putExtra("isKnotsSelected", knotsRadioButton.isChecked());
+						intentToGeneral.putExtra("isKmPerHrSelected", kmPerHrRadioButton.isChecked());
+						setResult(RESULT_OK, intentToGeneral);
+						finish();					
+					}
+				});
+				alertDialog.setPositiveButton("No", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+				alertDialog.setIcon(android.R.drawable.presence_busy);
+				alertDialog.show();
+			}
+			else {
+				finish();
+			}			
 			break;
 		default:
 			break;

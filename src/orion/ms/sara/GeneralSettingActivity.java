@@ -113,6 +113,7 @@ public class GeneralSettingActivity extends Activity {
 	     switch (requestCode) {
 	     	case SPEED_UNIT : {
 	     		if (resultCode == RESULT_OK && null != data) {
+	     			MyLocationListener.speedLastAuto = data.getDoubleExtra("speedLastAuto", 0.0);
 	     			MyLocationListener.isKnotsSelected = data.getBooleanExtra("isKnotsSelected", true);
 	     			MyLocationListener.isKmPerHrSelected = data.getBooleanExtra("isKmPerHrSelected", false);
 	     		}
@@ -120,6 +121,7 @@ public class GeneralSettingActivity extends Activity {
 	     	}
 	     	case BEARING_UNIT : {
 	     		if (resultCode == RESULT_OK && null != data) {
+	     			MyLocationListener.bearingLastAuto = data.getDoubleExtra("bearingLastAuto", 0.0);
 	     			MyLocationListener.isPortandstarboardSelected = data.getBooleanExtra("isPortandstarboardSelected", true);
 	     			MyLocationListener.isCardinalSelected = data.getBooleanExtra("isCardinalSelected", false);
 	     		}
@@ -127,6 +129,7 @@ public class GeneralSettingActivity extends Activity {
 	     	}
 	     	case DISTANCE_UNIT : {
 	     		if (resultCode == RESULT_OK && null != data) {
+	     			MyLocationListener.distanceLastAuto = data.getDoubleExtra("distanceLastAuto", 0.0);
 	     			MyLocationListener.isKilometreSelected = data.getBooleanExtra("isKilometreSelected", true);
 	     			MyLocationListener.isNMSelected = data.getBooleanExtra("isNMSelected", false);
 	     		}
