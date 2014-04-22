@@ -20,9 +20,9 @@
         android:id="@+id/HeadingSettingButton"
         android:layout_width="fill_parent"
         android:layout_height="150dp"
+        android:textSize="50dp"
 		android:layout_below="@+id/SpeedSettingButton"
         android:gravity="center"
-  		android:textSize="50dp"
         android:text="@string/headingsetting"/>    
         
     <Button

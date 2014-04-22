@@ -11,18 +11,18 @@
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="50dp"
         android:text="@string/speed_unit_setting"/>
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:textSize="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button1"
@@ -31,8 +31,9 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:textSize="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button2"
@@ -41,8 +42,9 @@
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+       android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:textSize="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button3"
@@ -51,8 +53,9 @@
 
     <Button
         android:id="@+id/button5"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:textSize="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button4"
