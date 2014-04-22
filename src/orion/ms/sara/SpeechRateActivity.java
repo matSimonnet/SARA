@@ -145,6 +145,8 @@ public class SpeechRateActivity extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						GeneralSettingActivity.speechRate = (float) speechRate;
+						editor.putFloat("speechRate", GeneralSettingActivity.speechRate);
+					    editor.commit();
 						setResult(RESULT_OK);
 						finish();
 					}
