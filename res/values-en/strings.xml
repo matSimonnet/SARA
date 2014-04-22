@@ -137,11 +137,11 @@
     <string name="speedUnitIntro">Choose the speed unit</string>
     
     <string name="message_alertdialog_autosetting">Do you want to save?</string>
-    <string name="title_alertdialog_speedsetting">Auto speed setting was changed. Do you want to save?</string>
-    <string name="title_alertdialog_headingsetting">Auto heading setting was changed. Do you want to save?</string>
-    <string name="title_alertdialog_bearingsetting">Auto bearing setting was changed. Do you want to save?</string>
-    <string name="title_alertdialog_distancesetting">Auto distance setting was changed. Do you want to save?</string>
-    <string name="title_alertdialog_accuracysetting">Auto accuracy setting was changed. Do you want to save?</string>
+    <string name="title_alertdialog_speedsetting">Auto speed setting was changed.Do you want to save?</string>
+    <string name="title_alertdialog_headingsetting">Auto heading setting was changed.Do you want to save?</string>
+    <string name="title_alertdialog_bearingsetting">Auto bearing setting was changed.Do you want to save?</string>
+    <string name="title_alertdialog_distancesetting">Auto distance setting was changed.Do you want to save?</string>
+    <string name="title_alertdialog_accuracysetting">Auto accuracy setting was changed.Do you want to save?</string>
     
     <string name="kmperh">km/h</string>
     <string name="backtogeneralsetting">BACK TO GENERAL SETTING</string>
@@ -156,9 +156,9 @@
     <string name="nauticalmiles">nautical miles</string>
     <string name="nm">NM</string>
     
-    <string name="title_alertdialog_speedunit">Speed unit was changed. Do you want to save?</string>
-    <string name="title_alertdialog_bearingunit">Bearing unit was changed. Do you want to save?</string>
-    <string name="title_alertdialog_distanceunit">Distance unit was changed. Do you want to save?</string>
+    <string name="title_alertdialog_speedunit">Speed unit was changed.Do you want to save?</string>
+    <string name="title_alertdialog_bearingunit">Bearing unit was changed.Do you want to save?</string>
+    <string name="title_alertdialog_distanceunit">Distance unit was changed.Do you want to save?</string>
     <string name="yes">yes</string>
     
         
