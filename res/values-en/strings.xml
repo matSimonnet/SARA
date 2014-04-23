@@ -165,6 +165,10 @@
     <string name="speechIntro">Adjust the speech rate below</string>
     <string name="plus_button">+</string>
     <string name="minus_button">-</string>
+    
+    <string name="choose_bearing_unit">Please choose the bearing unit below.</string>
+    <string name="choos_distance_unit">Please choose the distance unit below.</string>
+    <string name="choos_speed_unit">Please choose the speed unit below.</string>
           
 </resources>
 
