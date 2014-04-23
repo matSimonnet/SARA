@@ -11,7 +11,6 @@ import android.speech.tts.TextToSpeech.OnInitListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -32,15 +31,14 @@ public class SpeechRateActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_speech_rate);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
 		this.editor = settings.edit();
-		
-		//set default as the old value
-		this.speechRate = Utils.arrondiSpeedTreshold(GeneralSettingActivity.speechRate);
+		LoadPref();
 		
 		//OnInitListener Creation
 		OnInitListener onInitListener = new OnInitListener() {
@@ -65,76 +63,64 @@ public class SpeechRateActivity extends Activity {
 		//minus button
 		minus = (Button) findViewById(R.id.button3);
 		minus.setContentDescription("decrease speech rate");
-		//set onClickListener
-		minus.setOnClickListener(new OnClickListener() {
-			@SuppressWarnings("static-access")
-			@Override
-			public void onClick(View v) {
-				if(speechRate<=0.0){
-					tts.speak("This is minimum speech rate", tts.QUEUE_FLUSH, null);
-				}
-				else{
-					speechRate -= 0.1f;
-					speechRate = Utils.arrondiSpeedTreshold(speechRate);
-					tts.setSpeechRate((float) Utils.arrondiSpeedTreshold(speechRate));
-					rate.setText(Utils.arrondiSpeedTreshold(speechRate)+"");
-					tts.speak("speech rate "+speechRate, tts.QUEUE_FLUSH, null);
-				}
-			}
-		});
 		
 		//plus button
 		plus = (Button) findViewById(R.id.button2);
 		plus.setContentDescription("increase speech rate");
-		//set onClickListener
-		plus.setOnClickListener(new OnClickListener() {
-			@SuppressWarnings("static-access")
-			@Override
-			public void onClick(View v) {
-				if(speechRate>=2.0){
-					tts.speak("This is maximum speech rate", tts.QUEUE_FLUSH, null);
-				}
-				else{
-					speechRate += 0.1f;
-					speechRate = Utils.arrondiSpeedTreshold(speechRate);
-					tts.setSpeechRate((float) Utils.arrondiSpeedTreshold(speechRate));
-					rate.setText(Utils.arrondiSpeedTreshold(speechRate)+"");
-					tts.speak("speech rate "+speechRate, tts.QUEUE_FLUSH, null);
-				}
-				
-			}
-		});
 		
 		//save button
 		save = (Button) findViewById(R.id.button1);
 		save.setContentDescription("save the speech rate");
-		//set onClickListen
-		save.setOnClickListener(new OnClickListener() {
+
+		// OnClickListener creation
+	    View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				GeneralSettingActivity.speechRate = (float) speechRate;
-				editor.putFloat("speechRate", GeneralSettingActivity.speechRate);
-			    editor.commit();
-				setResult(RESULT_OK);
-				finish();
+				if (v== save){
+					GeneralSettingActivity.speechRate = (float) speechRate;
+					editor.putFloat("speechRate", GeneralSettingActivity.speechRate);
+				    editor.commit();
+					setResult(RESULT_OK);
+					finish();				}
+				if (v== minus){
+					if(speechRate<=0.1){
+						tts.speak("This is minimum speech rate", TextToSpeech.QUEUE_FLUSH, null);
+					}
+					else{
+						speechRate -= 0.1f;
+						speechRate = Utils.arrondiSpeedTreshold(speechRate);
+						tts.setSpeechRate((float) Utils.arrondiSpeedTreshold(speechRate));
+						rate.setText(Utils.arrondiSpeedTreshold(speechRate)+"");
+						tts.speak("speech rate "+speechRate, TextToSpeech.QUEUE_FLUSH, null);
+					}
+				}
+				if (v== plus){
+					if(speechRate>=2.0){
+						tts.speak("This is maximum speech rate", TextToSpeech.QUEUE_FLUSH, null);
+					}
+					else{
+						speechRate += 0.1f;
+						speechRate = Utils.arrondiSpeedTreshold(speechRate);
+						tts.setSpeechRate((float) Utils.arrondiSpeedTreshold(speechRate));
+						rate.setText(Utils.arrondiSpeedTreshold(speechRate)+"");
+						tts.speak("speech rate "+speechRate, TextToSpeech.QUEUE_FLUSH, null);
+					}
+				}
 			}
-		});
-		
+	    };
+	    plus.setOnClickListener(onclickListener);
+	    minus.setOnClickListener(onclickListener);
+	    save.setOnClickListener(onclickListener);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.speech_rate, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.general_setting:
 			if(GeneralSettingActivity.speechRate!=(float)speechRate){
@@ -169,6 +155,9 @@ public class SpeechRateActivity extends Activity {
 			break;
 		}
 		return false;
+	}
+	public void LoadPref() {
+		this.speechRate = Utils.arrondiSpeedTreshold(settings.getFloat("speechRate", 1.5f));
 	}
 
 }

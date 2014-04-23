@@ -286,6 +286,13 @@ public class MainActivity extends Activity {
         		}
         	break;
         	}// end of case
+        	case RESULT_GENERAL_SETTING : {
+        		if (resultCode == RESULT_OK) {
+        	        tts.setSpeechRate(GeneralSettingActivity.speechRate);
+        		}
+        	break;
+        	}
+
 
         }// end of switch 
     }// end of on Activity result 
