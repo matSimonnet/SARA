@@ -173,5 +173,9 @@
     <string name="cardinalunit">cardinal unit</string>
     <string name="kilometreandmetreunit">kilometre and metre unit</string>
     <string name="nauticalmileunit">nautical mile unit</string>
+    <string name="knotunit">knot unit</string>
+    <string name="kilometersperhourunit">kilometre per hour unit</string>
+    
+    
 </resources>
 

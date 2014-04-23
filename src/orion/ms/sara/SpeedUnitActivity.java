@@ -45,16 +45,16 @@ public class SpeedUnitActivity extends Activity {
 		intentToGeneral = new Intent(SpeedUnitActivity.this,GeneralSettingActivity.class);
 		
 		this.group = (RadioGroup) findViewById(R.id.radioGroup1);
-		this.group.setContentDescription("A group of speed unit");
+		this.group.setContentDescription(getResources().getString(R.string.choos_speed_unit));
 		
 		this.knotsRadioButton = (RadioButton) findViewById(R.id.radioButton1);
-		this.knotsRadioButton.setContentDescription("knots unit");
+		this.knotsRadioButton.setContentDescription(getResources().getString(R.string.knotunit));
 		
 		this.kmPerHrRadioButton = (RadioButton) findViewById(R.id.radioButton2);
-		this.kmPerHrRadioButton.setContentDescription("kilometers per hour unit");
+		this.kmPerHrRadioButton.setContentDescription(getResources().getString(R.string.kilometersperhourunit));
 		
 		this.saveButton = (Button) findViewById(R.id.button1);
-		this.saveButton.setContentDescription("save the changing setting");
+		this.saveButton.setContentDescription(getResources().getString(R.string.savesetting));
 		
 	    // Restore preferences
 		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
