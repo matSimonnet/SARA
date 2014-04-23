@@ -135,7 +135,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		Utils.setAccuracyTextViewDescription(accuracy);
 
 		if (isAutoBearing && isWaypointActivated) {
-			bearingAuto = Integer.parseInt(BearingToCurrentWaypoint);
+			bearingAuto = Integer.parseInt(Utils._Bearing(loc.getLatitude(), loc.getLongitude(), WaypointLatitude, WaypointLongitude));
 			bearingNow = new Date();
 
 			int bearingDiff = java.lang.Math.abs((int) bearingLastAuto - (int) bearingAuto);
