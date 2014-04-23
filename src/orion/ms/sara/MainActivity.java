@@ -60,8 +60,6 @@ public class MainActivity extends Activity {
 
 	//Generating a number for a new waypoint's default name
 	public static int lastNumberForInstantWaypoint = 0;
-	//temporary list to collect instant new waypoint
-	public static List<WP> instList = new ArrayList<WP>();
 	//activating way point item from the list
 	private int actItem = 0;
 
@@ -164,13 +162,11 @@ public class MainActivity extends Activity {
 				        if(!isRecorded("H"+lastNumberForInstantWaypoint, MyLocationListener.currentLatitude, MyLocationListener.currentLongitude)){
 				        	//same as instant list and waypoint list items
 				        	lastNumberForInstantWaypoint += 1;
-				        	instList.add(new WP("H"+lastNumberForInstantWaypoint,//name
+				        	WayPointActivity.wayPointList.add(new WP("H"+lastNumberForInstantWaypoint,//name
 					        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
 					        //Notify
 					        tts.speak("H"+lastNumberForInstantWaypoint+" is saved here.", TextToSpeech.QUEUE_ADD, null);
 					        Toast.makeText(MainActivity.this, "H"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
-					        //Log.i("inst list from main",""+instList.size());
-					        WayPointActivity.wayPointList.addAll(instList);
 					        for(int i=0;i<WayPointActivity.wayPointList.size();i++){
 					        	Log.i("waypoint list", "item "+i+" : "+WayPointActivity.wayPointList.get(i).getName());
 					        }
@@ -201,11 +197,6 @@ public class MainActivity extends Activity {
 	//to check if the filled name or the position (latitude and longitude) are already recorded
 	@SuppressLint("ShowToast")		
 	public static boolean isRecorded(String n,String la, String lo){
-		for(int i = 0;i<instList.size();i++){
-			if( instList.get(i).getLatitude().equalsIgnoreCase(la) && instList.get(i).getLongitude().equalsIgnoreCase(lo) ){
-				return true;
-			}
-		}//end for
 		for(int i = 0;i<WayPointActivity.wayPointList.size();i++){
 			WP temp = WayPointActivity.wayPointList.get(i);
 			if(temp.getName().equals(n) && temp.getLatitude().equals(la) && temp.getLongitude().equals(lo))

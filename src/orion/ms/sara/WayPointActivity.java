@@ -95,13 +95,6 @@ public class WayPointActivity extends Activity {
 			for(int i = 0;i<wayPointList.size();i++){
 				Log.i("waypoint list", "item "+i+": "+wayPointList.get(i).getName());
 			}
-			
-			//check if there is any instantWaypoint
-			if(MainActivity.instList.size()!=0){
-				//two lists combination
-				wayPointList.addAll(MainActivity.instList);
-				MainActivity.instList.clear();//empty the instant waypoint list
-			}
 								
 			//OnInitListener Creation
 			OnInitListener onInitListener = new OnInitListener() {
@@ -130,6 +123,7 @@ public class WayPointActivity extends Activity {
 			//get selected item from main
 			Intent intentFromMain = getIntent();
 			selectedItem = intentFromMain.getIntExtra("actItem", 0);
+			Log.i("selected item", "item "+selectedItem+" : "+wayPointList.get(selectedItem).getName());
 			
 			//sort the list
 			if(MyLocationListener.currentLatitude.equals("") && selectedItem==0){
@@ -388,20 +382,21 @@ public class WayPointActivity extends Activity {
 			
 			//update location
 	        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
-	        //empty list
-	        if(wList.size()==0){
-				wList.add(first);
-	        }
+	        
 	        //GPS available -> sort by proximity
 	        if(!MyLocationListener.currentLatitude.equals("") && wList.size()>1){
 	        	//remove the default value before sorting
-	        	int defaultItem = 0;
+	        	int defaultItem = -1;
 	        	for(int i = 0;i<wList.size();i++){
-	        		if(wList.get(i).getName().equals("Please selected a waypoint"))
+	        		if(wList.get(i).getName().equals("Please selected a waypoint")){
 	        			defaultItem = i;
+	        			Log.i("default item", wList.get(defaultItem).getName());
+	        		}
 	        	}
-	        	wList.remove(defaultItem);
-	        	
+	        	if(defaultItem!=-1){
+	        		//have the default
+	        		wList.remove(defaultItem);
+	        	}
 	        	//Recalculating distance in the list
 				for(int i = 0;i< wList.size();i++){
 					tempWP = wList.get(i);
@@ -415,13 +410,13 @@ public class WayPointActivity extends Activity {
 					wList.get(i).setDistance(tempResult[0]);
 				}
 				Collections.sort(wList);//Sorting the list by proximity
-				//add the default value back on the top of the list
-				wList.add(0, first);
 	        }//end if
+	        //add the default value back on the top of the list
+			wList.add(0, first);
 	        
-	        Log.i("sortttt", "in the sort");
+			
 	        //back from main activity after activating
-	        if(selectedItem!=0){
+	        if(!wList.get(selectedItem).getName().equals("Please selected a waypoint")){
 	        	//get the selected waypoint and add it on the top of the list
 	        	tempWP = wList.remove(selectedItem);
 	        	wList.add(0,tempWP);
