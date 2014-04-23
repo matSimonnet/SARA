@@ -44,16 +44,16 @@ public class BearingUnitActivity extends Activity {
 		intentToGeneral = new Intent(BearingUnitActivity.this,GeneralSettingActivity.class);
 		
 		this.group = (RadioGroup) findViewById(R.id.radioGroup1);
-		this.group.setContentDescription("A group of bearing unit");
+		this.group.setContentDescription(getResources().getString(R.string.choose_bearing_unit));
 		
 		this.portandstarboardRadioButton = (RadioButton) findViewById(R.id.radioButton1);
-		this.portandstarboardRadioButton.setContentDescription("port and starboard unit");
+		this.portandstarboardRadioButton.setContentDescription(getResources().getString(R.string.portandstartboardunit));
 		
 		this.cardinalRadioButton = (RadioButton) findViewById(R.id.radioButton2);
-		this.cardinalRadioButton.setContentDescription("cardinal unit");
+		this.cardinalRadioButton.setContentDescription(getResources().getString(R.string.cardinalunit));
 		
 		this.saveButton = (Button) findViewById(R.id.button1);
-		this.saveButton.setContentDescription("save");
+		this.saveButton.setContentDescription(getResources().getString(R.string.savesetting));
 		
 	    // Restore preferences
 		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);

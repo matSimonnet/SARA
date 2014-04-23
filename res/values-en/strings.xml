@@ -169,6 +169,8 @@
     <string name="choose_bearing_unit">Please choose the bearing unit below.</string>
     <string name="choos_distance_unit">Please choose the distance unit below.</string>
     <string name="choos_speed_unit">Please choose the speed unit below.</string>
-          
+    <string name="portandstartboardunit">port and starboard unit</string>
+    <string name="cardinalunit">cardinal unit</string>
+    
 </resources>
 
