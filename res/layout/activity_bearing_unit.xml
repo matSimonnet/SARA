@@ -15,26 +15,27 @@
 
         <RadioButton
             android:id="@+id/radioButton1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:checked="true"
-            android:text="@string/KMandM"
-            android:textSize="40sp" />
+            android:text="@string/portandstarboard"
+            android:textSize="60dp" />
 
         <RadioButton
             android:id="@+id/radioButton2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/nauticalmile"
-            android:textSize="40sp" />
+            android:text="@string/cardinal"
+            android:textSize="60dp" />
     </RadioGroup>
     
     <Button
         android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:textSize="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"

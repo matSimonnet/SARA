@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
@@ -12,7 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="90dp"
         tools:context=".MainActivity"/>
 
     <TextView
@@ -20,16 +20,18 @@
        	android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/speedView"
+        android:paddingTop="40dp"
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="90dp"
         tools:context=".MainActivity"/>
  	<TextView
     	android:id="@+id/bearingView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/heading"
+        android:paddingTop="40dp"           
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="90dp"
         tools:context=".MainActivity"/>
    		 	
     <TextView
@@ -37,8 +39,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bearingView"       
+        android:paddingTop="40dp"           
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="90dp"
         tools:context=".MainActivity"/>
     
     <TextView
@@ -46,32 +49,29 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/distanceView"       
+        android:paddingTop="40dp" 
+        android:paddingBottom="50dp"          
         android:gravity="center"
-        android:textSize="75sp"
+        android:textSize="90dp"
         tools:context=".MainActivity"/>
-	
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="96dp"
+	         
+    <ImageButton 
+    	android:id="@+id/buttonSpeak"
+    	android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/accuracyView"       
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/accuracyView" >
-        
-    	<ImageButton 
-    		android:id="@+id/buttonSpeak"
-    		android:layout_width="0dp"
-        	android:layout_height="100dp"
-        	android:layout_weight="1"
-        	android:layout_gravity="bottom"
-        	android:contentDescription="@string/vocalrecognition"
-        	android:src="@+android:drawable/ic_btn_speak_now"/>
+       	android:layout_toLeftOf="@+id/instantButton"
+        android:contentDescription="@string/vocalrecognition"
+        android:src="@+android:drawable/ic_btn_speak_now"/>
 
-    	<Button
-        	android:id="@+id/instantButton"
-        	android:layout_width="0dp"
-        	android:layout_height="100dp"
-        	android:layout_gravity="bottom"
-        	android:layout_weight="1"
-        	android:textSize="30sp"
-        	android:text="@string/instant_waypoint" /> 
-    	</TableRow>
+    <Button
+        android:id="@+id/instantButton"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/accuracyView"       
+        android:layout_alignParentBottom="true" 
+        android:layout_alignParentRight="true"       
+        android:textSize="50dp"
+        android:text="@string/instant_waypoint" />    
 </RelativeLayout>

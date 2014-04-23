@@ -10,15 +10,17 @@
     <Button
         android:id="@+id/SpeedSettingButton"
         android:layout_width="fill_parent"
-        android:layout_height="96dp"
+        android:layout_height="150dp"
         android:layout_alignParentTop="true"
         android:gravity="center"
+        android:textSize="50dp"
         android:text="@string/speedsetting"/>
         
     <Button
         android:id="@+id/HeadingSettingButton"
         android:layout_width="fill_parent"
-        android:layout_height="96dp"
+        android:layout_height="150dp"
+        android:textSize="50dp"
 		android:layout_below="@+id/SpeedSettingButton"
         android:gravity="center"
         android:text="@string/headingsetting"/>    
@@ -26,25 +28,28 @@
     <Button
         android:id="@+id/BearingSettingButton"
         android:layout_width="fill_parent"
-        android:layout_height="96dp"
+        android:layout_height="150dp"
 		android:layout_below="@+id/HeadingSettingButton"
         android:gravity="center"
+        android:textSize="50dp"
         android:text="@string/bearingsetting"/> 
            
     <Button
         android:id="@+id/DistanceSettingButton"
         android:layout_width="fill_parent"
-        android:layout_height="96dp"
+        android:layout_height="150dp"
 		android:layout_below="@+id/BearingSettingButton"
         android:gravity="center"
+        android:textSize="50dp"
         android:text="@string/distancesetting"/>  
           
     <Button
         android:id="@+id/AccuracySettingButton"
         android:layout_width="fill_parent"
-        android:layout_height="96dp"
+        android:layout_height="150dp"
 		android:layout_below="@+id/DistanceSettingButton"
         android:gravity="center"
+        android:textSize="50dp"
         android:text="@string/accuracysetting"/>
     
 </RelativeLayout>
