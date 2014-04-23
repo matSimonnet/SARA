@@ -159,5 +159,25 @@ public class SpeechRateActivity extends Activity {
 	public void LoadPref() {
 		this.speechRate = Utils.arrondiSpeedTreshold(settings.getFloat("speechRate", 1.5f));
 	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+	  
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
+	  
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		tts.shutdown();
+	}
 
 }
