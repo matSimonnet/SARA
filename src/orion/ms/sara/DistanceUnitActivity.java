@@ -45,16 +45,16 @@ public class DistanceUnitActivity extends Activity {
 		intentToGeneral = new Intent(DistanceUnitActivity.this,GeneralSettingActivity.class);
 		
 		this.group = (RadioGroup) findViewById(R.id.radioGroup1);
-		this.group.setContentDescription("A group of distance unit");
+		this.group.setContentDescription(getResources().getString(R.string.choos_distance_unit));
 		
 		this.KilometreRadioButton = (RadioButton) findViewById(R.id.radioButton1);
-		this.KilometreRadioButton.setContentDescription("kilometre and metre unit");
+		this.KilometreRadioButton.setContentDescription(getResources().getString(R.string.kilometreandmetreunit));
 		
 		this.NMRadioButton = (RadioButton) findViewById(R.id.radioButton2);
-		this.NMRadioButton.setContentDescription("nautical mile unit");
+		this.NMRadioButton.setContentDescription(getResources().getString(R.string.nauticalmileunit));
 		
 		this.saveButton = (Button) findViewById(R.id.button1);
-		this.saveButton.setContentDescription("save");
+		this.saveButton.setContentDescription(getResources().getString(R.string.savesetting));
 		
 	    // Restore preferences
 		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
