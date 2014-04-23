@@ -187,13 +187,13 @@ public class Utils {
 			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.notactivate));
 		}
 		if(unit == resource.getString(R.string.nm)) {
-			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + MyLocationListener.WaypointName + value + " " + resource.getString(R.string.nauticalmiles));
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " " + value + " " + resource.getString(R.string.nauticalmiles));
 		}
 		if(unit == resource.getString(R.string.m)) {
-			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + MyLocationListener.WaypointName + value + " " + resource.getString(R.string.metres));
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " " + value + " " + resource.getString(R.string.metres));
 		}
 		if(unit == resource.getString(R.string.km)) {
-			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + MyLocationListener.WaypointName + value + " " + resource.getString(R.string.kilometres));			
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " " + value + " " + resource.getString(R.string.kilometres));			
 		}
 	}
 	
@@ -202,21 +202,21 @@ public class Utils {
 			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.notactivate));
 		}
 		if(unit == resource.getString(R.string.deg)) {
-			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + MyLocationListener.WaypointName +value + " " + resource.getString(R.string.degrees));
+			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " " + value + " " + resource.getString(R.string.degrees));
 		}
 		if(unit == resource.getString(R.string.onport)) {
-			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + MyLocationListener.WaypointName + value + " " + resource.getString(R.string.onport));
+			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " " + value + " " + resource.getString(R.string.onport));
 		}
 		if(unit == resource.getString(R.string.onstarboard)) {
-			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + MyLocationListener.WaypointName + value + " " + resource.getString(R.string.onstarboard));
+			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " " + value + " " + resource.getString(R.string.onstarboard));
 		}
 	}
 	public static void speakBearingTextView(String value, String unit) {
 		if(unit == resource.getString(R.string.deg)) {
-			MainActivity.tts.speak(resource.getString(R.string.bearing) + " " + value + " " + resource.getString(R.string.bearingunit), TextToSpeech.QUEUE_ADD, null);
+			MainActivity.tts.speak(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " " + value + " " + resource.getString(R.string.bearingunit), TextToSpeech.QUEUE_ADD, null);
 		}
 		else { // on starboard/port
-			MainActivity.tts.speak(resource.getString(R.string.bearing) + " " + value + " " + unit, TextToSpeech.QUEUE_ADD, null);
+			MainActivity.tts.speak(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " " + value + " " + unit, TextToSpeech.QUEUE_ADD, null);
 		}
 	}
 	
@@ -239,13 +239,13 @@ public class Utils {
 	
 	public static void speakDistanceTextView(String value, String unit) {
 		if(unit == resource.getString(R.string.m)) {
-			MainActivity.tts.speak(resource.getString(R.string.distance) + " " + value + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
+			MainActivity.tts.speak(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " " + value + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
 		} 
 		if(unit == resource.getString(R.string.km)){
-			MainActivity.tts.speak(resource.getString(R.string.distance) + " " + value + " " + resource.getString(R.string.kilometres), TextToSpeech.QUEUE_ADD, null);
+			MainActivity.tts.speak(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " " + value + " " + resource.getString(R.string.kilometres), TextToSpeech.QUEUE_ADD, null);
 		}
 		if(unit == resource.getString(R.string.nm)){
-			MainActivity.tts.speak(resource.getString(R.string.distance) + " " + value + " " + resource.getString(R.string.nauticalmiles), TextToSpeech.QUEUE_ADD, null);
+			MainActivity.tts.speak(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " " + value + " " + resource.getString(R.string.nauticalmiles), TextToSpeech.QUEUE_ADD, null);
 		}
 	}
 

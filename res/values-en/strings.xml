@@ -182,5 +182,7 @@
     <string name="maptypesetting">Map Type Setting</string>
     <string name="speechratesetting">Speech Rate Setting</string>
     
+   <string name="to">to</string>
+    
 </resources>
 
