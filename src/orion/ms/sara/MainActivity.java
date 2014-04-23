@@ -60,8 +60,8 @@ public class MainActivity extends Activity {
 
 	//Generating a number for a new waypoint's default name
 	public static int lastNumberForInstantWaypoint = 0;
-	//activating way point item from the list
-	private int actItem = 0;
+	//activating way point item name from the list
+	private String actName = "Please selected a waypoint";
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -265,7 +265,8 @@ public class MainActivity extends Activity {
         	        MyLocationListener.WaypointName = data.getStringExtra("actName");
         	        MyLocationListener.WaypointLatitude = data.getDoubleExtra("actLatitude", 999);
         	        MyLocationListener.WaypointLongitude = data.getDoubleExtra("actLongitude", 999);
-        			actItem = data.getIntExtra("actItem", 0);
+        			this.actName = data.getStringExtra("actName");
+        			Log.i("receiveing name", actName);
         			
 				    editor.putString("WaypointLatitude", String.valueOf(MyLocationListener.WaypointLatitude));
 				    editor.putString("WaypointLongitude", String.valueOf(MyLocationListener.WaypointLongitude));
@@ -301,8 +302,8 @@ public class MainActivity extends Activity {
             startActivityForResult(intent_AutoSetting_activity, RESULT_AUTO_SETTING);
 			break;
 		case R.id.waypoint_setting:
-			intent_Waypoint_activity.putExtra("actItem", actItem);
-			Log.i("Activate item", actItem+"");
+			intent_Waypoint_activity.putExtra("actName", actName);
+			Log.i("Activate item", actName);
 			startActivityForResult(intent_Waypoint_activity, RESULT_WAYPOINT);
 			break;
 		case R.id.general_setting:

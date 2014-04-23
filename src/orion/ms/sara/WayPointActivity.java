@@ -76,6 +76,7 @@ public class WayPointActivity extends Activity {
 		
 		//selected way point item number
 		private int selectedItem = 0;
+		private String selectedName = "Please selected a waypoint";
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -122,8 +123,8 @@ public class WayPointActivity extends Activity {
 
 			//get selected item from main
 			Intent intentFromMain = getIntent();
-			selectedItem = intentFromMain.getIntExtra("actItem", 0);
-			Log.i("selected item", "item "+selectedItem+" : "+wayPointList.get(selectedItem).getName());
+			selectedName = intentFromMain.getStringExtra("actName");
+			Log.i("selected item from onCreate",selectedName);
 			
 			//sort the list
 			if(MyLocationListener.currentLatitude.equals("") && selectedItem==0){
@@ -183,8 +184,7 @@ public class WayPointActivity extends Activity {
 											intentToMain.putExtra("actName", choosingWaypoint.getName());//name
 											intentToMain.putExtra("actLatitude", Double.parseDouble( choosingWaypoint.getLatitude()));//latitude
 											intentToMain.putExtra("actLongitude", Double.parseDouble(choosingWaypoint.getLongitude()));//longitude
-											intentToMain.putExtra("actItem", selectedItem);
-											Log.i("selected", "i="+selectedItem+" name"+choosingWaypoint.getName());
+											Log.i("selected", "name : "+choosingWaypoint.getName());
 											
 											//back to WayPoint activity and send some parameters to the activity
 											setResult(RESULT_OK, intentToMain);
@@ -295,7 +295,6 @@ public class WayPointActivity extends Activity {
 			sortingWaypointList(wayPointList);
 			way.setTop(selectedItem);
 			Log.i("sort from on resume", "sort from on resume");
-			Log.i("top resume list", ""+way.getTop());
 	    }
 	  }
 	  @Override
@@ -369,6 +368,7 @@ public class WayPointActivity extends Activity {
 	public void deleteWPfromList(List<WP> wList, WP del){
 		//Deleting the way point from the list
 		wList.remove(del);
+		selectedName = "Please selected a waypoint";//reset to default
 		sortingWaypointList(wList);//sorting the list
 	}
 	
@@ -383,43 +383,51 @@ public class WayPointActivity extends Activity {
 			//update location
 	        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
 	        
-	        //GPS available -> sort by proximity
-	        if(!MyLocationListener.currentLatitude.equals("") && wList.size()>1){
-	        	//remove the default value before sorting
-	        	int defaultItem = -1;
-	        	for(int i = 0;i<wList.size();i++){
-	        		if(wList.get(i).getName().equals("Please selected a waypoint")){
-	        			defaultItem = i;
-	        			Log.i("default item", wList.get(defaultItem).getName());
-	        		}
-	        	}
-	        	if(defaultItem!=-1){
-	        		//have the default
-	        		wList.remove(defaultItem);
-	        	}
-	        	//Recalculating distance in the list
-				for(int i = 0;i< wList.size();i++){
-					tempWP = wList.get(i);
-					//calculate new distance
-					double tempLa = Double.parseDouble(tempWP.getLatitude());
-					double tempLong = Double.parseDouble(tempWP.getLongitude());
-					
-					Location.distanceBetween(tempLa, tempLong, 
-							Double.parseDouble(MyLocationListener.currentLatitude), Double.parseDouble(MyLocationListener.currentLongitude), tempResult);
-					//set up the new distance from the current position into every way point in the list
-					wList.get(i).setDistance(tempResult[0]);
-				}
-				Collections.sort(wList);//Sorting the list by proximity
-	        }//end if
-	        //add the default value back on the top of the list
-			wList.add(0, first);
-	        
+	      //remove the default value before sorting
+        	int defaultItem = -1;
+        	for(int i = 0;i<wList.size();i++){
+        		if(wList.get(i).getName().equals("Please selected a waypoint")){
+        			defaultItem = i;
+        		}
+        	}
+        	if(defaultItem!=-1){
+        		//have the default
+        		wList.remove(defaultItem);
+		        //GPS available -> sort by proximity
+		        if(!MyLocationListener.currentLatitude.equals("") && wList.size()>1){
+		        	//Recalculating distance in the list
+					for(int i = 0;i< wList.size();i++){
+						tempWP = wList.get(i);
+						//calculate new distance
+						double tempLa = Double.parseDouble(tempWP.getLatitude());
+						double tempLong = Double.parseDouble(tempWP.getLongitude());
+						
+						Location.distanceBetween(tempLa, tempLong, 
+								Double.parseDouble(MyLocationListener.currentLatitude), Double.parseDouble(MyLocationListener.currentLongitude), tempResult);
+						//set up the new distance from the current position into every way point in the list
+						wList.get(i).setDistance(tempResult[0]);
+					}
+					Collections.sort(wList);//Sorting the list by proximity
+		        }//end if
+		        //add the default value back on the top of the list
+		        wList.add(0, first);
+        	}//end if have default item
+        	else{
+        		//add the default value on the top of the list
+		        wList.add(0, first);
+        	}
 			
 	        //back from main activity after activating
-	        if(!wList.get(selectedItem).getName().equals("Please selected a waypoint")){
+	        if(!selectedName.equals("Please selected a waypoint")){
 	        	//get the selected waypoint and add it on the top of the list
-	        	tempWP = wList.remove(selectedItem);
+	        	for(int i = 0;i<wList.size();i++){
+	        		if(wList.get(i).getName().equals(selectedName)){
+	        			tempWP = wList.remove(i);
+	        			Log.i("selected item from sort", tempWP.getName());
+	        		}
+	        	}
 	        	wList.add(0,tempWP);
+	        	
 	        }
 	        	        
 			//set array adapter of the list into the spinner
@@ -429,6 +437,8 @@ public class WayPointActivity extends Activity {
 							toNameArrayList(wList));
 			arrAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);      
 			way.setAdapter(arrAd);
+			
+			Log.i("top list", way.getTop()+"");
 			
 			//save the last number of default name value and attributes of way point in the list
 			savePref(lastNumberForWaypoint,nameArray(wList),latitudeArray(wList),longitudeArray(wList));
@@ -457,13 +467,8 @@ public class WayPointActivity extends Activity {
 				intentToMain.putExtra("actName", newName);//name
 				intentToMain.putExtra("actLatitude", Double.parseDouble(newLatitude));//latitude
 				intentToMain.putExtra("actLongitude", Double.parseDouble(newLongitude));//longitude
-				//find the selected item location
-				for(int i = 0;i<wayPointList.size();i++){
-					if(wayPointList.get(i).getName().equals(newName))
-						selectedItem = i;
-				}
-				intentToMain.putExtra("actItem", selectedItem);
-				Log.i("selected", "i="+selectedItem+" name"+wayPointList.get(selectedItem).getName());
+				
+				Log.i("selected", newName);
 				//back to main activity and send some parameters to the activity
 				setResult(RESULT_OK, intentToMain);
 				
@@ -491,13 +496,7 @@ public class WayPointActivity extends Activity {
 				intentToMain.putExtra("actName", modName);//name
 				intentToMain.putExtra("actLatitude", Double.parseDouble(modLatitude));//latitude
 				intentToMain.putExtra("actLongitude", Double.parseDouble(modLongitude));//longitude
-				//find the selected item location
-				for(int i = 0;i<wayPointList.size();i++){
-					if(wayPointList.get(i).getName().equals(modName))
-						selectedItem = i;
-				}
-				intentToMain.putExtra("actItem", selectedItem);
-				Log.i("selected", "i="+selectedItem+" name"+wayPointList.get(selectedItem).getName());
+				Log.i("selected", modName);
 				
 				//back to main activity and send some parameters to the activity
 				setResult(RESULT_OK, intentToMain);
@@ -554,6 +553,9 @@ public class WayPointActivity extends Activity {
 			switch (item.getItemId()) {
 			case R.id.navigation_setting:
 				//back to WayPoint activity and send some parameters to the activity
+				intentToMain.putExtra("actName", "Please selected a waypoint");//name
+				intentToMain.putExtra("actLatitude", 999);//latitude
+				intentToMain.putExtra("actLongitude", 999);//longitude
 				setResult(RESULT_OK, intentToMain);
 				finish();
 				break;
