@@ -12,12 +12,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
+        android:textSize="30dp"
         android:text="@string/autospeed" />
 
     <TextView
         android:id="@+id/speedTresholdView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="30dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/speedAutoCheckBox"
         android:layout_toLeftOf="@+id/DecreaseSpeedTresholdButton"
@@ -26,16 +28,20 @@
 
     <Button
         android:id="@+id/DecreaseSpeedTresholdButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:textSize="50dp"
+        android:textAlignment="center"
         android:layout_below="@+id/speedAutoCheckBox"
         android:layout_toLeftOf="@+id/IncreaseSpeedTresholdButton"
         android:text="@string/DecreaseButton" />
 
     <Button
         android:id="@+id/IncreaseSpeedTresholdButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:textSize="50dp"
+        android:textAlignment="center"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/speedAutoCheckBox"
         android:text="@string/IncreaseButton" />
@@ -44,6 +50,7 @@
         android:id="@+id/speedTimeTresholdView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="30dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/IncreaseSpeedTresholdButton"
         android:layout_toLeftOf="@+id/DecreaseSpeedTimeTresholdButton"
@@ -52,8 +59,10 @@
 
     <Button
         android:id="@+id/DecreaseSpeedTimeTresholdButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:textSize="50dp"
+        android:textAlignment="center"
         android:layout_below="@+id/IncreaseSpeedTresholdButton"
         android:layout_toLeftOf="@+id/IncreaseSpeedTimeTresholdButton"
         android:gravity="center"
@@ -61,8 +70,10 @@
 
     <Button
         android:id="@+id/IncreaseSpeedTimeTresholdButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:textSize="50dp"
+        android:textAlignment="center"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/IncreaseSpeedTresholdButton"
         android:gravity="center"
@@ -71,7 +82,8 @@
     <Button
         android:id="@+id/SaveSettingButton"
         android:layout_width="fill_parent"
-        android:layout_height="96dp"
+        android:layout_height="150dp"
+        android:textSize="50dp"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:text="@string/savesetting" />
