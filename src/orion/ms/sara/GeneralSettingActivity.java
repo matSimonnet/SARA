@@ -56,19 +56,19 @@ public class GeneralSettingActivity extends Activity {
 		
 		//Buttons and their description
 		this.speedUnitButton = (Button) findViewById(R.id.button1);
-		this.speedUnitButton.setContentDescription("Speed unit setting");
+		this.speedUnitButton.setContentDescription(getResources().getString(R.string.speedunitsetting));
 		
 		this.bearingUnitButton = (Button) findViewById(R.id.button2);
-		this.bearingUnitButton.setContentDescription("Bearing unit setting");
+		this.bearingUnitButton.setContentDescription(getResources().getString(R.string.bearingunitsetting));
 		
 		this.distanceUnitButton = (Button) findViewById(R.id.button3);
-		this.distanceUnitButton.setContentDescription("Distance unit setting");
+		this.distanceUnitButton.setContentDescription(getResources().getString(R.string.distanceunitsetting));
 		
 		this.mapTypeButton = (Button) findViewById(R.id.button4);
-		this.mapTypeButton.setContentDescription("Map type setting");
+		this.mapTypeButton.setContentDescription(getResources().getString(R.string.maptypesetting));
 		
 		this.speechRateButton = (Button) findViewById(R.id.button5);
-		this.speechRateButton.setContentDescription("Speech rate setting");
+		this.speechRateButton.setContentDescription(getResources().getString(R.string.speechratesetting));
 		
 		//intent creations
 		intentToSpeed = new Intent(GeneralSettingActivity.this,SpeedUnitActivity.class);

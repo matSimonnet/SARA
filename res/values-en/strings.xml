@@ -176,6 +176,11 @@
     <string name="knotunit">knot unit</string>
     <string name="kilometersperhourunit">kilometre per hour unit</string>
     
+    <string name="speedunitsetting">Speed Unit Setting</string>
+    <string name="bearingunitsetting">Bearing Unit Setting</string>
+    <string name="distanceunitsetting">Distance Unit Setting</string>
+    <string name="maptypesetting">Map Type Setting</string>
+    <string name="speechratesetting">Speech Rate Setting</string>
     
 </resources>
 
