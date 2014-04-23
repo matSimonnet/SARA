@@ -44,12 +44,20 @@ public class Utils {
     }  
     
     public static String precisionDistance(double distance) {
-		if(distance < 1) {
+    	if(distance < 0.1) {
 			return String.valueOf((int) (distance * 1000));
+    	}
+    	
+		if(distance >= 0.1 && distance < 1) {
+			int temp = (int) (distance * 1000);
+			if(temp % 10 < 5) return String.valueOf((temp/10) * 10);
+			else return String.valueOf(((temp+10)/10) *10);
 		}
+		
 		if(distance >= 1 && distance < 10) {
 			return String.valueOf(arrondiDistance(distance));
 		}
+		
 		else {
 			return String.valueOf((int) distance);
 		}
