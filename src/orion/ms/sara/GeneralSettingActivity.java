@@ -182,5 +182,4 @@ public class GeneralSettingActivity extends Activity {
 		tts.shutdown();
 	}
 
-
 }
