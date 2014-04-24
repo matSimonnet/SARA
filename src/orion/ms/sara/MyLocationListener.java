@@ -2,6 +2,8 @@ package orion.ms.sara;
 
 import java.util.Date;
 
+import org.mapsforge.core.GeoPoint;
+
 import android.app.Activity;
 import android.content.res.Resources;
 import android.location.Location;
@@ -13,7 +15,6 @@ import android.widget.Toast;
 public class MyLocationListener extends Activity implements LocationListener {
 
 	public static final String PREFS_NAME = "MyPrefsFile";
-
 	public static String speed = "";
 	public static String heading = "";
 	public static String DistanceToCurrentWaypoint = "";
@@ -96,6 +97,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public static boolean isInMain = true;
 
 	public Resources resource = MainActivity.getContext().getResources();
+	
+	public static GeoPoint geoPoint[] = new GeoPoint[0];
+	public static boolean isAutoDrawTrack = false;
 
 	@Override
 	public void onLocationChanged(Location loc) {
@@ -119,7 +123,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 
 		accuracy = getAccuracy(loc);
 		accuracyUnit = getAccuracyUnit();
-
+		
+		createPoint(Double.parseDouble(currentLatitude), Double.parseDouble(currentLongitude));
+		drawTrack();
 		// set all text view
 		Utils.setSpeedTextView(speed, speedUnit);
 		Utils.setHeadingTextView(heading, headingUnit);
@@ -375,4 +381,27 @@ public class MyLocationListener extends Activity implements LocationListener {
 		if (distanceAuto < 10000 && distanceAuto >= 1000) return 1000;
 		else return 10000;
 	}
+	
+	
+	public void createPoint(double latitude, double longitude) {
+		int newsize = geoPoint.length + 1;
+		GeoPoint[] tmp = new GeoPoint[newsize];
+		
+		for(int i = 0; i < geoPoint.length; i++) {
+			tmp[i] = geoPoint[i];
+		}
+		tmp[newsize-1] = new GeoPoint(latitude, longitude);
+		geoPoint = new GeoPoint[newsize];
+		for(int i = 0; i < geoPoint.length; i++) {
+			geoPoint[i] = tmp[i];
+		}
+		
+		Log.i("add geo", latitude + " " + longitude);
+	}
+	public void drawTrack() {
+		if(isAutoDrawTrack) {
+			MyMapActivity.drawTrack();
+		}
+	}
+	
 }
