@@ -134,7 +134,6 @@ public class AutoDistanceActivity extends Activity {
 		
 	    // tts creation
 		tts = new TextToSpeech(this, onInitListener);
-		tts.setSpeechRate(GeneralSettingActivity.speechRate);
 			
 	} // end of onCreate
 	

@@ -73,7 +73,6 @@ public class NewWayPointActivity extends Activity {
 				
 			    // textToSpeech creation
 				tts = new TextToSpeech(this, onInitListener);
-				tts.setSpeechRate(GeneralSettingActivity.speechRate);
 				
 				//location manager creation
 		        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

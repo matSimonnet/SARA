@@ -18,13 +18,11 @@ public class GeneralSettingActivity extends Activity {
 	private Button bearingUnitButton = null;
 	private Button distanceUnitButton = null;
 	private Button mapTypeButton = null;
-	private Button speechRateButton = null;
 	
 	private Intent intentToSpeed;
 	private Intent intentToBearing;
 	private Intent intentToDistance;
 	private Intent intentToMapType;
-	private Intent intentToSpeech;	
 	
 	//code for intent
 	protected static final int SPEED_UNIT = 141;
@@ -52,7 +50,6 @@ public class GeneralSettingActivity extends Activity {
 		
 	    // textToSpeech creation
 		tts = new TextToSpeech(this, onInitListener);
-		tts.setSpeechRate(speechRate);
 		
 		//Buttons and their description
 		this.speedUnitButton = (Button) findViewById(R.id.button1);
@@ -66,16 +63,12 @@ public class GeneralSettingActivity extends Activity {
 		
 		this.mapTypeButton = (Button) findViewById(R.id.button4);
 		this.mapTypeButton.setContentDescription(getResources().getString(R.string.maptypesetting));
-		
-		this.speechRateButton = (Button) findViewById(R.id.button5);
-		this.speechRateButton.setContentDescription(getResources().getString(R.string.speechratesetting));
-		
+
 		//intent creations
 		intentToSpeed = new Intent(GeneralSettingActivity.this,SpeedUnitActivity.class);
 		intentToBearing = new Intent(GeneralSettingActivity.this,BearingUnitActivity.class);
 		intentToDistance = new Intent(GeneralSettingActivity.this,DistanceUnitActivity.class);
 		intentToMapType = new Intent(GeneralSettingActivity.this,MapTypeActivity.class);
-		intentToSpeech = new Intent(GeneralSettingActivity.this,SpeechRateActivity.class);
 		
 	    View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
@@ -92,16 +85,12 @@ public class GeneralSettingActivity extends Activity {
 				if(v == mapTypeButton) {
 		            startActivityForResult(intentToMapType, MAP_TYPE);					
 				}
-				if(v == speechRateButton) {
-		            startActivityForResult(intentToSpeech, SPEECH_RATE);					
-				}
 			}
 	    };
 	    speedUnitButton.setOnClickListener(onclickListener);
 	    bearingUnitButton.setOnClickListener(onclickListener);
 	    distanceUnitButton.setOnClickListener(onclickListener);
 	    mapTypeButton.setOnClickListener(onclickListener);
-	    speechRateButton.setOnClickListener(onclickListener);
 
 	} // end of on create
 	
@@ -135,9 +124,6 @@ public class GeneralSettingActivity extends Activity {
 	     		}
 	     		break;	     	}
 	     	case MAP_TYPE : {
-	     		break;
-	     	}
-	     	case SPEECH_RATE : {
 	     		break;
 	     	}
 	     }

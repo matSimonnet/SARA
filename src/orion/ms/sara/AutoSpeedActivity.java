@@ -183,8 +183,6 @@ public class AutoSpeedActivity extends Activity {
 		
 	    // tts creation
 		tts = new TextToSpeech(this, onInitListener);
-		tts.setSpeechRate(GeneralSettingActivity.speechRate);
-		Log.i("rate", GeneralSettingActivity.speechRate+"");
 	} // end of onCreate
 	
 	@Override

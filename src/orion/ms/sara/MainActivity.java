@@ -132,7 +132,6 @@ public class MainActivity extends Activity {
 
         // Text to speech creation
         tts = new TextToSpeech(this, onInitListener);
-        tts.setSpeechRate(GeneralSettingActivity.speechRate);
         
         //"Instantly create a waypoint" button
         instantButton = (Button) findViewById(R.id.instantButton);
@@ -280,7 +279,6 @@ public class MainActivity extends Activity {
         	}// end of case
         	case RESULT_GENERAL_SETTING : {
         		if (resultCode == RESULT_OK) {
-        	        tts.setSpeechRate(GeneralSettingActivity.speechRate);
         		}
         	break;
         	}

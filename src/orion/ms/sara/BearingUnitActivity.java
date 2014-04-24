@@ -69,7 +69,6 @@ public class BearingUnitActivity extends Activity {
 		
 	    // textToSpeech creation
 		tts = new TextToSpeech(this, onInitListener);
-		tts.setSpeechRate(GeneralSettingActivity.speechRate);
 		
 	    View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override

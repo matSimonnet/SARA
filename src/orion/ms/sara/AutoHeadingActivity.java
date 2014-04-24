@@ -183,7 +183,6 @@ public class AutoHeadingActivity extends Activity {
 		
 	    // tts creation
 		tts = new TextToSpeech(this, onInitListener);
-		tts.setSpeechRate(GeneralSettingActivity.speechRate);
 			
 	} // end of onCreate
 	
