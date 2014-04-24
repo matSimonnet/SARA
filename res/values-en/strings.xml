@@ -183,6 +183,7 @@
     <string name="speechratesetting">Speech Rate Setting</string>
     
    <string name="to">to</string>
-    
+   <string name="stopdisplay">Stop Display</string>
+   <string name="display">Display Track</string>
 </resources>
 
