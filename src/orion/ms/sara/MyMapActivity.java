@@ -22,8 +22,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+
 import java.util.List;
 import java.io.File;
+
 import org.mapsforge.android.maps.*;
 import org.mapsforge.android.maps.overlay.ArrayWayOverlay;
 import org.mapsforge.android.maps.overlay.OverlayWay;
@@ -37,6 +39,9 @@ public class MyMapActivity extends MapActivity {
 	private MyLocationListener ll;
 	private static ArrayWayOverlay wayOverlay;
 	private Button DisplayTrackButton;
+	
+	//url for downloading file
+	String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +65,6 @@ public class MyMapActivity extends MapActivity {
 	    View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				if(v == DisplayTrackButton) {
 					if(MyLocationListener.isAutoDrawTrack == false) {
 						MyLocationListener.isAutoDrawTrack = true;
@@ -159,9 +163,41 @@ public class MyMapActivity extends MapActivity {
 					if (isNetworkAvailable()) {
 						// warning if on 3G network
 						if (is3GAvailable()) {
-							// second alert to notice it will be expensive
-
-						}// end is3GAvailable
+							//second alert to notice it will be expensive
+							AlertDialog.Builder dialog = new AlertDialog.Builder(MyMapActivity.this);
+							dialog.setIcon(android.R.drawable.presence_busy);
+							dialog.setTitle("Warning!!!");
+							dialog.setMessage("Your Internet is connecting via 3G, downloading now may cost a lot. Are you sure to continue?");
+							dialog.setNegativeButton("Sure", new OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									//download
+									if(isDownloadManagerAvailable(MyMapActivity.this)){
+										DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+										request.setDescription("/Android/data/map/");
+										request.setTitle("bretagne.map");
+										// in order for this if to run, you must use the android 3.2 to compile your app
+										if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+										    request.allowScanningByMediaScanner();
+										    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+										}
+										request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "bretagne.map");
+				
+										// get download service and enqueue file
+										DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+										manager.enqueue(request);
+									}//end isDownloadManagerAvailable
+								}
+							});//end setNegativeButton
+							dialog.setNeutralButton("Cancel", new OnClickListener() {
+								//Go back to main activity
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									finish();
+								}
+							});//
+							dialog.show();
+						}//end is3GAvailable
 						else if (isWifiAvailable()) {
 							// Start downloading file via wireless network
 							// notify
@@ -171,7 +207,7 @@ public class MyMapActivity extends MapActivity {
 							dialog.setNeutralButton("OK", null);
 							dialog.show();
 							// download
-							String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map";
+							
 							if (isDownloadManagerAvailable(MyMapActivity.this)) {
 								DownloadManager.Request request = new DownloadManager.Request(
 										Uri.parse(url));
