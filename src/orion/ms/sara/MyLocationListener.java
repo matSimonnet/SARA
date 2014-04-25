@@ -384,19 +384,21 @@ public class MyLocationListener extends Activity implements LocationListener {
 	
 	
 	public void createPoint(double latitude, double longitude) {
-		int newsize = geoPoint.length + 1;
-		GeoPoint[] tmp = new GeoPoint[newsize];
+		if(isAutoDrawTrack) {
+			int newsize = geoPoint.length + 1;
+			GeoPoint[] tmp = new GeoPoint[newsize];
 		
-		for(int i = 0; i < geoPoint.length; i++) {
-			tmp[i] = geoPoint[i];
-		}
-		tmp[newsize-1] = new GeoPoint(latitude, longitude);
-		geoPoint = new GeoPoint[newsize];
-		for(int i = 0; i < geoPoint.length; i++) {
-			geoPoint[i] = tmp[i];
-		}
+			for(int i = 0; i < geoPoint.length; i++) {
+				tmp[i] = geoPoint[i];
+			}
+			tmp[newsize-1] = new GeoPoint(latitude, longitude);
+			geoPoint = new GeoPoint[newsize];	
+			for(int i = 0; i < geoPoint.length; i++) {
+				geoPoint[i] = tmp[i];
+			}
 		
-		Log.i("add geo", latitude + " " + longitude);
+			Log.i("add geo", latitude + " " + longitude);
+		}
 	}
 	public void drawTrack() {
 		if(isAutoDrawTrack) {

@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
@@ -33,28 +36,55 @@ public class MyMapActivity extends MapActivity {
 	private LocationManager lm = null;
 	private MyLocationListener ll;
 	private static ArrayWayOverlay wayOverlay;
+	private Button DisplayTrackButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mymapview);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
+		DisplayTrackButton = (Button) findViewById(R.id.trackbutton);
+		DisplayTrackButton.setContentDescription("Display Track");
+		DisplayTrackButton.setText("Display Track");
 		
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		ll = new MyLocationListener();
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-		
-		MyLocationListener.isAutoDrawTrack = true;
-		
+				
 		mapView = (MapView) findViewById(R.id.mapView);
 		mapView.setClickable(true);
 		mapView.setBuiltInZoomControls(true);
 		setMapFile();
-		drawTrack();
+		
+	    View.OnClickListener onclickListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(v == DisplayTrackButton) {
+					if(MyLocationListener.isAutoDrawTrack == false) {
+						MyLocationListener.isAutoDrawTrack = true;
+						DisplayTrackButton.setText(getResources().getString(R.string.stopdisplay));
+					}
+					else {
+						MyLocationListener.isAutoDrawTrack = false;
+						DisplayTrackButton.setText(getResources().getString(R.string.display));
+						mapView.getOverlays().remove(wayOverlay);
+						geoPoint = new GeoPoint[0];
+						MyLocationListener.geoPoint = new GeoPoint[0];
+					}
+					
+				}
+			}
+	    };
+	    
+	    DisplayTrackButton.setOnClickListener(onclickListener);
 	}
 
 	public static void drawTrack() {
 
 		geoPoint = MyLocationListener.geoPoint;
+		// remove current Overlay
 		if (wayOverlay != null)
 			mapView.getOverlays().remove(wayOverlay);
 
@@ -65,6 +95,8 @@ public class MyMapActivity extends MapActivity {
 		wayPaint.setStrokeWidth(6);
 
 		wayOverlay = new ArrayWayOverlay(wayPaint, wayPaint);
+		
+		//add location to overlay
 		OverlayWay way = new OverlayWay(new GeoPoint[][] { geoPoint });
 		wayOverlay.addWay(way);
 		mapView.getOverlays().add(wayOverlay);
@@ -113,13 +145,10 @@ public class MyMapActivity extends MapActivity {
 	}
 
 	private void setMapFile() {
-		File mapFile = new File(Environment.getExternalStorageDirectory()
-				.getPath() + "/Android/data/org.mapsforge.android.maps/map/bretagne.map");
+		File mapFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Android/data/org.mapsforge.android.maps/map/bretagne.map");
 		// check if there is a bretagne.map
-		if (mapFile.exists()) {
-			// already had a map
-			mapView.setMapFile(mapFile);
-		} else {
+		if (mapFile.exists()) mapView.setMapFile(mapFile);
+		else {
 			// didn't have a map, then ask if the user wants to download
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 			dialog.setTitle("You don't have a map, do you want to download now?");
