@@ -162,6 +162,7 @@ public class NewWayPointActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						//send the location in the editText and start the new activity
+						intentToWPMap.putExtra("ifMod", false);
 						intentToWPMap.putExtra("oldLatitude", latitudeBox.getText().toString());
 						intentToWPMap.putExtra("oldLongitude", longitudeBox.getText().toString());
 						startActivityForResult(intentToWPMap, WP_MAP);
@@ -312,12 +313,12 @@ public class NewWayPointActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, intentFromAnother);
         if(requestCode==WP_MAP && resultCode == RESULT_OK){
         	//receive latitude and longitude from the map
-        	//String latitudeFromMap = intentFromWPMap.get;
-        	//String longitudeFromMap = intentFromWPMap.get;
+        	String latitudeFromMap = intentFromWPMap.getStringExtra("newLatitude");
+        	String longitudeFromMap = intentFromWPMap.getStringExtra("newLongitude");
         	
         	//set the receiving location to the editText
-        	//latitudeBox.setText(latitudeFromMap);
-        	//longitudeBox.setText(longitudeFromMap);
+        	latitudeBox.setText(latitudeFromMap);
+        	longitudeBox.setText(longitudeFromMap);
         }
         
 	}
@@ -382,7 +383,7 @@ public class NewWayPointActivity extends Activity {
 				intentToWayPoint.putExtra("newLongitude", "");//longitude
 				setResult(RESULT_OK, intentToWayPoint);
 				finish();
-			break;
+				break;
 			}
 		default:
 			break;
