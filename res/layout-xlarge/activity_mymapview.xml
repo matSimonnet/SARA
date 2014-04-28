@@ -23,12 +23,12 @@
         </Button>
 
         <Button
-            android:id="@+id/autocenterButton"
+            android:id="@+id/autocenterbutton"
             style="@style/btnStyleShakespeare"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/autofocus" >
+            android:text="@string/autocenter" >
         </Button>
     </LinearLayout>
 

@@ -128,6 +128,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		
 		createPoint(Double.parseDouble(currentLatitude), Double.parseDouble(currentLongitude));
 		drawTrack();
+		centerLocation();
 
 		// set all text view
 		Utils.setSpeedTextView(speed, speedUnit);
@@ -404,11 +405,17 @@ public class MyLocationListener extends Activity implements LocationListener {
 		}
 	}
 	public void drawTrack() {
-		if(isStartedDisplay & isAutoDrawTrack) {
+		if(isStartedDisplay && isAutoDrawTrack) {
 			MyMapActivity.drawPath();
 			MyMapActivity.drawHeading(Integer.parseInt(heading));
 		}
 	}
+	public void centerLocation() {
+		if(isAutoDrawTrack) {
+			MyMapActivity.centerLocation();
+		}
+	}
+
 
 	
 }

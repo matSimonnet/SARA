@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,8 +41,11 @@ public class MyMapActivity extends MapActivity {
 
 	private static Context mContext;
 	private static MapView mapView;
-	private static ArrayWayOverlay wayOverlay;
+	
 	private Button DisplayTrackButton;
+	private Button AutoCenterButton;
+	private static boolean isAutoCenter = false;
+	private static ArrayWayOverlay wayOverlay;
 	private static Paint wayPaint;
 	private static ArrayItemizedOverlay itemizedOverlay;
 	private static OverlayItem item;
@@ -51,7 +53,7 @@ public class MyMapActivity extends MapActivity {
 	private LocationManager lm = null;
 	public static MyLocationListener ll = null;
 	
-	private static MapController Controller;
+	private static MapController Controller;	
 
 	// url for downloading file
 	private String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map";
@@ -69,7 +71,8 @@ public class MyMapActivity extends MapActivity {
 
 		mContext = this;
 		DisplayTrackButton = (Button) findViewById(R.id.trackbutton);
-		
+		AutoCenterButton = (Button) findViewById(R.id.autocenterbutton);
+
 		if(MyLocationListener.isStartedDisplay) {
 			DisplayTrackButton.setContentDescription(getResources().getString(R.string.stopdisplay));
 			DisplayTrackButton.setText(getResources().getString(R.string.stopdisplay));
@@ -77,19 +80,28 @@ public class MyMapActivity extends MapActivity {
 		else {
 			DisplayTrackButton.setContentDescription(getResources().getString(R.string.display));
 			DisplayTrackButton.setText(getResources().getString(R.string.display));
+		}		
+		if(isAutoCenter) {
+			AutoCenterButton.setContentDescription(getResources().getString(R.string.manualcenter));
+			AutoCenterButton.setText(getResources().getString(R.string.manualcenter));
 		}
+		else {
+			AutoCenterButton.setContentDescription(getResources().getString(R.string.autocenter));
+			AutoCenterButton.setText(getResources().getString(R.string.autocenter));
+		}
+		
+		MyLocationListener.isAutoDrawTrack = true;
 
 		mapView = (MapView) findViewById(R.id.mapView);
 		mapView.setClickable(true);
 		mapView.setBuiltInZoomControls(true);
-		
+
+		setPaintStyle();
 		loadPath();
 		loadHeading();
-		Controller = mapView.getController();
-		MyLocationListener.isAutoDrawTrack = true;
-		
-		setPaintStyle();
 		setMapFile();
+		
+		Controller = mapView.getController();
 
 		View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
@@ -99,13 +111,32 @@ public class MyMapActivity extends MapActivity {
 						MyLocationListener.isStartedDisplay = true;
 						DisplayTrackButton.setText(getResources().getString(R.string.stopdisplay));
 						DisplayTrackButton.setContentDescription(getResources().getString(R.string.stopdisplay));
-					} else {
+						if(MyLocationListener.heading != getResources().getString(R.string.no_satellite)) {
+							drawHeading(Integer.parseInt(MyLocationListener.heading));
+						}
+					} 
+					else {
 						MyLocationListener.isStartedDisplay = false;
 						DisplayTrackButton.setText(getResources().getString(R.string.display));
 						DisplayTrackButton.setContentDescription(getResources().getString(R.string.display));
+						
 						mapView.getOverlays().remove(itemizedOverlay);
 						mapView.getOverlays().remove(wayOverlay);
 						MyLocationListener.geoPoint = new GeoPoint[0];
+					}
+
+				}
+				if (v == AutoCenterButton) {
+					if (isAutoCenter == false) {
+							isAutoCenter = true;
+							AutoCenterButton.setContentDescription(getResources().getString(R.string.manualcenter));
+							AutoCenterButton.setText(getResources().getString(R.string.manualcenter));
+							centerLocation();
+					} 
+					else {
+						isAutoCenter = false;
+						AutoCenterButton.setContentDescription(getResources().getString(R.string.autocenter));
+						AutoCenterButton.setText(getResources().getString(R.string.autocenter));
 					}
 
 				}
@@ -113,6 +144,7 @@ public class MyMapActivity extends MapActivity {
 		};
 
 		DisplayTrackButton.setOnClickListener(onclickListener);
+		AutoCenterButton.setOnClickListener(onclickListener);
 	}
 	private void loadPath() {
 		if(MyLocationListener.geoPoint.length != 0) {
@@ -124,6 +156,16 @@ public class MyMapActivity extends MapActivity {
 			drawHeading(Integer.parseInt(MyLocationListener.heading));
 		}
 	}
+	public static void centerLocation() {
+		if(isAutoCenter) {
+			if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
+				double latitude = Double.valueOf(MyLocationListener.currentLatitude);
+				double longitude = Double.valueOf(MyLocationListener.currentLongitude);
+				GeoPoint currentlocation = new GeoPoint(latitude, longitude);
+				Controller.setCenter(currentlocation);
+			}
+		}
+	}
 
 	public static void drawHeading(int angle) {
 
@@ -132,17 +174,24 @@ public class MyMapActivity extends MapActivity {
 		if (itemizedOverlay != null) {
 			mapView.getOverlays().remove(itemizedOverlay);
 		}
-
+		
+		if(lenght != 0) {
+			item = new OverlayItem(MyLocationListener.geoPoint[lenght - 1], "Current Location", MyLocationListener.geoPoint[lenght - 1].getLatitude() + " " + MyLocationListener.geoPoint[lenght - 1].getLongitude());
+			item.setMarker(ItemizedOverlay.boundCenter(rotateDrawable(angle)));
+		}
+		else {
+			if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
+				double latitude = Double.valueOf(MyLocationListener.currentLatitude);
+				double longitude = Double.valueOf(MyLocationListener.currentLongitude);
+				GeoPoint currentlocation = new GeoPoint(latitude, longitude);
+				item = new OverlayItem(currentlocation, "Current location", currentlocation.getLatitude() + " " + currentlocation.getLongitude());
+				item.setMarker(ItemizedOverlay.boundCenter(rotateDrawable(angle)));
+			}
+		}
 		itemizedOverlay = new ArrayItemizedOverlay(mContext.getResources().getDrawable(R.drawable.arrow), true);
-		Log.i("ang", "" + angle);
-
-		item = new OverlayItem(MyLocationListener.geoPoint[lenght - 1], "Current Location", MyLocationListener.geoPoint[lenght - 1].getLatitude() + " " + MyLocationListener.geoPoint[lenght - 1].getLongitude());
-		item.setMarker(ItemizedOverlay.boundCenter(rotateDrawable(angle)));
-		
 		itemizedOverlay.addItem(item);
-		mapView.getOverlays().add(itemizedOverlay);
 		
-		Controller.setCenter(MyLocationListener.geoPoint[lenght - 1]);
+		mapView.getOverlays().add(itemizedOverlay);
 	}
 
 	public static BitmapDrawable rotateDrawable(float angle) {
