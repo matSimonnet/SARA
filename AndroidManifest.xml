@@ -148,6 +148,10 @@
             android:name="orion.ms.sara.SpeechRateActivity"
             android:label="@string/title_activity_speech_rate" >
         </activity>
+        <activity
+            android:name="orion.ms.sara.WaypointMapActivity"
+            android:label="@string/title_activity_waypoint_map" >
+        </activity>
     </application>
 
 </manifest>

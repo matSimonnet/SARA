@@ -1,37 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="app_name">SARA</string>
-        <string name="menu_settings">réglages</string>
+    <string name="menu_settings">réglages</string>
     <string name="title_activity_main">SARA</string>
-    
     <string name="speed">vitesse</string>
     <string name="speedtreshold">seuil de vitesse</string>
     <string name="autospeed">vitesse auto</string>
     <string name="speedtimetreshold">temps minimum de répétition de la vitesse</string>
-       
     <string name="heading">cap</string>
     <string name="headingtreshold">seuil de cap</string>
     <string name="autohead">cap auto</string>
     <string name="headingtimetreshold">temps minimum de repetition du cap</string>
-       
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
- 
     <string name="nosatelite">perdu</string>
     <string name="norecognition">non reconnu</string>
     <string name="defaultmode">mode auto par défault</string>
     <string name="vocalrecognition">reconnaissance vocale</string>
-    
     <string name="speedunit">noeuds</string>
     <string name="headingunit">degrés</string>
     <string name="bearingunit">degrés</string>
     <string name="timeunit">seconde"s</string>
     <string name="kilometres">kilomètres</string>
     <string name="m">m</string>
-    <string name="km">km</string>        
-    <string name="metres">mètres</string> 
-    
+    <string name="km">km</string>
+    <string name="metres">mètres</string>
     <string name="title_activity_way_point">point de route</string>
     <string name="action_settings">réglages</string>
     <string name="title_activity_new_way_point">nouveau point de route</string>
@@ -44,109 +38,86 @@
     <string name="title_activity_modify">modifier</string>
     <string name="modifyButton">enregistrer les modifications du point de route</string>
     <string name="current_checkedBox">utiliser la position actuelle</string>
-    
     <string name="autobearing">relèvement automatique</string>
     <string name="autodistance">distance automatique</string>
-    
     <string name="DecreaseButton">-</string>
     <string name="IncreaseButton">+</string>
     <string name="savesetting">enregistrer</string>
-    
-    <string name="bearing">relèvement</string>   
+    <string name="bearing">relèvement</string>
     <string name="distance">distance</string>
     <string name="bearingtreshold">seuil de relèvement</string>
     <string name="bearingtimetreshold">temps minimum de répétition du relèvement</string>
     <string name="distancetimetreshold">temps minimum de répétition de la distance</string>
-    
     <string name="save_last_num">0</string>
-    <string name="save_inst_num">0</string>    
-        
+    <string name="save_inst_num">0</string>
     <string name="navigation_setting">retour à la navigation</string>
     <string name="using_map">utiliser une position sur la carte</string>
-    
     <string name="no_satellite">Pas de satellites</string>
-    <string name="waiting_gps">En attente du signal GPS</string>     
-    
-  
+    <string name="waiting_gps">En attente du signal GPS</string>
     <string name="cant_decrease">impossible de diminuer</string>
     <string name="cant_increase">impossible d\'augmenter</string>
-    
     <string name="maxspeedtreshold">le seuil de vitesse maximum est atteint</string>
     <string name="minspeedtreshold">le seuil de vitesse minimum est atteint</string>
     <string name="maxspeedtimetreshold">le temps maximum de répétition est atteint</string>
     <string name="minspeedtimetreshold">le temps minimum de répétition est atteint</string>
-    
     <string name="maxheadingtreshold">le seuil de cap maximum est atteint</string>
     <string name="minheadingtreshold">le seuil de cap minimum est atteint</string>
     <string name="maxheadingtimetreshold">le temps maximum de répétition est atteint</string>
     <string name="minheadingtimetreshold">le temps minimum de répétition est atteint</string>
-
-	<string name="maxbearingtreshold">le seuil de relèvement maximum est atteint</string>
+    <string name="maxbearingtreshold">le seuil de relèvement maximum est atteint</string>
     <string name="minbearingtreshold">le seuil de relèvement minimum est atteint</string>
     <string name="maxbearingtimetreshold">le temps maximum de répétition est atteint</string>
     <string name="minbearingtimetreshold">le temps minimum de répétition est atteint</string>
-    
     <string name="maxdistancetimetreshold">le temps maximum de répétition est atteint</string>
     <string name="mindistancetimetreshold">le temps minimum de répétition est atteint</string>
-    
     <string name="nowaypoint">pas de point de route</string>
     <string name="notactivate">point de route non activé</string>
-    
     <string name="savebutton">enregistrer</string>
     <string name="save_and_activateButton">Save &amp; Activer</string>
     <string name="instant_waypoint">créer un point de route ici</string>
-    
-   <string name="title_autosetting">Annonces auto</string>
-   
-   <!-- Action bar --> 
-   <string name="auto_setting">MENU ANNONCES AUTO</string>
-   <string name="waypoint_setting">MENU POINT DE ROUTE</string>
-   <string name="navigation">Retour à la navigation</string>
-   <string name="navigation_title">NAVIGATION</string>
-   
-   <string name="autoaccuracy">précision auto</string>
-   <string name="accuracy">précision</string>
-   <string name="deg">deg</string>
-   <string name="knot">noeud</string>
-   <string name="accuracytimetreshold">Temps minimum de répétition</string>
-   <string name="maxaccuracytimetreshold">le temps maximum de répétition est atteint</string>
-   <string name="minaccuracytimetreshold">le temps minimum de répétition est atteint</string>
-    
-    
+    <string name="title_autosetting">Annonces auto</string>
 
-   <string name="general_setting">MENU REGLAGE</string>
-   <string name="title_generalsetting">réglage</string>
-   <string name="map">CARTE</string>
-   
-   <string name="speedsetting">réglage vitesse auto</string>
-   <string name="headingsetting">réglage cap auto</string>
-   <string name="bearingsetting">réglage relèvement auto</string>
-   <string name="distancesetting">réglage distance auto</string>
-   <string name="accuracysetting">réglage précision auto</string>
-   <string name="backtoautosetting">Retour réglage annonce auto</string>
-   
-   <!-- general setting -->
+    <!-- Action bar -->
+    <string name="auto_setting">MENU ANNONCES AUTO</string>
+    <string name="waypoint_setting">MENU POINT DE ROUTE</string>
+    <string name="navigation">Retour à la navigation</string>
+    <string name="navigation_title">NAVIGATION</string>
+    <string name="autoaccuracy">précision auto</string>
+    <string name="accuracy">précision</string>
+    <string name="deg">deg</string>
+    <string name="knot">noeud</string>
+    <string name="accuracytimetreshold">Temps minimum de répétition</string>
+    <string name="maxaccuracytimetreshold">le temps maximum de répétition est atteint</string>
+    <string name="minaccuracytimetreshold">le temps minimum de répétition est atteint</string>
+    <string name="general_setting">MENU REGLAGE</string>
+    <string name="title_generalsetting">réglage</string>
+    <string name="map">CARTE</string>
+    <string name="speedsetting">réglage vitesse auto</string>
+    <string name="headingsetting">réglage cap auto</string>
+    <string name="bearingsetting">réglage relèvement auto</string>
+    <string name="distancesetting">réglage distance auto</string>
+    <string name="accuracysetting">réglage précision auto</string>
+    <string name="backtoautosetting">Retour réglage annonce auto</string>
+
+    <!-- general setting -->
     <string name="speed_unit_setting">unité de vitesse</string>
     <string name="bearing_unit_setting">unité de relèvement</string>
     <string name="distance_unit_setting">unité de distance</string>
     <string name="map_type_setting">choix de la carte</string>
     <string name="speech_rate_setting">vitesse d\'élocution</string>
-    
+
     <!-- speed unit -->
-     <string name="knots">noeuds</string>
+    <string name="knots">noeuds</string>
     <string name="km_per_hour">kilomètres/heure</string>
     <string name="speedUnitIntro">choisir l\'unité de vitesse</string>
-    
     <string name="message_alertdialog_autosetting">Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_speedsetting">vitesse auto changée. Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_headingsetting">cap auto changée. Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_bearingsetting">relèvement auto changée. Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_distancesetting">distance auto changée. Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_accuracysetting">précision auto changée. Voulez-vous enregistrer?</string>
-    
     <string name="kmperh">km/h</string>
     <string name="backtogeneralsetting">RETOUR AUX REGLAGES</string>
-    
     <string name="cardinal">cardinal</string>
     <string name="portandstarboard">tribord/babord</string>
     <string name="onport">babord</string>
@@ -156,17 +127,15 @@
     <string name="nauticalmile">mille nautique</string>
     <string name="nauticalmiles">milles nautiques</string>
     <string name="nm">MN</string>
-    
     <string name="title_alertdialog_speedunit">unité de vitesse changée. Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_bearingunit">unité de relèvement changée. Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_distanceunit">unité de distance changée. Voulez-vous enregistrer?</string>
     <string name="yes">oui</string>
-    
+
     <!-- speech rate setting -->
     <string name="speechIntro">ajuster la vitesse d\'élocution</string>
     <string name="plus_button">+</string>
     <string name="minus_button">-</string>
-    
     <string name="choose_bearing_unit">choisir l\'unité de relèvement.</string>
     <string name="choos_distance_unit">choisir l\'unité de distance.</string>
     <string name="choos_speed_unit">choisir l\'unité de vitesse.</string>
@@ -176,25 +145,21 @@
     <string name="nauticalmileunit">unités milles nautiques</string>
     <string name="knotunit">unité noeud</string>
     <string name="kilometersperhourunit">unité kilomètre heure</string>
-    
     <string name="speedunitsetting">réglage unité de vitesse</string>
     <string name="bearingunitsetting">réglage unité de relèvement</string>
     <string name="distanceunitsetting">réglage unité de distance</string>
     <string name="maptypesetting">réglage type de carte</string>
     <string name="speechratesetting">réglage vitesse d\élocution</string>
-    
-   <string name="to">à</string>
-   <string name="stopdisplay">arrêter d\'afficher</string>
-   <string name="display">Afficher la trace</string>
+    <string name="to">à</string>
+    <string name="stopdisplay">arrêter d\'afficher</string>
+    <string name="display">Afficher la trace</string>
+    <string name="title_activity_speed_unit">speed unit</string>
+    <string name="title_activity_bearing_unit">bearing unit</string>
+    <string name="title_activity_distance_unit">distance unit</string>
+    <string name="title_activity_map_type">map type</string>
+    <string name="title_activity_speech_rate">speech rate</string>
+    <string name="increase">augmenter</string>
+    <string name="decrease">diminuer</string>
+    <string name="title_activity_waypoint_map">WaypointMapActivity</string>
 
-      <string name="title_activity_speed_unit">speed unit</string>
-   <string name="title_activity_bearing_unit">bearing unit</string>
-   <string name="title_activity_distance_unit">distance unit</string>
-   <string name="title_activity_map_type">map type</string>
-   <string name="title_activity_speech_rate">speech rate</string>
-   
-      <string name="increase">augmenter</string>
-   <string name="decrease">diminuer</string>
-   
 </resources>
-
