@@ -404,7 +404,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		}
 	}
 	public void drawTrack() {
-		if(isStartedDisplay & isStartedDisplay) {
+		if(isStartedDisplay & isAutoDrawTrack) {
 			MyMapActivity.drawPath();
 			MyMapActivity.drawHeading(Integer.parseInt(heading));
 		}

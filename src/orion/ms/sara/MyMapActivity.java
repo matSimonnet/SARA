@@ -83,6 +83,8 @@ public class MyMapActivity extends MapActivity {
 		mapView.setClickable(true);
 		mapView.setBuiltInZoomControls(true);
 		
+		loadPath();
+		loadHeading();
 		Controller = mapView.getController();
 		MyLocationListener.isAutoDrawTrack = true;
 		
@@ -111,6 +113,16 @@ public class MyMapActivity extends MapActivity {
 		};
 
 		DisplayTrackButton.setOnClickListener(onclickListener);
+	}
+	private void loadPath() {
+		if(MyLocationListener.geoPoint.length != 0) {
+			drawPath();
+		}
+	}
+	private void loadHeading() {
+		if(MyLocationListener.geoPoint.length != 0) {
+			drawHeading(Integer.parseInt(MyLocationListener.heading));
+		}
 	}
 
 	public static void drawHeading(int angle) {
