@@ -111,16 +111,12 @@ public class MyMapActivity extends MapActivity {
 						MyLocationListener.isStartedDisplay = true;
 						DisplayTrackButton.setText(getResources().getString(R.string.stopdisplay));
 						DisplayTrackButton.setContentDescription(getResources().getString(R.string.stopdisplay));
-						if(MyLocationListener.heading != getResources().getString(R.string.no_satellite)) {
-							drawHeading(Integer.parseInt(MyLocationListener.heading));
-						}
 					} 
 					else {
 						MyLocationListener.isStartedDisplay = false;
 						DisplayTrackButton.setText(getResources().getString(R.string.display));
 						DisplayTrackButton.setContentDescription(getResources().getString(R.string.display));
 						
-						mapView.getOverlays().remove(itemizedOverlay);
 						mapView.getOverlays().remove(wayOverlay);
 						MyLocationListener.geoPoint = new GeoPoint[0];
 					}
@@ -152,7 +148,7 @@ public class MyMapActivity extends MapActivity {
 		}
 	}
 	private void loadHeading() {
-		if(MyLocationListener.geoPoint.length != 0) {
+		if(MyLocationListener.heading != getResources().getString(R.string.no_satellite)) {
 			drawHeading(Integer.parseInt(MyLocationListener.heading));
 		}
 	}
@@ -169,24 +165,16 @@ public class MyMapActivity extends MapActivity {
 
 	public static void drawHeading(int angle) {
 
-		int lenght = MyLocationListener.geoPoint.length;
-
 		if (itemizedOverlay != null) {
 			mapView.getOverlays().remove(itemizedOverlay);
 		}
 		
-		if(lenght != 0) {
-			item = new OverlayItem(MyLocationListener.geoPoint[lenght - 1], "Current Location", MyLocationListener.geoPoint[lenght - 1].getLatitude() + " " + MyLocationListener.geoPoint[lenght - 1].getLongitude());
+		if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
+			double latitude = Double.valueOf(MyLocationListener.currentLatitude);
+			double longitude = Double.valueOf(MyLocationListener.currentLongitude);
+			GeoPoint currentlocation = new GeoPoint(latitude, longitude);
+			item = new OverlayItem(currentlocation, "Current location", currentlocation.getLatitude() + " " + currentlocation.getLongitude());
 			item.setMarker(ItemizedOverlay.boundCenter(rotateDrawable(angle)));
-		}
-		else {
-			if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
-				double latitude = Double.valueOf(MyLocationListener.currentLatitude);
-				double longitude = Double.valueOf(MyLocationListener.currentLongitude);
-				GeoPoint currentlocation = new GeoPoint(latitude, longitude);
-				item = new OverlayItem(currentlocation, "Current location", currentlocation.getLatitude() + " " + currentlocation.getLongitude());
-				item.setMarker(ItemizedOverlay.boundCenter(rotateDrawable(angle)));
-			}
 		}
 		itemizedOverlay = new ArrayItemizedOverlay(mContext.getResources().getDrawable(R.drawable.arrow), true);
 		itemizedOverlay.addItem(item);
