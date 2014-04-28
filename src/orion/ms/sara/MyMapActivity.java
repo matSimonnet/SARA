@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -42,8 +41,6 @@ public class MyMapActivity extends MapActivity {
 	private static Context mContext;
 	private static MapView mapView;
 	private static GeoPoint geoPoint[] = null;
-	private LocationManager lm = null;
-	private MyLocationListener ll;
 	private static ArrayWayOverlay wayOverlay;
 	private Button DisplayTrackButton;
 	private static Paint wayPaint;
@@ -63,10 +60,6 @@ public class MyMapActivity extends MapActivity {
 		DisplayTrackButton = (Button) findViewById(R.id.trackbutton);
 		DisplayTrackButton.setContentDescription("Display Track");
 		DisplayTrackButton.setText("Display Track");
-
-		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		ll = new MyLocationListener();
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 
 		mapView = (MapView) findViewById(R.id.mapView);
 		mapView.setClickable(true);
@@ -180,14 +173,12 @@ public class MyMapActivity extends MapActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		MyLocationListener.isAutoDrawTrack = false;
-		lm.removeUpdates(ll);
 	}
 
 	@Override
@@ -199,7 +190,6 @@ public class MyMapActivity extends MapActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		MyLocationListener.isAutoDrawTrack = false;
-		lm.removeUpdates(ll);
 	}
 
 	private void setMapFile() {
