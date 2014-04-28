@@ -16,4 +16,6 @@
  <color name="blue">#0000FF</color>
  <color name="navy">#000080</color>
  <color name="black">#000000</color>
-</resources>
+ <color name="ocean">#308d9e</color>
+ 
+ </resources>

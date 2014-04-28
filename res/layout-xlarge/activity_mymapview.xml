@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -15,13 +15,22 @@
 
         <Button
             android:id="@+id/trackbutton"
-            android:layout_width="300dp"
+            style="@style/btnStyleShakespeare"
+            android:layout_width="0dp"
             android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/display">
+            android:layout_weight="1"
+            android:text="@string/display" >
         </Button>
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/autocenterButton"
+            style="@style/btnStyleShakespeare"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:text="@string/display" >
+        </Button>
+    </LinearLayout>
 
     <org.mapsforge.android.maps.MapView
         android:id="@+id/mapView"
