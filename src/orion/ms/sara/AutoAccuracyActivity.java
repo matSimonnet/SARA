@@ -85,7 +85,7 @@ public class AutoAccuracyActivity extends Activity {
 						accuracyTimeTreshold = accuracyTimeTreshold + accuracyTimeTresholdStep;
 						textViewAccuracyTimeTreshold.setText(getResources().getString(R.string.accuracytimetreshold)+ " "  + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit));
 						textViewAccuracyTimeTreshold.setContentDescription(getResources().getString(R.string.accuracytimetreshold) + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit));
-						tts.speak(getResources().getString(R.string.accuracytimetreshold) + accuracyTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.accuracytimetreshold) + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "increase accuracy time");
 					}
 					else {
@@ -98,7 +98,7 @@ public class AutoAccuracyActivity extends Activity {
 						accuracyTimeTreshold = accuracyTimeTreshold - accuracyTimeTresholdStep;
 						textViewAccuracyTimeTreshold.setText(getResources().getString(R.string.accuracytimetreshold)+ " "  + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit));
 						textViewAccuracyTimeTreshold.setContentDescription(getResources().getString(R.string.accuracytimetreshold) + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit));
-						tts.speak(getResources().getString(R.string.accuracytimetreshold) + accuracyTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.accuracytimetreshold) + accuracyTimeTreshold + " " + getResources().getString(R.string.timeunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "decrease accuracy time");
 					}
 					else {

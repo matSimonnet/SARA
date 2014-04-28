@@ -129,7 +129,7 @@ public class AutoBearingActivity extends Activity {
 						bearingTimeTreshold = bearingTimeTreshold + bearingTimeTresholdStep;
 						textViewBearingTimeTreshold.setText(getResources().getString(R.string.bearingtimetreshold)+ " "  + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
 						textViewBearingTimeTreshold.setContentDescription(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
-						tts.speak(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "increase bearing time");
 					}
 					else {
@@ -142,7 +142,7 @@ public class AutoBearingActivity extends Activity {
 						bearingTimeTreshold = bearingTimeTreshold - bearingTimeTresholdStep;
 						textViewBearingTimeTreshold.setText(getResources().getString(R.string.bearingtimetreshold)+ " "  + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
 						textViewBearingTimeTreshold.setContentDescription(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit));
-						tts.speak(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.TimeUnit) ,TextToSpeech.QUEUE_FLUSH, null);
+						tts.speak(getResources().getString(R.string.bearingtimetreshold) + bearingTimeTreshold + " " + getResources().getString(R.string.timeunit) ,TextToSpeech.QUEUE_FLUSH, null);
 						Log.i("test", "decrease bearing time");
 					}
 					else {
