@@ -30,14 +30,15 @@
             android:text="@string/cardinal"
             android:textSize="40sp" />
     </RadioGroup>
-    
+
     <Button
         android:id="@+id/button1"
+        style="@style/btnStyleShakespeare"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:text="@string/savebutton"/>
+        android:text="@string/savebutton" />
 
 </RelativeLayout>

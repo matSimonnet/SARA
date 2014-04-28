@@ -11,43 +11,46 @@
 
     <Button
         android:id="@+id/button1"
+        style="@style/btnStyleShakespeare"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="10dp"
-        android:text="@string/speed_unit_setting"/>
+        android:text="@string/speed_unit_setting" />
 
     <Button
         android:id="@+id/button2"
+        style="@style/btnStyleShakespeare"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button1"
         android:layout_marginTop="10dp"
-        android:text="@string/bearing_unit_setting"/>
+        android:text="@string/bearing_unit_setting" />
 
     <Button
         android:id="@+id/button3"
+        style="@style/btnStyleShakespeare"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button2"
         android:layout_marginTop="10dp"
-        android:text="@string/distance_unit_setting"/>
+        android:text="@string/distance_unit_setting" />
 
     <Button
         android:id="@+id/button4"
+        style="@style/btnStyleShakespeare"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button3"
         android:layout_marginTop="10dp"
-        android:text="@string/map_type_setting"/>
+        android:text="@string/map_type_setting" />
 
-    
 </RelativeLayout>

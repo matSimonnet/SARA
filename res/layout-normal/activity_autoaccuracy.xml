@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         android:text="@string/autoaccuracy" />
-    
-   	<TextView
+
+    <TextView
         android:id="@+id/AccuracyTimeTresholdView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,6 +26,7 @@
 
     <Button
         android:id="@+id/DecreaseAccuracyTimeTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/AccuracyAutoCheckBox"
@@ -35,21 +36,21 @@
 
     <Button
         android:id="@+id/IncreaseAccuracyTimeTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/AccuracyAutoCheckBox"
         android:gravity="center"
         android:text="@string/IncreaseButton" />
-    
 
     <Button
         android:id="@+id/SaveSettingButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="fill_parent"
         android:layout_height="96dp"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:text="@string/savesetting" />
-    
 
 </RelativeLayout>

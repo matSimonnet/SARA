@@ -161,5 +161,10 @@
     <string name="increase">augmenter</string>
     <string name="decrease">diminuer</string>
     <string name="title_activity_waypoint_map">WaypointMapActivity</string>
+    
+    <string name="autofocus">Focus my location</string>
+    <string name="manualfocus">Stop Focusing</string>
+    
+    
 
 </resources>

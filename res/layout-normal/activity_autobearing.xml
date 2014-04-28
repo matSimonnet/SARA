@@ -6,7 +6,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp" >
-    
+
     <CheckBox
         android:id="@+id/BearingAutoCheckBox"
         android:layout_width="fill_parent"
@@ -26,6 +26,7 @@
 
     <Button
         android:id="@+id/DecreaseBearingTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/BearingAutoCheckBox"
@@ -35,6 +36,7 @@
 
     <Button
         android:id="@+id/IncreaseBearingTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -54,6 +56,7 @@
 
     <Button
         android:id="@+id/DecreaseBearingTimeTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/IncreaseBearingTresholdButton"
@@ -63,6 +66,7 @@
 
     <Button
         android:id="@+id/IncreaseBearingTimeTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -72,11 +76,11 @@
 
     <Button
         android:id="@+id/SaveSettingButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="fill_parent"
         android:layout_height="96dp"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:text="@string/savesetting" />
-    
 
 </RelativeLayout>

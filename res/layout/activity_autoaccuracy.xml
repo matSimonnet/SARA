@@ -12,49 +12,50 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:textSize="30dp"
-        android:text="@string/autoaccuracy" />
-    
-   	<TextView
+        android:text="@string/autoaccuracy"
+        android:textSize="30dp" />
+
+    <TextView
         android:id="@+id/AccuracyTimeTresholdView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/AccuracyAutoCheckBox"
         android:layout_toLeftOf="@+id/DecreaseAccuracyTimeTresholdButton"
         android:gravity="center"
-        android:text="@string/accuracytimetreshold" />
+        android:text="@string/accuracytimetreshold"
+        android:textSize="30dp" />
 
     <Button
         android:id="@+id/DecreaseAccuracyTimeTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:textSize="50dp"
         android:layout_below="@+id/AccuracyAutoCheckBox"
         android:layout_toLeftOf="@+id/IncreaseAccuracyTimeTresholdButton"
         android:gravity="center"
-        android:text="@string/DecreaseButton" />
+        android:text="@string/DecreaseButton"
+        android:textSize="50dp" />
 
     <Button
         android:id="@+id/IncreaseAccuracyTimeTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:textSize="50dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/AccuracyAutoCheckBox"
         android:gravity="center"
-        android:text="@string/IncreaseButton" />
-    
+        android:text="@string/IncreaseButton"
+        android:textSize="50dp" />
 
     <Button
         android:id="@+id/SaveSettingButton"
-       android:layout_width="fill_parent"
+        style="@style/btnStyleShakespeare"
+        android:layout_width="fill_parent"
         android:layout_height="150dp"
-        android:textSize="50dp"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:text="@string/savesetting" />
-    
+        android:text="@string/savesetting"
+        android:textSize="50dp" />
 
 </RelativeLayout>

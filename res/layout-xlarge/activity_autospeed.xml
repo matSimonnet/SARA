@@ -12,81 +12,85 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:textSize="30dp"
-        android:text="@string/autospeed" />
+        android:text="@string/autospeed"
+        android:textSize="30dp" />
 
     <TextView
         android:id="@+id/speedTresholdView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/speedAutoCheckBox"
         android:layout_toLeftOf="@+id/DecreaseSpeedTresholdButton"
         android:gravity="center"
-        android:text="@string/speedtreshold" />
+        android:text="@string/speedtreshold"
+        android:textSize="30dp" />
 
     <Button
         android:id="@+id/DecreaseSpeedTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:textSize="50dp"
-        android:textAlignment="center"
         android:layout_below="@+id/speedAutoCheckBox"
         android:layout_toLeftOf="@+id/IncreaseSpeedTresholdButton"
-        android:text="@string/DecreaseButton" />
+        android:text="@string/DecreaseButton"
+        android:textAlignment="center"
+        android:textSize="50dp" />
 
     <Button
         android:id="@+id/IncreaseSpeedTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:textSize="50dp"
-        android:textAlignment="center"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/speedAutoCheckBox"
-        android:text="@string/IncreaseButton" />
+        android:text="@string/IncreaseButton"
+        android:textAlignment="center"
+        android:textSize="50dp" />
 
     <TextView
         android:id="@+id/speedTimeTresholdView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/IncreaseSpeedTresholdButton"
         android:layout_toLeftOf="@+id/DecreaseSpeedTimeTresholdButton"
         android:gravity="center"
-        android:text="@string/speedtimetreshold" />
+        android:text="@string/speedtimetreshold"
+        android:textSize="30dp" />
 
     <Button
         android:id="@+id/DecreaseSpeedTimeTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:textSize="50dp"
-        android:textAlignment="center"
         android:layout_below="@+id/IncreaseSpeedTresholdButton"
         android:layout_toLeftOf="@+id/IncreaseSpeedTimeTresholdButton"
         android:gravity="center"
-        android:text="@string/DecreaseButton" />
+        android:text="@string/DecreaseButton"
+        android:textAlignment="center"
+        android:textSize="50dp" />
 
     <Button
         android:id="@+id/IncreaseSpeedTimeTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:textSize="50dp"
-        android:textAlignment="center"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/IncreaseSpeedTresholdButton"
         android:gravity="center"
-        android:text="@string/IncreaseButton" />
-    
+        android:text="@string/IncreaseButton"
+        android:textAlignment="center"
+        android:textSize="50dp" />
+
     <Button
         android:id="@+id/SaveSettingButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="fill_parent"
         android:layout_height="150dp"
-        android:textSize="50dp"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:text="@string/savesetting" />
-    
+        android:text="@string/savesetting"
+        android:textSize="50dp" />
 
 </RelativeLayout>

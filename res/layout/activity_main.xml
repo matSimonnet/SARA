@@ -6,72 +6,76 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp" >
-   		
+
     <TextView
-    	android:id="@+id/speedView"
+        android:id="@+id/speedView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="90dp"
-        tools:context=".MainActivity"/>
+        tools:context=".MainActivity" />
 
     <TextView
-    	android:id="@+id/heading"
-       	android:layout_width="fill_parent"
+        android:id="@+id/heading"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/speedView"
-        android:paddingTop="40dp"
         android:gravity="center"
+        android:paddingTop="40dp"
         android:textSize="90dp"
-        tools:context=".MainActivity"/>
- 	<TextView
-    	android:id="@+id/bearingView"
+        tools:context=".MainActivity" />
+
+    <TextView
+        android:id="@+id/bearingView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/heading"
-        android:paddingTop="40dp"           
         android:gravity="center"
+        android:paddingTop="40dp"
         android:textSize="90dp"
-        tools:context=".MainActivity"/>
-   		 	
+        tools:context=".MainActivity" />
+
     <TextView
         android:id="@+id/distanceView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bearingView"       
-        android:paddingTop="40dp"           
+        android:layout_below="@+id/bearingView"
         android:gravity="center"
+        android:paddingTop="40dp"
         android:textSize="90dp"
-        tools:context=".MainActivity"/>
-    
+        tools:context=".MainActivity" />
+
     <TextView
         android:id="@+id/accuracyView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/distanceView"       
-        android:paddingTop="40dp" 
-        android:paddingBottom="50dp"          
+        android:layout_below="@+id/distanceView"
         android:gravity="center"
+        android:paddingBottom="50dp"
+        android:paddingTop="40dp"
         android:textSize="90dp"
-        tools:context=".MainActivity"/>
-	         
-    <ImageButton 
-    	android:id="@+id/buttonSpeak"
-    	android:layout_width="400dp"
+        tools:context=".MainActivity" />
+
+    <ImageButton
+        android:id="@+id/buttonSpeak"
+        style="@style/btnStyleShakespeare"
+        android:layout_width="400dp"
         android:layout_height="100dp"
-        android:layout_below="@+id/accuracyView"       
         android:layout_alignParentBottom="true"
-       	android:layout_toLeftOf="@+id/instantButton"
+        android:layout_below="@+id/accuracyView"
+        android:layout_toLeftOf="@+id/instantButton"
         android:contentDescription="@string/vocalrecognition"
-        android:src="@+android:drawable/ic_btn_speak_now"/>
+        android:src="@+android:drawable/ic_btn_speak_now" />
 
     <Button
         android:id="@+id/instantButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="400dp"
         android:layout_height="100dp"
-        android:layout_below="@+id/accuracyView"       
-        android:layout_alignParentBottom="true" 
-        android:layout_alignParentRight="true"       
-        android:textSize="50dp"
-        android:text="@string/instant_waypoint" />    
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/accuracyView"
+        android:text="@string/instant_waypoint"
+        android:textSize="50dp" />
+
 </RelativeLayout>

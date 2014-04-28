@@ -26,6 +26,7 @@
 
     <Button
         android:id="@+id/DecreaseDistanceTimeTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/DistanceAutoCheckBox"
@@ -35,6 +36,7 @@
 
     <Button
         android:id="@+id/IncreaseDistanceTimeTresholdButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -44,11 +46,11 @@
 
     <Button
         android:id="@+id/SaveSettingButton"
+        style="@style/btnStyleShakespeare"
         android:layout_width="fill_parent"
         android:layout_height="96dp"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:text="@string/savesetting" />
-    
 
 </RelativeLayout>
