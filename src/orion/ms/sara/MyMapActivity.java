@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.CornerPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
@@ -165,9 +166,15 @@ public class MyMapActivity extends MapActivity {
 
 		wayPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		wayPaint.setStyle(Paint.Style.STROKE);
-		wayPaint.setColor(getResources().getColor(R.color.gray));
-		wayPaint.setAlpha(120);
+		wayPaint.setColor(getResources().getColor(R.color.ocean));
 		wayPaint.setStrokeWidth(8);
+	    wayPaint.setDither(true);
+		wayPaint.setAlpha(120);
+	    wayPaint.setStrokeJoin(Paint.Join.ROUND);
+	    wayPaint.setStrokeCap(Paint.Cap.ROUND);
+		wayPaint.setPathEffect(new CornerPathEffect(10));
+	    wayPaint.setAntiAlias(true);
+	    
 	}
 
 	// action bar
