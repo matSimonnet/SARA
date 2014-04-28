@@ -126,6 +126,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 		
 		createPoint(Double.parseDouble(currentLatitude), Double.parseDouble(currentLongitude));
 		drawTrack();
+		drawHeading();
+
 		// set all text view
 		Utils.setSpeedTextView(speed, speedUnit);
 		Utils.setHeadingTextView(heading, headingUnit);
@@ -403,6 +405,11 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public void drawTrack() {
 		if(isAutoDrawTrack) {
 			MyMapActivity.drawTrack();
+		}
+	}
+	public void drawHeading() {
+		if(isAutoDrawTrack) {
+			MyMapActivity.drawHeading(Integer.parseInt(heading));
 		}
 	}
 	
