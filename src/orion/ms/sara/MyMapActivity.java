@@ -41,7 +41,6 @@ public class MyMapActivity extends MapActivity {
 
 	private static Context mContext;
 	private static MapView mapView;
-	private static GeoPoint geoPoint[] = null;
 	private static ArrayWayOverlay wayOverlay;
 	private Button DisplayTrackButton;
 	private static Paint wayPaint;
@@ -50,6 +49,8 @@ public class MyMapActivity extends MapActivity {
 	
 	private LocationManager lm = null;
 	public static MyLocationListener ll = null;
+	
+	private static MapController Controller;
 
 	// url for downloading file
 	private String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map";
@@ -67,12 +68,23 @@ public class MyMapActivity extends MapActivity {
 
 		mContext = this;
 		DisplayTrackButton = (Button) findViewById(R.id.trackbutton);
-		DisplayTrackButton.setContentDescription("Display Track");
-		DisplayTrackButton.setText("Display Track");
+		
+		if(MyLocationListener.isStartedDisplay) {
+			DisplayTrackButton.setContentDescription(getResources().getString(R.string.stopdisplay));
+			DisplayTrackButton.setText(getResources().getString(R.string.stopdisplay));
+		}
+		else {
+			DisplayTrackButton.setContentDescription(getResources().getString(R.string.display));
+			DisplayTrackButton.setText(getResources().getString(R.string.display));
+		}
 
 		mapView = (MapView) findViewById(R.id.mapView);
 		mapView.setClickable(true);
 		mapView.setBuiltInZoomControls(true);
+		
+		Controller = mapView.getController();
+		MyLocationListener.isAutoDrawTrack = true;
+		
 		setPaintStyle();
 		setMapFile();
 
@@ -80,15 +92,16 @@ public class MyMapActivity extends MapActivity {
 			@Override
 			public void onClick(View v) {
 				if (v == DisplayTrackButton) {
-					if (MyLocationListener.isAutoDrawTrack == false) {
-						MyLocationListener.isAutoDrawTrack = true;
+					if (MyLocationListener.isStartedDisplay == false) {
+						MyLocationListener.isStartedDisplay = true;
 						DisplayTrackButton.setText(getResources().getString(R.string.stopdisplay));
+						DisplayTrackButton.setContentDescription(getResources().getString(R.string.stopdisplay));
 					} else {
-						MyLocationListener.isAutoDrawTrack = false;
+						MyLocationListener.isStartedDisplay = false;
 						DisplayTrackButton.setText(getResources().getString(R.string.display));
+						DisplayTrackButton.setContentDescription(getResources().getString(R.string.display));
 						mapView.getOverlays().remove(itemizedOverlay);
 						mapView.getOverlays().remove(wayOverlay);
-						geoPoint = new GeoPoint[0];
 						MyLocationListener.geoPoint = new GeoPoint[0];
 					}
 
@@ -101,8 +114,7 @@ public class MyMapActivity extends MapActivity {
 
 	public static void drawHeading(int angle) {
 
-		geoPoint = MyLocationListener.geoPoint;
-		int lenght = geoPoint.length;
+		int lenght = MyLocationListener.geoPoint.length;
 
 		if (itemizedOverlay != null) {
 			mapView.getOverlays().remove(itemizedOverlay);
@@ -111,15 +123,13 @@ public class MyMapActivity extends MapActivity {
 		itemizedOverlay = new ArrayItemizedOverlay(mContext.getResources().getDrawable(R.drawable.arrow), true);
 		Log.i("ang", "" + angle);
 
-		// double la = geoPoint[lenght-1].getLatitude() +
-		// 0.00000000000000000000001;
-		// double lo = geoPoint[lenght-1].getLongitude() +
-		// 0.00000000000000000000001;
-		// GeoPoint tmp = new GeoPoint(la, lo);
-		item = new OverlayItem(geoPoint[lenght - 1], "Current Location", geoPoint[lenght - 1].getLatitude() + " " + geoPoint[lenght - 1].getLongitude());
+		item = new OverlayItem(MyLocationListener.geoPoint[lenght - 1], "Current Location", MyLocationListener.geoPoint[lenght - 1].getLatitude() + " " + MyLocationListener.geoPoint[lenght - 1].getLongitude());
 		item.setMarker(ItemizedOverlay.boundCenter(rotateDrawable(angle)));
+		
 		itemizedOverlay.addItem(item);
 		mapView.getOverlays().add(itemizedOverlay);
+		
+		Controller.setCenter(MyLocationListener.geoPoint[lenght - 1]);
 	}
 
 	public static BitmapDrawable rotateDrawable(float angle) {
@@ -138,8 +148,7 @@ public class MyMapActivity extends MapActivity {
 		return new BitmapDrawable(mContext.getResources(), canvasBitmap);
 	}
 
-	public static void drawTrack() {
-		geoPoint = MyLocationListener.geoPoint;
+	public static void drawPath() {
 		// remove current Overlay
 		if (wayOverlay != null) {
 			mapView.getOverlays().remove(wayOverlay);
@@ -147,7 +156,7 @@ public class MyMapActivity extends MapActivity {
 
 		wayOverlay = new ArrayWayOverlay(wayPaint, wayPaint);
 		// add location to overlay
-		OverlayWay way = new OverlayWay(new GeoPoint[][] { geoPoint });
+		OverlayWay way = new OverlayWay(new GeoPoint[][] { MyLocationListener.geoPoint });
 		wayOverlay.addWay(way);
 		mapView.getOverlays().add(wayOverlay);
 	}
@@ -158,7 +167,7 @@ public class MyMapActivity extends MapActivity {
 		wayPaint.setStyle(Paint.Style.STROKE);
 		wayPaint.setColor(getResources().getColor(R.color.gray));
 		wayPaint.setAlpha(120);
-		wayPaint.setStrokeWidth(12);
+		wayPaint.setStrokeWidth(8);
 	}
 
 	// action bar
@@ -182,6 +191,7 @@ public class MyMapActivity extends MapActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		MyLocationListener.isAutoDrawTrack = true;
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 	}
 
@@ -195,6 +205,7 @@ public class MyMapActivity extends MapActivity {
 	@Override
 	protected void onStop() {
 		lm.removeUpdates(ll);
+		MyLocationListener.isAutoDrawTrack = false;
 		super.onStop();
 	}
 

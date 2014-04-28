@@ -99,7 +99,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public Resources resource = MainActivity.getContext().getResources();
 	
 	public static GeoPoint geoPoint[] = new GeoPoint[0];
+	public static boolean isStartedDisplay = false;
 	public static boolean isAutoDrawTrack = false;
+
 
 	@Override
 	public void onLocationChanged(Location loc) {
@@ -126,7 +128,6 @@ public class MyLocationListener extends Activity implements LocationListener {
 		
 		createPoint(Double.parseDouble(currentLatitude), Double.parseDouble(currentLongitude));
 		drawTrack();
-		drawHeading();
 
 		// set all text view
 		Utils.setSpeedTextView(speed, speedUnit);
@@ -386,7 +387,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	
 	
 	public void createPoint(double latitude, double longitude) {
-		if(isAutoDrawTrack) {
+		if(isStartedDisplay) {
 			int newsize = geoPoint.length + 1;
 			GeoPoint[] tmp = new GeoPoint[newsize];
 		
@@ -403,14 +404,11 @@ public class MyLocationListener extends Activity implements LocationListener {
 		}
 	}
 	public void drawTrack() {
-		if(isAutoDrawTrack) {
-			MyMapActivity.drawTrack();
-		}
-	}
-	public void drawHeading() {
-		if(isAutoDrawTrack) {
+		if(isStartedDisplay & isStartedDisplay) {
+			MyMapActivity.drawPath();
 			MyMapActivity.drawHeading(Integer.parseInt(heading));
 		}
 	}
+
 	
 }
