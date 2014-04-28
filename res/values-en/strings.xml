@@ -196,5 +196,8 @@
    <string name="increase">increase</string>
    <string name="decrease">decrease</string>
    
+   <!-- waypoint map -->
+   <string name="go_back">Go Back</string>
+   
 </resources>
 

@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 @SuppressLint("ShowToast")
 public class NewWayPointActivity extends Activity {
-	//variables declaration
+		//variables declaration
 		//TextView
 		private TextView newNameText =null;
 		private TextView newLatitudeText =null;
@@ -56,6 +56,11 @@ public class NewWayPointActivity extends Activity {
 		//Intent
 		private Intent intentToWayPoint;
 		private Intent intentFromWayPointAct;
+		private Intent intentToWPMap;
+		private Intent intentFromWPMap;
+		
+		//request code
+		private final int WP_MAP = 1;
 
 		//status for check if save and activate button is pressed (new waypoint)
 		public static boolean isAlsoActivateForNWP = false;
@@ -93,6 +98,8 @@ public class NewWayPointActivity extends Activity {
 				//intent creation
 				intentFromWayPointAct = getIntent();
 				intentToWayPoint = new Intent(NewWayPointActivity.this,WayPointActivity.class);
+				intentToWPMap = new Intent(NewWayPointActivity.this,WaypointMapActivity.class);
+				intentFromWPMap = getIntent();
 				
 				//receiving default name
 				defaultName = intentFromWayPointAct.getStringExtra("defaultNameFromWP");
@@ -154,7 +161,10 @@ public class NewWayPointActivity extends Activity {
 					//OnClick creation
 					@Override
 					public void onClick(View v) {
-						Toast.makeText(NewWayPointActivity.this, "Show Map!!!!", Toast.LENGTH_SHORT).show();;
+						//send the location in the editText and start the new activity
+						intentToWPMap.putExtra("oldLatitude", latitudeBox.getText().toString());
+						intentToWPMap.putExtra("oldLongitude", longitudeBox.getText().toString());
+						startActivityForResult(intentToWPMap, WP_MAP);
 					}
 				});
 				
@@ -289,12 +299,28 @@ public class NewWayPointActivity extends Activity {
 		tts.shutdown();
 	  }
 	  
-		@Override
-		protected void onDestroy() {
-			super.onDestroy();
-			lm.removeUpdates(MainActivity.ll);
-			tts.shutdown();
-		}
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		lm.removeUpdates(MainActivity.ll);
+		tts.shutdown();
+	}
+	
+	//Intent to handle receive parameters from NewWayPoint and Modify
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intentFromAnother){
+        super.onActivityResult(requestCode, resultCode, intentFromAnother);
+        if(requestCode==WP_MAP && resultCode == RESULT_OK){
+        	//receive latitude and longitude from the map
+        	//String latitudeFromMap = intentFromWPMap.get;
+        	//String longitudeFromMap = intentFromWPMap.get;
+        	
+        	//set the receiving location to the editText
+        	//latitudeBox.setText(latitudeFromMap);
+        	//longitudeBox.setText(longitudeFromMap);
+        }
+        
+	}
 		
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
