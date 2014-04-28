@@ -22,6 +22,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -46,6 +47,9 @@ public class MyMapActivity extends MapActivity {
 	private static Paint wayPaint;
 	private static ArrayItemizedOverlay itemizedOverlay;
 	private static OverlayItem item;
+	
+	private LocationManager lm = null;
+	public static MyLocationListener ll = null;
 
 	// url for downloading file
 	private String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map";
@@ -55,6 +59,11 @@ public class MyMapActivity extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mymapview);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
+        //location manager creation
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        ll = new MyLocationListener();		
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 
 		mContext = this;
 		DisplayTrackButton = (Button) findViewById(R.id.trackbutton);
@@ -173,22 +182,26 @@ public class MyMapActivity extends MapActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
+		lm.removeUpdates(ll);
 		MyLocationListener.isAutoDrawTrack = false;
 	}
 
 	@Override
 	protected void onStop() {
+		lm.removeUpdates(ll);
 		super.onStop();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		lm.removeUpdates(ll);
 		MyLocationListener.isAutoDrawTrack = false;
 	}
 

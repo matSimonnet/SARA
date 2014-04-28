@@ -214,12 +214,14 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		lm.removeUpdates(ll);
         MyLocationListener.isInMain = false;
 	}
   
 	@Override
 	protected void onStop() {
         MyLocationListener.isInMain = false;
+		lm.removeUpdates(ll);
 		super.onStop();
 	}
   
@@ -296,17 +298,14 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem Item){
 		switch (Item.getItemId()) {
 		case R.id.auto_setting:
-			lm.removeUpdates(ll);
             startActivityForResult(intent_AutoSetting_activity, RESULT_AUTO_SETTING);
 			break;
 		case R.id.waypoint_setting:
-			lm.removeUpdates(ll);
 			intent_Waypoint_activity.putExtra("actName", actName);
 			Log.i("Activate item", actName);
 			startActivityForResult(intent_Waypoint_activity, RESULT_WAYPOINT);
 			break;
 		case R.id.general_setting:
-			lm.removeUpdates(ll);
 			startActivityForResult(intent_GeneralSetting_activity, RESULT_GENERAL_SETTING);
 			break;
 		case R.id.map:
