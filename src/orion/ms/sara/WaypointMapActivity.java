@@ -1,20 +1,33 @@
 package orion.ms.sara;
 
 import java.io.File;
+import java.util.List;
 
 import org.mapsforge.android.maps.MapActivity;
+import org.mapsforge.android.maps.MapController;
 import org.mapsforge.android.maps.MapView;
+import org.mapsforge.android.maps.overlay.ArrayItemizedOverlay;
+import org.mapsforge.android.maps.overlay.ItemizedOverlay;
+import org.mapsforge.android.maps.overlay.OverlayItem;
+import org.mapsforge.core.GeoPoint;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class WaypointMapActivity extends MapActivity {
 	//variables declaration
@@ -39,6 +52,19 @@ public class WaypointMapActivity extends MapActivity {
 	private static MapView mapView;
 	//button
 	private Button saveButton = null;
+	
+	//location
+	private LocationManager lm;
+	private MyLocationListener ll;
+	
+	//map component
+	private static MapController Controller;
+	private OverlayItem item;
+	private ArrayItemizedOverlay itemizedOverlay;
+	
+	//way point
+	private WP tempWP;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +86,12 @@ public class WaypointMapActivity extends MapActivity {
 		mapView.setClickable(true);
 		mapView.setBuiltInZoomControls(true);
 		setMapFile();
+
+		//initial map location with current position and old way point
+		Controller = mapView.getController();
+		initLocation();
+		oldWaypoint(WayPointActivity.wayPointList);
+		
 		
 		//button
 		saveButton = (Button) findViewById(R.id.button1);
@@ -89,9 +121,64 @@ public class WaypointMapActivity extends MapActivity {
 		});
 		
 	}
-	//get current location from the map
-	private void getCurrentLocation(){
+	
+	private void oldWaypoint(List<WP> wList){
+		//check if there are more than 1 item in the list including default item
+		if(wList.size()>1){
+			for(int i = 0;i<wList.size();i++){
+				tempWP = wList.get(i);
+				//check if a way point is not the default waypoint 
+				if(!tempWP.getName().equals("Please selected a waypoint")){
+					Log.i("tempWP", tempWP.getName());
+					markPoint(tempWP,"inactive");
+				}//end if
+			}//end for
+		}//end if size>1
+	}
+	
+	//pin each way point on the map with 
+	private void markPoint(WP wp, String type){
+		double latitude = Double.parseDouble(wp.getLatitude());
+		double longitude = Double.parseDouble(wp.getLongitude());
+		GeoPoint point = new GeoPoint(latitude,longitude);
+		item = new OverlayItem(point, wp.getName(), latitude + " , " + longitude);
 		
+		//check type of the way point : inactive, active, modify
+		if(type.equals("inactive")){
+			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.inactivewp)));
+			itemizedOverlay = new ArrayItemizedOverlay(this.getResources().getDrawable(R.drawable.inactivewp), true);
+		}
+		else if(type.equals("active")){
+			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.activewp)));
+			itemizedOverlay = new ArrayItemizedOverlay(this.getResources().getDrawable(R.drawable.activewp), true);
+		}
+		else if(type.equals("modify")){
+			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.modifywp)));
+			itemizedOverlay = new ArrayItemizedOverlay(this.getResources().getDrawable(R.drawable.modifywp), true);
+		}
+
+		item.setTitle(wp.getName()+" : "+latitude+" , "+longitude);
+		
+		// add item to item management
+		itemizedOverlay.addItem(item);
+		
+		//add item to map view
+		mapView.getOverlays().add(itemizedOverlay);
+	}
+	
+	//return current location from the map
+	private String[] getCurrentLocation(){
+		String[] point = {};
+		mapView.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View view, MotionEvent mv) {
+				if(view==mapView){
+					Toast.makeText(WaypointMapActivity.this, "press", Toast.LENGTH_SHORT);
+				}
+				return true;
+			}
+		});
+		return point;
 	}
 	
 	//setting up the map
@@ -128,6 +215,25 @@ public class WaypointMapActivity extends MapActivity {
 			});
 			dialog.show();
 		}
+	}
+	
+	private void initLocation(){
+		// get the pointers to different system services
+		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);		
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
+		
+		//show current location
+		centerLocation();
+	}
+
+	//focus on center of current location
+	public static void centerLocation() {
+			if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
+				double latitude = Double.valueOf(MyLocationListener.currentLatitude);
+				double longitude = Double.valueOf(MyLocationListener.currentLongitude);
+				GeoPoint currentlocation = new GeoPoint(latitude, longitude);
+				Controller.setCenter(currentlocation);
+			}
 	}
 
 	@Override
