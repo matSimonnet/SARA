@@ -8,8 +8,10 @@ import android.graphics.CornerPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -100,6 +102,7 @@ public class MyMapActivity extends MapActivity {
 		mapView.setBuiltInZoomControls(true);
 
 		setPaintStyle();
+		loadWaypoint();
 		loadPath();
 		loadHeading();
 		setMapFile();
@@ -145,6 +148,35 @@ public class MyMapActivity extends MapActivity {
 		DisplayTrackButton.setOnClickListener(onclickListener);
 		AutoCenterButton.setOnClickListener(onclickListener);
 	}
+	private void loadWaypoint() {
+		int size = WayPointActivity.wayPointList.size();
+		GeoPoint[] waypoint = new GeoPoint[size];
+		double latitude;
+		double longitude;
+		String name;
+		
+		ArrayItemizedOverlay itemizedOverlay = new ArrayItemizedOverlay(mContext.getResources().getDrawable(R.drawable.waypoint), true);
+		OverlayItem item;
+		
+		for(int i = size-1; i >= 0; i--) {
+			if(WayPointActivity.wayPointList.get(i).getLatitude() != "" && WayPointActivity.wayPointList.get(i).getLongitude() != "") {
+				latitude = Double.parseDouble(WayPointActivity.wayPointList.get(i).getLatitude());
+				longitude = Double.parseDouble(WayPointActivity.wayPointList.get(i).getLongitude());
+				
+				name = WayPointActivity.wayPointList.get(i).getName();
+				waypoint[i] = new GeoPoint(latitude, longitude);
+				item = new OverlayItem(waypoint[i], name, latitude + " " + longitude);
+				
+				if(latitude == MyLocationListener.WaypointLatitude && longitude == MyLocationListener.WaypointLongitude) {
+					item.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.activatedwp)));
+					Log.i("activated", name);
+				}
+				itemizedOverlay.addItem(item);
+			}
+		}
+		mapView.getOverlays().add(itemizedOverlay);	
+	}
+	
 	private void loadPath() {
 		if(MyLocationListener.geoPoint.length != 0) {
 			drawPath();
@@ -230,7 +262,6 @@ public class MyMapActivity extends MapActivity {
 	}
 
 	public void setPaintStyle() {
-
 		wayPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		wayPaint.setStyle(Paint.Style.STROKE);
 		wayPaint.setColor(getResources().getColor(R.color.ocean));
@@ -241,7 +272,6 @@ public class MyMapActivity extends MapActivity {
 	    wayPaint.setStrokeCap(Paint.Cap.ROUND);
 		wayPaint.setPathEffect(new CornerPathEffect(10));
 	    wayPaint.setAntiAlias(true);
-	    
 	}
 
 	// action bar
