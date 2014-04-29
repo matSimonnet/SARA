@@ -118,7 +118,7 @@ public class WayPointActivity extends Activity {
 			//Intent creation
 			intentToMain = new Intent(WayPointActivity.this,MainActivity.class);
 			intentToNewWayPoint = new Intent(WayPointActivity.this,NewWayPointActivity.class);
-			intentToModify = new Intent(WayPointActivity.this,ModifyActivity.class);
+			intentToModify = new Intent(WayPointActivity.this,ModifyWPActivity.class);
 
 			//get selected item from main
 			Intent intentFromMain = getIntent();
@@ -489,7 +489,7 @@ public class WayPointActivity extends Activity {
         		sortingWaypointList(wayPointList);
     		}
     		//pressing save and activate
-    		if(ModifyActivity.isAlsoActivateForMWP){
+    		if(ModifyWPActivity.isAlsoActivateForMWP){
     			//change back to the main activity
 				//passing activate way point name and position
 				intentToMain.putExtra("actName", modName);//name

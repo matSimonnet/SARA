@@ -6,7 +6,6 @@ import java.util.List;
 import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapController;
 import org.mapsforge.android.maps.MapView;
-import org.mapsforge.android.maps.overlay.ArrayItemizedOverlay;
 import org.mapsforge.android.maps.overlay.ItemizedOverlay;
 import org.mapsforge.android.maps.overlay.OverlayItem;
 import org.mapsforge.core.GeoPoint;
@@ -54,7 +53,7 @@ public class WaypointMapActivity extends MapActivity{
 	//map component
 	private static MapController Controller;
 	private OverlayItem item;
-	private ArrayItemizedOverlay itemizedOverlay;
+	private MyItemizedOverlay itemizedOverlay;
 	
 	//way point
 	private WP tempWP;
@@ -68,7 +67,7 @@ public class WaypointMapActivity extends MapActivity{
 		//intent creation
 		intentToWPMap = getIntent();
 		intentToNewWP = new Intent(WaypointMapActivity.this,NewWayPointActivity.class);
-		intentToModWP = new Intent(WaypointMapActivity.this,ModifyActivity.class);
+		intentToModWP = new Intent(WaypointMapActivity.this,ModifyWPActivity.class);
 		
 		//receive the old location and boolean if it comes from modify activity
 		isMod = intentToWPMap.getBooleanExtra("ifMod", false);
@@ -86,14 +85,7 @@ public class WaypointMapActivity extends MapActivity{
 		initLocation();
 		oldWaypoint(WayPointActivity.wayPointList);
 		
-		mapView.setClickable(true);
-		mapView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.i("press map", "map");
-				
-			}
-		});
+		
 		
 		//button
 		saveButton = (Button) findViewById(R.id.button1);
@@ -148,16 +140,18 @@ public class WaypointMapActivity extends MapActivity{
 		//check type of the way point : inactive, active, modify
 		if(type.equals("inactive")){
 			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.inactivewp)));
-			itemizedOverlay = new ArrayItemizedOverlay(this.getResources().getDrawable(R.drawable.inactivewp),true);
+			itemizedOverlay = new MyItemizedOverlay(this.getResources().getDrawable(R.drawable.inactivewp),true, this);
 		}
 		else if(type.equals("active")){
 			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.activewp)));
+			itemizedOverlay = new MyItemizedOverlay(this.getResources().getDrawable(R.drawable.activewp),true, this);
 		}
 		else if(type.equals("modify")){
 			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.modifywp)));
+			itemizedOverlay = new MyItemizedOverlay(this.getResources().getDrawable(R.drawable.modifywp),true, this);
 		}
 
-		item.setTitle(wp.getName()+" : "+latitude+" , "+longitude);
+		item.setTitle(wp.getName());
 		item.setSnippet(wp.getName()+" : "+latitude+" , "+longitude);
 		
 		// add item to item management
@@ -223,12 +217,12 @@ public class WaypointMapActivity extends MapActivity{
 
 	//focus on center of current location
 	public static void centerLocation() {
-			if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
-				double latitude = Double.valueOf(MyLocationListener.currentLatitude);
-				double longitude = Double.valueOf(MyLocationListener.currentLongitude);
-				GeoPoint currentlocation = new GeoPoint(latitude, longitude);
-				Controller.setCenter(currentlocation);
-			}
+		if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
+			double latitude = Double.valueOf(MyLocationListener.currentLatitude);
+			double longitude = Double.valueOf(MyLocationListener.currentLongitude);
+			GeoPoint currentlocation = new GeoPoint(latitude, longitude);
+			Controller.setCenter(currentlocation);
+		}
 	}
 
 	@Override
@@ -321,5 +315,7 @@ public class WaypointMapActivity extends MapActivity{
 		}
 		return false;
 	}
+
+	
 
 }

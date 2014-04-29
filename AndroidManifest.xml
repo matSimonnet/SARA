@@ -44,7 +44,7 @@
             android:label="@string/title_activity_new_way_point" >
         </activity>
         <activity
-            android:name="orion.ms.sara.ModifyActivity"
+            android:name="orion.ms.sara.ModifyWPActivity"
             android:label="@string/title_activity_modify" >
         </activity>
         <activity

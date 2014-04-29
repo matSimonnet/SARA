@@ -21,7 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ModifyActivity extends Activity {
+public class ModifyWPActivity extends Activity {
 	//variables declaration
 
 	//string for each attribute of the modifying way point
@@ -67,7 +67,7 @@ public class ModifyActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_modify);
+		setContentView(R.layout.activity_modify_wp);
 
 		//OnInitListener Creation
 		OnInitListener onInitListener = new OnInitListener() {
@@ -98,7 +98,7 @@ public class ModifyActivity extends Activity {
 		
 		//intent creation
 		intentFromWayPointAct = getIntent();
-		intentToWayPoint = new Intent(ModifyActivity.this,WayPointActivity.class);
+		intentToWayPoint = new Intent(ModifyWPActivity.this,WayPointActivity.class);
 		
 		//receiving old name
 		oldName = intentFromWayPointAct.getStringExtra("modName");
@@ -135,7 +135,7 @@ public class ModifyActivity extends Activity {
 				currentLongitude = MyLocationListener.currentLongitude;
 				if(currentLatitude.equals("")){
 					//GPS unavailable
-					AlertDialog.Builder dialog = new AlertDialog.Builder(ModifyActivity.this);
+					AlertDialog.Builder dialog = new AlertDialog.Builder(ModifyWPActivity.this);
 					dialog.setTitle("GPS is unavailable,please wait.");
 					dialog.setNeutralButton("OK", null);
 					dialog.show();
@@ -144,7 +144,7 @@ public class ModifyActivity extends Activity {
 					//GPS available
 					if(!latitudeBox.getText().equals(currentLatitude) || !longitudeBox.getText().equals(currentLongitude)){
 						//if the location change
-						AlertDialog.Builder dialog = new AlertDialog.Builder(ModifyActivity.this);
+						AlertDialog.Builder dialog = new AlertDialog.Builder(ModifyWPActivity.this);
 						dialog.setTitle("Are you sure changing to the current position?");
 						dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
 							@Override
@@ -170,7 +170,7 @@ public class ModifyActivity extends Activity {
 			@SuppressLint("ShowToast")
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(ModifyActivity.this, "Show Map!!!!", Toast.LENGTH_SHORT).show();;
+				Toast.makeText(ModifyWPActivity.this, "Show Map!!!!", Toast.LENGTH_SHORT).show();;
 			}
 		});
 
@@ -199,7 +199,7 @@ public class ModifyActivity extends Activity {
 														
 						//notification
 						tts.speak("New information of the waypoint is already modified", tts.QUEUE_ADD, null);
-						Toast.makeText(ModifyActivity.this,"New information of the waypoint is already modified", Toast.LENGTH_SHORT);
+						Toast.makeText(ModifyWPActivity.this,"New information of the waypoint is already modified", Toast.LENGTH_SHORT);
 						
 						//change back to the waypoint activity
 						//pass the parameters including name,latitude,longitude
@@ -241,7 +241,7 @@ public class ModifyActivity extends Activity {
 														
 						//notification
 						tts.speak("New information of the waypoint is already modified", tts.QUEUE_ADD, null);
-						Toast.makeText(ModifyActivity.this,"New information of the waypoint is already modified", Toast.LENGTH_SHORT);
+						Toast.makeText(ModifyWPActivity.this,"New information of the waypoint is already modified", Toast.LENGTH_SHORT);
 						
 						//intent to way point
 						//pass the parameters including name,latitude,longitude
@@ -301,7 +301,7 @@ public class ModifyActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.modify, menu);
+		getMenuInflater().inflate(R.menu.modify_wp, menu);
 		return true;
 	}
 

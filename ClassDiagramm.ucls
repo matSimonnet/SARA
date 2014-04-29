@@ -64,7 +64,7 @@
       <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="orion.ms.sara.ModifyActivity" project="SARA" 
+  <class id="8" language="java" name="orion.ms.sara.ModifyWPActivity" project="SARA" 
     file="/SARA/src/orion/ms/sara/ModifyActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="167" width="233" x="1175" y="671"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 

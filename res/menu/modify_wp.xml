@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="orion.ms.sara.ModifyActivity" >
+    tools:context="orion.ms.sara.ModifyWPActivity" >
 
      <item android:id="@+id/waypoint_setting"
         android:title="@string/waypoint_setting"
