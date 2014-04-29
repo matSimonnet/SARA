@@ -153,7 +153,7 @@ public class MyMapActivity extends MapActivity {
 		double longitude;
 		String name;
 		
-		MyItemizedOverlay itemizedOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.inactivewp), true);
+		MyItemizedOverlay itemizedOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.inactivewp), true, getContext());
 		OverlayItem item;
 		
 		for(int i = size-1; i >= 0; i--) {
@@ -220,7 +220,7 @@ public class MyMapActivity extends MapActivity {
 		}
 		
 		// add item to item management
-		itemizedOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.arrow), true); // set default marker
+		itemizedOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.arrow), true, getContext()); // set default marker
 		itemizedOverlay.addItem(item);
 		
 		//add item to map view
