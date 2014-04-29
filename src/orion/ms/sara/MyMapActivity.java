@@ -41,19 +41,22 @@ public class MyMapActivity extends MapActivity {
 
 	private static Context mContext;
 	private static MapView mapView;
-	
+	private static MapController Controller;	
+
 	private Button DisplayTrackButton;
 	private Button AutoCenterButton;
-	private static boolean isAutoCenter = false;
-	private static ArrayWayOverlay wayOverlay;
-	private static Paint wayPaint;
-	private static ArrayItemizedOverlay itemizedOverlay;
-	private static OverlayItem item;
 	
+	private static boolean isAutoCenter = false;
+	
+	private static ArrayItemizedOverlay itemizedOverlay;
+	private static ArrayWayOverlay wayOverlay;
+	
+	private static OverlayItem item;
+	private static OverlayWay way;
+	private static Paint wayPaint;
+
 	private LocationManager lm = null;
 	public static MyLocationListener ll = null;
-	
-	private static MapController Controller;	
 
 	// url for downloading file
 	private String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map";
@@ -112,7 +115,7 @@ public class MyMapActivity extends MapActivity {
 						DisplayTrackButton.setText(getResources().getString(R.string.stopdisplay));
 						DisplayTrackButton.setContentDescription(getResources().getString(R.string.stopdisplay));
 					} 
-					else {
+					else { // stop display and delete path
 						MyLocationListener.isStartedDisplay = false;
 						DisplayTrackButton.setText(getResources().getString(R.string.display));
 						DisplayTrackButton.setContentDescription(getResources().getString(R.string.display));
@@ -129,7 +132,7 @@ public class MyMapActivity extends MapActivity {
 							AutoCenterButton.setText(getResources().getString(R.string.manualcenter));
 							centerLocation();
 					} 
-					else {
+					else { // stop focusing
 						isAutoCenter = false;
 						AutoCenterButton.setContentDescription(getResources().getString(R.string.autocenter));
 						AutoCenterButton.setText(getResources().getString(R.string.autocenter));
@@ -147,11 +150,74 @@ public class MyMapActivity extends MapActivity {
 			drawPath();
 		}
 	}
+	
+	public static void drawPath() {
+		// remove the last way
+		if (wayOverlay != null) {
+			mapView.getOverlays().remove(wayOverlay);
+		}
+		// new way management and set paint style
+		wayOverlay = new ArrayWayOverlay(wayPaint, wayPaint); 
+		
+		// add GeoPoint to way overlay
+		way = new OverlayWay(new GeoPoint[][] { MyLocationListener.geoPoint });
+		
+		// add way to map view
+		wayOverlay.addWay(way);
+		mapView.getOverlays().add(wayOverlay);
+	}
+	
 	private void loadHeading() {
 		if(MyLocationListener.heading != getResources().getString(R.string.no_satellite)) {
 			drawHeading(Integer.parseInt(MyLocationListener.heading));
 		}
 	}
+
+	public static void drawHeading(int heading) {
+
+		// remove the last arrow
+		if (itemizedOverlay != null) {
+			mapView.getOverlays().remove(itemizedOverlay);
+		}
+		
+		// add marker to the current location with rotated arrow
+		if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
+			double latitude = Double.valueOf(MyLocationListener.currentLatitude);
+			double longitude = Double.valueOf(MyLocationListener.currentLongitude);
+			GeoPoint currentlocation = new GeoPoint(latitude, longitude);
+			item = new OverlayItem(currentlocation, "Current location", currentlocation.getLatitude() + " " + currentlocation.getLongitude());
+			item.setMarker(ItemizedOverlay.boundCenter(rotateDrawable(heading)));
+		}
+		
+		// add item to item management
+		itemizedOverlay = new ArrayItemizedOverlay(mContext.getResources().getDrawable(R.drawable.arrow), true); // set default marker
+		itemizedOverlay.addItem(item);
+		
+		//add item to map view
+		mapView.getOverlays().add(itemizedOverlay);
+	}
+
+	public static BitmapDrawable rotateDrawable(float heading) {
+		
+		// transform drawable to bitmap from my resources
+		Bitmap arrowBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.arrow);
+		
+		// Create blank bitmap of equal size
+		Bitmap canvasBitmap = arrowBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		canvasBitmap.eraseColor(0x00000000);
+		
+		// Create canvas
+		Canvas canvas = new Canvas(canvasBitmap);
+
+		// Create rotation matrix
+		Matrix rotateMatrix = new Matrix();
+		rotateMatrix.setRotate(heading, canvas.getWidth() / 2, canvas.getHeight() / 2); // at this pivot (x,y)
+		
+		// Draw bitmap onto canvas using matrix
+		canvas.drawBitmap(arrowBitmap, rotateMatrix, null);
+		return new BitmapDrawable(mContext.getResources(), canvasBitmap); // return drawable
+	}
+	
 	public static void centerLocation() {
 		if(isAutoCenter) {
 			if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
@@ -161,54 +227,6 @@ public class MyMapActivity extends MapActivity {
 				Controller.setCenter(currentlocation);
 			}
 		}
-	}
-
-	public static void drawHeading(int angle) {
-
-		if (itemizedOverlay != null) {
-			mapView.getOverlays().remove(itemizedOverlay);
-		}
-		
-		if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
-			double latitude = Double.valueOf(MyLocationListener.currentLatitude);
-			double longitude = Double.valueOf(MyLocationListener.currentLongitude);
-			GeoPoint currentlocation = new GeoPoint(latitude, longitude);
-			item = new OverlayItem(currentlocation, "Current location", currentlocation.getLatitude() + " " + currentlocation.getLongitude());
-			item.setMarker(ItemizedOverlay.boundCenter(rotateDrawable(angle)));
-		}
-		itemizedOverlay = new ArrayItemizedOverlay(mContext.getResources().getDrawable(R.drawable.arrow), true);
-		itemizedOverlay.addItem(item);
-		
-		mapView.getOverlays().add(itemizedOverlay);
-	}
-
-	public static BitmapDrawable rotateDrawable(float angle) {
-		Bitmap arrowBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.arrow);
-		// Create blank bitmap of equal size
-		Bitmap canvasBitmap = arrowBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		canvasBitmap.eraseColor(0x00000000);
-		// Create canvas
-		Canvas canvas = new Canvas(canvasBitmap);
-
-		// Create rotation matrix
-		Matrix rotateMatrix = new Matrix();
-		rotateMatrix.setRotate(angle, canvas.getWidth() / 2, canvas.getHeight() / 2);
-		// Draw bitmap onto canvas using matrix
-		canvas.drawBitmap(arrowBitmap, rotateMatrix, null);
-		return new BitmapDrawable(mContext.getResources(), canvasBitmap);
-	}
-
-	public static void drawPath() {
-		// remove current Overlay
-		if (wayOverlay != null) {
-			mapView.getOverlays().remove(wayOverlay);
-		}
-
-		wayOverlay = new ArrayWayOverlay(wayPaint, wayPaint);
-		// add location to overlay
-		OverlayWay way = new OverlayWay(new GeoPoint[][] { MyLocationListener.geoPoint });
-		wayOverlay.addWay(way);
-		mapView.getOverlays().add(wayOverlay);
 	}
 
 	public void setPaintStyle() {
