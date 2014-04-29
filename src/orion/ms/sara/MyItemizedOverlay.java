@@ -21,8 +21,8 @@ public class MyItemizedOverlay extends ArrayItemizedOverlay {
       if (item != null) { 
         Builder builder = new AlertDialog.Builder (this.context); 
         builder.setIcon (android.R.drawable.ic_menu_info_details); 
-        builder.setTitle (item.getTitle ()); 
-        builder.setMessage (item.getSnippet ()); 
+        builder.setTitle ("Waypoint name : " + item.getTitle ()); 
+        //builder.setMessage (item.getSnippet ()); 
         builder.setPositiveButton ("OK", null); 
         builder.show (); 
       } 
