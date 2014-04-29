@@ -15,21 +15,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.Toast;
 
-public class WaypointMapActivity extends MapActivity {
+public class WaypointMapActivity extends MapActivity{
 	//variables declaration
 	//Intent
 	private Intent intentToWPMap;//from both new and modify way point
@@ -55,8 +51,6 @@ public class WaypointMapActivity extends MapActivity {
 	
 	//location
 	private LocationManager lm;
-	private MyLocationListener ll;
-	
 	//map component
 	private static MapController Controller;
 	private OverlayItem item;
@@ -92,6 +86,14 @@ public class WaypointMapActivity extends MapActivity {
 		initLocation();
 		oldWaypoint(WayPointActivity.wayPointList);
 		
+		mapView.setClickable(true);
+		mapView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.i("press map", "map");
+				
+			}
+		});
 		
 		//button
 		saveButton = (Button) findViewById(R.id.button1);
@@ -100,7 +102,7 @@ public class WaypointMapActivity extends MapActivity {
 			@Override
 			public void onClick(View v) {
 				//get the current location from the map
-				getCurrentLocation();
+				//getCurrentLocation();
 				//going back and save the changes value
 				//pass new latitude and longitude
 				if(!isMod){
@@ -146,18 +148,17 @@ public class WaypointMapActivity extends MapActivity {
 		//check type of the way point : inactive, active, modify
 		if(type.equals("inactive")){
 			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.inactivewp)));
-			itemizedOverlay = new ArrayItemizedOverlay(this.getResources().getDrawable(R.drawable.inactivewp), true);
+			itemizedOverlay = new ArrayItemizedOverlay(this.getResources().getDrawable(R.drawable.inactivewp),true);
 		}
 		else if(type.equals("active")){
 			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.activewp)));
-			itemizedOverlay = new ArrayItemizedOverlay(this.getResources().getDrawable(R.drawable.activewp), true);
 		}
 		else if(type.equals("modify")){
 			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.modifywp)));
-			itemizedOverlay = new ArrayItemizedOverlay(this.getResources().getDrawable(R.drawable.modifywp), true);
 		}
 
 		item.setTitle(wp.getName()+" : "+latitude+" , "+longitude);
+		item.setSnippet(wp.getName()+" : "+latitude+" , "+longitude);
 		
 		// add item to item management
 		itemizedOverlay.addItem(item);
@@ -167,17 +168,11 @@ public class WaypointMapActivity extends MapActivity {
 	}
 	
 	//return current location from the map
-	private String[] getCurrentLocation(){
-		String[] point = {};
-		mapView.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View view, MotionEvent mv) {
-				if(view==mapView){
-					Toast.makeText(WaypointMapActivity.this, "press", Toast.LENGTH_SHORT);
-				}
-				return true;
-			}
-		});
+	private String[] getCurrentLocation(MapView map, GeoPoint geo){
+		String[] point = new String[3];
+		
+	    
+
 		return point;
 	}
 	
