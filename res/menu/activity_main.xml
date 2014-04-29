@@ -19,11 +19,18 @@
 	        android:showAsAction="ifRoom">
 	    </item>
 	
+	  	<item android:id="@+id/way_menu" 
+	  	    android:title="@string/way_menu"
+	  	    android:orderInCategory="100"
+	        android:showAsAction="ifRoom">
+	    </item>
+	  	
 	  	<item android:id="@+id/map"
 	        android:title="@string/map"
 	        android:orderInCategory="100"
 	        android:showAsAction="ifRoom">
 	    </item>
+	 
 		</menu>
 	</item>
 </menu>

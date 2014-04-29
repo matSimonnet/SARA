@@ -40,7 +40,7 @@
     <string name="longitudeText">Waypoint longitude is</string>
     <string name="saveText">Save</string>
     <string name="choosingTitle">You selected :</string>
-    <string name="title_activity_modify">Modify Activity</string>
+    <string name="title_activity_modify">Modify Waypoint Activity</string>
     <string name="modifyButton">Save modifying waypoint</string>
     <string name="current_checkedBox">Use current position</string>
     
@@ -198,6 +198,10 @@
    
    <!-- waypoint map -->
    <string name="go_back">Go Back</string>
+   
+   <!-- way activity -->
+   <string name="title_activity_way">Way Activity</string>
+   <string name="way_menu">WAY MENU</string>
    
 </resources>
 

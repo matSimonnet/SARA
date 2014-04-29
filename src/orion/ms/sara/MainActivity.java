@@ -36,11 +36,13 @@ public class MainActivity extends Activity {
 	protected static final int RESULT_WAYPOINT = 3;
 	protected static final int RESULT_GENERAL_SETTING = 4;
 	protected static final int RESULT_MAP = 5;
+	protected static final int RESULT_WAY = 6;
 
 	private Intent intent_AutoSetting_activity;
 	private Intent intent_Waypoint_activity;
 	private Intent intent_GeneralSetting_activity;
 	private Intent intent_Map_activity;
+	private Intent intent_Way_activity;
 
 	public static TextView textViewSpeed = null;
 	public static TextView textViewheading = null;
@@ -89,6 +91,7 @@ public class MainActivity extends Activity {
 		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
 		intent_GeneralSetting_activity = new Intent(MainActivity.this,GeneralSettingActivity.class);
 		intent_Map_activity = new Intent(MainActivity.this,MyMapActivity.class);
+		intent_Way_activity = new Intent(MainActivity.this,WayActivity.class);
 
 		MyLocationListener.heading =  getResources().getString(R.string.no_satellite);
 		MyLocationListener.speed =  getResources().getString(R.string.no_satellite);
@@ -310,6 +313,9 @@ public class MainActivity extends Activity {
 			break;
 		case R.id.map:
 			startActivityForResult(intent_Map_activity, RESULT_MAP);
+			break;
+		case R.id.way_menu:
+			startActivityForResult(intent_Way_activity, RESULT_WAY);
 			break;
 		default:
 			break;

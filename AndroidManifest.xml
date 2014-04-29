@@ -152,6 +152,10 @@
             android:name="orion.ms.sara.WaypointMapActivity"
             android:label="@string/title_activity_waypoint_map" >
         </activity>
+        <activity
+            android:name="orion.ms.sara.WayActivity"
+            android:label="@string/title_activity_way" >
+        </activity>
     </application>
 
 </manifest>
