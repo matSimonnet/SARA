@@ -31,7 +31,6 @@ import android.os.Build;
 import java.util.List;
 import java.io.File;
 import org.mapsforge.android.maps.*;
-import org.mapsforge.android.maps.overlay.ArrayItemizedOverlay;
 import org.mapsforge.android.maps.overlay.ArrayWayOverlay;
 import org.mapsforge.android.maps.overlay.ItemizedOverlay;
 import org.mapsforge.android.maps.overlay.OverlayItem;
@@ -49,7 +48,7 @@ public class MyMapActivity extends MapActivity {
 	
 	private static boolean isAutoCenter = false;
 	
-	private static ArrayItemizedOverlay itemizedOverlay;
+	private static MyItemizedOverlay itemizedOverlay;
 	private static ArrayWayOverlay wayOverlay;
 	
 	private static OverlayItem item;
@@ -154,7 +153,7 @@ public class MyMapActivity extends MapActivity {
 		double longitude;
 		String name;
 		
-		ArrayItemizedOverlay itemizedOverlay = new ArrayItemizedOverlay(mContext.getResources().getDrawable(R.drawable.waypoint), true);
+		MyItemizedOverlay itemizedOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.inactivewp), true);
 		OverlayItem item;
 		
 		for(int i = size-1; i >= 0; i--) {
@@ -167,7 +166,7 @@ public class MyMapActivity extends MapActivity {
 				item = new OverlayItem(waypoint[i], name, latitude + " " + longitude);
 				
 				if(latitude == MyLocationListener.WaypointLatitude && longitude == MyLocationListener.WaypointLongitude) {
-					item.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.activatedwp)));
+					item.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.activewp)));
 					Log.i("activated", name);
 				}
 				itemizedOverlay.addItem(item);
@@ -221,7 +220,7 @@ public class MyMapActivity extends MapActivity {
 		}
 		
 		// add item to item management
-		itemizedOverlay = new ArrayItemizedOverlay(mContext.getResources().getDrawable(R.drawable.arrow), true); // set default marker
+		itemizedOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.arrow), true); // set default marker
 		itemizedOverlay.addItem(item);
 		
 		//add item to map view

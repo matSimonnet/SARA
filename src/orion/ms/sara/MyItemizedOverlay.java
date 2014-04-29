@@ -8,7 +8,6 @@ import android.app.AlertDialog.Builder;
 import android.graphics.drawable.Drawable;
 
 public class MyItemizedOverlay extends ArrayItemizedOverlay { 
-
     public MyItemizedOverlay (Drawable defaultMarker, boolean context) { 
       super (defaultMarker, context); 
     } 
