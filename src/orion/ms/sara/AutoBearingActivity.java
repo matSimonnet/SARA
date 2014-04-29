@@ -71,7 +71,7 @@ public class AutoBearingActivity extends Activity {
 	    BearingAutoCheckBox.setChecked(this.isAutoBearing);
 
 		//intent creation
-	    intentMainAutoSetting = new Intent(AutoBearingActivity.this,MainAutoSettingActivity.class);
+	    intentMainAutoSetting = new Intent(AutoBearingActivity.this,AutoSettingActivity.class);
 
 	    //bearing treshold view
 	    textViewBearingTreshold = (TextView) findViewById(R.id.BearingTresholdView);

@@ -72,7 +72,7 @@ public class AutoHeadingActivity extends Activity {
 	    HeadingAutoCheckBox.setChecked(this.isAutoHeading);
 
 		//intent creation
-	    intentMainAutoSetting = new Intent(AutoHeadingActivity.this,MainAutoSettingActivity.class);
+	    intentMainAutoSetting = new Intent(AutoHeadingActivity.this,AutoSettingActivity.class);
 
 	    //heading treshold view
 	    textViewHeadingTreshold = (TextView) findViewById(R.id.HeadingTresholdView);

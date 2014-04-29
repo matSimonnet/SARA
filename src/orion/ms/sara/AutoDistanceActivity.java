@@ -64,7 +64,7 @@ public class AutoDistanceActivity extends Activity {
 		DistanceAutoCheckBox.setChecked(this.isAutoDistance);
 		
 		//intent creation
-	    intentMainAutoSetting = new Intent(AutoDistanceActivity.this,MainAutoSettingActivity.class);
+	    intentMainAutoSetting = new Intent(AutoDistanceActivity.this,AutoSettingActivity.class);
 
 	    //distance time treshold view
 	    textViewDistanceTimeTreshold = (TextView) findViewById(R.id.DistanceTimeTresholdView);

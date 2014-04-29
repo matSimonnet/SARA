@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-public class MainAutoSettingActivity extends Activity {
+public class AutoSettingActivity extends Activity {
 
 	private Button speedButton = null;
 	private Button headingButton = null;
@@ -43,11 +43,11 @@ public class MainAutoSettingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_autosetting);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		intentAutoSpeedActivity = new Intent(MainAutoSettingActivity.this,AutoSpeedActivity.class);
-		intentAutoHeadingActivity = new Intent(MainAutoSettingActivity.this,AutoHeadingActivity.class);
-		intentAutoBearingActivity = new Intent(MainAutoSettingActivity.this,AutoBearingActivity.class);
-		intentAutoDistanceActivity = new Intent(MainAutoSettingActivity.this,AutoDistanceActivity.class);
-		intentAutoAccuracyActivity = new Intent(MainAutoSettingActivity.this,AutoAccuracyActivity.class);
+		intentAutoSpeedActivity = new Intent(AutoSettingActivity.this,AutoSpeedActivity.class);
+		intentAutoHeadingActivity = new Intent(AutoSettingActivity.this,AutoHeadingActivity.class);
+		intentAutoBearingActivity = new Intent(AutoSettingActivity.this,AutoBearingActivity.class);
+		intentAutoDistanceActivity = new Intent(AutoSettingActivity.this,AutoDistanceActivity.class);
+		intentAutoAccuracyActivity = new Intent(AutoSettingActivity.this,AutoAccuracyActivity.class);
 		
 		this.speedButton = (Button) findViewById(R.id.SpeedSettingButton);
 		this.speedButton.setContentDescription(getResources().getString(R.string.speedsetting));

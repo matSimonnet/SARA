@@ -63,7 +63,7 @@ public class AutoAccuracyActivity extends Activity {
 	    AccuracyAutoCheckBox.setChecked(this.isAutoAccuracy);
 
 		//intent creation
-	    intentMainAutoSetting = new Intent(AutoAccuracyActivity.this,MainAutoSettingActivity.class);
+	    intentMainAutoSetting = new Intent(AutoAccuracyActivity.this,AutoSettingActivity.class);
 
 	    //accuracy time treshold view
 	    textViewAccuracyTimeTreshold = (TextView) findViewById(R.id.AccuracyTimeTresholdView);

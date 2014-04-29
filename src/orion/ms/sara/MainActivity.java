@@ -86,7 +86,7 @@ public class MainActivity extends Activity {
 
         //intent creation
 		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
-		intent_AutoSetting_activity = new Intent(MainActivity.this,MainAutoSettingActivity.class);
+		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
 		intent_GeneralSetting_activity = new Intent(MainActivity.this,GeneralSettingActivity.class);
 		intent_Map_activity = new Intent(MainActivity.this,MyMapActivity.class);
 

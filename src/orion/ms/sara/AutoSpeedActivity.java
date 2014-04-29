@@ -74,7 +74,7 @@ public class AutoSpeedActivity extends Activity {
 	    SpeedAutoCheckBox.setChecked(this.isAutoSpeed);
 
 		//intent creation
-	    intentMainAutoSetting = new Intent(AutoSpeedActivity.this,MainAutoSettingActivity.class);
+	    intentMainAutoSetting = new Intent(AutoSpeedActivity.this,AutoSettingActivity.class);
 
 	    //speed treshold view
 	    speedUnit = getSpeedUnit();
