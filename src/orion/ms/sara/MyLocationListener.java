@@ -145,14 +145,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 		Utils.setAccuracyTextViewDescription(accuracy);
 
 		if (isAutoBearing && isWaypointActivated) {
-			int bearingDiff;
 			if(isCardinalSelected) {
 				bearingAuto = Integer.parseInt(Utils._Bearing(loc.getLatitude(), loc.getLongitude(), WaypointLatitude, WaypointLongitude));
 				bearingNow = new Date();
-				bearingDiff = java.lang.Math.abs((int) bearingLastAuto - (int) bearingAuto);
-				if (bearingDiff > 180) {
-					bearingDiff = java.lang.Math.abs(bearingDiff - 360);
-				}
 			}
 			else { // select port/starboard
 				String cardinal_bearing = Utils._Bearing(loc.getLatitude(), loc.getLongitude(), WaypointLatitude, WaypointLongitude);
@@ -161,9 +156,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 				if (bearingAuto < 0) {
 					bearingAuto = bearingAuto + 360;
 				}
-				bearingDiff = java.lang.Math.abs((int) bearingLastAuto - (int) bearingAuto);
 			}
-			
+			int bearingDiff = java.lang.Math.abs((int) bearingLastAuto - (int) bearingAuto);
 			if (((bearingDiff > bearingTreshold))
 					&& ((bearingNow.getTime() - bearingBefore.getTime()) > bearingTimeTreshold * 1000)) {
 				
@@ -172,8 +166,6 @@ public class MyLocationListener extends Activity implements LocationListener {
 				bearingBefore = new Date();
 				Log.i("bearing", BearingToCurrentWaypoint);
 			}
-			
-			
 		}// end of if bearingAutoCheck...
 
 		if (isAutoDistance && isWaypointActivated) {
