@@ -4,7 +4,6 @@ import android.content.Context;
 
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.DialogInterface;
@@ -16,6 +15,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.view.View;
+import android.widget.Button;
+
 import java.util.List;
 import java.io.File;
 import org.mapsforge.android.maps.*;
@@ -29,42 +31,92 @@ public class WaypointMapActivity extends MapActivity {
     private MyMapView mapView;
 	private String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map";
 	private boolean isModify = false;
+	
 	private double ModifyLatitude = 999;
 	private double ModifyLongitude = 999;
+	
+	private double mapLatitude = 999;
+	private double mapLongitude = 999;
+	
+	private MyItemizedOverlay itemizedOverlay;
+	
+	private Button saveButton;
+	private OverlayItem itemModify;
+	private OverlayItem itemCreate;
+
  
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
  
         setContentView(R.layout.activity_waypoint_map);
-        mapView = (MyMapView) findViewById(R.id.mapview);
 		mContext = this;
+		itemizedOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.inactivewp), true, getContext());
+        
+		mapView = (MyMapView) findViewById(R.id.mapview);
+        this.saveButton = (Button) findViewById(R.id.savebutton);
+        
+	    View.OnClickListener onclickListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (v== saveButton) {
+    				Intent IntentToNewWP = new Intent(WaypointMapActivity.this,NewWayPointActivity.class);
+    				IntentToNewWP.putExtra("newLatitude", String.valueOf(mapLatitude));
+    				IntentToNewWP.putExtra("newLongitude", String.valueOf(mapLongitude));
+					setResult(RESULT_OK, IntentToNewWP);
+					finish();
+				}
+
+			}
+	    	
+	    };
+	    this.saveButton.setOnClickListener(onclickListener);
 
 		setMapFile();
 		loadFlag();
 		loadWaypoint();
-		
 
         mapView.setOnLongpressListener(new MyMapView.OnLongpressListener() {
         public void onLongpress(final MapView view, final GeoPoint longpressLocation) {
             runOnUiThread(new Runnable() {
             	public void run() {
-    				Intent IntentToNewWP = new Intent(WaypointMapActivity.this,NewWayPointActivity.class);
-    				IntentToNewWP.putExtra("newLatitude", String.valueOf(longpressLocation.getLatitude()));
-    				IntentToNewWP.putExtra("newLongitude", String.valueOf(longpressLocation.getLongitude()));
-					setResult(RESULT_OK, IntentToNewWP);
-					finish();
+            		mapLatitude = longpressLocation.getLatitude();
+            		mapLongitude = longpressLocation.getLongitude();
+            		pinWaypoint(mapLatitude, mapLongitude);
             	}
             });
         	}
         });
     }
+    
+    private void pinWaypoint(double la, double lo) {
+    	if(isModify) {
+    		if(itemModify != null) {
+    			itemizedOverlay.removeItem(itemModify);
+    		}
+			itemModify = new OverlayItem(new GeoPoint(la, lo), "Modifying", la + " " + lo);
+			itemModify.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.modifywp)));
+			itemizedOverlay.addItem(itemModify);
+    	}
+    	else {
+    		if(itemCreate != null) {
+    			itemizedOverlay.removeItem(itemCreate);
+    		}
+    		itemCreate = new OverlayItem(new GeoPoint(la, lo), "Creating", la + " " + lo);
+    		itemCreate.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.modifywp)));
+			itemizedOverlay.addItem(itemCreate);
+    	}
+    }
+    
     private void loadFlag() {
     	Bundle extras = getIntent().getExtras();
     	if (extras != null) {
     	    this.isModify = extras.getBoolean("ifMod", false);
-    	    this.ModifyLatitude = Double.parseDouble(extras.getString("oldLatitude"));
-    	    this.ModifyLongitude = Double.parseDouble(extras.getString("oldLongitude"));
+    	    if(isModify) {
+    	    	this.ModifyLatitude = Double.parseDouble(extras.getString("oldLatitude"));
+    	    	this.ModifyLongitude = Double.parseDouble(extras.getString("oldLongitude"));
+    	    }
     	}
     }
     
@@ -74,8 +126,6 @@ public class WaypointMapActivity extends MapActivity {
 		double latitude;
 		double longitude;
 		String name;
-		
-		MyItemizedOverlay itemizedOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.inactivewp), true, getContext());
 		OverlayItem item;
 		
 		for(int i = size-1; i >= 0; i--) {
@@ -85,18 +135,24 @@ public class WaypointMapActivity extends MapActivity {
 				
 				name = WayPointActivity.wayPointList.get(i).getName();
 				waypoint[i] = new GeoPoint(latitude, longitude);
-				item = new OverlayItem(waypoint[i], name, latitude + " " + longitude);
 				
 				// activated waypoint
 				if(latitude == MyLocationListener.WaypointLatitude && longitude == MyLocationListener.WaypointLongitude) {
+					item = new OverlayItem(waypoint[i], name, latitude + " " + longitude);
 					item.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.activewp)));
+					itemizedOverlay.addItem(item);
 				}
 				
 				// modifying waypoint
-				if(isModify && latitude == this.ModifyLatitude && longitude == this.ModifyLongitude) {
-					item.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.modifywp)));
+				else if(isModify && latitude == this.ModifyLatitude && longitude == this.ModifyLongitude) {
+					itemModify = new OverlayItem(waypoint[i], name, latitude + " " + longitude);
+					itemModify.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.modifywp)));
+					itemizedOverlay.addItem(itemModify);
 				}
-				itemizedOverlay.addItem(item);
+				else {
+					item = new OverlayItem(waypoint[i], name, latitude + " " + longitude);
+					itemizedOverlay.addItem(item);
+				}
 			}
 		}
 		mapView.getOverlays().add(itemizedOverlay);	

@@ -58,7 +58,6 @@ public class NewWayPointActivity extends Activity {
 		private Intent intentToWayPoint;
 		private Intent intentFromWayPointAct;
 		private Intent intentToWPMap;
-		private Intent intentFromWPMap;
 		
 		//request code
 		private final int WP_MAP = 1;
@@ -100,7 +99,6 @@ public class NewWayPointActivity extends Activity {
 				intentFromWayPointAct = getIntent();
 				intentToWayPoint = new Intent(NewWayPointActivity.this,WayPointActivity.class);
 				intentToWPMap = new Intent(NewWayPointActivity.this,WaypointMapActivity.class);
-				intentFromWPMap = getIntent();
 				
 				//receiving default name
 				defaultName = intentFromWayPointAct.getStringExtra("defaultNameFromWP");
