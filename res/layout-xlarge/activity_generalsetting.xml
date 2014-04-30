@@ -52,7 +52,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button3"
         android:layout_marginTop="10dp"
-        android:text="@string/map_type_setting"
+        android:text="@string/wptresholdsetting"
         android:textSize="50dp" />
 
 </RelativeLayout>

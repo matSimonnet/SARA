@@ -39,7 +39,7 @@ public class WayActivity extends Activity {
 	public static List<Way> wayList = new ArrayList<Way>();
 	
 	//Receiving parameters from new way
-	private String newName = "W1";
+	private String newName = "Way1";
 	private String newLatitude = "";
 	private String newLongitude = "";
 	
@@ -146,15 +146,10 @@ public void onCreate(Bundle savedInstanceState) {
 		WP wp3 = new WP("wp3","40","-4.7");
 		wayList.add(new Way("w1",wp1,wp2));
 		wayList.add(new Way("w2",wp2,wp3));
+		
 		//spinner set up
-		//set array adapter of the list into the spinner
+		
 		way = (Spinner) findViewById(R.id.spinner1);
-		arrAd = new ArrayAdapter<String>(WayActivity.this,
-								android.R.layout.simple_spinner_item, 
-								toNameArrayList(wayList));
-		arrAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);      
-		way.setAdapter(arrAd);
-		/*way = (Spinner) findViewById(R.id.spinner1);
 		way.setContentDescription("Choose the way in ");
 		//setOnItemSelectedListener
 		way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
@@ -184,13 +179,13 @@ public void onCreate(Bundle savedInstanceState) {
 		                				//notify
 										Toast.makeText(WayActivity.this,"Activate",Toast.LENGTH_SHORT).show();
 										tts.speak("Activate", tts.QUEUE_FLUSH, null);
-
+										
 		                				//change back to the main activity
 										//passing activate way point name and position
-										intentToMain.putExtra("actName", choosingWay.getName());//name
-										intentToMain.putExtra("actLatitude", Double.parseDouble( choosingWay.getLatitude()));//latitude
-										intentToMain.putExtra("actLongitude", Double.parseDouble(choosingWay.getLongitude()));//longitude
-										Log.i("selected", "name : "+choosingWay.getName());
+										//intentToMain.putExtra("actName", choosingWay.getName());//name
+										//intentToMain.putExtra("actLatitude", Double.parseDouble( choosingWay.getLatitude()));//latitude
+										//intentToMain.putExtra("actLongitude", Double.parseDouble(choosingWay.getLongitude()));//longitude
+										//Log.i("selected", "name : "+choosingWay.getName());
 										
 										//back to WayPoint activity and send some parameters to the activity
 										setResult(RESULT_OK, intentToMain);
@@ -210,9 +205,9 @@ public void onCreate(Bundle savedInstanceState) {
 										
 										//change to the "Modify" activity
 										//passing modifying way point name and position
-										intentToModifyWay.putExtra("modName", choosingWay.getName());//name
-										intentToModifyWay.putExtra("modLatitude", choosingWay.getLatitude());//latitude
-										intentToModifyWay.putExtra("modLongitude", choosingWay.getLongitude());//longitude
+										//intentToModifyWay.putExtra("modName", choosingWay.getName());//name
+										//intentToModifyWay.putExtra("modLatitude", choosingWay.getLatitude());//latitude
+										//intentToModifyWay.putExtra("modLongitude", choosingWay.getLongitude());//longitude
 										
 										//start NewWayPoint activity
 										startActivityForResult(intentToModifyWay, MODIFY_WAY);
@@ -230,7 +225,7 @@ public void onCreate(Bundle savedInstanceState) {
 										tts.speak("Delete", tts.QUEUE_FLUSH, null);
 										
 										//dialog creation
-										deletingDialog.setTitle("Are you sure deleting "+choosingWay.getName()+"?");
+										/*deletingDialog.setTitle("Are you sure deleting "+choosingWay.getName()+"?");
 										deletingDialog.setIcon(android.R.drawable.presence_busy);
 										tts.speak("Are you sure deleting "+choosingWay.getName()+"?", tts.QUEUE_FLUSH, null);
 
@@ -244,7 +239,7 @@ public void onCreate(Bundle savedInstanceState) {
 											}
 										});
 										//show the deleting dialog
-										deletingDialog.show();
+										deletingDialog.show();*/
 									}
                 				});//end delete button	
                 				if(!choosingWay.getName().equals("No selected way") && i!=0){
@@ -267,7 +262,7 @@ public void onCreate(Bundle savedInstanceState) {
 				
 			
 
-        });*/
+        });
 		
 		//"New Way" button
 		//button creation
@@ -295,7 +290,7 @@ public void onCreate(Bundle savedInstanceState) {
 	}//end of OnCreate
 	
 	@Override
-	  protected void onResume() {
+	protected void onResume() {
 	    super.onResume();
 	    Log.i("Resume way", "=======================RESUME+++++++++++++++++++++");
 	    if(way.getChildCount()==0 && selectedItem==0){
@@ -304,7 +299,8 @@ public void onCreate(Bundle savedInstanceState) {
 			//way.setTop(selectedItem);
 			Log.i("sort from on resume", "sort from on resume");
 	    }
-	  }
+	}
+
 	  @Override
 	  protected void onPause() {
 	    super.onPause();
@@ -361,8 +357,9 @@ public void onCreate(Bundle savedInstanceState) {
 	//adding new way point into the way point list
 	public void addNewWPtoList(List<Way> wList,String n,String la,String lo){
 		//Get the latest number after adding a new way point
-		if(n.length()>1 && n.substring(0,1).equalsIgnoreCase("w")){
+		if(n.length()>2 && n.substring(0,2).equalsIgnoreCase("way")){
 			lastNumberForWay = Integer.parseInt(n.substring(2));//substring "W" name to get the number after that
+			Log.i("Number Way", lastNumberForWay+"");
 		}
 		else;
 		//Adding the new way point into the list
@@ -412,6 +409,7 @@ public void onCreate(Bundle savedInstanceState) {
 							Double.parseDouble(MyLocationListener.currentLatitude), Double.parseDouble(MyLocationListener.currentLongitude), tempResult);
 					//set up the new distance from the current position into every way point in the list
 					wList.get(i).setDistance(Double.parseDouble(tempResult[0]+""));
+					Log.i("sort way", "way:"+tempWay.getName()+" Distance: "+tempResult[0]);
 				}
 				Collections.sort(wList);//Sorting the list by proximity of the first waypoint
 	        }//end if

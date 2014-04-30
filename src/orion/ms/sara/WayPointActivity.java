@@ -349,7 +349,6 @@ public class WayPointActivity extends Activity {
 		if(n.length()>2 && n.substring(0,2).equalsIgnoreCase("wp")){
 			lastNumberForWaypoint = Integer.parseInt(n.substring(2));//substring "WP" name to get the number after that
 		}
-		else;
 		//Adding the new waypoint point into the list
 		wList.add(new WP(n,la,lo));//create new waypoint point with assuming distance
 		sortingWaypointList(wList);//sorting the list

@@ -16,7 +16,6 @@ public class Way implements Comparable<Way>{
 	private WP tempWP1;
 	private WP tempWP2;
 	private String name;
-	private WP firstWP;
 	
 	//constructor
 	public Way(String name,WP wp1,WP wp2){
@@ -76,12 +75,9 @@ public class Way implements Comparable<Way>{
 	}
 
 	public WP getFirstWP() {
-		return firstWP;
+		return way.get(0);
 	}
 
-	public void setFirstWP(WP firstWP) {
-		this.firstWP = firstWP;
-	}
 
 	public Double getDistance() {
 		return distance;
