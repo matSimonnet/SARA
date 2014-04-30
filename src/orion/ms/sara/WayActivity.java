@@ -270,7 +270,7 @@ public void onCreate(Bundle savedInstanceState) {
 		//"New Way" button
 		//button creation
 		newWay = (Button) findViewById(R.id.button1);
-				
+		newWay.setText("New Way");	
 		//setOnClickListener
 		newWay.setOnClickListener(new View.OnClickListener(){
 					// OnClickListener creation			    

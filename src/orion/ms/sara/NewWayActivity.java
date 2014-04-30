@@ -7,10 +7,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +42,11 @@ public class NewWayActivity extends Activity {
 	private Spinner wp2List;
 	private List<WP> tempList;
 	
+	//waypoint
+	private WP tempWP;
+	private WP selectedWP1;
+	private WP selectedWP2;
+	
 	//array adapter
 	private ArrayAdapter<String> arrAd = null;
 	
@@ -54,8 +61,8 @@ public class NewWayActivity extends Activity {
 	
 	//way attributes
 	private String wayName = "Way1";
-	private String waypoint1Name = "no selected waypoint";
-	private String waypoint2Name = "no selected waypoint";
+	private String waypoint1Name = "No selected waypoint";
+	private String waypoint2Name = "No selected waypoint";
 
 
 	@Override
@@ -86,8 +93,8 @@ public class NewWayActivity extends Activity {
 		
 		//get way list
 		tempList = WayPointActivity.getWayPointList();
+		tempList = setUpTempWPList(tempList);
 		setUpWP1List(tempList);
-		//setUpWP2List(tempList);
 		
 		//add more button
 		addMoreButton = (Button) findViewById(R.id.button1);
@@ -96,7 +103,7 @@ public class NewWayActivity extends Activity {
 		saveButton = (Button) findViewById(R.id.button2);
 		saveButton.setTextSize(30);
 		//setOnClickedListener
-		saveButton.setOnClickListener(new OnClickListener() {
+		/*saveButton.setOnClickListener(new OnClickListener() {
 			//OnClickedListener creation
 			@SuppressWarnings("static-access")
 			@SuppressLint("ShowToast")
@@ -105,9 +112,11 @@ public class NewWayActivity extends Activity {
 				if(v==saveButton){
 					//get the new waypoint's name, latitude and longitude from the EditText
 					wayName = wayNameBox.getText().toString();
+					waypoint1Name = selectedWP1.getName();
+					waypoint2Name = selectedWP2.getName();					
 					
 					//check if the filled name or the position (latitude and longitude) are already recorded
-					/*if(isRecorded(name, latitude, longitude)){
+					if(isRecorded(name, latitude, longitude)){
 						tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
 					}
 					else{
@@ -115,7 +124,7 @@ public class NewWayActivity extends Activity {
 							//prevent unfilled text box(es)
 							tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
 						}
-						else{*/
+						else{
 							//sent the new waypoint information back to waypoint activity
 							
 							//notification
@@ -138,7 +147,7 @@ public class NewWayActivity extends Activity {
 					//}//end else	
 				//}	
 			}//end onClick
-		});
+		});*/
 		
 		//save and activate button
 		saveActButton = (Button) findViewById(R.id.button3);
@@ -181,15 +190,81 @@ public class NewWayActivity extends Activity {
 		*/
 	}
 
+
+	//change default item name
+	private List<WP> setUpTempWPList(List<WP> wList) {
+		for(int i = 0;i<wList.size();i++){
+			tempWP = wList.get(i);
+			if(tempWP.getName().equals("Please selected a waypoint"))
+				tempWP.setName("No selected waypoint");
+		}
+		return wList;
+	}
+
 	//setting up waypoint list to spinner1
-	private void setUpWP1List(List<WP> wList1) {
+	private void setUpWP1List(final List<WP> wList1) {
 		wp1List = (Spinner) findViewById(R.id.spinner1);
 		arrAd = new ArrayAdapter<String>(NewWayActivity.this,
 						android.R.layout.simple_spinner_item, 
 						WayPointActivity.toNameArrayList(wList1));
 		arrAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);      
 		wp1List.setAdapter(arrAd);
+		wp1List.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
+			//OnItemSelectedListener creation
+			public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) { 
+      				try{
+                		switch(adapterView.getId()){
+                		case R.id.spinner1: 
+                			selectedWP1 = wList1.get(i);
+                			waypoint1Name = selectedWP1.getName();
+                			Log.i("wp1 selected", waypoint1Name);
+                			setUpWP2List(tempList,selectedWP1);
+                		}
+      				}catch(Exception e){
+	                        e.printStackTrace();
+	                }//end try-catch
+            }//end onItemSelected
+            
+			public void onNothingSelected(AdapterView<?> arg0) {
+  				Toast.makeText(NewWayActivity.this,"You selected Empty",Toast.LENGTH_SHORT).show();
+			} 
+
+	    });//end setOnSelected
+	}//end setUpWP1List
+	
+	//setting up waypoint list to spinner2 and also remove selected item
+	private void setUpWP2List(final List<WP> wList2, WP sWP) {
+		wp2List = (Spinner) findViewById(R.id.Spinner2);
+		//if not selecting default item
+		if(!sWP.getName().equals("No selected waypoint")){
+			//remove the selected item in the waypoint list1 from the list2
+			tempList = wList2;
+			tempList.remove(sWP);
+			arrAd = new ArrayAdapter<String>(NewWayActivity.this,
+							android.R.layout.simple_spinner_item, 
+							WayPointActivity.toNameArrayList(tempList));
+			arrAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);      
+			wp2List.setAdapter(arrAd);
+			wp2List.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
+				//OnItemSelectedListener creation
+				public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) { 
+		  				try{
+		            		switch(adapterView.getId()){
+		            		case R.id.spinner1: 
+		            			selectedWP2 = wList2.get(i);
+		            			waypoint2Name = selectedWP2.getName();
+		            		}
+		  				}catch(Exception e){
+		                        e.printStackTrace();
+		                }//end try-catch
+		        }//end onItemSelected
+		        
+				public void onNothingSelected(AdapterView<?> arg0) {
+					Toast.makeText(NewWayActivity.this,"You selected Empty",Toast.LENGTH_SHORT).show();
+				} 
 		
+		    });//end setOnSelected
+		}
 	}
 
 	@Override
