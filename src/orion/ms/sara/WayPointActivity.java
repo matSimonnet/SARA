@@ -225,7 +225,7 @@ public class WayPointActivity extends Activity {
 												//OnClick listener for delete button
 												@Override
 												public void onClick(DialogInterface dialog, int which) {
-													//deleteWPfromList(wayPointList,choosingWaypoint);
+													deleteWPfromList(wayPointList,choosingWaypoint);
 												}
 											});
 											//show the deleting dialog
