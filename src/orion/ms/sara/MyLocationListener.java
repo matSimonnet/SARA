@@ -93,6 +93,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 	
 	public static boolean isKilometreSelected = true;
 	public static boolean isNMSelected = false;
+	
+	public static int WPTreshold = 1;
+
 
 	public static boolean isInMain = true;
 

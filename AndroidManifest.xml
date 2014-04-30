@@ -74,15 +74,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="orion.ms.sara.AutoSettingActivity"
-            android:label="@string/title_autosetting" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+        
         <activity
             android:name="orion.ms.sara.AutoSpeedActivity"
             android:label="@string/speedsetting" >
@@ -163,6 +155,10 @@
         <activity
             android:name="orion.ms.sara.ModifyWayActivity"
             android:label="@string/title_activity_modify_way" >
+        </activity>
+        <activity
+            android:name="orion.ms.sara.WPTresholdActivity"
+            android:label="Waypoint Treshold" >
         </activity>
     </application>
 

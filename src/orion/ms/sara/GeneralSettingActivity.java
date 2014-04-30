@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,18 +18,18 @@ public class GeneralSettingActivity extends Activity {
 	private Button speedUnitButton = null;
 	private Button bearingUnitButton = null;
 	private Button distanceUnitButton = null;
-	private Button mapTypeButton = null;
+	private Button WPTresholdButton = null;
 	
 	private Intent intentToSpeed;
 	private Intent intentToBearing;
 	private Intent intentToDistance;
-	private Intent intentToMapType;
+	private Intent intentToWPTreshold;
 	
 	//code for intent
 	protected static final int SPEED_UNIT = 141;
 	protected static final int BEARING_UNIT = 362;
 	protected static final int DISTANCE_UNIT = 365;
-	protected static final int MAP_TYPE = 479;
+	protected static final int WP_TRESHOLD = 479;
 	protected static final int SPEECH_RATE = 512;
 
 	public static float speechRate = 1.5f;
@@ -61,14 +62,14 @@ public class GeneralSettingActivity extends Activity {
 		this.distanceUnitButton = (Button) findViewById(R.id.button3);
 		this.distanceUnitButton.setContentDescription(getResources().getString(R.string.distanceunitsetting));
 		
-		this.mapTypeButton = (Button) findViewById(R.id.button4);
-		this.mapTypeButton.setContentDescription(getResources().getString(R.string.maptypesetting));
+		this.WPTresholdButton = (Button) findViewById(R.id.button4);
+		this.WPTresholdButton.setContentDescription(getResources().getString(R.string.maptypesetting));
 
 		//intent creations
 		intentToSpeed = new Intent(GeneralSettingActivity.this,SpeedUnitActivity.class);
 		intentToBearing = new Intent(GeneralSettingActivity.this,BearingUnitActivity.class);
 		intentToDistance = new Intent(GeneralSettingActivity.this,DistanceUnitActivity.class);
-		intentToMapType = new Intent(GeneralSettingActivity.this,MapTypeActivity.class);
+		intentToWPTreshold = new Intent(GeneralSettingActivity.this,WPTresholdActivity.class);
 		
 	    View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
@@ -82,15 +83,15 @@ public class GeneralSettingActivity extends Activity {
 				if(v == distanceUnitButton) {
 		            startActivityForResult(intentToDistance, DISTANCE_UNIT);					
 				}
-				if(v == mapTypeButton) {
-		            startActivityForResult(intentToMapType, MAP_TYPE);					
+				if(v == WPTresholdButton) {
+		            startActivityForResult(intentToWPTreshold, WP_TRESHOLD);					
 				}
 			}
 	    };
 	    speedUnitButton.setOnClickListener(onclickListener);
 	    bearingUnitButton.setOnClickListener(onclickListener);
 	    distanceUnitButton.setOnClickListener(onclickListener);
-	    mapTypeButton.setOnClickListener(onclickListener);
+	    WPTresholdButton.setOnClickListener(onclickListener);
 
 	} // end of on create
 	
@@ -122,8 +123,13 @@ public class GeneralSettingActivity extends Activity {
 	     			MyLocationListener.isKilometreSelected = data.getBooleanExtra("isKilometreSelected", true);
 	     			MyLocationListener.isNMSelected = data.getBooleanExtra("isNMSelected", false);
 	     		}
-	     		break;	     	}
-	     	case MAP_TYPE : {
+	     		break;	     	
+	     	}
+	     	case WP_TRESHOLD : {
+	     		if (resultCode == RESULT_OK && null != data) {
+	     			MyLocationListener.WPTreshold = data.getIntExtra("WPTreshold", 1);
+	     			Log.i("WP Treshold", MyLocationListener.WPTreshold+"");
+	     		}
 	     		break;
 	     	}
 	     }

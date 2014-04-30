@@ -1,36 +1,30 @@
 <resources>
-    
+
     <string name="app_name">SARA</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">SARA</string>
-    
     <string name="speed">speed</string>
     <string name="speedtreshold">speed Treshold</string>
     <string name="autospeed">auto speed</string>
     <string name="speedtimetreshold">minimum speed repetition</string>
-       
     <string name="heading">heading</string>
     <string name="headingtreshold">heading Treshold</string>
     <string name="autohead">auto heading</string>
     <string name="headingtimetreshold">minimum heading repetition</string>
-       
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
- 
     <string name="nosatelite">lost</string>
     <string name="norecognition">not recognized</string>
     <string name="defaultmode">auto mode by default</string>
     <string name="vocalrecognition">vocal recognition</string>
-    
     <string name="speedunit">knots</string>
     <string name="headingunit">degrees</string>
     <string name="bearingunit">degrees</string>
     <string name="timeunit">seconds</string>
     <string name="kilometres">kilometres</string>
     <string name="m">m</string>
-    <string name="km">km</string>        
-    <string name="metres">metres</string> 
-    
+    <string name="km">km</string>
+    <string name="metres">metres</string>
     <string name="title_activity_way_point">Waypoint Activity</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_new_way_point">New waypoint Activity</string>
@@ -43,109 +37,86 @@
     <string name="title_activity_modify">Modify Waypoint Activity</string>
     <string name="modifyButton">Save modifying waypoint</string>
     <string name="current_checkedBox">Use current position</string>
-    
     <string name="autobearing">auto bearing</string>
     <string name="autodistance">auto distance</string>
-    
     <string name="DecreaseButton">-</string>
     <string name="IncreaseButton">+</string>
     <string name="savesetting">save</string>
-    
-    <string name="bearing">bearing</string>   
+    <string name="bearing">bearing</string>
     <string name="distance">distance</string>
     <string name="bearingtreshold">bearing treshold</string>
     <string name="bearingtimetreshold">minimum bearing repetition</string>
     <string name="distancetimetreshold">minimum distance repetition</string>
-    
     <string name="save_last_num">0</string>
-    <string name="save_inst_num">0</string>    
-        
+    <string name="save_inst_num">0</string>
     <string name="navigation_setting">Back to Navigation</string>
     <string name="using_map">Use location from the map</string>
-    
     <string name="no_satellite">No Satellite</string>
-    <string name="waiting_gps">is waiting for gps signal.</string>     
-    
-  
+    <string name="waiting_gps">is waiting for gps signal.</string>
     <string name="cant_decrease">Can not decrease</string>
     <string name="cant_increase">Can not increase</string>
-    
     <string name="maxspeedtreshold">Speed treshold is maximum</string>
     <string name="minspeedtreshold">Speed treshold is minimum</string>
     <string name="maxspeedtimetreshold">Maximum speed repetition is 30 seconds</string>
     <string name="minspeedtimetreshold">Minimum speed repetition is 0 seconds</string>
-    
     <string name="maxheadingtreshold">Heading treshold is 30 degrees</string>
     <string name="minheadingtreshold">heading treshold is 0 degree</string>
     <string name="maxheadingtimetreshold">Maximum heading repetition is 30 seconds</string>
     <string name="minheadingtimetreshold">Minimum heading repetition is 0 seconds</string>
-
-	<string name="maxbearingtreshold">Bearing treshold is 30 degrees</string>
+    <string name="maxbearingtreshold">Bearing treshold is 30 degrees</string>
     <string name="minbearingtreshold">Bearing treshold is 0 degree</string>
     <string name="maxbearingtimetreshold">Maximum Bearing repetition is 30 seconds</string>
     <string name="minbearingtimetreshold">Minimum Bearing repetition is 0 seconds</string>
-    
     <string name="maxdistancetimetreshold">Maximum distance repetition is 30 seconds</string>
     <string name="mindistancetimetreshold">Minimum distance repetition is 0 seconds</string>
-    
     <string name="nowaypoint">No Waypoint</string>
     <string name="notactivate">Waypoint is not activated</string>
-    
     <string name="savebutton">save</string>
     <string name="save_and_activateButton">Save &amp; Activate</string>
     <string name="instant_waypoint">Instantly create a waypoint</string>
-    
-   <string name="title_autosetting">Auto Setting</string>
-   
-   <!-- Action bar --> 
-   <string name="auto_setting">AUTO SETTING MENU</string>
-   <string name="waypoint_setting">WAYPOINT MENU</string>
-   <string name="navigation">Back to navigation</string>
-   <string name="navigation_title">NAVIGATION</string>
-   
-   <string name="autoaccuracy">auto accuracy</string>
-   <string name="accuracy">accuracy</string>
-   <string name="deg">deg</string>
-   <string name="knot">knot</string>
-   <string name="accuracytimetreshold">minimum accuracy repetition</string>
-   <string name="maxaccuracytimetreshold">Minimum accuracy repetition is 30 seconds</string>
-   <string name="minaccuracytimetreshold">Minimum accuracy repetition is 0 seconds</string>
-    
-    
+    <string name="title_autosetting">Auto Setting</string>
 
-   <string name="general_setting">GENERAL SETTING MENU</string>
-   <string name="title_generalsetting">General Setting</string>
-   <string name="map">MAP</string>
-   
-   <string name="speedsetting">Auto Speed Setting</string>
-   <string name="headingsetting">Auto Heading Setting</string>
-   <string name="bearingsetting">Auto Bearing Setting</string>
-   <string name="distancesetting">Auto Distance Setting</string>
-   <string name="accuracysetting">Auto Accuracy Setting</string>
-   <string name="backtoautosetting">Back to auto setting</string>
-   
-   <!-- general setting -->
+    <!-- Action bar -->
+    <string name="auto_setting">AUTO SETTING MENU</string>
+    <string name="waypoint_setting">WAYPOINT MENU</string>
+    <string name="navigation">Back to navigation</string>
+    <string name="navigation_title">NAVIGATION</string>
+    <string name="autoaccuracy">auto accuracy</string>
+    <string name="accuracy">accuracy</string>
+    <string name="deg">deg</string>
+    <string name="knot">knot</string>
+    <string name="accuracytimetreshold">minimum accuracy repetition</string>
+    <string name="maxaccuracytimetreshold">Minimum accuracy repetition is 30 seconds</string>
+    <string name="minaccuracytimetreshold">Minimum accuracy repetition is 0 seconds</string>
+    <string name="general_setting">GENERAL SETTING MENU</string>
+    <string name="title_generalsetting">General Setting</string>
+    <string name="map">MAP</string>
+    <string name="speedsetting">Auto Speed Setting</string>
+    <string name="headingsetting">Auto Heading Setting</string>
+    <string name="bearingsetting">Auto Bearing Setting</string>
+    <string name="distancesetting">Auto Distance Setting</string>
+    <string name="accuracysetting">Auto Accuracy Setting</string>
+    <string name="backtoautosetting">Back to auto setting</string>
+
+    <!-- general setting -->
     <string name="speed_unit_setting">Speed Unit Setting</string>
     <string name="bearing_unit_setting">Bearing Unit Setting</string>
     <string name="distance_unit_setting">Distance Unit Setting</string>
     <string name="map_type_setting">Map Type Setting</string>
     <string name="speech_rate_setting">Speech Rate Setting</string>
-    
+
     <!-- speed unit -->
-     <string name="knots">knots</string>
+    <string name="knots">knots</string>
     <string name="km_per_hour">kilometers per hour</string>
     <string name="speedUnitIntro">Choose the speed unit</string>
-    
     <string name="message_alertdialog_autosetting">Do you want to save?</string>
     <string name="title_alertdialog_speedsetting">Auto speed setting was changed.Do you want to save?</string>
     <string name="title_alertdialog_headingsetting">Auto heading setting was changed.Do you want to save?</string>
     <string name="title_alertdialog_bearingsetting">Auto bearing setting was changed.Do you want to save?</string>
     <string name="title_alertdialog_distancesetting">Auto distance setting was changed.Do you want to save?</string>
     <string name="title_alertdialog_accuracysetting">Auto accuracy setting was changed.Do you want to save?</string>
-    
     <string name="kmperh">km/h</string>
     <string name="backtogeneralsetting">BACK TO GENERAL SETTING</string>
-    
     <string name="cardinal">cardinal</string>
     <string name="portandstarboard">port/starboard</string>
     <string name="onport">on port</string>
@@ -155,17 +126,15 @@
     <string name="nauticalmile">nautical mile</string>
     <string name="nauticalmiles">nautical miles</string>
     <string name="nm">NM</string>
-    
     <string name="title_alertdialog_speedunit">Speed unit was changed.Do you want to save?</string>
     <string name="title_alertdialog_bearingunit">Bearing unit was changed.Do you want to save?</string>
     <string name="title_alertdialog_distanceunit">Distance unit was changed.Do you want to save?</string>
     <string name="yes">yes</string>
-    
+
     <!-- speech rate setting -->
     <string name="speechIntro">Adjust the speech rate below</string>
     <string name="plus_button">+</string>
     <string name="minus_button">-</string>
-    
     <string name="choose_bearing_unit">Please choose the bearing unit below.</string>
     <string name="choos_distance_unit">Please choose the distance unit below.</string>
     <string name="choos_speed_unit">Please choose the speed unit below.</string>
@@ -175,53 +144,52 @@
     <string name="nauticalmileunit">nautical mile unit</string>
     <string name="knotunit">knot unit</string>
     <string name="kilometersperhourunit">kilometre per hour unit</string>
-    
     <string name="speedunitsetting">Speed Unit Setting</string>
     <string name="bearingunitsetting">Bearing Unit Setting</string>
     <string name="distanceunitsetting">Distance Unit Setting</string>
     <string name="maptypesetting">Map Type Setting</string>
     <string name="speechratesetting">Speech Rate Setting</string>
-    
-   <string name="to">to</string>
-   <string name="stopdisplay">Stop Display</string>
-   <string name="display">Display Track</string>
-   
-   
-   <string name="title_activity_speed_unit">speed unit</string>
-   <string name="title_activity_bearing_unit">bearing unit</string>
-   <string name="title_activity_distance_unit">distance unit</string>
-   <string name="title_activity_map_type">map type</string>
-   <string name="title_activity_speech_rate">speech rate</string>
-   
-   <string name="increase">increase</string>
-   <string name="decrease">decrease</string>
-   
-   <!-- waypoint map -->
-   <string name="go_back">Go Back</string>
-   
-   <!-- way activity -->
-   <string name="title_activity_way">Way Activity</string>
-   <string name="way_menu">WAY MENU</string>
-   <string name="new_way">New Way</string>
-   <string name="way_activity">Back to Way</string>
-   <string name="gps_unavail_wait">GPS is unavailable the list is not sort Please wait</string>
-   <string name="ok_button">OK</string>
-   		<!-- choosing dialog -->
-   		<string name="selected_item">You selected : </string>
- 		<string name="activate">Activate</string>
- 		<string name="modify">Modify</string>
- 		<string name="delete">Delete</string>
- 		<!-- deleting dialog -->
- 		<string name="deleting_item">Are you sure deleting : </string>
- 		<string name="cancel">Cancel</string>
- 		<string name="sure">Sure</string>
- 		
-   		   
-   <!-- new way activity -->
-   <string name="title_activity_new_way">New Way Activity</string>
-   
-   <!-- modify way activity -->
-   <string name="title_activity_modify_way">ModifyWayActivity</string>
-   
-</resources>
+    <string name="to">to</string>
+    <string name="stopdisplay">Stop Display</string>
+    <string name="display">Display Track</string>
+    <string name="title_activity_speed_unit">speed unit</string>
+    <string name="title_activity_bearing_unit">bearing unit</string>
+    <string name="title_activity_distance_unit">distance unit</string>
+    <string name="title_activity_map_type">map type</string>
+    <string name="title_activity_speech_rate">speech rate</string>
+    <string name="increase">increase</string>
+    <string name="decrease">decrease</string>
 
+    <!-- waypoint map -->
+    <string name="go_back">Go Back</string>
+
+    <!-- way activity -->
+    <string name="title_activity_way">Way Activity</string>
+    <string name="way_menu">WAY MENU</string>
+    <string name="new_way">New Way</string>
+    <string name="way_activity">Back to Way</string>
+    <string name="gps_unavail_wait">GPS is unavailable the list is not sort Please wait</string>
+    <string name="ok_button">OK</string>
+    <!-- choosing dialog -->
+    <string name="selected_item">You selected : </string>
+    <string name="activate">Activate</string>
+    <string name="modify">Modify</string>
+    <string name="delete">Delete</string>
+    <!-- deleting dialog -->
+    <string name="deleting_item">Are you sure deleting : </string>
+    <string name="cancel">Cancel</string>
+    <string name="sure">Sure</string>
+
+    <!-- new way activity -->
+    <string name="title_activity_new_way">New Way Activity</string>
+
+    <!-- modify way activity -->
+    <string name="title_activity_modify_way">ModifyWayActivity</string>
+    <string name="title_activity_waypoint_map">WaypointMapActivity</string>
+    <string name="autocenter">Focus my location</string>
+    <string name="manualcenter">Stop Focusing</string>
+    <string name="wptreshold">Waypoint treshold</string>
+    <string name="wptresholdsetting">Waypoint Treshold Setting</string>
+    <string name="title_alertdialog_wptreshold">Waypoint treshold was changed.Do you want to save?</string>
+
+</resources>
