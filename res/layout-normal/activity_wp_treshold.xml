@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp" >
+
+    <TextView
+        android:id="@+id/WPTresholdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/DecreaseWPTresholdButton"
+        android:gravity="center"
+        android:text="@string/distancetimetreshold"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/DecreaseWPTresholdButton"
+        style="@style/btnStyleShakespeare"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_toLeftOf="@+id/IncreaseWPTresholdButton"
+        android:gravity="center"
+        android:text="@string/DecreaseButton"
+        android:textSize="50dp" />
+
+    <Button
+        android:id="@+id/IncreaseWPTresholdButton"
+        style="@style/btnStyleShakespeare"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="@string/IncreaseButton"
+        android:textSize="50dp" />
+
+    <Button
+        android:id="@+id/SaveSettingButton"
+        style="@style/btnStyleShakespeare"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="@string/savesetting"
+        android:textSize="50dp" />
+
+</RelativeLayout>
