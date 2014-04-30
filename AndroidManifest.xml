@@ -156,6 +156,14 @@
             android:name="orion.ms.sara.WayActivity"
             android:label="@string/title_activity_way" >
         </activity>
+        <activity
+            android:name="orion.ms.sara.NewWayActivity"
+            android:label="@string/title_activity_new_way" >
+        </activity>
+        <activity
+            android:name="orion.ms.sara.ModifyWayActivity"
+            android:label="@string/title_activity_modify_way" >
+        </activity>
     </application>
 
 </manifest>

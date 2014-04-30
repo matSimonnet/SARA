@@ -11,6 +11,7 @@ public class WP implements Comparable<WP>{
 		//distance and bearing
 		private double distance = 0.0;
 		private double bearing = 0.0;
+		private double wpTreshold = 0.0;
 		
 		//constructor
 		public WP(String n, String la, String lo){
@@ -57,6 +58,14 @@ public class WP implements Comparable<WP>{
 
 		public void setBearing(double bearing) {
 			this.bearing = bearing;
+		}
+
+		public double getWpTreshold() {
+			return wpTreshold;
+		}
+
+		public void setWpTreshold(double wpTreshold) {
+			this.wpTreshold = wpTreshold;
 		}
 
 		@Override

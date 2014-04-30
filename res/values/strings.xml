@@ -163,6 +163,5 @@
     <string name="title_activity_waypoint_map">WaypointMapActivity</string>
     <string name="autocenter">Focus my location</string>
     <string name="manualcenter">Stop Focusing</string>
-    
 
 </resources>

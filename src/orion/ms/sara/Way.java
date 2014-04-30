@@ -5,9 +5,9 @@ import java.util.List;
 
 import android.location.Location;
 
-public class Way {
+public class Way implements Comparable<Way>{
 	private List<WP> way;
-	private String distance;
+	private Double distance;
 	private float[] result;
 	@SuppressWarnings("unused")
 	private WP wp1;
@@ -15,12 +15,14 @@ public class Way {
 	private WP wp2;
 	private WP tempWP1;
 	private WP tempWP2;
+	private String name;
+	private WP firstWP;
 	
 	//constructor
-	public Way(List<WP> name,WP wp1,WP wp2){
+	public Way(String name,WP wp1,WP wp2){
 		this.wp1 = wp1;
 		this.wp2 = wp2;
-		this.way = name;
+		this.name = name;
 		way = new ArrayList<WP>();
 		way.add(wp1);
 		way.add(wp2);
@@ -54,14 +56,50 @@ public class Way {
 	}
 
 	//calculate distance between two waypoints
-	public String getDistance(String wp1, String wp2){
+	public Double getDistanceBTWtwoWPs(String wp1, String wp2){
 		for(int i=0;i<way.size();i++){
 			if(way.get(i).getName().equals(wp1))	tempWP1 = way.get(i);
 			else if(way.get(i).getName().equals(wp2))	tempWP2 = way.get(i);
 		}
 		Location.distanceBetween(Double.parseDouble(tempWP1.getLatitude()), Double.parseDouble(tempWP1.getLongitude()), 
 				Double.parseDouble(tempWP2.getLatitude()), Double.parseDouble(tempWP2.getLongitude()), result);
-		distance = result[0]+"";
+		distance = Double.parseDouble(""+result[0]);
 		return distance;
 	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public WP getFirstWP() {
+		return firstWP;
+	}
+
+	public void setFirstWP(WP firstWP) {
+		this.firstWP = firstWP;
+	}
+
+	public Double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(Double distance) {
+		this.distance = distance;
+	}
+
+	public int getSize() {
+		return way.size();
+	}
+	
+	@Override
+	public int compareTo(Way another) {
+		//compare each way by the first waypoint of the way
+		if(this.getFirstWP().getDistance()<=another.getFirstWP().getDistance()) return -1;
+		else return 1;
+	}
+
 }

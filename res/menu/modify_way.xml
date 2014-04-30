@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="orion.ms.sara.ModifyWayActivity" >
+
+    <item android:id="@+id/way_setting" 
+        android:orderInCategory="100" 
+        android:showAsAction="ifRoom"
+        android:title="@string/way_activity">
+    </item>
+
+</menu>
