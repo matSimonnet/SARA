@@ -39,9 +39,12 @@ public class WayActivity extends Activity {
 	public static List<Way> wayList = new ArrayList<Way>();
 	
 	//Receiving parameters from new way
-	private String newName = "Way1";
-	private String newLatitude = "";
-	private String newLongitude = "";
+	private String newWayName = "Way1";
+	private String newWP1Name = "";
+	private String newWP2Name = "";
+	private WP wp1 = null;
+	private WP wp2 = null;
+	private Way tempWay;
 	
 	//strings for each attribute of the modifying way point
 	private String modName = "";
@@ -64,6 +67,7 @@ public class WayActivity extends Activity {
 	
 	//choosing way point
 	private Way choosingWay = null;
+	private WP tempWP = null;
 	
 	//shared preferences
 	public SharedPreferences settings;
@@ -136,7 +140,7 @@ public void onCreate(Bundle savedInstanceState) {
         }
 		else{
 			//GPS available
-			//sortingWayList(wayList);
+			sortingWayList(wayList);
 			Log.i("from on create", "sort from on create");
 		}
 		
@@ -148,7 +152,6 @@ public void onCreate(Bundle savedInstanceState) {
 		wayList.add(new Way("w2",wp2,wp3));
 		
 		//spinner set up
-		
 		way = (Spinner) findViewById(R.id.spinner1);
 		way.setContentDescription("Choose the way in ");
 		//setOnItemSelectedListener
@@ -355,15 +358,14 @@ public void onCreate(Bundle savedInstanceState) {
 	}
 
 	//adding new way point into the way point list
-	public void addNewWPtoList(List<Way> wList,String n,String la,String lo){
+	public void addNewWaytoList(List<Way> wList,Way newWay){
 		//Get the latest number after adding a new way point
-		if(n.length()>2 && n.substring(0,2).equalsIgnoreCase("way")){
-			lastNumberForWay = Integer.parseInt(n.substring(2));//substring "W" name to get the number after that
+		if(newWay.getName().length()>3 && newWay.getName().substring(0,3).equalsIgnoreCase("way")){
+			lastNumberForWay = Integer.parseInt(newWay.getName().substring(3));//substring "Way" name to get the number after that
 			Log.i("Number Way", lastNumberForWay+"");
 		}
-		else;
 		//Adding the new way point into the list
-		/*wList.add(new WP(n,la,lo));//create new way point with assuming distance
+		wList.add(newWay);//create new way point with assuming distance
 		sortingWayList(wList);//sorting the list*/
 	}
 	
@@ -458,17 +460,28 @@ public void onCreate(Bundle savedInstanceState) {
 		
 		//get parameters from the NewWayPoint activity when create a new way point
 	    if(requestCode == NEW_WAY && resultCode == RESULT_OK){
-	    	newName = intentFromAnother.getStringExtra("newName");
-			newLatitude = intentFromAnother.getStringExtra("newLatitude");
-			newLongitude = intentFromAnother.getStringExtra("newLongitude");
+	    	newWayName = intentFromAnother.getStringExtra("newWayName");
+			newWP1Name = intentFromAnother.getStringExtra("newWP1Name");
+			newWP2Name = intentFromAnother.getStringExtra("newWP2Name");
+
 			//not from pressing menu item
-			if(!newName.equals("") && !newLatitude.equals("") && !newLongitude.equals(""))
-				addNewWPtoList(wayList, newName, newLatitude, newLongitude);
+			if(!newWayName.equals("") && !newWP1Name.equals("") && !newWP2Name.equals("")){
+				for(int i=0;i<WayPointActivity.wayPointList.size();i++){
+					tempWP = WayPointActivity.wayPointList.get(i);
+					if(tempWP.getName().equals(newWP1Name))
+						wp1 = tempWP;
+					else if(tempWP.getName().equals(newWP2Name))
+						wp2 = tempWP;
+				}
+				tempWay = new Way(newWayName,wp1,wp2);
+				addNewWaytoList(wayList,tempWay);
+			}
+				
 			//pressing save and activate
-			if(NewWayPointActivity.isAlsoActivateForNWP){
+			/*if(NewWayPointActivity.isAlsoActivateForNWP){
 				//change back to the main activity
 				//passing activate way point name and position
-				intentToMain.putExtra("actName", newName);//name
+				intentToMain.putExtra("actWayName", newName);//name
 				intentToMain.putExtra("actLatitude", Double.parseDouble(newLatitude));//latitude
 				intentToMain.putExtra("actLongitude", Double.parseDouble(newLongitude));//longitude
 				
@@ -478,6 +491,7 @@ public void onCreate(Bundle savedInstanceState) {
 				
 				finish();
 			}//end if for pressing save and activate
+			*/
 	    }
 	    
 	  //get parameters from the Modify activity and replace the old information
@@ -540,7 +554,6 @@ public void onCreate(Bundle savedInstanceState) {
 		editor.commit();
 		
 	}
-			
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

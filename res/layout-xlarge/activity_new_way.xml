@@ -97,7 +97,6 @@
                 android:layout_height="100dp"
                 android:layout_below="@+id/Spinner2"
                 android:layout_marginTop="30dp"
-                android:layout_weight="0.11"
                 android:text="@string/add_more_wp"
                 android:textSize="30dp" />
 

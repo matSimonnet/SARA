@@ -498,61 +498,61 @@ public class WayPointActivity extends Activity {
 	}
 	
 	//load preferences
-		private void loadPref(){
-			//last number
-			int lnum = settings.getInt(getString(R.string.save_last_num),0);
-			lastNumberForWaypoint = lnum;
-		}
+	private void loadPref(){
+		//last number
+		int lnum = settings.getInt(getString(R.string.save_last_num),0);
+		lastNumberForWaypoint = lnum;
+	}
+	
+	//save preferences
+	private void savePref(int lnum, String[] name, String[] lati, String[] longi){
+		//last number for new waypoint 
+		editor.putInt(getString(R.string.save_last_num), lnum);
 		
-		//save preferences
-		private void savePref(int lnum, String[] name, String[] lati, String[] longi){
-			//last number for new waypoint 
-			editor.putInt(getString(R.string.save_last_num), lnum);
-			
-			//name array
-			editor.putInt("nameArray" +"_size", name.length);  
-		    for(int i=0;i<name.length;i++)  
-		        editor.putString("nameArray" + "_" + i, name[i]);
-		    
-		    //latitude array
-		    editor.putInt("latitudeArray" +"_size", lati.length);  
-		    for(int i=0;i<lati.length;i++)  
-		        editor.putString("latitudeArray" + "_" + i, lati[i]);
-		    
-		    //longitude array
-		    editor.putInt("longitudeArray" +"_size", longi.length);  
-		    for(int i=0;i<longi.length;i++)  
-		        editor.putString("longitudeArray" + "_" + i, longi[i]);
-			editor.commit();
-			
-		}
+		//name array
+		editor.putInt("nameArray" +"_size", name.length);  
+	    for(int i=0;i<name.length;i++)  
+	        editor.putString("nameArray" + "_" + i, name[i]);
+	    
+	    //latitude array
+	    editor.putInt("latitudeArray" +"_size", lati.length);  
+	    for(int i=0;i<lati.length;i++)  
+	        editor.putString("latitudeArray" + "_" + i, lati[i]);
+	    
+	    //longitude array
+	    editor.putInt("longitudeArray" +"_size", longi.length);  
+	    for(int i=0;i<longi.length;i++)  
+	        editor.putString("longitudeArray" + "_" + i, longi[i]);
+		editor.commit();
 		
-		@Override
-		public boolean onCreateOptionsMenu(Menu menu) {
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 
-			// Inflate the menu; this adds items to the action bar if it is present.
-			getMenuInflater().inflate(R.menu.way_point, menu);
-			return true;
-		}
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.way_point, menu);
+		return true;
+	}
 
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			// Handle action bar item clicks here. The action bar will
-			// automatically handle clicks on the Home/Up button, so long
-			// as you specify a parent activity in AndroidManifest.xml.
-			switch (item.getItemId()) {
-			case R.id.navigation_setting:
-				//back to WayPoint activity and send some parameters to the activity
-				intentToMain.putExtra("actName", "Please selected a waypoint");//name
-				intentToMain.putExtra("actLatitude", 999);//latitude
-				intentToMain.putExtra("actLongitude", 999);//longitude
-				setResult(RESULT_OK, intentToMain);
-				finish();
-				break;
-			default:
-				break;
-			}
-			return false;
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		switch (item.getItemId()) {
+		case R.id.navigation_setting:
+			//back to WayPoint activity and send some parameters to the activity
+			intentToMain.putExtra("actName", "Please selected a waypoint");//name
+			intentToMain.putExtra("actLatitude", 999);//latitude
+			intentToMain.putExtra("actLongitude", 999);//longitude
+			setResult(RESULT_OK, intentToMain);
+			finish();
+			break;
+		default:
+			break;
 		}
+		return false;
+	}
 
 }
