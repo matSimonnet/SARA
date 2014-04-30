@@ -157,14 +157,13 @@ public class WayPointActivity extends Activity {
 	        	      				choosingWaypoint = wayPointList.get(selectedItem);
 	        	      				
 	        	      				//dialog creation
-	        	      				choosingDialog.setTitle("You selected : "+choosingWaypoint.getName());
+	        	      				choosingDialog.setTitle(R.string.selected_item+choosingWaypoint.getName());
 	                				choosingDialog.setIcon(android.R.drawable.presence_busy);
-	                				//choosingDialog.setMessage("What do you want to do with "+choosingWaypoint.getName()+"?");
 	                				
 	                				//setOnClickListener
 	                	
 	                				//activate button OnClickListener
-	                				choosingDialog.setNegativeButton("Activate", new OnClickListener(){
+	                				choosingDialog.setNegativeButton(R.string.activate, new OnClickListener(){
 	                					//activate button OnClickListener creation
 										@Override
 										public void onClick(DialogInterface arg0, int arg1) {
@@ -187,7 +186,7 @@ public class WayPointActivity extends Activity {
 	                				});//end activate button
 	                				
 	                				//modify button OnClickListener
-	                				choosingDialog.setNeutralButton("Modify", new OnClickListener(){
+	                				choosingDialog.setNeutralButton(R.string.modify, new OnClickListener(){
 	                					//modify button OnClickListener creation
 										@Override
 										public void onClick(DialogInterface dialog,int which) {
@@ -207,7 +206,7 @@ public class WayPointActivity extends Activity {
 	                				});//end modify button
 	                				
 	                				//delete button OnClickListener
-	                				choosingDialog.setPositiveButton("Delete", new OnClickListener(){
+	                				choosingDialog.setPositiveButton(R.string.delete, new OnClickListener(){
 	                					//delete button OnClickListener creation
 										@Override
 										public void onClick(DialogInterface dialog,int which) {
@@ -216,7 +215,7 @@ public class WayPointActivity extends Activity {
 											tts.speak("Delete", tts.QUEUE_FLUSH, null);
 											
 											//dialog creation
-											deletingDialog.setTitle("Are you sure deleting "+choosingWaypoint.getName()+"?");
+											deletingDialog.setTitle(R.string.deleting_item+choosingWaypoint.getName()+"?");
 											deletingDialog.setIcon(android.R.drawable.presence_busy);
 											tts.speak("Are you sure deleting "+choosingWaypoint.getName()+"?", tts.QUEUE_FLUSH, null);
 
@@ -226,7 +225,7 @@ public class WayPointActivity extends Activity {
 												//OnClick listener for delete button
 												@Override
 												public void onClick(DialogInterface dialog, int which) {
-													deleteWPfromList(wayPointList,choosingWaypoint);
+													//deleteWPfromList(wayPointList,choosingWaypoint);
 												}
 											});
 											//show the deleting dialog

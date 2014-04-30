@@ -204,7 +204,18 @@
    <string name="way_menu">WAY MENU</string>
    <string name="new_way">New Way</string>
    <string name="way_activity">Back to Way</string>
-   
+   <string name="gps_unavail_wait">GPS is unavailable the list is not sort Please wait</string>
+   <string name="ok_button">OK</string>
+   		<!-- choosing dialog -->
+   		<string name="selected_item">You selected : </string>
+ 		<string name="activate">Activate</string>
+ 		<string name="modify">Modify</string>
+ 		<string name="delete">Delete</string>
+ 		<!-- deleting dialog -->
+ 		<string name="deleting_item">Are you sure deleting : </string>
+ 		<string name="cancel">Cancel</string>
+ 		
+   		   
    <!-- new way activity -->
    <string name="title_activity_new_way">New Way Activity</string>
    
