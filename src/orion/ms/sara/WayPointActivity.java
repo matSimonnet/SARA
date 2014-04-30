@@ -129,7 +129,7 @@ public class WayPointActivity extends Activity {
 			if(MyLocationListener.currentLatitude.equals("") && selectedItem==0){
 				//GPS unavailable
 	        	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-	        	dialog.setTitle(R.string.gps_unavail_wait);
+	        	dialog.setTitle("GPS is unavailable the list is not sort Please wait");
 	        	dialog.setNeutralButton(R.string.ok_button, null);
 	        	dialog.show();
 	        }
@@ -157,7 +157,7 @@ public class WayPointActivity extends Activity {
 	        	      				choosingWaypoint = wayPointList.get(selectedItem);
 	        	      				
 	        	      				//dialog creation
-	        	      				choosingDialog.setTitle(R.string.selected_item+choosingWaypoint.getName());
+	        	      				choosingDialog.setTitle("You selected : "+choosingWaypoint.getName());
 	                				choosingDialog.setIcon(android.R.drawable.presence_busy);
 	                				
 	                				//setOnClickListener
@@ -215,7 +215,7 @@ public class WayPointActivity extends Activity {
 											tts.speak("Delete", tts.QUEUE_FLUSH, null);
 											
 											//dialog creation
-											deletingDialog.setTitle(R.string.deleting_item+choosingWaypoint.getName()+"?");
+											deletingDialog.setTitle("Are you sure deleting "+choosingWaypoint.getName()+"?");
 											deletingDialog.setIcon(android.R.drawable.presence_busy);
 											tts.speak("Are you sure deleting "+choosingWaypoint.getName()+"?", tts.QUEUE_FLUSH, null);
 
