@@ -72,7 +72,7 @@ public class WayPointActivity extends Activity {
 		//intent
 		private Intent intentToMain;
 		private Intent intentToNewWayPoint;
-		private Intent intentToModify;
+		private Intent intentToModifyWP;
 		
 		//selected waypoint point item number
 		private int selectedItem = 0;
@@ -118,7 +118,7 @@ public class WayPointActivity extends Activity {
 			//Intent creation
 			intentToMain = new Intent(WayPointActivity.this,MainActivity.class);
 			intentToNewWayPoint = new Intent(WayPointActivity.this,NewWayPointActivity.class);
-			intentToModify = new Intent(WayPointActivity.this,ModifyWPActivity.class);
+			intentToModifyWP = new Intent(WayPointActivity.this,ModifyWPActivity.class);
 
 			//get selected item from main
 			Intent intentFromMain = getIntent();
@@ -196,11 +196,11 @@ public class WayPointActivity extends Activity {
 											
 											//change to the "Modify" activity
 											//passing modifying waypoint point name and position
-											intentToModify.putExtra("modName", choosingWaypoint.getName());//name
-											intentToModify.putExtra("modLatitude", choosingWaypoint.getLatitude());//latitude
-											intentToModify.putExtra("modLongitude", choosingWaypoint.getLongitude());//longitude
+											intentToModifyWP.putExtra("modName", choosingWaypoint.getName());//name
+											intentToModifyWP.putExtra("modLatitude", choosingWaypoint.getLatitude());//latitude
+											intentToModifyWP.putExtra("modLongitude", choosingWaypoint.getLongitude());//longitude
 											//start NewWayPoint activity
-											startActivityForResult(intentToModify, MODIFY_WAYPOINT);
+											startActivityForResult(intentToModifyWP, MODIFY_WAYPOINT);
 										}//end of onClick
 	                					
 	                				});//end modify button

@@ -5,31 +5,26 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.os.Build;
 
 public class WayActivity extends Activity {
 
@@ -76,8 +71,8 @@ public class WayActivity extends Activity {
 	
 	//intent
 	private Intent intentToMain;
-	private Intent intentToNewWayPoint;
-	private Intent intentToModify;
+	private Intent intentToNewWay;
+	private Intent intentToModifyWay;
 	
 	//selected way point item number
 	private int selectedItem = 0;
@@ -90,13 +85,13 @@ public void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_way_point);
 		setTitle(R.string.title_activity_way_point);
 		
-		Log.i("WaypointAct", "---------------OnCreate----------------");
+		Log.i("WayAct", "---------------OnCreate----------------");
 		
 		//load preferences
 		// Restore preferences
 		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
 		this.editor = settings.edit();
-		loadPref();
+		//loadPref();
 		
 		for(int i = 0;i<wayList.size();i++){
 			Log.i("way list", "item "+i+": "+wayList.get(i).getName());
@@ -122,30 +117,44 @@ public void onCreate(Bundle savedInstanceState) {
 		
 		//Intent creation
 		intentToMain = new Intent(WayActivity.this,MainActivity.class);
-		intentToNewWayPoint = new Intent(WayActivity.this,NewWayActivity.class);
-		intentToModify = new Intent(WayActivity.this,ModifyWayActivity.class);
+		intentToNewWay = new Intent(WayActivity.this,NewWayActivity.class);
+		intentToModifyWay = new Intent(WayActivity.this,ModifyWayActivity.class);
 
 		//get selected item from main
-		Intent intentFromMain = getIntent();
+		/*Intent intentFromMain = getIntent();
 		selectedName = intentFromMain.getStringExtra("actName");
 		Log.i("selected item from onCreate",selectedName);
+		*/
 		
 		//sort the list
 		if(MyLocationListener.currentLatitude.equals("") && selectedItem==0){
 			//GPS unavailable
         	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        	dialog.setTitle(R.string.gps_unavail_wait);
+        	dialog.setTitle("GPS is unavailable the list is not sort Please wait");
         	dialog.setNeutralButton(R.string.ok_button, null);
         	dialog.show();
         }
 		else{
 			//GPS available
-			sortingWayList(wayList);
+			//sortingWayList(wayList);
 			Log.i("from on create", "sort from on create");
 		}
 		
+		//testing way
+		WP wp1 = new WP("wp1","44.3","-4.8");
+		WP wp2 = new WP("wp2","43","-4.5");
+		WP wp3 = new WP("wp3","40","-4.7");
+		wayList.add(new Way("w1",wp1,wp2));
+		wayList.add(new Way("w2",wp2,wp3));
 		//spinner set up
+		//set array adapter of the list into the spinner
 		way = (Spinner) findViewById(R.id.spinner1);
+		arrAd = new ArrayAdapter<String>(WayActivity.this,
+								android.R.layout.simple_spinner_item, 
+								toNameArrayList(wayList));
+		arrAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);      
+		way.setAdapter(arrAd);
+		/*way = (Spinner) findViewById(R.id.spinner1);
 		way.setContentDescription("Choose the way in ");
 		//setOnItemSelectedListener
 		way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
@@ -162,7 +171,7 @@ public void onCreate(Bundle savedInstanceState) {
         	      				choosingWay = wayList.get(selectedItem);
         	      				
         	      				//dialog creation
-        	      				choosingDialog.setTitle(R.string.selected_item+choosingWay.getName());
+        	      				choosingDialog.setTitle("You selected : "+choosingWay.getName());
                 				choosingDialog.setIcon(android.R.drawable.presence_busy);
                 				
                 				//setOnClickListener
@@ -178,11 +187,11 @@ public void onCreate(Bundle savedInstanceState) {
 
 		                				//change back to the main activity
 										//passing activate way point name and position
-										/*intentToMain.putExtra("actName", choosingWay.getName());//name
+										intentToMain.putExtra("actName", choosingWay.getName());//name
 										intentToMain.putExtra("actLatitude", Double.parseDouble( choosingWay.getLatitude()));//latitude
 										intentToMain.putExtra("actLongitude", Double.parseDouble(choosingWay.getLongitude()));//longitude
 										Log.i("selected", "name : "+choosingWay.getName());
-										*/
+										
 										//back to WayPoint activity and send some parameters to the activity
 										setResult(RESULT_OK, intentToMain);
 										
@@ -201,12 +210,12 @@ public void onCreate(Bundle savedInstanceState) {
 										
 										//change to the "Modify" activity
 										//passing modifying way point name and position
-										/*intentToModify.putExtra("modName", choosingWay.getName());//name
-										intentToModify.putExtra("modLatitude", choosingWay.getLatitude());//latitude
-										intentToModify.putExtra("modLongitude", choosingWay.getLongitude());//longitude
-										*/
+										intentToModifyWay.putExtra("modName", choosingWay.getName());//name
+										intentToModifyWay.putExtra("modLatitude", choosingWay.getLatitude());//latitude
+										intentToModifyWay.putExtra("modLongitude", choosingWay.getLongitude());//longitude
+										
 										//start NewWayPoint activity
-										startActivityForResult(intentToModify, MODIFY_WAY);
+										startActivityForResult(intentToModifyWay, MODIFY_WAY);
 									}//end of onClick
                 					
                 				});//end modify button
@@ -217,17 +226,17 @@ public void onCreate(Bundle savedInstanceState) {
 									@Override
 									public void onClick(DialogInterface dialog,int which) {
 		                				//notify
-										Toast.makeText(WayActivity.this,"Delete",Toast.LENGTH_SHORT).show();
+										Toast.makeText(WayActivity.this,R.string.delete,Toast.LENGTH_SHORT).show();
 										tts.speak("Delete", tts.QUEUE_FLUSH, null);
 										
 										//dialog creation
-										deletingDialog.setTitle(R.string.deleting_item+choosingWay.getName()+"?");
+										deletingDialog.setTitle("Are you sure deleting "+choosingWay.getName()+"?");
 										deletingDialog.setIcon(android.R.drawable.presence_busy);
 										tts.speak("Are you sure deleting "+choosingWay.getName()+"?", tts.QUEUE_FLUSH, null);
 
 										//button
-										deletingDialog.setPositiveButton("Cancel", null);
-										deletingDialog.setNegativeButton("Sure", new OnClickListener() {
+										deletingDialog.setPositiveButton(R.string.cancel, null);
+										deletingDialog.setNegativeButton(R.string.sure, new OnClickListener() {
 											//OnClick listener for delete button
 											@Override
 											public void onClick(DialogInterface dialog, int which) {
@@ -242,10 +251,12 @@ public void onCreate(Bundle savedInstanceState) {
                 					//show the choosing dialog if selected some way points from the list
                 					choosingDialog.show();
                 				}//end if
+                				
                 			}//end switch case
                     }catch(Exception e){
                         e.printStackTrace();
                     }//end try-catch
+                    
               	}
 
 				@SuppressWarnings("static-access")
@@ -256,7 +267,7 @@ public void onCreate(Bundle savedInstanceState) {
 				
 			
 
-        });
+        });*/
 		
 		//"New Way" button
 		//button creation
@@ -270,13 +281,12 @@ public void onCreate(Bundle savedInstanceState) {
 					public void onClick(View v) {
 						if(v==newWay){
 							//notification
-							Toast.makeText(WayActivity.this,"Clicked new way", Toast.LENGTH_SHORT).show();
 							tts.speak("create a new way", tts.QUEUE_FLUSH, null);
-							
+				
 							//sending default name for a new way
-							intentToNewWayPoint.putExtra("defaultNameFromWay", String.valueOf("Way"+(lastNumberForWay+1)));
+							intentToNewWay.putExtra("defaultNameFromWay", String.valueOf("Way"+(lastNumberForWay+1)));
 							//start NewWay activity
-							startActivityForResult(intentToNewWayPoint, NEW_WAY);
+							startActivityForResult(intentToNewWay, NEW_WAY);
 						}
 					}//end of onClick
 			    	
@@ -287,11 +297,11 @@ public void onCreate(Bundle savedInstanceState) {
 	@Override
 	  protected void onResume() {
 	    super.onResume();
-	    Log.i("Resume the program", "=======================RESUME+++++++++++++++++++++");
+	    Log.i("Resume way", "=======================RESUME+++++++++++++++++++++");
 	    if(way.getChildCount()==0 && selectedItem==0){
 	    	//set array adapter of the list into the spinner
 			sortingWayList(wayList);
-			way.setTop(selectedItem);
+			//way.setTop(selectedItem);
 			Log.i("sort from on resume", "sort from on resume");
 	    }
 	  }
@@ -394,7 +404,7 @@ public void onCreate(Bundle savedInstanceState) {
 	        	//Recalculating distance in the list
 				for(int i = 0;i< wList.size();i++){
 					tempWay = wList.get(i);
-					//calculate new distance
+					//calculate new distance from the first waypoint of the way
 					double tempLa = Double.parseDouble(tempWay.getFirstWP().getLatitude());
 					double tempLong = Double.parseDouble(tempWay.getFirstWP().getLongitude());
 					
@@ -403,7 +413,7 @@ public void onCreate(Bundle savedInstanceState) {
 					//set up the new distance from the current position into every way point in the list
 					wList.get(i).setDistance(Double.parseDouble(tempResult[0]+""));
 				}
-				Collections.sort(wList);//Sorting the list by proximity
+				Collections.sort(wList);//Sorting the list by proximity of the first waypoint
 	        }//end if
 	        //add the default value back on the top of the list
 	        wList.add(0, first);
@@ -437,7 +447,7 @@ public void onCreate(Bundle savedInstanceState) {
 		Log.i("top list", way.getTop()+"");
 		
 		//save the last number of default name value and attributes of way point in the list
-		savePref(lastNumberForWay,nameArray(wList),latitudeArray(wList),longitudeArray(wList));
+		//savePref(lastNumberForWay,nameArray(wList),latitudeArray(wList),longitudeArray(wList));
 		
 	}//end sorting
 		
