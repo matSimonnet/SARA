@@ -214,6 +214,7 @@
  		<!-- deleting dialog -->
  		<string name="deleting_item">Are you sure deleting : </string>
  		<string name="cancel">Cancel</string>
+ 		<string name="sure">Sure</string>
  		
    		   
    <!-- new way activity -->

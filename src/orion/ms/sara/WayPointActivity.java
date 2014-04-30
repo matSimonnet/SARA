@@ -129,8 +129,8 @@ public class WayPointActivity extends Activity {
 			if(MyLocationListener.currentLatitude.equals("") && selectedItem==0){
 				//GPS unavailable
 	        	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-	        	dialog.setTitle("GPS is unavailable Waypoint list is not sort Please wait");
-	        	dialog.setNeutralButton("OK", null);
+	        	dialog.setTitle(R.string.gps_unavail_wait);
+	        	dialog.setNeutralButton(R.string.ok_button, null);
 	        	dialog.show();
 	        }
 			else{
@@ -168,7 +168,7 @@ public class WayPointActivity extends Activity {
 										@Override
 										public void onClick(DialogInterface arg0, int arg1) {
 			                				//notify
-											Toast.makeText(WayPointActivity.this,"Activate",Toast.LENGTH_SHORT).show();
+											Toast.makeText(WayPointActivity.this,R.string.activate,Toast.LENGTH_SHORT).show();
 											tts.speak("Activate", tts.QUEUE_FLUSH, null);
 
 			                				//change back to the main activity
@@ -191,7 +191,7 @@ public class WayPointActivity extends Activity {
 										@Override
 										public void onClick(DialogInterface dialog,int which) {
 											//notification
-											Toast.makeText(WayPointActivity.this,"Modify",Toast.LENGTH_SHORT).show();
+											Toast.makeText(WayPointActivity.this,R.string.modify,Toast.LENGTH_SHORT).show();
 											tts.speak("Modify", tts.QUEUE_FLUSH, null);
 											
 											//change to the "Modify" activity
@@ -211,7 +211,7 @@ public class WayPointActivity extends Activity {
 										@Override
 										public void onClick(DialogInterface dialog,int which) {
 			                				//notify
-											Toast.makeText(WayPointActivity.this,"Delete",Toast.LENGTH_SHORT).show();
+											Toast.makeText(WayPointActivity.this,R.string.delete,Toast.LENGTH_SHORT).show();
 											tts.speak("Delete", tts.QUEUE_FLUSH, null);
 											
 											//dialog creation
@@ -220,8 +220,8 @@ public class WayPointActivity extends Activity {
 											tts.speak("Are you sure deleting "+choosingWaypoint.getName()+"?", tts.QUEUE_FLUSH, null);
 
 											//button
-											deletingDialog.setPositiveButton("Cancel", null);
-											deletingDialog.setNegativeButton("Sure", new OnClickListener() {
+											deletingDialog.setPositiveButton(R.string.cancel, null);
+											deletingDialog.setNegativeButton(R.string.sure, new OnClickListener() {
 												//OnClick listener for delete button
 												@Override
 												public void onClick(DialogInterface dialog, int which) {
@@ -264,7 +264,6 @@ public class WayPointActivity extends Activity {
 						public void onClick(View v) {
 							if(v==newWaypoint){
 								//notification
-								Toast.makeText(WayPointActivity.this,"Clicked new waypoint", Toast.LENGTH_SHORT).show();
 								tts.speak("create a new waypoint", tts.QUEUE_FLUSH, null);
 								
 								//sending default name for a new waypoint point
