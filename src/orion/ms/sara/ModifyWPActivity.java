@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 
 public class ModifyWPActivity extends Activity {
 	//variables declaration
+	
+	private final int WP_MAP_MODIFY = 763;
 
 	//string for each attribute of the modifying way point
 	private String modName = "";
@@ -170,7 +173,11 @@ public class ModifyWPActivity extends Activity {
 			@SuppressLint("ShowToast")
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(ModifyWPActivity.this, "Show Map!!!!", Toast.LENGTH_SHORT).show();;
+				Intent intentToWPMap = new Intent(ModifyWPActivity.this, WaypointMapActivity.class);
+				intentToWPMap.putExtra("ifMod", true);
+				intentToWPMap.putExtra("oldLatitude", latitudeBox.getText().toString());
+				intentToWPMap.putExtra("oldLongitude", longitudeBox.getText().toString());
+				startActivityForResult(intentToWPMap, WP_MAP_MODIFY);
 			}
 		});
 
@@ -365,5 +372,22 @@ public class ModifyWPActivity extends Activity {
 			break;
 		}
 		return false;
+	}
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==WP_MAP_MODIFY && resultCode == RESULT_OK){
+        	
+        	//receive latitude and longitude from the map
+        	String latitudeFromMap = data.getStringExtra("newLatitude");
+        	String longitudeFromMap = data.getStringExtra("newLongitude");
+        	
+        	//set the receiving location to the editText
+        	latitudeBox.setText(latitudeFromMap);
+        	longitudeBox.setText(longitudeFromMap);
+        	
+        	Log.i(latitudeFromMap, longitudeFromMap);
+        }
+        
 	}
 }

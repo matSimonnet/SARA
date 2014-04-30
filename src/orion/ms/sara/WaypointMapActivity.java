@@ -1,176 +1,107 @@
 package orion.ms.sara;
 
-import java.io.File;
-import java.util.List;
+import android.content.Context;
 
-import org.mapsforge.android.maps.MapActivity;
-import org.mapsforge.android.maps.MapController;
-import org.mapsforge.android.maps.MapView;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
+import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
+import java.util.List;
+import java.io.File;
+import org.mapsforge.android.maps.*;
 import org.mapsforge.android.maps.overlay.ItemizedOverlay;
 import org.mapsforge.android.maps.overlay.OverlayItem;
 import org.mapsforge.core.GeoPoint;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+public class WaypointMapActivity extends MapActivity {
+	
+	private static Context mContext;
+    private MyMapView mapView;
+	private String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map";
+	private boolean isModify = false;
+	private double ModifyLatitude = 999;
+	private double ModifyLongitude = 999;
+ 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+ 
+        setContentView(R.layout.activity_waypoint_map);
+        mapView = (MyMapView) findViewById(R.id.mapview);
+		mContext = this;
 
-public class WaypointMapActivity extends MapActivity{
-	//variables declaration
-	//Intent
-	private Intent intentToWPMap;//from both new and modify way point
-	private Intent intentToNewWP;//to new way point 
-	private Intent intentToModWP;//to modify way point 	
-	
-	//boolean to check if come from modify activity
-	private boolean isMod = false;
-	
-	//old location
-	private String oldLatitude = "";
-	private String oldLongitude = "";
-	
-	//new location
-	private String newLatitude = "";
-	private String newLongitude = "";
-	
-	//layout components
-	//map
-	private static MapView mapView;
-	//button
-	private Button saveButton = null;
-	
-	//location
-	private LocationManager lm;
-	//map component
-	private static MapController Controller;
-	private OverlayItem item;
-	private MyItemizedOverlay itemizedOverlay;
-	
-	//way point
-	private WP tempWP;
-	
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_waypoint_map);
-		
-		//intent creation
-		intentToWPMap = getIntent();
-		intentToNewWP = new Intent(WaypointMapActivity.this,NewWayPointActivity.class);
-		intentToModWP = new Intent(WaypointMapActivity.this,ModifyWPActivity.class);
-		
-		//receive the old location and boolean if it comes from modify activity
-		isMod = intentToWPMap.getBooleanExtra("ifMod", false);
-		oldLatitude = intentToWPMap.getStringExtra("oldLatitude");
-		oldLongitude = intentToWPMap.getStringExtra("oldLongitude");
-		
-		//map
-		mapView = (MapView) findViewById(R.id.mapView);
-		mapView.setClickable(true);
-		mapView.setBuiltInZoomControls(true);
 		setMapFile();
+		loadFlag();
+		loadWaypoint();
+		
 
-		//initial map location with current position and old way point
-		Controller = mapView.getController();
-		initLocation();
-		oldWaypoint(WayPointActivity.wayPointList);
-		
-		
-		
-		//button
-		saveButton = (Button) findViewById(R.id.button1);
-		saveButton.setContentDescription("save current location from the map");
-		saveButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//get the current location from the map
-				//getCurrentLocation();
-				//going back and save the changes value
-				//pass new latitude and longitude
-				if(!isMod){
-					//from new waypoint activity
-					intentToNewWP.putExtra("newLatitude", newLatitude);//latitude
-					intentToNewWP.putExtra("newLongitude", newLatitude);//longitude
-					setResult(RESULT_OK, intentToNewWP);
+        mapView.setOnLongpressListener(new MyMapView.OnLongpressListener() {
+        public void onLongpress(final MapView view, final GeoPoint longpressLocation) {
+            runOnUiThread(new Runnable() {
+            	public void run() {
+    				Intent IntentToNewWP = new Intent(WaypointMapActivity.this,NewWayPointActivity.class);
+    				IntentToNewWP.putExtra("newLatitude", String.valueOf(longpressLocation.getLatitude()));
+    				IntentToNewWP.putExtra("newLongitude", String.valueOf(longpressLocation.getLongitude()));
+					setResult(RESULT_OK, IntentToNewWP);
 					finish();
+            	}
+            });
+        	}
+        });
+    }
+    private void loadFlag() {
+    	Bundle extras = getIntent().getExtras();
+    	if (extras != null) {
+    	    this.isModify = extras.getBoolean("ifMod", false);
+    	    this.ModifyLatitude = Double.parseDouble(extras.getString("oldLatitude"));
+    	    this.ModifyLongitude = Double.parseDouble(extras.getString("oldLongitude"));
+    	}
+    }
+    
+    private void loadWaypoint() {
+		int size = WayPointActivity.wayPointList.size();
+		GeoPoint[] waypoint = new GeoPoint[size];
+		double latitude;
+		double longitude;
+		String name;
+		
+		MyItemizedOverlay itemizedOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.inactivewp), true, getContext());
+		OverlayItem item;
+		
+		for(int i = size-1; i >= 0; i--) {
+			if(WayPointActivity.wayPointList.get(i).getLatitude() != "" && WayPointActivity.wayPointList.get(i).getLongitude() != "") {
+				latitude = Double.parseDouble(WayPointActivity.wayPointList.get(i).getLatitude());
+				longitude = Double.parseDouble(WayPointActivity.wayPointList.get(i).getLongitude());
+				
+				name = WayPointActivity.wayPointList.get(i).getName();
+				waypoint[i] = new GeoPoint(latitude, longitude);
+				item = new OverlayItem(waypoint[i], name, latitude + " " + longitude);
+				
+				// activated waypoint
+				if(latitude == MyLocationListener.WaypointLatitude && longitude == MyLocationListener.WaypointLongitude) {
+					item.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.activewp)));
 				}
-				else{
-					//from modify waypoint activity
-					intentToModWP.putExtra("newLatitude", newLatitude);//latitude
-					intentToModWP.putExtra("newLongitude", newLatitude);//longitude
-					setResult(RESULT_OK, intentToModWP);
-					finish();
+				
+				// modifying waypoint
+				if(isModify && latitude == this.ModifyLatitude && longitude == this.ModifyLongitude) {
+					item.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.modifywp)));
 				}
+				itemizedOverlay.addItem(item);
 			}
-		});
-		
-	}
-	
-	private void oldWaypoint(List<WP> wList){
-		//check if there are more than 1 item in the list including default item
-		if(wList.size()>1){
-			for(int i = 0;i<wList.size();i++){
-				tempWP = wList.get(i);
-				//check if a way point is not the default waypoint 
-				if(!tempWP.getName().equals("Please selected a waypoint")){
-					Log.i("tempWP", tempWP.getName());
-					markPoint(tempWP,"inactive");
-				}//end if
-			}//end for
-		}//end if size>1
-	}
-	
-	//pin each way point on the map with 
-	private void markPoint(WP wp, String type){
-		double latitude = Double.parseDouble(wp.getLatitude());
-		double longitude = Double.parseDouble(wp.getLongitude());
-		GeoPoint point = new GeoPoint(latitude,longitude);
-		item = new OverlayItem(point, wp.getName(), latitude + " , " + longitude);
-		
-		//check type of the way point : inactive, active, modify
-		if(type.equals("inactive")){
-			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.inactivewp)));
-			itemizedOverlay = new MyItemizedOverlay(this.getResources().getDrawable(R.drawable.inactivewp),true, this);
 		}
-		else if(type.equals("active")){
-			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.activewp)));
-			itemizedOverlay = new MyItemizedOverlay(this.getResources().getDrawable(R.drawable.activewp),true, this);
-		}
-		else if(type.equals("modify")){
-			item.setMarker(ItemizedOverlay.boundCenter(getResources().getDrawable(R.drawable.modifywp)));
-			itemizedOverlay = new MyItemizedOverlay(this.getResources().getDrawable(R.drawable.modifywp),true, this);
-		}
-
-		item.setTitle(wp.getName());
-		item.setSnippet(wp.getName()+" : "+latitude+" , "+longitude);
-		
-		// add item to item management
-		itemizedOverlay.addItem(item);
-		
-		//add item to map view
-		mapView.getOverlays().add(itemizedOverlay);
+		mapView.getOverlays().add(itemizedOverlay);	
 	}
-	
-	//return current location from the map
-	private String[] getCurrentLocation(MapView map, GeoPoint geo){
-		String[] point = new String[3];
-		
-	    
-
-		return point;
-	}
-	
-	//setting up the map
+    
 	private void setMapFile() {
 		File mapFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Android/data/org.mapsforge.android.maps/map/bretagne.map");
 		// check if there is a bretagne.map
@@ -178,144 +109,150 @@ public class WaypointMapActivity extends MapActivity{
 			mapView.setMapFile(mapFile);
 		}
 		else {
-			AlertDialog.Builder dialog = new AlertDialog.Builder(WaypointMapActivity.this);
-			dialog.setIcon(android.R.drawable.presence_busy);
-			dialog.setTitle("You didn't have a map yet, please download it by going to the Map");
-			dialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+			// didn't have a map, then ask if the user wants to download
+			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+			dialog.setTitle("You don't have a map, do you want to download now?");
+			dialog.setNegativeButton("Yes", new OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					//go back
-					//pass old latitude and longitude
-					if(!isMod){
-						//from new waypoint activity
-						intentToNewWP.putExtra("newLatitude", oldLatitude);//latitude
-						intentToNewWP.putExtra("newLongitude", oldLatitude);//longitude
-						setResult(RESULT_OK, intentToNewWP);
-						finish();
-					}
-					else{
-						//from modify waypoint activity
-						intentToModWP.putExtra("newLatitude", oldLatitude);//latitude
-						intentToModWP.putExtra("newLongitude", oldLatitude);//longitude
-						setResult(RESULT_OK, intentToModWP);
-						finish();
-					}
+				public void onClick(DialogInterface arg0, int arg1) {
+					// check if network is available
+					if (isNetworkAvailable()) {
+						// warning if on 3G network
+						if (is3GAvailable()) {
+							// second alert to notice it will be expensive
+							AlertDialog.Builder dialog = new AlertDialog.Builder(WaypointMapActivity.this);
+							dialog.setIcon(android.R.drawable.presence_busy);
+							dialog.setTitle("Warning!!!");
+							dialog.setMessage("Your Internet is connecting via 3G, downloading now may cost a lot. Are you sure to continue?");
+							dialog.setNegativeButton("Sure",
+									new OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											// download
+											if (isDownloadManagerAvailable(WaypointMapActivity.this)) {
+												DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+												request.setDescription("/Android/data/map/");
+												request.setTitle("bretagne.map");
+												// in order for this if to run,
+												// you must use the android 3.2
+												// to compile your app
+												if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+													request.allowScanningByMediaScanner();
+													request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+												}
+												request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "bretagne.map");
+
+												// get download service and
+												// enqueue file
+												DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+												manager.enqueue(request);
+											}// end isDownloadManagerAvailable
+										}
+									});// end setNegativeButton
+							dialog.setNeutralButton("Cancel",
+									new OnClickListener() {
+										// Go back to main activity
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											finish();
+										}
+									});//
+							dialog.show();
+						}// end is3GAvailable
+						else if (isWifiAvailable()) {
+							// Start downloading file via wireless network
+							// notify
+							AlertDialog.Builder dialog = new AlertDialog.Builder(WaypointMapActivity.this);
+							dialog.setTitle("Start downloading bretagne.map");
+							dialog.setNeutralButton("OK", null);
+							dialog.show();
+							// download
+							if (isDownloadManagerAvailable(WaypointMapActivity.this)) {
+								DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+								request.setDescription("/Android/data/map/");
+								request.setTitle("bretagne.map");
+								// in order for this if to run, you must use the
+								// android 3.2 to compile your app
+								if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+									request.allowScanningByMediaScanner();
+									request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+								}
+								request.setDestinationInExternalPublicDir(
+										Environment.DIRECTORY_DOWNLOADS,
+										"bretagne.map");
+
+								// get download service and enqueue file
+								DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+								manager.enqueue(request);
+							}
+						}// end isWifiAvailable
+					}// end isNetworkAvailable
+					else {
+						// there is no Internet connection
+						AlertDialog.Builder dialog = new AlertDialog.Builder(WaypointMapActivity.this);
+						dialog.setIcon(android.R.drawable.presence_busy);
+						dialog.setTitle("No Internet connection right now, please try again later.");
+						dialog.setNegativeButton("OK", new OnClickListener() {
+							// Go back to main activity
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								finish();
+							}
+						});// end setNegativeButton
+						dialog.show();
+					}// end else
+				}// end onClick
+			});// end setNegativeButton
+			dialog.setNeutralButton("No", new OnClickListener() {
+				// Go back to main activity
+				@Override
+				public void onClick(DialogInterface dialog, int which) { 
+					finish();
 				}
-			});
+			});// end setNegativeButton
 			dialog.show();
 		}
 	}
-	
-	private void initLocation(){
-		// get the pointers to different system services
-		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);		
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
-		
-		//show current location
-		centerLocation();
-	}
 
-	//focus on center of current location
-	public static void centerLocation() {
-		if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
-			double latitude = Double.valueOf(MyLocationListener.currentLatitude);
-			double longitude = Double.valueOf(MyLocationListener.currentLongitude);
-			GeoPoint currentlocation = new GeoPoint(latitude, longitude);
-			Controller.setCenter(currentlocation);
+	// check if DownloadManager is available
+	private boolean isDownloadManagerAvailable(Context context) {
+		try {
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
+				return false;
+			}
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_LAUNCHER);
+			intent.setClassName("com.android.providers.downloads.ui", "com.android.providers.downloads.ui.DownloadList");
+			List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+			return list.size() > 0;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.waypoint_map, menu);
-		return true;
+	// check if the Internet connection is available
+	private boolean isNetworkAvailable() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		switch (item.getItemId()) {
-		case R.id.back_setting:
-			//check if some values change without saving
-			if(!oldLatitude.equals(newLatitude) || !oldLongitude.equals(newLongitude)){
-				AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-				dialog.setTitle("Some values change, do you want to save?");
-				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//going back and save the changes value
-						//pass new latitude and longitude
-						if(!isMod){
-							//from new waypoint activity
-							intentToNewWP.putExtra("newLatitude", newLatitude);//latitude
-							intentToNewWP.putExtra("newLongitude", newLatitude);//longitude
-							setResult(RESULT_OK, intentToNewWP);
-							finish();
-						}
-						else{
-							//from modify waypoint activity
-							intentToModWP.putExtra("newLatitude", newLatitude);//latitude
-							intentToModWP.putExtra("newLongitude", newLatitude);//longitude
-							setResult(RESULT_OK, intentToModWP);
-							finish();
-						}
-					}
-				});
-				
-				dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//going back without saving
-						//pass old latitude and longitude
-						if(!isMod){
-							//from new waypoint activity
-							intentToNewWP.putExtra("newLatitude", oldLatitude);//latitude
-							intentToNewWP.putExtra("newLongitude", oldLatitude);//longitude
-							setResult(RESULT_OK, intentToNewWP);
-							finish();
-						}
-						else{
-							//from modify waypoint activity
-							intentToModWP.putExtra("newLatitude", oldLatitude);//latitude
-							intentToModWP.putExtra("newLongitude", oldLatitude);//longitude
-							setResult(RESULT_OK, intentToModWP);
-							finish();
-						}
-					}
-				});
-				dialog.show();
-				
-			}
-			else{
-				//pass old latitude and longitude
-				if(!isMod){
-					//from new waypoint activity
-					intentToNewWP.putExtra("newLatitude", oldLatitude);//latitude
-					intentToNewWP.putExtra("newLongitude", oldLatitude);//longitude
-					setResult(RESULT_OK, intentToNewWP);
-					finish();
-				}
-				else{
-					//from modify waypoint activity
-					intentToModWP.putExtra("newLatitude", oldLatitude);//latitude
-					intentToModWP.putExtra("newLongitude", oldLatitude);//longitude
-					setResult(RESULT_OK, intentToModWP);
-					finish();
-				}
-				break;
-			}
-		
-		default:
-			break;
-		}
-		return false;
+	// check if 3G connection is available
+	private boolean is3GAvailable() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		return mobile.isAvailable() && mobile.isConnected();
 	}
 
-	
+	// check if wireless connection is available
+	private boolean isWifiAvailable() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		return wifi.isAvailable() && wifi.isConnected();
+	}
 
+	public static Context getContext() {
+		return mContext;
+	}
+    
 }

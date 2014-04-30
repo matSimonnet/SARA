@@ -64,7 +64,7 @@ public class MyMapActivity extends MapActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_mymapview);
+		setContentView(R.layout.activity_mymap);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
         //location manager creation

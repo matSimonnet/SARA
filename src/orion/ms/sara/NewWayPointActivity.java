@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -163,8 +164,6 @@ public class NewWayPointActivity extends Activity {
 					public void onClick(View v) {
 						//send the location in the editText and start the new activity
 						intentToWPMap.putExtra("ifMod", false);
-						intentToWPMap.putExtra("oldLatitude", latitudeBox.getText().toString());
-						intentToWPMap.putExtra("oldLongitude", longitudeBox.getText().toString());
 						startActivityForResult(intentToWPMap, WP_MAP);
 					}
 				});
@@ -309,13 +308,13 @@ public class NewWayPointActivity extends Activity {
 	
 	//Intent to handle receive parameters from NewWayPoint and Modify
 	@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intentFromAnother){
-        super.onActivityResult(requestCode, resultCode, intentFromAnother);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==WP_MAP && resultCode == RESULT_OK){
         	//receive latitude and longitude from the map
-        	String latitudeFromMap = intentFromWPMap.getStringExtra("newLatitude");
-        	String longitudeFromMap = intentFromWPMap.getStringExtra("newLongitude");
-        	
+        	String latitudeFromMap = data.getStringExtra("newLatitude");
+        	String longitudeFromMap = data.getStringExtra("newLongitude");
+        	Log.i(latitudeFromMap, longitudeFromMap);
         	//set the receiving location to the editText
         	latitudeBox.setText(latitudeFromMap);
         	longitudeBox.setText(longitudeFromMap);
