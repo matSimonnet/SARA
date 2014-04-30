@@ -213,9 +213,15 @@
    		   
    <!-- new way activity -->
    <string name="title_activity_new_way">New Way Activity</string>
+   <string name="way_name">Way name is</string>
+   <string name="way_wp1">Way point1 is </string>
+   <string name="waypoint1_name">name1</string>  
+   <string name="way_wp2">Way point2 is </string>
+   <string name="waypoint2_name">name2</string>
+   <string name="add_more_wp">Add a waypoint more</string>  
    
    <!-- modify way activity -->
-   <string name="title_activity_modify_way">ModifyWayActivity</string>
+   <string name="title_activity_modify_way">Modify Way Activity</string>
    
     <string name="title_activity_waypoint_map">WaypointMapActivity</string>
     <string name="autocenter">Focus my location</string>

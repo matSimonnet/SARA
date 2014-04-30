@@ -102,16 +102,16 @@
             android:id="@+id/button1"
             android:layout_width="400dp"
             android:layout_height="100dp"
-            android:textSize="50dp"
+            android:textSize="30dp"
             android:layout_below="@+id/editText3"
             android:layout_alignParentLeft="true"
-            android:text="@string/saveText" />
+            android:text="@string/saveText"/>
 
         <Button
             android:id="@+id/button4"
             android:layout_width="400dp"
             android:layout_height="100dp"
-            android:textSize="50dp"
+            android:textSize="30dp"
             android:layout_alignBaseline="@+id/button1"
             android:layout_alignBottom="@+id/button1"
             android:layout_alignParentRight="true"

@@ -225,7 +225,7 @@ public void onCreate(Bundle savedInstanceState) {
 										tts.speak("Delete", tts.QUEUE_FLUSH, null);
 										
 										//dialog creation
-										/*deletingDialog.setTitle("Are you sure deleting "+choosingWay.getName()+"?");
+										deletingDialog.setTitle("Are you sure deleting "+choosingWay.getName()+"?");
 										deletingDialog.setIcon(android.R.drawable.presence_busy);
 										tts.speak("Are you sure deleting "+choosingWay.getName()+"?", tts.QUEUE_FLUSH, null);
 
@@ -239,7 +239,7 @@ public void onCreate(Bundle savedInstanceState) {
 											}
 										});
 										//show the deleting dialog
-										deletingDialog.show();*/
+										deletingDialog.show();
 									}
                 				});//end delete button	
                 				if(!choosingWay.getName().equals("No selected way") && i!=0){

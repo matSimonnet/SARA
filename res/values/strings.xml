@@ -168,6 +168,4 @@
     <string name="wptresholdsetting">Waypoint Treshold Setting</string>
     <string name="title_alertdialog_wptreshold">Waypoint treshold was changed.Do you want to save?</string>
     
-    
-
 </resources>
