@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="orion.ms.sara.WaypointMapActivity" >
     
-    <item android:id="@+id/back_setting" 
+    <item android:id="@+id/backtosetting" 
         android:title="@string/go_back" 
         android:orderInCategory="100"
         android:showAsAction="ifRoom">

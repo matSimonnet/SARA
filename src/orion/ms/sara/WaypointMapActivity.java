@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.DownloadManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -43,6 +46,8 @@ public class WaypointMapActivity extends MapActivity {
 	private Button saveButton;
 	private OverlayItem itemModify;
 	private OverlayItem itemCreate;
+	
+	private boolean isChanged = false;
 
  
     @Override
@@ -55,6 +60,7 @@ public class WaypointMapActivity extends MapActivity {
         
 		mapView = (MyMapView) findViewById(R.id.mapview);
         this.saveButton = (Button) findViewById(R.id.savebutton);
+        this.saveButton.setContentDescription(getResources().getString(R.string.usethislocation));
         
 	    View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
@@ -81,6 +87,7 @@ public class WaypointMapActivity extends MapActivity {
         public void onLongpress(final MapView view, final GeoPoint longpressLocation) {
             runOnUiThread(new Runnable() {
             	public void run() {
+            		isChanged = true;
             		mapLatitude = longpressLocation.getLatitude();
             		mapLongitude = longpressLocation.getLongitude();
             		pinWaypoint(mapLatitude, mapLongitude);
@@ -309,6 +316,48 @@ public class WaypointMapActivity extends MapActivity {
 
 	public static Context getContext() {
 		return mContext;
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.waypoint_map, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem Item){
+		switch (Item.getItemId()) {
+		case R.id.backtosetting:
+			
+			if(isChanged) { 
+				Builder alertDialog = new AlertDialog.Builder(this);
+				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_waypointmap));
+				alertDialog.setNegativeButton("YES", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+	    				Intent IntentToNewWP = new Intent(WaypointMapActivity.this,NewWayPointActivity.class);
+	    				IntentToNewWP.putExtra("newLatitude", String.valueOf(mapLatitude));
+	    				IntentToNewWP.putExtra("newLongitude", String.valueOf(mapLongitude));
+						setResult(RESULT_OK, IntentToNewWP);
+						finish();					
+					}
+				});
+				alertDialog.setPositiveButton("No", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+				alertDialog.setIcon(android.R.drawable.presence_busy);
+				alertDialog.show();
+			}
+			else {
+				finish();
+			}
+			break;
+		default:
+			break;
+		}
+		return false;
 	}
     
 }
