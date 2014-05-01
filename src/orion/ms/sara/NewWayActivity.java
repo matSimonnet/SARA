@@ -121,18 +121,18 @@ public class NewWayActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(v==saveButton){
-					//get the new waypoint's name, latitude and longitude from the EditText
+					//get the new way's name EditText
 					wayName = wayNameBox.getText().toString();
 					waypoint1Name = selectedWP1.getName();
 					waypoint2Name = selectedWP2.getName();		
 					
-					//check if the filled name or the position (latitude and longitude) are already recorded
+					//check if the filled name or the waypoints are already recorded
 					if(isRecorded(wayName, waypoint1Name, waypoint2Name)){
 						tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
 					}
 					else{
 						if(waypoint1Name.equals("No selected waypoint") || waypoint2Name.equals("No selected waypoint") || wayName.isEmpty()){
-							//prevent unfilled text box(es)
+							//prevent incomplete information
 							tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
 						}
 						else{
@@ -156,49 +156,57 @@ public class NewWayActivity extends Activity {
 						}//end else in if-else
 						
 					}//end else
-				}
+				}//end if
 			}//end onClick
 		});
 		
 		//save and activate button
 		saveActButton = (Button) findViewById(R.id.button3);
-		/*saveActButton.setOnClickListener(new OnClickListener() {
+		saveActButton.setOnClickListener(new OnClickListener() {
 			//onClick creation
+			@SuppressLint("ShowToast")
+			@SuppressWarnings("static-access")
 			@Override
 			public void onClick(View v) {
 				if(v==saveActButton){
-					//get the new waypoint's name, latitude and longitude from the EditText
+					//get the new way's name EditText
 					wayName = wayNameBox.getText().toString();
-					latitude = latitudeBox.getText().toString();
-					longitude = longitudeBox.getText().toString();
+					waypoint1Name = selectedWP1.getName();
+					waypoint2Name = selectedWP2.getName();		
 					
-					//check if the filled name or the position (latitude and longitude) are already recorded
-					if(isRecorded(name, latitude, longitude)){
+					//check if the filled name or the waypoints are already recorded
+					if(isRecorded(wayName, waypoint1Name, waypoint2Name)){
 						tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
 					}
 					else{
-						if(latitude.isEmpty() || longitude.isEmpty() || name.isEmpty()){
-							//prevent unfilled text box(es)
+						if(waypoint1Name.equals("No selected waypoint") || waypoint2Name.equals("No selected waypoint") || wayName.isEmpty()){
+							//prevent incomplete information
 							tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
 						}
 						else{
-							//sent the new waypoint information back to waypoint activity
-							//intent to way point
-							//pass the parameters including name,latitude,longitude
-							intentToWay.putExtra("newName",name);//name
-							intentToWay.putExtra("newLatitude", latitude);//latitude
-							intentToWay.putExtra("newLongitude", longitude);//longitude
-							isAlsoActivateForNWP = true;//change the status
+							//sent the new way information back to way activity
 							
+							//notification
+							tts.speak("the new way already saved", tts.QUEUE_ADD, null);
+							Toast.makeText(NewWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
+
+							//change back to the way activity
+							//pass the parameters
+							intentToWay.putExtra("newWayName",wayName);//name
+							intentToWay.putExtra("newWP1Name", waypoint1Name);//latitude
+							intentToWay.putExtra("newWP2Name", waypoint2Name);//longitude
+							isAlsoActivateForNW = true;//change status
+
 							//back to WayPoint activity and send some parameters to the activity
 							setResult(RESULT_OK, intentToWay);
 							finish();
+							
 						}//end else in if-else
-					} //end else						
+						
+					}//end else				
 				}//end if
 			}//end onClick
 		});//end setOnClick
-		*/
 	}
 
 
