@@ -199,6 +199,8 @@ public class WayPointActivity extends Activity {
 											intentToModifyWP.putExtra("modName", choosingWaypoint.getName());//name
 											intentToModifyWP.putExtra("modLatitude", choosingWaypoint.getLatitude());//latitude
 											intentToModifyWP.putExtra("modLongitude", choosingWaypoint.getLongitude());//longitude
+											intentToModifyWP.putExtra("index", selectedItem);//longitude
+
 											//start NewWayPoint activity
 											startActivityForResult(intentToModifyWP, MODIFY_WAYPOINT);
 										}//end of onClick

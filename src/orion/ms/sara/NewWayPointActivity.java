@@ -161,8 +161,20 @@ public class NewWayPointActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						//send the location in the editText and start the new activity
-						intentToWPMap.putExtra("ifMod", false);
-						startActivityForResult(intentToWPMap, WP_MAP);
+						String latitude = latitudeBox.getText().toString();
+						String longitude = longitudeBox.getText().toString();
+						if(!latitude.equals("") || !longitude.equals("")){
+							intentToWPMap.putExtra("ifMod", true);
+							intentToWPMap.putExtra("oldLatitude", latitudeBox.getText().toString());
+							intentToWPMap.putExtra("oldLongitude", longitudeBox.getText().toString());
+							startActivityForResult(intentToWPMap, WP_MAP);
+							Log.i("", "put" + longitudeBox.getText().toString());
+						}
+						else {
+							intentToWPMap.putExtra("ifMod", false);
+							startActivityForResult(intentToWPMap, WP_MAP);
+							Log.i("", "notput");
+						}
 					}
 				});
 				

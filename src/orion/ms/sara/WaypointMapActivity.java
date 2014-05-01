@@ -37,6 +37,7 @@ public class WaypointMapActivity extends MapActivity {
 	
 	private double ModifyLatitude = 999;
 	private double ModifyLongitude = 999;
+	private int modifyIndex = -1;
 	
 	private double mapLatitude = 999;
 	private double mapLongitude = 999;
@@ -128,6 +129,8 @@ public class WaypointMapActivity extends MapActivity {
     	    if(isModify) {
     	    	this.ModifyLatitude = Double.parseDouble(extras.getString("oldLatitude"));
     	    	this.ModifyLongitude = Double.parseDouble(extras.getString("oldLongitude"));
+    	    	this.modifyIndex = extras.getInt("index", -1);
+    	    	pinWaypoint(ModifyLatitude, ModifyLongitude);
     	    }
     	}
     }
@@ -154,14 +157,7 @@ public class WaypointMapActivity extends MapActivity {
 					item.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.activewp)));
 					itemizedOverlay.addItem(item);
 				}
-				
-				// modifying waypoint
-				else if(isModify && latitude == this.ModifyLatitude && longitude == this.ModifyLongitude) {
-					itemModify = new OverlayItem(waypoint[i], name, latitude + " " + longitude);
-					itemModify.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.modifywp)));
-					itemizedOverlay.addItem(itemModify);
-				}
-				else {
+				else if(i != modifyIndex) {
 					item = new OverlayItem(waypoint[i], name, latitude + " " + longitude);
 					itemizedOverlay.addItem(item);
 				}

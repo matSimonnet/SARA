@@ -177,6 +177,7 @@ public class ModifyWPActivity extends Activity {
 				intentToWPMap.putExtra("ifMod", true);
 				intentToWPMap.putExtra("oldLatitude", latitudeBox.getText().toString());
 				intentToWPMap.putExtra("oldLongitude", longitudeBox.getText().toString());
+				intentToWPMap.putExtra("index", intentFromWayPointAct.getIntExtra("index", -1));
 				startActivityForResult(intentToWPMap, WP_MAP_MODIFY);
 			}
 		});
