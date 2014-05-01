@@ -230,8 +230,8 @@
     <string name="wptresholdsetting">Waypoint Treshold Setting</string>
     <string name="title_alertdialog_wptreshold">Waypoint treshold was changed.Do you want to save?</string>
     
-    <string name="title_alertdialog_waypointmap">Location was changed.Do you want to use this location?</string>
+	<string name="title_alertdialog_waypointmap">Location was changed.Do you want to use this location?</string>
     <string name="usethislocation">Use this location</string>
-
+    
 </resources>
     
