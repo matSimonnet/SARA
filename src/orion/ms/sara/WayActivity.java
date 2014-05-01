@@ -86,8 +86,8 @@ public class WayActivity extends Activity {
 public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_way_point);
-		setTitle(R.string.title_activity_way_point);
+		setContentView(R.layout.activity_way);
+		setTitle(R.string.title_activity_way);
 		
 		Log.i("WayAct", "---------------OnCreate----------------");
 		
@@ -270,7 +270,6 @@ public void onCreate(Bundle savedInstanceState) {
 		//"New Way" button
 		//button creation
 		newWay = (Button) findViewById(R.id.button1);
-		newWay.setText("New Way");	
 		//setOnClickListener
 		newWay.setOnClickListener(new View.OnClickListener(){
 					// OnClickListener creation			    
@@ -553,6 +552,10 @@ public void onCreate(Bundle savedInstanceState) {
 	        editor.putString("longitudeArray" + "_" + i, longi[i]);
 		editor.commit();
 		
+	}
+
+	public static List<Way> getWayList() {
+		return wayList;
 	}
 
 	@Override

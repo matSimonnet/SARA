@@ -78,6 +78,12 @@ public class Way implements Comparable<Way>{
 		return way.get(0);
 	}
 
+	public WP getWP(int i){
+		if(i<way.size()){
+			return way.get(i);
+		}
+		return null;
+	}
 
 	public Double getDistance() {
 		return distance;

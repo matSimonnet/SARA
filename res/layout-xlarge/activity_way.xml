@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context="orion.ms.sara.WayActivity"
     tools:ignore="MergeRootFrame" >
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,7 +17,6 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical" >
-
             <requestFocus />
         </LinearLayout>
 
@@ -30,7 +30,7 @@
             android:id="@+id/button1"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:text="@string/new_wayButton"
+            android:text="@string/button_newway"
             android:textSize="60dp" />
 
     </LinearLayout>

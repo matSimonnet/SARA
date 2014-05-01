@@ -103,7 +103,7 @@ public class NewWayActivity extends Activity {
 		saveButton = (Button) findViewById(R.id.button2);
 		saveButton.setTextSize(30);
 		//setOnClickedListener
-		/*saveButton.setOnClickListener(new OnClickListener() {
+		saveButton.setOnClickListener(new OnClickListener() {
 			//OnClickedListener creation
 			@SuppressWarnings("static-access")
 			@SuppressLint("ShowToast")
@@ -113,14 +113,15 @@ public class NewWayActivity extends Activity {
 					//get the new waypoint's name, latitude and longitude from the EditText
 					wayName = wayNameBox.getText().toString();
 					waypoint1Name = selectedWP1.getName();
-					waypoint2Name = selectedWP2.getName();					
+					waypoint2Name = selectedWP2.getName();		
 					
+					Log.i("saveeeee", "way name= "+wayName+" with wp1= "+waypoint1Name+" &wp2= "+waypoint2Name);
 					//check if the filled name or the position (latitude and longitude) are already recorded
-					if(isRecorded(name, latitude, longitude)){
+					if(isRecorded(wayName, waypoint1Name, waypoint2Name)){
 						tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
 					}
 					else{
-						if(latitude.isEmpty() || longitude.isEmpty() || name.isEmpty()){
+						if(waypoint1Name.equals("No selected waypoint") || waypoint2Name.equals("No selected waypoint") || wayName.isEmpty()){
 							//prevent unfilled text box(es)
 							tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
 						}
@@ -128,26 +129,26 @@ public class NewWayActivity extends Activity {
 							//sent the new waypoint information back to waypoint activity
 							
 							//notification
-							tts.speak("the new waypoint already saved", tts.QUEUE_ADD, null);
-							Toast.makeText(NewWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
-							
+							//tts.speak("the new way already saved", tts.QUEUE_ADD, null);
+							//Toast.makeText(NewWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
+							Log.i("save", "the new way already saved");
 							//change back to the waypoint activity
 							//pass the parameters including name,latitude,longitude
-							intentToWay.putExtra("newWayName",wayName);//name
+							/*intentToWay.putExtra("newWayName",wayName);//name
 							intentToWay.putExtra("newWP1Name", waypoint1Name);//latitude
 							intentToWay.putExtra("newWP2Name", waypoint2Name);//longitude
 							isAlsoActivateForNW = false;//change status
 
 							//back to WayPoint activity and send some parameters to the activity
 							setResult(RESULT_OK, intentToWay);
-							finish();
+							finish();*/
 							
 						}//end else in if-else
 						
-					//}//end else	
-				//}	
+					}//end else
+				}
 			}//end onClick
-		});*/
+		});
 		
 		//save and activate button
 		saveActButton = (Button) findViewById(R.id.button3);
@@ -217,6 +218,8 @@ public class NewWayActivity extends Activity {
                 		case R.id.spinner1: 
                 			selectedWP1 = wList1.get(i);
                 			waypoint1Name = selectedWP1.getName();
+                			if(!waypoint1Name.equals("No selected waypoint"))
+	            				wp1NameText.setText(waypoint1Name);
                 			Log.i("wp1 selected", waypoint1Name);
                 			setUpWP2List(tempList,selectedWP1);
                 		}
@@ -250,9 +253,12 @@ public class NewWayActivity extends Activity {
 				public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) { 
 		  				try{
 		            		switch(adapterView.getId()){
-		            		case R.id.spinner1: 
+		            		case R.id.Spinner2: 
 		            			selectedWP2 = wList2.get(i);
 		            			waypoint2Name = selectedWP2.getName();
+		            			if(!waypoint2Name.equals("No selected waypoint"))
+		            				wp2NameText.setText(waypoint2Name);
+		            			Log.i("wp2 selected", waypoint2Name);
 		            		}
 		  				}catch(Exception e){
 		                        e.printStackTrace();
@@ -267,6 +273,28 @@ public class NewWayActivity extends Activity {
 		}
 	}
 
+	//to check if the filled name or the position (latitude and longitude) are already recorded
+	@SuppressLint("ShowToast")
+	public boolean isRecorded(String wayName, String w1name, String w2name){
+		List<Way> wayList = WayActivity.getWayList();
+		for(int i = 1;i<wayList.size();i++){
+			if(wayList.get(i).getName().equalsIgnoreCase(wayName)){
+				// same name
+				Toast.makeText(NewWayActivity.this, "This name is already recorded.", Toast.LENGTH_SHORT);
+				tts.speak("This name is already recorded.", tts.QUEUE_FLUSH, null);
+				return true;
+			}//end if
+			else if(wayList.get(i).getFirstWP().getName().equalsIgnoreCase(w1name) && 
+					wayList.get(i).getWP(1).getName().equalsIgnoreCase(w2name)){
+				//same position
+				Toast.makeText(NewWayActivity.this, "These waypoints are already recorded.", Toast.LENGTH_SHORT);
+				tts.speak("These waypoints are already recorded.", tts.QUEUE_FLUSH, null);
+				return true;
+			}//end if
+		}//end for
+		return false;
+	}//end isRecored
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
