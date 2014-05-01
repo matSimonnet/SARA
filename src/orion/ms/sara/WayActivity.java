@@ -145,11 +145,15 @@ public void onCreate(Bundle savedInstanceState) {
 		}
 		
 		//testing way
-		WP wp1 = new WP("wp1","44.3","-4.8");
+		/*WP wp1 = new WP("wp1","44.3","-4.8");
 		WP wp2 = new WP("wp2","43","-4.5");
 		WP wp3 = new WP("wp3","40","-4.7");
+		WayPointActivity.wayPointList.add(wp1);
+		WayPointActivity.wayPointList.add(wp2);
+		WayPointActivity.wayPointList.add(wp3);
+
 		wayList.add(new Way("w1",wp1,wp2));
-		wayList.add(new Way("w2",wp2,wp3));
+		wayList.add(new Way("w2",wp2,wp3));*/
 		
 		//spinner set up
 		way = (Spinner) findViewById(R.id.spinner1);
@@ -320,40 +324,13 @@ public void onCreate(Bundle savedInstanceState) {
 			tts.shutdown();
 		}
 		
-	//to convert from array list of way point into name of the way point array list
+	//to convert from array list of way into name of the way array list
 	public static ArrayList<String> toNameArrayList(List<Way> wList){
 		ArrayList<String> nameList = new ArrayList<String>();
 		for(int i = 0;i<wList.size();i++){
 			nameList.add(wList.get(i).getName());
 		}
 		return nameList;
-	}
-	
-	//to convert from array list of way point into name of the way point array
-	public static String[] nameArray(List<Way> wList){
-		String[] arrayName = new String[wList.size()];
-		for(int i = 0;i<wList.size();i++){
-			arrayName[i] = wList.get(i).getName();
-		}
-		return arrayName;
-	}
-	//to convert from array list of way point into latitude of the way point array
-	public static String[] latitudeArray(List<Way> wList){
-		String[] arrayLatitude = new String[wList.size()];
-		String[] tempWay;
-		for(int i = 0;i<wList.size();i++){
-			//
-			i = i;
-		}
-		return arrayLatitude;
-	}
-	//to convert from array list of way point into longitude of the way point array
-	public static String[] longitudeArray(List<Way> wList){
-		String[] arrayLongitude = new String[wList.size()];
-		for(int i = 0;i<wList.size();i++){
-			i=i;
-		}
-		return arrayLongitude;
 	}
 
 	//adding new way point into the way point list
@@ -365,7 +342,10 @@ public void onCreate(Bundle savedInstanceState) {
 		}
 		//Adding the new way point into the list
 		wList.add(newWay);//create new way point with assuming distance
-		sortingWayList(wList);//sorting the list*/
+		for(int i= 0;i<wList.size();i++){
+			Log.i("way", wList.get(i).getName());
+		}
+		sortingWayList(wList);//sorting the list
 	}
 	
 	//deleting the way point from the way point list
@@ -402,6 +382,7 @@ public void onCreate(Bundle savedInstanceState) {
 	        	//Recalculating distance in the list
 				for(int i = 0;i< wList.size();i++){
 					tempWay = wList.get(i);
+					
 					//calculate new distance from the first waypoint of the way
 					double tempLa = Double.parseDouble(tempWay.getFirstWP().getLatitude());
 					double tempLong = Double.parseDouble(tempWay.getFirstWP().getLongitude());
@@ -457,7 +438,7 @@ public void onCreate(Bundle savedInstanceState) {
 	protected void onActivityResult(int requestCode, int resultCode, Intent intentFromAnother){
 	    super.onActivityResult(requestCode, resultCode, intentFromAnother);
 		
-		//get parameters from the NewWayPoint activity when create a new way point
+		//get parameters from the NewWay activity when create a new way
 	    if(requestCode == NEW_WAY && resultCode == RESULT_OK){
 	    	newWayName = intentFromAnother.getStringExtra("newWayName");
 			newWP1Name = intentFromAnother.getStringExtra("newWP1Name");

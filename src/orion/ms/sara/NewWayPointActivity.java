@@ -69,7 +69,7 @@ public class NewWayPointActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_way_point);
 		
-			//OnInitListener Creation
+				//OnInitListener Creation
 				OnInitListener onInitListener = new OnInitListener() {
 					@Override
 					public void onInit(int status) {

@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,6 +70,16 @@ public class NewWayActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_way);
+		
+		//OnInitListener Creation
+		OnInitListener onInitListener = new OnInitListener() {
+			@Override
+			public void onInit(int status) {
+			}
+		};
+		
+	    // textToSpeech creation
+		tts = new TextToSpeech(this, onInitListener);
 
 		//TextView
 		wayNameText = (TextView) findViewById(R.id.textView1);
@@ -115,7 +126,6 @@ public class NewWayActivity extends Activity {
 					waypoint1Name = selectedWP1.getName();
 					waypoint2Name = selectedWP2.getName();		
 					
-					Log.i("saveeeee", "way name= "+wayName+" with wp1= "+waypoint1Name+" &wp2= "+waypoint2Name);
 					//check if the filled name or the position (latitude and longitude) are already recorded
 					if(isRecorded(wayName, waypoint1Name, waypoint2Name)){
 						tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
@@ -126,22 +136,22 @@ public class NewWayActivity extends Activity {
 							tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
 						}
 						else{
-							//sent the new waypoint information back to waypoint activity
+							//sent the new way information back to way activity
 							
 							//notification
-							//tts.speak("the new way already saved", tts.QUEUE_ADD, null);
-							//Toast.makeText(NewWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
-							Log.i("save", "the new way already saved");
-							//change back to the waypoint activity
-							//pass the parameters including name,latitude,longitude
-							/*intentToWay.putExtra("newWayName",wayName);//name
+							tts.speak("the new way already saved", tts.QUEUE_ADD, null);
+							Toast.makeText(NewWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
+
+							//change back to the way activity
+							//pass the parameters
+							intentToWay.putExtra("newWayName",wayName);//name
 							intentToWay.putExtra("newWP1Name", waypoint1Name);//latitude
 							intentToWay.putExtra("newWP2Name", waypoint2Name);//longitude
 							isAlsoActivateForNW = false;//change status
 
 							//back to WayPoint activity and send some parameters to the activity
 							setResult(RESULT_OK, intentToWay);
-							finish();*/
+							finish();
 							
 						}//end else in if-else
 						
@@ -274,23 +284,41 @@ public class NewWayActivity extends Activity {
 	}
 
 	//to check if the filled name or the position (latitude and longitude) are already recorded
+	@SuppressWarnings("static-access")
 	@SuppressLint("ShowToast")
 	public boolean isRecorded(String wayName, String w1name, String w2name){
 		List<Way> wayList = WayActivity.getWayList();
+		List<WP> wList = WayPointActivity.getWayPointList();
+		WP tempwp1 = null;
+		WP tempwp2 = null;
+		
+		Log.i("record show wp1",w1name);
+		
+		//same waypoints
+		for(int j=0;j<wList.size();j++){
+			if(wList.get(j).getName().equals(w1name)){
+				tempwp1 = wList.get(j);
+				Log.i("record? wp1",tempwp1.getName());
+			}
+			if(wList.get(j).getName().equals(w2name)){
+				tempwp2 = wList.get(j);
+				Log.i("record? wp2",tempwp2.getName());
+			}
+		}
+		//check same name or waypoints
 		for(int i = 1;i<wayList.size();i++){
 			if(wayList.get(i).getName().equalsIgnoreCase(wayName)){
 				// same name
 				Toast.makeText(NewWayActivity.this, "This name is already recorded.", Toast.LENGTH_SHORT);
 				tts.speak("This name is already recorded.", tts.QUEUE_FLUSH, null);
 				return true;
-			}//end if
-			else if(wayList.get(i).getFirstWP().getName().equalsIgnoreCase(w1name) && 
-					wayList.get(i).getWP(1).getName().equalsIgnoreCase(w2name)){
-				//same position
-				Toast.makeText(NewWayActivity.this, "These waypoints are already recorded.", Toast.LENGTH_SHORT);
-				tts.speak("These waypoints are already recorded.", tts.QUEUE_FLUSH, null);
-				return true;
-			}//end if
+			}
+			else if(wayList.get(i).getFirstWP().equals(tempwp1) && wayList.get(i).getWP(1).equals(tempwp2)){
+					//same waypoints
+					Toast.makeText(NewWayActivity.this, "These waypoints are already recorded.", Toast.LENGTH_SHORT);
+					tts.speak("These waypoints are already recorded.", tts.QUEUE_FLUSH, null);
+					return true;
+			}//end else
 		}//end for
 		return false;
 	}//end isRecored
