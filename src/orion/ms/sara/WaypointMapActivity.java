@@ -67,11 +67,16 @@ public class WaypointMapActivity extends MapActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if (v== saveButton) {
-    				Intent IntentToNewWP = new Intent(WaypointMapActivity.this,NewWayPointActivity.class);
-    				IntentToNewWP.putExtra("newLatitude", String.valueOf(mapLatitude));
-    				IntentToNewWP.putExtra("newLongitude", String.valueOf(mapLongitude));
-					setResult(RESULT_OK, IntentToNewWP);
-					finish();
+					if(isChanged) {
+						Intent IntentToNewWP = new Intent(WaypointMapActivity.this,NewWayPointActivity.class);
+						IntentToNewWP.putExtra("newLatitude", String.valueOf(mapLatitude));
+						IntentToNewWP.putExtra("newLongitude", String.valueOf(mapLongitude));
+						setResult(RESULT_OK, IntentToNewWP);
+						finish();
+					}
+					else {
+						finish();
+					}
 				}
 
 			}
