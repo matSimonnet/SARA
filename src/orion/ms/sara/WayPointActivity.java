@@ -201,7 +201,7 @@ public class WayPointActivity extends Activity {
 											intentToModifyWP.putExtra("modLongitude", choosingWaypoint.getLongitude());//longitude
 											intentToModifyWP.putExtra("index", selectedItem);//longitude
 
-											//start NewWayPoint activity
+											//start ModifyWP activity
 											startActivityForResult(intentToModifyWP, MODIFY_WAYPOINT);
 										}//end of onClick
 	                					
@@ -390,6 +390,7 @@ public class WayPointActivity extends Activity {
 	        	//Recalculating distance in the list
 				for(int i = 0;i< wList.size();i++){
 					tempWP = wList.get(i);
+					Log.i("in sorting list", tempWP.getName());
 					//calculate new distance
 					double tempLa = Double.parseDouble(tempWP.getLatitude());
 					double tempLong = Double.parseDouble(tempWP.getLongitude());
