@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -44,8 +46,6 @@ public class NewWayActivity extends Activity {
 	private Spinner wp2List;
 	private ArrayList<WP> tempList = new ArrayList<WP>();
 	
-	//waypoint
-	private WP tempWP;
 	private WP selectedWP1;
 	private WP selectedWP2;
 	private String name;
@@ -144,7 +144,7 @@ public class NewWayActivity extends Activity {
 						else{
 							//sent the new way information back to way activity
 							if(waypoint1Name.equals(waypoint2Name)){
-								//prevent same waypoints
+								//prevent same way points
 								tts.speak("You selected the same waypoints", tts.QUEUE_ADD, null);
 							}
 							else{
@@ -155,8 +155,8 @@ public class NewWayActivity extends Activity {
 								//change back to the way activity
 								//pass the parameters
 								intentToWay.putExtra("newWayName",wayName);//name
-								intentToWay.putExtra("newWP1Name", waypoint1Name);//latitude
-								intentToWay.putExtra("newWP2Name", waypoint2Name);//longitude
+								intentToWay.putExtra("newWP1Name", waypoint1Name);//way point1 name
+								intentToWay.putExtra("newWP2Name", waypoint2Name);//way point2 name
 								isAlsoActivateForNW = false;//change status
 		
 								//back to WayPoint activity and send some parameters to the activity
@@ -222,19 +222,18 @@ public class NewWayActivity extends Activity {
 
 	//change default item name
 	private ArrayList<WP> setUpTempWPList() {
-			for(int i=0;i<WayPointActivity.getWayPointList().size();i++){
-				String tmpname = WayPointActivity.getWayPointList().get(i).getName();
-				Log.i("tempName", tmpname);
-				if(!tmpname.equals("Please selected a waypoint")){
-					name = WayPointActivity.getWayPointList().get(i).getName();
-					latitude = WayPointActivity.getWayPointList().get(i).getLatitude();
-					longitude = WayPointActivity.getWayPointList().get(i).getLongitude();
-					tempList.add(new WP(name,latitude,longitude));
-				}
+		for(int i=0;i<WayPointActivity.getWayPointList().size();i++){
+			String tmpname = WayPointActivity.getWayPointList().get(i).getName();
+			Log.i("tempName", tmpname);
+			if(!tmpname.equals("Please selected a waypoint")){
+				name = WayPointActivity.getWayPointList().get(i).getName();
+				latitude = WayPointActivity.getWayPointList().get(i).getLatitude();
+				longitude = WayPointActivity.getWayPointList().get(i).getLongitude();
+				tempList.add(new WP(name,latitude,longitude));
 			}
-			Log.i("set up temp", "Hiiiii");
-			String defaultName = "No selected waypoint";
-			tempList.add(0,new WP(defaultName,"",""));
+		}
+		String defaultName = "No selected waypoint";
+		tempList.add(0,new WP(defaultName,"",""));
 		
 		for(int i =0;i<WayPointActivity.getWayPointList().size();i++){
 			Log.i("waypoint list", WayPointActivity.getWayPointList().get(i).getName());
@@ -343,10 +342,10 @@ public class NewWayActivity extends Activity {
 				return true;
 			}
 			else if(wayList.get(i).getFirstWP().equals(tempwp1) && wayList.get(i).getWP(1).equals(tempwp2)){
-					//same waypoints
-					Toast.makeText(NewWayActivity.this, "These waypoints are already recorded.", Toast.LENGTH_SHORT);
-					tts.speak("These waypoints are already recorded.", tts.QUEUE_FLUSH, null);
-					return true;
+				//same waypoints
+				Toast.makeText(NewWayActivity.this, "These waypoints are already recorded.", Toast.LENGTH_SHORT);
+				tts.speak("These waypoints are already recorded.", tts.QUEUE_FLUSH, null);
+				return true;
 			}//end else
 		}//end for
 		return false;
@@ -367,10 +366,60 @@ public class NewWayActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.way_setting:
-			//back to main activity and send some parameters to the activity
+			//get the new way's name EditText
+			wayName = wayNameBox.getText().toString();
+			waypoint1Name = selectedWP1.getName();
+			waypoint2Name = selectedWP2.getName();
 			
-			finish();
-			break;
+			//check if some values change without saving
+			if((!latitude.equals("") || !longitude.equals("")) && !isRecorded(wayName, waypoint1Name, waypoint2Name)){
+				final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+				dialog.setTitle("Some values change, do you want to save?");
+				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						//pass the parameters
+						intentToWay.putExtra("newWayName",wayName);//name
+						intentToWay.putExtra("newWP1Name", waypoint1Name);//way point1 name
+						intentToWay.putExtra("newWP2Name", waypoint2Name);//way point2 name
+						isAlsoActivateForNW = false;//change status
+
+						//back to Way activity and send some parameters to the activity
+						setResult(RESULT_OK, intentToWay);
+						finish();
+					}
+				});
+				
+				dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						//don't save
+						//pass the parameters
+						intentToWay.putExtra("newWayName","");//name
+						intentToWay.putExtra("newWP1Name", "");//way point1 name
+						intentToWay.putExtra("newWP2Name", "");//way point2 name
+						isAlsoActivateForNW = false;//change status
+
+						//back to Way activity and send some parameters to the activity
+						setResult(RESULT_OK, intentToWay);
+						finish();
+					}
+				});
+				dialog.show();
+			}
+			else{
+				//don't save
+				//pass the parameters
+				intentToWay.putExtra("newWayName","");//name
+				intentToWay.putExtra("newWP1Name", "");//way point1 name
+				intentToWay.putExtra("newWP2Name", "");//way point2 name
+				isAlsoActivateForNW = false;//change status
+
+				//back to Way activity and send some parameters to the activity
+				setResult(RESULT_OK, intentToWay);
+				finish();
+				break;
+			}
 		default:
 			break;
 		}

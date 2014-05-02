@@ -353,7 +353,7 @@ public class NewWayPointActivity extends Activity {
 			longitude = longitudeBox.getText().toString();
 			
 			//check if some values change without saving
-			if(!latitude.equals("") || !longitude.equals("")){
+			if((!latitude.equals("") || !longitude.equals("")) && !isRecorded(name, latitude, longitude)){
 				final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 				dialog.setTitle("Some values change, do you want to save?");
 				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
