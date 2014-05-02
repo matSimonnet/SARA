@@ -218,7 +218,7 @@
    <string name="waypoint1_name"></string>  
    <string name="way_wp2">Way point2 is </string>
    <string name="waypoint2_name"></string>
-   <string name="add_more_wp">Add a waypoint more</string>  
+   <string name="add_more_wp">Add more waypoint</string>  
    
    <!-- modify way activity -->
    <string name="title_activity_modify_way">Modify Way Activity</string>

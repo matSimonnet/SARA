@@ -230,7 +230,7 @@ public void onCreate(Bundle savedInstanceState) {
 											//OnClick listener for delete button
 											@Override
 											public void onClick(DialogInterface dialog, int which) {
-												//deleteWPfromList(wayList,choosingWay);
+												deleteWayfromList(wayList,choosingWay);
 											}
 										});
 										//show the deleting dialog
@@ -408,7 +408,7 @@ public void onCreate(Bundle savedInstanceState) {
 	}
 	
 	//deleting the way point from the way point list
-	public void deleteWPfromList(List<Way> wList, WP del){
+	public void deleteWayfromList(List<Way> wList, Way del){
 		//Deleting the way point from the list
 		wList.remove(del);
 		selectedName = "No selected way";//reset to default
