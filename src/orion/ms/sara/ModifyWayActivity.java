@@ -70,7 +70,7 @@ public class ModifyWayActivity extends Activity {
 	public static boolean isAlsoActivateForMW = false;
 	
 	//way attributes
-	private String wayName = "Way1";
+	private String modWayName = "Way1";
 	private String waypoint1Name = "No selected waypoint";
 	private String waypoint2Name = "No selected waypoint";
 	private String modWP1Name = "No selected waypoint";
@@ -109,8 +109,8 @@ public class ModifyWayActivity extends Activity {
 		intentToWay = new Intent(ModifyWayActivity.this,WayActivity.class);
 		
 		//set default name
-		wayName = intentFromWay.getStringExtra("modName");
-		wayNameBox.setText(wayName);
+		modWayName = intentFromWay.getStringExtra("modName");
+		wayNameBox.setText(modWayName);
 		wp1NameText.setText(intentFromWay.getStringExtra("modWP1"));
 		wp2NameText.setText(intentFromWay.getStringExtra("modWP2"));		
 		
@@ -132,16 +132,16 @@ public class ModifyWayActivity extends Activity {
 			public void onClick(View v) {
 				if(v==saveButton){
 					//get the new way's name EditText
-					wayName = wayNameBox.getText().toString();
+					modWayName = wayNameBox.getText().toString();
 					modWP1Name = selectedWP1.getName();
 					modWP2Name = selectedWP2.getName();		
 					
 					//check if the filled name or the waypoints are already recorded
-					if(!isRecorded(wayName, waypoint1Name, waypoint2Name)){
+					if(!isRecorded(modWayName, waypoint1Name, waypoint2Name)){
 						tts.speak("Please fill the new information or create a new way", tts.QUEUE_ADD, null);
 					}
 					else{
-						if(waypoint1Name.equals("No selected waypoint") || waypoint2Name.equals("No selected waypoint") || wayName.isEmpty()){
+						if(waypoint1Name.equals("No selected waypoint") || waypoint2Name.equals("No selected waypoint") || modWayName.isEmpty()){
 							//prevent incomplete information
 							tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
 						}
@@ -158,7 +158,7 @@ public class ModifyWayActivity extends Activity {
 		
 								//change back to the way activity
 								//pass the parameters
-								intentToWay.putExtra("modWayName",wayName);//name
+								intentToWay.putExtra("modWayName",modWayName);//name
 								intentToWay.putExtra("modWP1Name", modWP1Name);//latitude
 								intentToWay.putExtra("modWP2Name", modWP2Name);//longitude
 								isAlsoActivateForMW = false;//change status

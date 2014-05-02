@@ -48,8 +48,8 @@ public class WayActivity extends Activity {
 	
 	//strings for each attribute of the modifying way point
 	private String modName = "";
-	private String modLatitude = "";
-	private String modLongitude = "";
+	private String modWP1 = "";
+	private String modWP2 = "";
 	
 	//Generating a number for a new way's default name
 	public static int lastNumberForWay = 0;
@@ -313,75 +313,76 @@ public void onCreate(Bundle savedInstanceState) {
 		}
 		
 	//Intent to handle receive parameters from NewWayPoint and Modify
-		@Override
-		protected void onActivityResult(int requestCode, int resultCode, Intent intentFromAnother){
-		    super.onActivityResult(requestCode, resultCode, intentFromAnother);
-			
-			//get parameters from the NewWay activity when create a new way
-		    if(requestCode == NEW_WAY && resultCode == RESULT_OK){
-		    	newWayName = intentFromAnother.getStringExtra("newWayName");
-				newWP1Name = intentFromAnother.getStringExtra("newWP1Name");
-				newWP2Name = intentFromAnother.getStringExtra("newWP2Name");
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intentFromAnother){
+	    super.onActivityResult(requestCode, resultCode, intentFromAnother);
 		
-				//not from pressing menu item
-				if(!newWayName.equals("") && !newWP1Name.equals("") && !newWP2Name.equals("")){
-					for(int i=0;i<WayPointActivity.wayPointList.size();i++){
-						tempWP = WayPointActivity.wayPointList.get(i);
-						if(tempWP.getName().equals(newWP1Name))
-							wp1 = tempWP;
-						else if(tempWP.getName().equals(newWP2Name))
-							wp2 = tempWP;
-					}
-					tempWay = new Way(newWayName,wp1,wp2);
-					addNewWaytoList(wayList,tempWay);
+		//get parameters from the NewWay activity when create a new way
+	    if(requestCode == NEW_WAY && resultCode == RESULT_OK){
+	    	newWayName = intentFromAnother.getStringExtra("newWayName");
+			newWP1Name = intentFromAnother.getStringExtra("newWP1Name");
+			newWP2Name = intentFromAnother.getStringExtra("newWP2Name");
+	
+			//not from pressing menu item
+			if(!newWayName.equals("") && !newWP1Name.equals("") && !newWP2Name.equals("")){
+				for(int i=0;i<WayPointActivity.wayPointList.size();i++){
+					tempWP = WayPointActivity.wayPointList.get(i);
+					if(tempWP.getName().equals(newWP1Name))
+						wp1 = tempWP;
+					else if(tempWP.getName().equals(newWP2Name))
+						wp2 = tempWP;
 				}
-					
-				//pressing save and activate
-				if(NewWayActivity.isAlsoActivateForNW){
-					//change back to the main activity
-					//passing activate way point name and position
-					intentToMain.putExtra("actWayName", newWayName);//name
-					intentToMain.putExtra("actWP1", newWP1Name);//waypoint1 name
-					intentToMain.putExtra("actWP2", newWP2Name);//waypoint2 name
-					
-					//back to main activity and send some parameters to the activity
-					setResult(RESULT_OK, intentToMain);
-					
-					finish();
-				}//end if for pressing save and activate
+				tempWay = new Way(newWayName,wp1,wp2);
+				addNewWaytoList(wayList,tempWay);
+			}
 				
-		    }
-		    
-		  //get parameters from the Modify activity and replace the old information
-		    if(requestCode == MODIFY_WAY && resultCode == RESULT_OK){
-		    	modName = intentFromAnother.getStringExtra("modName");
-				modLatitude = intentFromAnother.getStringExtra("modLatitude");
-				modLongitude = intentFromAnother.getStringExtra("modLongitude");
-				//not pressing from menu item
-				if(!modName.equals("") && !modLatitude.equals("") && !modLongitude.equals("")){
-					//replace the old information with the modifying information
-		    		choosingWay.setName(modName);
-		    		/*choosingWay.setLatitude(modLatitude);
-		    		choosingWay.setLongitude(modLongitude);
-		    		sortingWayList(wayList);*/
-				}
-				//pressing save and activate
-				if(ModifyWPActivity.isAlsoActivateForMWP){
-					//change back to the main activity
-					//passing activate way point name and position
-					intentToMain.putExtra("actName", modName);//name
-					intentToMain.putExtra("actLatitude", Double.parseDouble(modLatitude));//latitude
-					intentToMain.putExtra("actLongitude", Double.parseDouble(modLongitude));//longitude
-					Log.i("selected", modName);
-					
-					//back to main activity and send some parameters to the activity
-					setResult(RESULT_OK, intentToMain);
-					
-					finish();
-				}//end if for pressing save and activate
-		    }
-		    
-		}
+			//pressing save and activate
+			if(NewWayActivity.isAlsoActivateForNW){
+				//change back to the main activity
+				//passing activate way point name and position
+				intentToMain.putExtra("actWayName", newWayName);//name
+				intentToMain.putExtra("actWP1", newWP1Name);//waypoint1 name
+				intentToMain.putExtra("actWP2", newWP2Name);//waypoint2 name
+				
+				//back to main activity and send some parameters to the activity
+				setResult(RESULT_OK, intentToMain);
+				
+				finish();
+			}//end if for pressing save and activate
+			
+	    }
+	    
+	  //get parameters from the Modify activity and replace the old information
+	    if(requestCode == MODIFY_WAY && resultCode == RESULT_OK){
+	    	modName = intentFromAnother.getStringExtra("modWayName");
+			modWP1 = intentFromAnother.getStringExtra("modWP1Name");
+			modWP2 = intentFromAnother.getStringExtra("modWP2Name");
+			
+			//not pressing from menu item
+			if(!modName.equals("") && !modWP1.equals("") && !modWP2.equals("")){
+				//replace the old information with the modifying information
+	    		choosingWay.setName(modName);
+	    		choosingWay.setFirstWP(findWPfromName(modWP1));
+	    		choosingWay.setWP(1, findWPfromName(modWP2));
+	    		sortingWayList(wayList);
+			}
+			//pressing save and activate
+			if(ModifyWPActivity.isAlsoActivateForMWP){
+				//change back to the main activity
+				//passing activate way point name and position
+				/*intentToMain.putExtra("actName", modName);//name
+				intentToMain.putExtra("actLatitude", Double.parseDouble(modLatitude));//latitude
+				intentToMain.putExtra("actLongitude", Double.parseDouble(modLongitude));//longitude
+				Log.i("selected", modName);*/
+				
+				//back to main activity and send some parameters to the activity
+				setResult(RESULT_OK, intentToMain);
+				
+				finish();
+			}//end if for pressing save and activate
+	    }
+	    
+	}
 
 	//to convert from array list of way into name of the way array list
 	public static ArrayList<String> toNameArrayList(List<Way> wList){
@@ -413,6 +414,14 @@ public void onCreate(Bundle savedInstanceState) {
 		wList.remove(del);
 		selectedName = "No selected way";//reset to default
 		sortingWayList(wList);//sorting the list
+	}
+	
+	public static WP findWPfromName(String name){
+		for(int i= 0;i<WayPointActivity.getWayPointList().size();i++){
+			if(WayPointActivity.getWayPointList().get(i).getName().equals(name))
+				return WayPointActivity.getWayPointList().get(i);
+		}
+		return null;
 	}
 	
 	//sorting the way list by proximity calculated from current distance to the first waypoint

@@ -316,23 +316,15 @@ public class NewWayActivity extends Activity {
 	@SuppressLint("ShowToast")
 	public boolean isRecorded(String wayName, String w1name, String w2name){
 		List<Way> wayList = WayActivity.getWayList();
-		List<WP> wList = WayPointActivity.getWayPointList();
 		WP tempwp1 = null;
 		WP tempwp2 = null;
 		
 		Log.i("record show wp1",w1name);
 		
 		//same waypoints
-		for(int j=0;j<wList.size();j++){
-			if(wList.get(j).getName().equals(w1name)){
-				tempwp1 = wList.get(j);
-				Log.i("record? wp1",tempwp1.getName());
-			}
-			if(wList.get(j).getName().equals(w2name)){
-				tempwp2 = wList.get(j);
-				Log.i("record? wp2",tempwp2.getName());
-			}
-		}
+		tempwp1 = WayActivity.findWPfromName(w1name);
+		tempwp2 = WayActivity.findWPfromName(w2name);
+
 		//check same name or waypoints
 		for(int i = 1;i<wayList.size();i++){
 			if(wayList.get(i).getName().equalsIgnoreCase(wayName)){
