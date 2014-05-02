@@ -146,10 +146,6 @@ public class ModifyWayActivity extends Activity {
 				String defaultName = "No selected waypoint";
 				tempList.add(0,new WP(defaultName,"",""));
 			
-			for(int i =0;i<WayPointActivity.getWayPointList().size();i++){
-				Log.i("waypoint list", WayPointActivity.getWayPointList().get(i).getName());
-			}
-			
 			return tempList;
 		}
 

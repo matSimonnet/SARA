@@ -486,40 +486,49 @@ public void onCreate(Bundle savedInstanceState) {
 		Log.i("top list", way.getTop()+"");
 		
 		//save the last number of default name value and attributes of way point in the list
-		//savePref(lastNumberForWay,nameArray(wList),latitudeArray(wList),longitudeArray(wList));
+		//savePref(lastNumberForWay,nameWayArray(wList),nameWayArray(),nameWayArray(wList));
 		
 	}//end sorting
 		
 		
-	
 	//load preferences
 	private void loadPref(){
 		//last number
-		int lnum = settings.getInt(getString(R.string.save_last_num),0);
+		int lnum = settings.getInt("Last_name_for_way",0);
 		lastNumberForWay = lnum;
 	}
 	
 	//save preferences
-	private void savePref(int lnum, String[] name, String[] lati, String[] longi){
+	private void savePref(int lnum, String[] nameWay,String[] nameWP1,String[] nameWP2){
 		//last number for new way 
-		editor.putInt(getString(R.string.save_last_num), lnum);
+		editor.putInt("Last_name_for_way", lnum);
 		
 		//name array
-		editor.putInt("nameArray" +"_size", name.length);  
-	    for(int i=0;i<name.length;i++)  
-	        editor.putString("nameArray" + "_" + i, name[i]);
+		editor.putInt("nameWayArray" +"_size", nameWay.length);  
+	    for(int i=0;i<nameWay.length;i++)  
+	        editor.putString("nameWayArray" + "_" + i, nameWay[i]);
 	    
-	    //latitude array
-	    editor.putInt("latitudeArray" +"_size", lati.length);  
-	    for(int i=0;i<lati.length;i++)  
-	        editor.putString("latitudeArray" + "_" + i, lati[i]);
+	    //wp1 name array
+	    editor.putInt("nameWP1Array" +"_size", nameWP1.length);  
+	    for(int i=0;i<nameWP1.length;i++)  
+	  	    editor.putString("nameWP1Array" + "_" + i, nameWP1[i]);
 	    
-	    //longitude array
-	    editor.putInt("longitudeArray" +"_size", longi.length);  
-	    for(int i=0;i<longi.length;i++)  
-	        editor.putString("longitudeArray" + "_" + i, longi[i]);
-		editor.commit();
+	  	//wp2 name array
+	    editor.putInt("nameWP2Array" +"_size", nameWP2.length);  
+	    for(int i=0;i<nameWP2.length;i++)  
+	  	    editor.putString("nameWP2Array" + "_" + i, nameWP2[i]);
+	    
+	    editor.commit();
 		
+	}
+	
+	//to convert from array list of ways into name of the way array
+	public static String[] nameWayArray(List<Way> wList){
+		String[] arrayName = new String[wList.size()];
+		for(int i = 0;i<wList.size();i++){
+			arrayName[i] = wList.get(i).getName();
+		}
+		return arrayName;
 	}
 
 	public static List<Way> getWayList() {

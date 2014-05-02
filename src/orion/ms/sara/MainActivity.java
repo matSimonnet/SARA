@@ -377,6 +377,31 @@ public class MainActivity extends Activity {
 	  	}
 	  	
 	  	WayPointActivity.wayPointList = wList;
+	  	
+	  	//wayList
+	  	//name array
+  		/*int nameWaySize = settings.getInt("nameWayArray" + "_size", 0);  
+  	    String nameWay[] = new String[nameWaySize];  
+  	    for(int i=0;i<nameWaySize;i++)  
+  	    	nameWay[i] = settings.getString("nameWayArray" + "_" + i, null);
+  	    
+  	    //wp1 name array
+  		int nameWP1Size = settings.getInt("nameWP1Array" + "_size", 0);  
+  	    String nameWP1[] = new String[nameWP1Size];  
+  	    for(int i=0;i<nameWP1Size;i++)  
+  	    	nameWP1[i] = settings.getString("nameWP1Array" + "_" + i, null);
+  	    
+  	    //wp2 name array
+  	    int nameWP2Size = settings.getInt("nameWP2Array" + "_size", 0);  
+	    String nameWP2[] = new String[nameWP2Size];  
+	    for(int i=0;i<nameWP2Size;i++)  
+	    	nameWP2[i] = settings.getString("nameWP2Array" + "_" + i, null);
+	    
+	    //wayList
+	    List<Way> wayList = new ArrayList<Way>();
+	    for(int i=0;i<nameWaySize;i++){
+		  	wayList.add(new Way(name[i],latitude[i],longitude[i]));
+	  	}*/
 	}
 
 	//save preferences
