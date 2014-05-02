@@ -69,130 +69,16 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 
 		Log.i("test", "///////// onCreate \\\\\\\\\\");
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+		
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+		
         mContext = this;
-        MyLocationListener.isInMain = true;
-        
-        //location manager creation
-        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        ll = new MyLocationListener();		
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-        
-	    // Restore preferences
-		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
-		this.editor = settings.edit();
-		LoadPref();
-
-        //intent creation
-		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
-		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
-		intent_GeneralSetting_activity = new Intent(MainActivity.this,GeneralSettingActivity.class);
-		intent_Map_activity = new Intent(MainActivity.this,MyMapActivity.class);
-		intent_Way_activity = new Intent(MainActivity.this,WayActivity.class);
-
-		MyLocationListener.heading =  getResources().getString(R.string.no_satellite);
-		MyLocationListener.speed =  getResources().getString(R.string.no_satellite);
-		MyLocationListener.DistanceToCurrentWaypoint = getResources().getString(R.string.no_satellite);
-		MyLocationListener.BearingToCurrentWaypoint = getResources().getString(R.string.no_satellite);
-		MyLocationListener.accuracy = getResources().getString(R.string.no_satellite);
-
-        //TextView creation
-        textViewDistance = (TextView) findViewById(R.id.distanceView);
-        Utils.setDistanceTextView(MyLocationListener.DistanceToCurrentWaypoint, "");
-        textViewDistance.setContentDescription(getResources().getString(R.string.distance) + " " + getResources().getString(R.string.waiting_gps));
-        
-        textViewBearing = (TextView) findViewById(R.id.bearingView);
-        Utils.setBearingTextView(MyLocationListener.BearingToCurrentWaypoint, "");
-        textViewBearing.setContentDescription(getResources().getString(R.string.bearing) + " " + getResources().getString(R.string.waiting_gps));
-            
-        textViewSpeed = (TextView) findViewById(R.id.speedView);
-        Utils.setSpeedTextView(MyLocationListener.speed, "");
-        textViewSpeed.setContentDescription(getResources().getString(R.string.speed) + " " + getResources().getString(R.string.waiting_gps));
-        
-        textViewheading = (TextView) findViewById(R.id.heading);
-        Utils.setHeadingTextView(MyLocationListener.heading, "");
-        textViewheading.setContentDescription(getResources().getString(R.string.heading) + " " + getResources().getString(R.string.waiting_gps));
-
-        textViewAccuracy = (TextView) findViewById(R.id.accuracyView);
-        Utils.setAccuracyTextView(MyLocationListener.accuracy, "");
-        textViewAccuracy.setContentDescription(getResources().getString(R.string.accuracy) + " " + getResources().getString(R.string.waiting_gps));
-        
-        //dates creation
-        MyLocationListener.speedBefore = new Date();
-        MyLocationListener.headingBefore = new Date();
-        MyLocationListener.distanceBefore = new Date();
-        MyLocationListener.bearingBefore = new Date();
-        
-		 //OnInitListener Creation
-        OnInitListener onInitListener = new OnInitListener() {
-        	@Override
-        	public void onInit(int status) {
-        	}
-        };
-
-        // Text to speech creation
-        tts = new TextToSpeech(this, onInitListener);
-        
-        //"Instantly create a waypoint" button
-        instantButton = (Button) findViewById(R.id.instantButton);
-        instantButton.setTextSize(30);
-
-        // button creation
-        buttonReco= new ImageButton(this);
-        buttonReco = (ImageButton) findViewById(R.id.buttonSpeak);
-
-        // OnClickListener creation
-        View.OnClickListener onclickListener = new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-        		if (v== buttonReco){
-        			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        			intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE);	 
-        			try {
-        				startActivityForResult(intent, RESULT_SPEECH);
-	                } catch (ActivityNotFoundException a) {
-	                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.norecognition),Toast.LENGTH_SHORT).show();
-	                }
-	            }
-				if(v==instantButton){
-					if(!MyLocationListener.currentLatitude.equals("") && !MyLocationListener.currentLongitude.equals("")){
-						Log.i("Instant button", "pressed");
-				        //"create an new instant waypoint" button onClick listener
-				        if(!isRecorded("H"+lastNumberForInstantWaypoint, MyLocationListener.currentLatitude, MyLocationListener.currentLongitude)){
-				        	//same as instant list and waypoint list items
-				        	lastNumberForInstantWaypoint += 1;
-				        	WayPointActivity.wayPointList.add(new WP("H"+lastNumberForInstantWaypoint,//name
-					        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
-					        //Notify
-					        tts.speak("H"+lastNumberForInstantWaypoint+" is saved here.", TextToSpeech.QUEUE_ADD, null);
-					        Toast.makeText(MainActivity.this, "H"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
-					        for(int i=0;i<WayPointActivity.wayPointList.size();i++){
-					        	Log.i("waypoint list", "item "+i+" : "+WayPointActivity.wayPointList.get(i).getName());
-					        }
-					        //save value
-					        savePref();
-				        }
-				        else{
-				        	//Notify
-					        tts.speak("This waypoint is already saved before.", TextToSpeech.QUEUE_FLUSH, null);
-					        Toast.makeText(MainActivity.this, "This waypoint is already saved before.", Toast.LENGTH_SHORT).show();
-				        }
-					}//end if in if-else
-					else{
-						//GPS not available
-						Toast.makeText(MainActivity.this,"GPS is unavailable." , Toast.LENGTH_SHORT).show();
-						tts.speak("GPS is unavailable.", TextToSpeech.QUEUE_FLUSH, null);
-					}
-			    }
-	        }// end of on click		
-		}; // end of new View.LocationListener	
-
-		// button activation
-		buttonReco.setOnClickListener(onclickListener);
-		instantButton.setOnClickListener(onclickListener);
+		initView();
+		initLocationListener(); // 
+		LoadPref(); // Restore preferences
+		initIntent(); // create all intent
+		initDate(); // initial time for auto announce
+		initTTS(); // initial text to speech
 
 	}//end of on create
 	
@@ -324,6 +210,8 @@ public class MainActivity extends Activity {
 	}
 
 	public void LoadPref() {
+		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
+		this.editor = settings.edit();
      	MyLocationListener.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
      	MyLocationListener.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
      	MyLocationListener.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
@@ -406,6 +294,8 @@ public class MainActivity extends Activity {
 
 	//save preferences
 	public void savePref(){
+		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
+		
 		SharedPreferences.Editor editor = settings.edit();
 		//last number for instant waypoint
 		editor.putInt(getString(R.string.save_inst_num), lastNumberForInstantWaypoint);
@@ -435,6 +325,133 @@ public class MainActivity extends Activity {
 
     public static Context getContext(){
         return mContext;
+    }
+    private void initView() {
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setContentView(R.layout.activity_main);
+        
+		MyLocationListener.heading =  getResources().getString(R.string.no_satellite);
+		MyLocationListener.speed =  getResources().getString(R.string.no_satellite);
+		MyLocationListener.DistanceToCurrentWaypoint = getResources().getString(R.string.no_satellite);
+		MyLocationListener.BearingToCurrentWaypoint = getResources().getString(R.string.no_satellite);
+		MyLocationListener.accuracy = getResources().getString(R.string.no_satellite);
+		
+
+        //TextView creation
+        textViewDistance = (TextView) findViewById(R.id.distanceView);
+        Utils.setDistanceTextView(MyLocationListener.DistanceToCurrentWaypoint, "");
+        textViewDistance.setContentDescription(getResources().getString(R.string.distance) + " " + getResources().getString(R.string.waiting_gps));
+        
+        textViewBearing = (TextView) findViewById(R.id.bearingView);
+        Utils.setBearingTextView(MyLocationListener.BearingToCurrentWaypoint, "");
+        textViewBearing.setContentDescription(getResources().getString(R.string.bearing) + " " + getResources().getString(R.string.waiting_gps));
+            
+        textViewSpeed = (TextView) findViewById(R.id.speedView);
+        Utils.setSpeedTextView(MyLocationListener.speed, "");
+        textViewSpeed.setContentDescription(getResources().getString(R.string.speed) + " " + getResources().getString(R.string.waiting_gps));
+        
+        textViewheading = (TextView) findViewById(R.id.heading);
+        Utils.setHeadingTextView(MyLocationListener.heading, "");
+        textViewheading.setContentDescription(getResources().getString(R.string.heading) + " " + getResources().getString(R.string.waiting_gps));
+
+        textViewAccuracy = (TextView) findViewById(R.id.accuracyView);
+        Utils.setAccuracyTextView(MyLocationListener.accuracy, "");
+        textViewAccuracy.setContentDescription(getResources().getString(R.string.accuracy) + " " + getResources().getString(R.string.waiting_gps));
+        
+        //"Instantly create a waypoint" button
+        instantButton = (Button) findViewById(R.id.instantButton);
+        instantButton.setTextSize(30);
+
+        // button creation
+        buttonReco= new ImageButton(this);
+        buttonReco = (ImageButton) findViewById(R.id.buttonSpeak);
+        
+        // OnClickListener creation
+        View.OnClickListener onclickListener = new View.OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+        		if (v== buttonReco){
+        			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        			intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE);	 
+        			try {
+        				startActivityForResult(intent, RESULT_SPEECH);
+	                } catch (ActivityNotFoundException a) {
+	                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.norecognition),Toast.LENGTH_SHORT).show();
+	                }
+	            }
+				if(v==instantButton){
+					if(!MyLocationListener.currentLatitude.equals("") && !MyLocationListener.currentLongitude.equals("")){
+						Log.i("Instant button", "pressed");
+				        //"create an new instant waypoint" button onClick listener
+				        if(!isRecorded("H"+lastNumberForInstantWaypoint, MyLocationListener.currentLatitude, MyLocationListener.currentLongitude)){
+				        	//same as instant list and waypoint list items
+				        	lastNumberForInstantWaypoint += 1;
+				        	WayPointActivity.wayPointList.add(new WP("H"+lastNumberForInstantWaypoint,//name
+					        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
+					        //Notify
+					        tts.speak("H"+lastNumberForInstantWaypoint+" is saved here.", TextToSpeech.QUEUE_ADD, null);
+					        Toast.makeText(MainActivity.this, "H"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
+					        for(int i=0;i<WayPointActivity.wayPointList.size();i++){
+					        	Log.i("waypoint list", "item "+i+" : "+WayPointActivity.wayPointList.get(i).getName());
+					        }
+					        //save value
+					        savePref();
+				        }
+				        else{
+				        	//Notify
+					        tts.speak("This waypoint is already saved before.", TextToSpeech.QUEUE_FLUSH, null);
+					        Toast.makeText(MainActivity.this, "This waypoint is already saved before.", Toast.LENGTH_SHORT).show();
+				        }
+					}//end if in if-else
+					else{
+						//GPS not available
+						Toast.makeText(MainActivity.this,"GPS is unavailable." , Toast.LENGTH_SHORT).show();
+						tts.speak("GPS is unavailable.", TextToSpeech.QUEUE_FLUSH, null);
+					}
+			    }
+	        }// end of on click		
+		}; // end of new View.LocationListener	
+
+		// button activation
+		buttonReco.setOnClickListener(onclickListener);
+		instantButton.setOnClickListener(onclickListener);
+    }
+    
+    private void initLocationListener() {
+        MyLocationListener.isInMain = true;
+        //location manager creation
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        ll = new MyLocationListener();		
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+    }
+    
+    private void initIntent() {
+        //intent creation
+		intent_Waypoint_activity = new Intent(MainActivity.this,WayPointActivity.class);
+		intent_AutoSetting_activity = new Intent(MainActivity.this,AutoSettingActivity.class);
+		intent_GeneralSetting_activity = new Intent(MainActivity.this,GeneralSettingActivity.class);
+		intent_Map_activity = new Intent(MainActivity.this,MyMapActivity.class);
+		intent_Way_activity = new Intent(MainActivity.this,WayActivity.class);
+    }
+    
+    private void initDate() {
+        //dates creation
+        MyLocationListener.speedBefore = new Date();
+        MyLocationListener.headingBefore = new Date();
+        MyLocationListener.distanceBefore = new Date();
+        MyLocationListener.bearingBefore = new Date();
+    }
+    
+    private void initTTS() {
+		 //OnInitListener Creation
+        OnInitListener onInitListener = new OnInitListener() {
+        	@Override
+        	public void onInit(int status) {
+        	}
+        };
+
+        // Text to speech creation
+        tts = new TextToSpeech(this, onInitListener);
     }
 
 }//end of Activity
