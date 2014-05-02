@@ -144,17 +144,6 @@ public void onCreate(Bundle savedInstanceState) {
 			Log.i("from on create", "sort from on create");
 		}
 		
-		//testing way
-		/*WP wp1 = new WP("wp1","44.3","-4.8");
-		WP wp2 = new WP("wp2","43","-4.5");
-		WP wp3 = new WP("wp3","40","-4.7");
-		WayPointActivity.wayPointList.add(wp1);
-		WayPointActivity.wayPointList.add(wp2);
-		WayPointActivity.wayPointList.add(wp3);
-
-		wayList.add(new Way("w1",wp1,wp2));
-		wayList.add(new Way("w2",wp2,wp3));*/
-		
 		//spinner set up
 		way = (Spinner) findViewById(R.id.spinner1);
 		way.setContentDescription("Choose the way in ");
@@ -189,10 +178,9 @@ public void onCreate(Bundle savedInstanceState) {
 										
 		                				//change back to the main activity
 										//passing activate way point name and position
-										//intentToMain.putExtra("actName", choosingWay.getName());//name
-										//intentToMain.putExtra("actLatitude", Double.parseDouble( choosingWay.getLatitude()));//latitude
-										//intentToMain.putExtra("actLongitude", Double.parseDouble(choosingWay.getLongitude()));//longitude
-										//Log.i("selected", "name : "+choosingWay.getName());
+										intentToMain.putExtra("actWayName", choosingWay.getName());//name
+										intentToMain.putExtra("actWP1", choosingWay.getFirstWP().getName());//waypoint1 name
+										intentToMain.putExtra("actWP2", choosingWay.getWP(1).getName());//waypoint2 name
 										
 										//back to WayPoint activity and send some parameters to the activity
 										setResult(RESULT_OK, intentToMain);
@@ -212,9 +200,9 @@ public void onCreate(Bundle savedInstanceState) {
 										
 										//change to the "Modify" activity
 										//passing modifying way point name and position
-										//intentToModifyWay.putExtra("modName", choosingWay.getName());//name
-										//intentToModifyWay.putExtra("modLatitude", choosingWay.getLatitude());//latitude
-										//intentToModifyWay.putExtra("modLongitude", choosingWay.getLongitude());//longitude
+										intentToModifyWay.putExtra("modName", choosingWay.getName());//name
+										intentToModifyWay.putExtra("modWP1", choosingWay.getFirstWP().getName());//waypoint1 name
+										intentToModifyWay.putExtra("modWP2", choosingWay.getWP(1).getName());//waypoint2 name
 										
 										//start NewWayPoint activity
 										startActivityForResult(intentToModifyWay, MODIFY_WAY);

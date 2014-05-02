@@ -1,5 +1,6 @@
 package orion.ms.sara;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -41,12 +42,15 @@ public class NewWayActivity extends Activity {
 	//spinner
 	private Spinner wp1List;
 	private Spinner wp2List;
-	private List<WP> tempList;
+	private ArrayList<WP> tempList = new ArrayList<WP>();
 	
 	//waypoint
 	private WP tempWP;
 	private WP selectedWP1;
 	private WP selectedWP2;
+	private String name;
+	private String latitude;
+	private String longitude;
 	
 	//array adapter
 	private ArrayAdapter<String> arrAd = null;
@@ -79,7 +83,7 @@ public class NewWayActivity extends Activity {
 		};
 		
 	    // textToSpeech creation
-		tts = new TextToSpeech(this, onInitListener);
+		tts = new TextToSpeech(NewWayActivity.this, onInitListener);
 
 		//TextView
 		wayNameText = (TextView) findViewById(R.id.textView1);
@@ -103,8 +107,11 @@ public class NewWayActivity extends Activity {
 		wayNameBox.setText(wayName);
 		
 		//get way list
-		tempList = WayPointActivity.getWayPointList();
-		tempList = setUpTempWPList(tempList);
+		tempList = setUpTempWPList();
+		for(int i = 0;i<tempList.size();i++){
+			Log.i("temp list", "item"+i+" : "+tempList.get(i).getName());
+		}
+		
 		setUpWP1List(tempList);
 		
 		//add more button
@@ -112,7 +119,6 @@ public class NewWayActivity extends Activity {
 		
 		//"save" button
 		saveButton = (Button) findViewById(R.id.button2);
-		saveButton.setTextSize(30);
 		//setOnClickedListener
 		saveButton.setOnClickListener(new OnClickListener() {
 			//OnClickedListener creation
@@ -137,22 +143,26 @@ public class NewWayActivity extends Activity {
 						}
 						else{
 							//sent the new way information back to way activity
-							
-							//notification
-							tts.speak("the new way already saved", tts.QUEUE_ADD, null);
-							Toast.makeText(NewWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
-
-							//change back to the way activity
-							//pass the parameters
-							intentToWay.putExtra("newWayName",wayName);//name
-							intentToWay.putExtra("newWP1Name", waypoint1Name);//latitude
-							intentToWay.putExtra("newWP2Name", waypoint2Name);//longitude
-							isAlsoActivateForNW = false;//change status
-
-							//back to WayPoint activity and send some parameters to the activity
-							setResult(RESULT_OK, intentToWay);
-							finish();
-							
+							if(waypoint1Name.equals(waypoint2Name)){
+								//prevent same waypoints
+								tts.speak("You selected the same waypoints", tts.QUEUE_ADD, null);
+							}
+							else{
+								//notification
+								tts.speak("the new way already saved", tts.QUEUE_ADD, null);
+								Toast.makeText(NewWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
+		
+								//change back to the way activity
+								//pass the parameters
+								intentToWay.putExtra("newWayName",wayName);//name
+								intentToWay.putExtra("newWP1Name", waypoint1Name);//latitude
+								intentToWay.putExtra("newWP2Name", waypoint2Name);//longitude
+								isAlsoActivateForNW = false;//change status
+		
+								//back to WayPoint activity and send some parameters to the activity
+								setResult(RESULT_OK, intentToWay);
+								finish();
+							}
 						}//end else in if-else
 						
 					}//end else
@@ -211,13 +221,26 @@ public class NewWayActivity extends Activity {
 
 
 	//change default item name
-	private List<WP> setUpTempWPList(List<WP> wList) {
-		for(int i = 0;i<wList.size();i++){
-			tempWP = wList.get(i);
-			if(tempWP.getName().equals("Please selected a waypoint"))
-				tempWP.setName("No selected waypoint");
+	private ArrayList<WP> setUpTempWPList() {
+			for(int i=0;i<WayPointActivity.getWayPointList().size();i++){
+				String tmpname = WayPointActivity.getWayPointList().get(i).getName();
+				Log.i("tempName", tmpname);
+				if(!tmpname.equals("Please selected a waypoint")){
+					name = WayPointActivity.getWayPointList().get(i).getName();
+					latitude = WayPointActivity.getWayPointList().get(i).getLatitude();
+					longitude = WayPointActivity.getWayPointList().get(i).getLongitude();
+					tempList.add(new WP(name,latitude,longitude));
+				}
+			}
+			Log.i("set up temp", "Hiiiii");
+			String defaultName = "No selected waypoint";
+			tempList.add(0,new WP(defaultName,"",""));
+		
+		for(int i =0;i<WayPointActivity.getWayPointList().size();i++){
+			Log.i("waypoint list", WayPointActivity.getWayPointList().get(i).getName());
 		}
-		return wList;
+		
+		return tempList;
 	}
 
 	//setting up waypoint list to spinner1
@@ -254,13 +277,11 @@ public class NewWayActivity extends Activity {
 	}//end setUpWP1List
 	
 	//setting up waypoint list to spinner2 and also remove selected item
-	private void setUpWP2List(final List<WP> wList2, WP sWP) {
+	private void setUpWP2List(final List<WP> wList2, final WP sWP) {
 		wp2List = (Spinner) findViewById(R.id.Spinner2);
 		//if not selecting default item
 		if(!sWP.getName().equals("No selected waypoint")){
 			//remove the selected item in the waypoint list1 from the list2
-			tempList = wList2;
-			tempList.remove(sWP);
 			arrAd = new ArrayAdapter<String>(NewWayActivity.this,
 							android.R.layout.simple_spinner_item, 
 							WayPointActivity.toNameArrayList(tempList));

@@ -222,6 +222,7 @@
    
    <!-- modify way activity -->
    <string name="title_activity_modify_way">Modify Way Activity</string>
+   <string name="modifyway_button">Save modifying way</string>
    
     <string name="title_activity_waypoint_map">WaypointMapActivity</string>
     <string name="autocenter">Focus my location</string>
