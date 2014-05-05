@@ -13,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="75dp"
+        android:textSize="80dp"
         tools:context=".MainActivity" />
 
     <TextView
@@ -23,7 +23,7 @@
         android:layout_below="@+id/speedView"
         android:gravity="center"
         android:paddingTop="40dp"
-        android:textSize="75dp"
+        android:textSize="80dp"
         tools:context=".MainActivity" />
 
     <TextView
@@ -33,7 +33,7 @@
         android:layout_below="@+id/heading"
         android:gravity="center"
         android:paddingTop="40dp"
-        android:textSize="75dp"
+        android:textSize="80dp"
         tools:context=".MainActivity" />
 
     <TextView
@@ -43,7 +43,7 @@
         android:layout_below="@+id/bearingView"
         android:gravity="center"
         android:paddingTop="40dp"
-        android:textSize="75dp"
+        android:textSize="80dp"
         tools:context=".MainActivity" />
 
     <TextView
@@ -54,7 +54,7 @@
         android:gravity="center"
         android:paddingBottom="50dp"
         android:paddingTop="40dp"
-        android:textSize="75dp"
+        android:textSize="80dp"
         tools:context=".MainActivity" />
 
     <ImageButton

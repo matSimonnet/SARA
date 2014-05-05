@@ -86,7 +86,6 @@ public class MainActivity extends Activity {
 		initDate(); // initial time for auto announce
 		initTTS(); // initial text to speech
 		
-		_initView();
 	}//end of on create
 	
 	//to check if the filled name or the position (latitude and longitude) are already recorded
@@ -155,6 +154,24 @@ public class MainActivity extends Activity {
         		}
         	break;
         	}// end of case
+        	
+        	case RESULT_WAY : {
+        		if (resultCode == RESULT_OK && null != data) {
+        			int length = data.getIntExtra("WayLength", -1);
+        			for(int i = 0; i < length; i++) {
+        				MyLocationListener.activatedWay = new WP[length];
+        				
+        				String WPName = data.getStringExtra("WPName" + i);
+        				String WPLa = data.getStringExtra("WPLa" + i);
+        				String WPLo = data.getStringExtra("WPLo" + i);
+        				MyLocationListener.activatedWay[i] = new WP(WPName, WPLa, WPLo);
+        			}
+        			MyLocationListener.activatedWayName = data.getStringExtra("WayName");
+        			_initView();
+        		}
+        	break;
+        	}// end of case
+        	
         	case RESULT_WAYPOINT : {
         		if (resultCode == RESULT_OK && null != data) {
         		        	        

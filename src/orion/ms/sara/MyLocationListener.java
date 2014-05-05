@@ -104,6 +104,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public static GeoPoint geoPoint[] = new GeoPoint[0];
 	public static boolean isStartedDisplay = false;
 	public static boolean isAutoDrawTrack = false;
+	
+	public static WP[] activatedWay;
+	public static String activatedWayName;
 
 
 	@Override

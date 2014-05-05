@@ -178,13 +178,15 @@ public void onCreate(Bundle savedInstanceState) {
 										
 		                				//change back to the main activity
 										//passing activate way point name and position
-										intentToMain.putExtra("actWayName", choosingWay.getName());//name
-										intentToMain.putExtra("actWP1", choosingWay.getFirstWP().getName());//waypoint1 name
-										intentToMain.putExtra("actWP2", choosingWay.getWP(1).getName());//waypoint2 name
-										
+										for(int i = 0; i < choosingWay.getSize(); i++) {
+											intentToMain.putExtra("WPName" + i, choosingWay.getWP(i).getName());
+											intentToMain.putExtra("WPLa" + i, choosingWay.getWP(i).getLatitude());
+											intentToMain.putExtra("WPLo" + i, choosingWay.getWP(i).getLongitude());
+										}
 										//back to WayPoint activity and send some parameters to the activity
+										intentToMain.putExtra("WayLength", choosingWay.getSize());
+										intentToMain.putExtra("WayName", choosingWay.getName());
 										setResult(RESULT_OK, intentToMain);
-										
 										finish();
 									}
                 				});//end activate button
