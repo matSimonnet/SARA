@@ -11,17 +11,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Point;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,7 +85,8 @@ public class MainActivity extends Activity {
 		initIntent(); // create all intent
 		initDate(); // initial time for auto announce
 		initTTS(); // initial text to speech
-
+		
+		_initView();
 	}//end of on create
 	
 	//to check if the filled name or the position (latitude and longitude) are already recorded
@@ -144,6 +151,7 @@ public class MainActivity extends Activity {
         	}// end of case
         	case RESULT_AUTO_SETTING : {
         		if (resultCode == RESULT_OK && null != data) {
+        			Log.i("Auto setting", "setting done");
         		}
         	break;
         	}// end of case
@@ -168,7 +176,8 @@ public class MainActivity extends Activity {
         	break;
         	}// end of case
         	case RESULT_GENERAL_SETTING : {
-        		if (resultCode == RESULT_OK) {
+        		if (resultCode == RESULT_OK && null != data) {
+        			Log.i("General setting", "setting done");
         		}
         	break;
         	}
@@ -326,6 +335,70 @@ public class MainActivity extends Activity {
     public static Context getContext(){
         return mContext;
     }
+    private void _initView() {
+    	
+    	// find view in my resource
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.relativelayout);
+
+        // add new text view
+		TextView selectedWayTextView = new TextView(this);
+		selectedWayTextView.setId(8453);
+		selectedWayTextView.setText("No selected way");
+		selectedWayTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textViewSpeed.getTextSize());
+		selectedWayTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+		
+		// new textview's rules
+        LayoutParams textViewParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        textViewParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        selectedWayTextView.setLayoutParams(textViewParam);
+        rl.addView(selectedWayTextView);
+        
+        // get width of screen
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        
+        //add previous button
+        Button bu1 = new Button(this);
+        
+        LayoutParams PreviousParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        PreviousParam.addRule(RelativeLayout.BELOW, selectedWayTextView.getId());
+        PreviousParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        
+        bu1.setBackgroundResource(R.drawable.custom_btn_shakespeare);
+        bu1.setTextAppearance(this, R.style.btnStyleShakespeare);
+        bu1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, instantButton.getTextSize());
+        
+        bu1.setText("Previous");
+        bu1.setId(6743);
+        bu1.setWidth(width/2);
+        bu1.setLayoutParams(PreviousParam);
+        rl.addView(bu1);
+        
+        // add next button
+        Button bu2 = new Button(this);
+        
+        LayoutParams NextParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        NextParam.addRule(RelativeLayout.BELOW, selectedWayTextView.getId());
+        NextParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        bu2.setBackgroundResource(R.drawable.custom_btn_shakespeare);
+        bu2.setTextAppearance(this, R.style.btnStyleShakespeare);
+        bu2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, instantButton.getTextSize());
+        
+        bu2.setText("Next");
+        bu2.setId(3743);
+        bu2.setWidth(width/2);
+        bu2.setLayoutParams(NextParam);
+        rl.addView(bu2);
+
+
+        
+        LayoutParams textViewSpeedParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        textViewSpeedParam.addRule(RelativeLayout.BELOW, bu1.getId());
+        textViewSpeed.setLayoutParams(textViewSpeedParam);
+		
+    }
     private void initView() {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
@@ -335,7 +408,6 @@ public class MainActivity extends Activity {
 		MyLocationListener.DistanceToCurrentWaypoint = getResources().getString(R.string.no_satellite);
 		MyLocationListener.BearingToCurrentWaypoint = getResources().getString(R.string.no_satellite);
 		MyLocationListener.accuracy = getResources().getString(R.string.no_satellite);
-		
 
         //TextView creation
         textViewDistance = (TextView) findViewById(R.id.distanceView);
@@ -360,7 +432,6 @@ public class MainActivity extends Activity {
         
         //"Instantly create a waypoint" button
         instantButton = (Button) findViewById(R.id.instantButton);
-        instantButton.setTextSize(30);
 
         // button creation
         buttonReco= new ImageButton(this);
