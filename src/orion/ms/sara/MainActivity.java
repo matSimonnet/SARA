@@ -82,6 +82,8 @@ public class MainActivity extends Activity {
 		Log.i("test", "///////// onCreate \\\\\\\\\\");
 		
 		super.onCreate(savedInstanceState);
+		setTitle(R.string.navigation_title);
+
 		
         mContext = this;
 		initView();
@@ -184,9 +186,11 @@ public class MainActivity extends Activity {
         			MyLocationListener.activatedWayName = data.getStringExtra("WayName");
            			MyLocationListener.isWayActivated = true;
            			saveActivatedWaypoint();
+			        tts.speak(MyLocationListener.activatedWayName + " is activated", TextToSpeech.QUEUE_FLUSH, null);
         			_initView();
         		}
         		else {
+			        tts.speak(MyLocationListener.activatedWayName + " is disactivated", TextToSpeech.QUEUE_FLUSH, null);
         			initView();
            	        MyLocationListener.WaypointName = "";
         	        MyLocationListener.WaypointLatitude = 999;
