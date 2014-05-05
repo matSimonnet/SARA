@@ -9,7 +9,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -433,29 +432,6 @@ public class NewWayActivity extends Activity {
 			break;
 		}
 		return false;
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		tts.shutdown();
-	}
-  
-	@Override
-	protected void onStop() {
-		super.onStop();
-		tts.shutdown();
-	}
-  
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		tts.shutdown();
 	}
 
 }

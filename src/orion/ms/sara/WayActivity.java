@@ -342,15 +342,13 @@ public void onCreate(Bundle savedInstanceState) {
 			if(NewWayActivity.isAlsoActivateForNW){
 				//change back to the main activity
 				//passing activate way point name and position
-				for(int i = 0; i < choosingWay.getSize(); i++) {
-					intentToMain.putExtra("WPName" + i, tempWay.getWP(i).getName());
-					intentToMain.putExtra("WPLa" + i, tempWay.getWP(i).getLatitude());
-					intentToMain.putExtra("WPLo" + i, tempWay.getWP(i).getLongitude());
-				}
+				intentToMain.putExtra("actWayName", newWayName);//name
+				intentToMain.putExtra("actWP1", newWP1Name);//waypoint1 name
+				intentToMain.putExtra("actWP2", newWP2Name);//waypoint2 name
 				
-				intentToMain.putExtra("WayLength", tempWay.getSize());
-				intentToMain.putExtra("WayName", tempWay.getName());
+				//back to main activity and send some parameters to the activity
 				setResult(RESULT_OK, intentToMain);
+				
 				finish();
 			}//end if for pressing save and activate
 			
