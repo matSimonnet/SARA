@@ -6,6 +6,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -133,7 +134,7 @@ public class NewWayActivity extends Activity {
 					waypoint2Name = selectedWP2.getName();		
 					
 					//check if the filled name or the waypoints are already recorded
-					if(isRecorded(wayName, waypoint1Name, waypoint2Name)){
+					if(isRecorded(wayName, waypoint1Name, waypoint2Name,NewWayActivity.this)){
 						tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
 					}
 					else{
@@ -185,7 +186,7 @@ public class NewWayActivity extends Activity {
 					waypoint2Name = selectedWP2.getName();		
 					
 					//check if the filled name or the waypoints are already recorded
-					if(isRecorded(wayName, waypoint1Name, waypoint2Name)){
+					if(isRecorded(wayName, waypoint1Name, waypoint2Name,NewWayActivity.this)){
 						tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
 					}
 					else{
@@ -314,7 +315,7 @@ public class NewWayActivity extends Activity {
 	//to check if the filled name or the position (latitude and longitude) are already recorded
 	@SuppressWarnings("static-access")
 	@SuppressLint("ShowToast")
-	public boolean isRecorded(String wayName, String w1name, String w2name){
+	public static boolean isRecorded(String wayName, String w1name, String w2name,Context con){
 		List<Way> wayList = WayActivity.getWayList();
 		WP tempwp1 = null;
 		WP tempwp2 = null;
@@ -329,14 +330,12 @@ public class NewWayActivity extends Activity {
 		for(int i = 1;i<wayList.size();i++){
 			if(wayList.get(i).getName().equalsIgnoreCase(wayName)){
 				// same name
-				Toast.makeText(NewWayActivity.this, "This name is already recorded.", Toast.LENGTH_SHORT);
-				tts.speak("This name is already recorded.", tts.QUEUE_FLUSH, null);
+				Toast.makeText(con, "This name is already recorded.", Toast.LENGTH_SHORT);
 				return true;
 			}
 			else if(wayList.get(i).getFirstWP().equals(tempwp1) && wayList.get(i).getWP(1).equals(tempwp2)){
 				//same waypoints
-				Toast.makeText(NewWayActivity.this, "These waypoints are already recorded.", Toast.LENGTH_SHORT);
-				tts.speak("These waypoints are already recorded.", tts.QUEUE_FLUSH, null);
+				Toast.makeText(con, "These waypoints are already recorded.", Toast.LENGTH_SHORT);
 				return true;
 			}//end else
 		}//end for
@@ -367,7 +366,7 @@ public class NewWayActivity extends Activity {
 				//check if some values change without saving
 				if((!waypoint1Name.equals("No selected waypoint") || !waypoint2Name.equals("No selected waypoint")) 
 						&& !waypoint1Name.equals(waypoint2Name)
-						&& !isRecorded(wayName, waypoint1Name, waypoint2Name)){
+						&& !isRecorded(wayName, waypoint1Name, waypoint2Name,NewWayActivity.this)){
 					final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 					dialog.setTitle("Some values change, do you want to save?");
 					dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
