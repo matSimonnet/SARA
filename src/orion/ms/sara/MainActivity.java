@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
 	public static MyLocationListener ll = null;
 
 	public SharedPreferences settings;
-	public SharedPreferences.Editor editor;
+	public static SharedPreferences.Editor editor;
 	
 	//Generating a number for a new waypoint's default name
 	public static int lastNumberForInstantWaypoint = 0;
@@ -173,7 +173,7 @@ public class MainActivity extends Activity {
         				String WPLa = data.getStringExtra("WPLa" + i);
         				String WPLo = data.getStringExtra("WPLo" + i);
         				MyLocationListener.activatedWay.add(i, new WP(WPName, WPLa, WPLo));
-        				Log.i("way list" , WPName + WPLa + WPLo);
+        				Log.i("way list" , WPName + " " + WPLa + " " + WPLo);
         				
         				if(i == 0) { 
                    	        MyLocationListener.WaypointName = WPName;
@@ -183,7 +183,18 @@ public class MainActivity extends Activity {
         			}
         			MyLocationListener.activatedWayName = data.getStringExtra("WayName");
            			MyLocationListener.isWayActivated = true;
+           			saveActivatedWaypoint();
         			_initView();
+        		}
+        		else {
+        			initView();
+           	        MyLocationListener.WaypointName = "";
+        	        MyLocationListener.WaypointLatitude = 999;
+        	        MyLocationListener.WaypointLongitude = 999;
+           			MyLocationListener.isWayActivated = false;
+           			saveActivatedWaypoint();
+
+
         		}
         	break;
         	}// end of case
@@ -198,10 +209,7 @@ public class MainActivity extends Activity {
         			this.actName = data.getStringExtra("actName");
         			Log.i("receiveing name", actName);
         			
-				    editor.putString("WaypointLatitude", String.valueOf(MyLocationListener.WaypointLatitude));
-				    editor.putString("WaypointLongitude", String.valueOf(MyLocationListener.WaypointLongitude));
-				    editor.putString("WaypointName", MyLocationListener.WaypointName);
-				    editor.commit();
+        			saveActivatedWaypoint();
 				    
         			Log.i("Waypoint Latitude", MyLocationListener.WaypointLatitude+"");
         			Log.i("Waypoint Latitude", MyLocationListener.WaypointLongitude+"");
@@ -253,7 +261,7 @@ public class MainActivity extends Activity {
 
 	public void LoadPref() {
 		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
-		this.editor = settings.edit();
+		editor = settings.edit();
      	MyLocationListener.speedTreshold = Double.parseDouble(settings.getString("speedTreshold", "1.0"));
      	MyLocationListener.speedTimeTreshold = settings.getLong("speedTimeTreshold", 5);
      	MyLocationListener.headingTreshold = Double.parseDouble(settings.getString("headingTreshold", "10.0"));
@@ -334,6 +342,15 @@ public class MainActivity extends Activity {
 	    for(int i=0;i<nameWaySize;i++){
 		  	wayList.add(new Way(name[i],latitude[i],longitude[i]));
 	  	}*/
+	}
+	
+	//save activated waypoint
+
+	public static void saveActivatedWaypoint() {
+	    editor.putString("WaypointLatitude", String.valueOf(MyLocationListener.WaypointLatitude));
+	    editor.putString("WaypointLongitude", String.valueOf(MyLocationListener.WaypointLongitude));
+	    editor.putString("WaypointName", MyLocationListener.WaypointName);
+	    editor.commit();
 	}
 
 	//save preferences

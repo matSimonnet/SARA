@@ -561,8 +561,8 @@ public void onCreate(Bundle savedInstanceState) {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.navigation_setting:
-			//back to main activity and send some parameters to the activity
-			
+			// don't put any parameter to navigation page
+			// just use finish() is okay
 			finish();
 			break;
 		default:

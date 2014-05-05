@@ -132,6 +132,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	    	        isWayActivated = false;
 	    	        activatedIndex = 0;
 	    	        MainActivity.deleteView();
+	    	        MainActivity.saveActivatedWaypoint();
 				}
 				else {
 					MainActivity.tts.speak("You have reached " + WaypointName, TextToSpeech.QUEUE_FLUSH, null);
@@ -139,7 +140,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 					WaypointName = activatedWay.get(activatedIndex).getName();
 					WaypointLatitude = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
     	        	WaypointLongitude = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
-    	        	MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_FLUSH, null);
+    	        	MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_ADD, null);
+	    	        MainActivity.saveActivatedWaypoint();
 				}
 			}
 		}
