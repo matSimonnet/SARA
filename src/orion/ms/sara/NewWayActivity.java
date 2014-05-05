@@ -364,7 +364,7 @@ public class NewWayActivity extends Activity {
 			waypoint2Name = selectedWP2.getName();
 			
 			//check if some values change without saving
-			if((!latitude.equals("") || !longitude.equals("")) && !isRecorded(wayName, waypoint1Name, waypoint2Name)){
+			if((!waypoint1Name.equals("No selected waypoint") || !waypoint2Name.equals("No selected waypoint")) && !isRecorded(wayName, waypoint1Name, waypoint2Name)){
 				final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 				dialog.setTitle("Some values change, do you want to save?");
 				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){

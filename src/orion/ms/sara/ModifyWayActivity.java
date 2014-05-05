@@ -6,7 +6,9 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -50,7 +52,6 @@ public class ModifyWayActivity extends Activity {
 	private ArrayList<WP> tempList = new ArrayList<WP>();
 	
 	//waypoint
-	private WP tempWP;
 	private WP selectedWP1;
 	private WP selectedWP2;
 	private String name;
@@ -71,10 +72,12 @@ public class ModifyWayActivity extends Activity {
 	
 	//way attributes
 	private String modWayName = "Way1";
-	private String waypoint1Name = "No selected waypoint";
-	private String waypoint2Name = "No selected waypoint";
 	private String modWP1Name = "No selected waypoint";
 	private String modWP2Name = "No selected waypoint";
+	private String oldWayName = "";
+	private String oldWP1Name = "";
+	private String oldWP2Name = "";
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,10 +112,12 @@ public class ModifyWayActivity extends Activity {
 		intentToWay = new Intent(ModifyWayActivity.this,WayActivity.class);
 		
 		//set default name
-		modWayName = intentFromWay.getStringExtra("modName");
-		wayNameBox.setText(modWayName);
-		wp1NameText.setText(intentFromWay.getStringExtra("modWP1"));
-		wp2NameText.setText(intentFromWay.getStringExtra("modWP2"));		
+		oldWayName = intentFromWay.getStringExtra("modName");
+		wayNameBox.setText(oldWayName);
+		oldWP1Name = intentFromWay.getStringExtra("modWP1");
+		wp1NameText.setText(oldWP1Name);
+		oldWP2Name = intentFromWay.getStringExtra("modWP2");
+		wp2NameText.setText(oldWP2Name);		
 		
 		//get way list
 		tempList = setUpTempWPList();
@@ -137,17 +142,17 @@ public class ModifyWayActivity extends Activity {
 					modWP2Name = selectedWP2.getName();		
 					
 					//check if the filled name or the waypoints are already recorded
-					if(!isRecorded(modWayName, waypoint1Name, waypoint2Name)){
+					if(!isRecorded(modWayName, modWP1Name, modWP2Name)){
 						tts.speak("Please fill the new information or create a new way", tts.QUEUE_ADD, null);
 					}
 					else{
-						if(waypoint1Name.equals("No selected waypoint") || waypoint2Name.equals("No selected waypoint") || modWayName.isEmpty()){
+						if(modWP1Name.equals("No selected waypoint") || modWP2Name.equals("No selected waypoint") || modWayName.isEmpty()){
 							//prevent incomplete information
 							tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
 						}
 						else{
 							//sent the new way information back to way activity
-							if(waypoint1Name.equals(waypoint2Name)){
+							if(modWP1Name.equals(modWP2Name)){
 								//prevent same way points
 								tts.speak("You selected the same waypoints", tts.QUEUE_ADD, null);
 							}
@@ -168,7 +173,6 @@ public class ModifyWayActivity extends Activity {
 								finish();
 							}
 						}//end else in if-else
-						
 					}//end else
 				}//end if
 			}//end onClick
@@ -176,7 +180,54 @@ public class ModifyWayActivity extends Activity {
 		
 		//save and activate button
 		saveActButton = (Button) findViewById(R.id.button3);
+		saveActButton.setOnClickListener(new OnClickListener() {
+			//onClick creation
+			@SuppressLint("ShowToast")
+			@SuppressWarnings("static-access")
+			@Override
+			public void onClick(View v) {
+				if(v==saveActButton){
+					//get the new way's name EditText
+					modWayName = wayNameBox.getText().toString();
+					modWP1Name = selectedWP1.getName();
+					modWP2Name = selectedWP2.getName();		
+					
+					//check if the filled name or the waypoints are already recorded
+					if(!isRecorded(modWayName, modWP1Name, modWP2Name)){
+						tts.speak("Please fill the new information or create a new way", tts.QUEUE_ADD, null);
+					}
+					else{
+						if(modWP1Name.equals("No selected waypoint") || modWP2Name.equals("No selected waypoint") || modWayName.isEmpty()){
+							//prevent incomplete information
+							tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
+						}
+						else{
+							//sent the new way information back to way activity
+							if(modWP1Name.equals(modWP2Name)){
+								//prevent same way points
+								tts.speak("You selected the same waypoints", tts.QUEUE_ADD, null);
+							}
+							else{
+								//notification
+								tts.speak("this modify way is already saved", tts.QUEUE_ADD, null);
+								Toast.makeText(ModifyWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
 		
+								//change back to the way activity
+								//pass the parameters
+								intentToWay.putExtra("modWayName",modWayName);//name
+								intentToWay.putExtra("modWP1Name", modWP1Name);//latitude
+								intentToWay.putExtra("modWP2Name", modWP2Name);//longitude
+								isAlsoActivateForMW = true;//change status
+		
+								//back to WayPoint activity and send some parameters to the activity
+								setResult(RESULT_OK, intentToWay);
+								finish();
+							}
+						}//end else in if-else
+					}//end else
+				}//end if
+			}//end onClick
+		});		
 	}
 
 	//change default item name
@@ -212,10 +263,10 @@ public class ModifyWayActivity extends Activity {
 	                		switch(adapterView.getId()){
 	                		case R.id.spinner1: 
 	                			selectedWP1 = wList1.get(i);
-	                			waypoint1Name = selectedWP1.getName();
-	                			if(!waypoint1Name.equals("No selected waypoint"))
-		            				wp1NameText.setText(waypoint1Name);
-	                			Log.i("wp1 selected", waypoint1Name);
+	                			modWP1Name = selectedWP1.getName();
+	                			if(!modWP1Name.equals("No selected waypoint"))
+		            				wp1NameText.setText(modWP1Name);
+	                			Log.i("wp1 selected", modWP1Name);
 	                			setUpWP2List(tempList,selectedWP1);
 	                		}
 	      				}catch(Exception e){
@@ -248,10 +299,10 @@ public class ModifyWayActivity extends Activity {
 			            		switch(adapterView.getId()){
 			            		case R.id.Spinner2: 
 			            			selectedWP2 = wList2.get(i);
-			            			waypoint2Name = selectedWP2.getName();
-			            			if(!waypoint2Name.equals("No selected waypoint"))
-			            				wp2NameText.setText(waypoint2Name);
-			            			Log.i("wp2 selected", waypoint2Name);
+			            			modWP2Name = selectedWP2.getName();
+			            			if(!modWP2Name.equals("No selected waypoint"))
+			            				wp2NameText.setText(modWP2Name);
+			            			Log.i("wp2 selected", modWP2Name);
 			            		}
 			  				}catch(Exception e){
 			                        e.printStackTrace();
@@ -321,10 +372,60 @@ public class ModifyWayActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.way_setting:
-			//back to main activity and send some parameters to the activity
+			//get the new way's name EditText
+			modWayName = wayNameBox.getText().toString();
+			modWP1Name = selectedWP1.getName();
+			modWP2Name = selectedWP2.getName();	
 			
-			finish();
-			break;
+			//check if some values change without saving
+			if((!modWP1Name.equals("No selected waypoint") || !modWP2Name.equals("No selected waypoint")) && !isRecorded(modWayName, modWP1Name, modWP2Name)){
+				final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+				dialog.setTitle("Some values change, do you want to save?");
+				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						//pass the parameters
+						intentToWay.putExtra("modWayName",modWayName);//name
+						intentToWay.putExtra("modWP1Name", modWP1Name);//way point1 name
+						intentToWay.putExtra("modWP2Name", modWP2Name);//way point2 name
+						isAlsoActivateForMW = false;//change status
+
+						//back to Way activity and send some parameters to the activity
+						setResult(RESULT_OK, intentToWay);
+						finish();
+					}
+				});
+				
+				dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						//don't save
+						//pass the parameters
+						intentToWay.putExtra("modWayName","");//name
+						intentToWay.putExtra("modWP1Name", "");//way point1 name
+						intentToWay.putExtra("modWP2Name", "");//way point2 name
+						isAlsoActivateForMW = false;//change status
+
+						//back to Way activity and send some parameters to the activity
+						setResult(RESULT_OK, intentToWay);
+						finish();
+					}
+				});
+				dialog.show();
+			}
+			else{
+				//don't save
+				//pass the parameters
+				intentToWay.putExtra("modWayName","");//name
+				intentToWay.putExtra("modWP1Name", "");//way point1 name
+				intentToWay.putExtra("modWP2Name", "");//way point2 name
+				isAlsoActivateForMW = false;//change status
+
+				//back to Way activity and send some parameters to the activity
+				setResult(RESULT_OK, intentToWay);
+				finish();
+				break;
+			}
 		default:
 			break;
 		}

@@ -367,17 +367,15 @@ public void onCreate(Bundle savedInstanceState) {
 	    		sortingWayList(wayList);
 			}
 			//pressing save and activate
-			if(ModifyWPActivity.isAlsoActivateForMWP){
+			if(ModifyWayActivity.isAlsoActivateForMW){
 				//change back to the main activity
 				//passing activate way point name and position
-				/*intentToMain.putExtra("actName", modName);//name
-				intentToMain.putExtra("actLatitude", Double.parseDouble(modLatitude));//latitude
-				intentToMain.putExtra("actLongitude", Double.parseDouble(modLongitude));//longitude
-				Log.i("selected", modName);*/
+				intentToMain.putExtra("actName", modName);//name
+				intentToMain.putExtra("actLatitude", modWP1);//latitude
+				intentToMain.putExtra("actLongitude", modWP2);//longitude
 				
 				//back to main activity and send some parameters to the activity
 				setResult(RESULT_OK, intentToMain);
-				
 				finish();
 			}//end if for pressing save and activate
 	    }
