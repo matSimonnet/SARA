@@ -55,21 +55,26 @@ public class MainActivity extends Activity {
 	public static TextView textViewDistance = null;
 	public static TextView textViewBearing = null;
 	public static TextView textViewAccuracy = null;
+	public static TextView ActivatedWayTextView = null;
 	public static TextToSpeech tts = null;
 
 	private ImageButton buttonReco = null;
 	private Button instantButton = null;
+	private static Button nextButton = null;
+	private static Button previousButton = null;
 
 	private LocationManager lm = null;
 	public static MyLocationListener ll = null;
 
 	public SharedPreferences settings;
 	public SharedPreferences.Editor editor;
-
+	
 	//Generating a number for a new waypoint's default name
 	public static int lastNumberForInstantWaypoint = 0;
 	//activating way point item name from the list
 	private String actName = "Please selected a waypoint";
+    private static RelativeLayout rl;
+
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +85,7 @@ public class MainActivity extends Activity {
 		
         mContext = this;
 		initView();
+		if(MyLocationListener.isWayActivated) _initView();
 		initLocationListener(); // 
 		LoadPref(); // Restore preferences
 		initIntent(); // create all intent
@@ -157,16 +163,26 @@ public class MainActivity extends Activity {
         	
         	case RESULT_WAY : {
         		if (resultCode == RESULT_OK && null != data) {
+        			if(previousButton != null && nextButton != null && ActivatedWayTextView != null) {
+                		deleteView();
+        			}
+        			MyLocationListener.activatedWay = new ArrayList<WP>();
         			int length = data.getIntExtra("WayLength", -1);
-        			for(int i = 0; i < length; i++) {
-        				MyLocationListener.activatedWay = new WP[length];
-        				
+        			for(int i = 0; i < length; i++) {        				
         				String WPName = data.getStringExtra("WPName" + i);
         				String WPLa = data.getStringExtra("WPLa" + i);
         				String WPLo = data.getStringExtra("WPLo" + i);
-        				MyLocationListener.activatedWay[i] = new WP(WPName, WPLa, WPLo);
+        				MyLocationListener.activatedWay.add(i, new WP(WPName, WPLa, WPLo));
+        				Log.i("way list" , WPName + WPLa + WPLo);
+        				
+        				if(i == 0) { 
+                   	        MyLocationListener.WaypointName = WPName;
+                	        MyLocationListener.WaypointLatitude = Double.parseDouble(WPLa);
+                	        MyLocationListener.WaypointLongitude = Double.parseDouble(WPLo);
+        				}
         			}
         			MyLocationListener.activatedWayName = data.getStringExtra("WayName");
+           			MyLocationListener.isWayActivated = true;
         			_initView();
         		}
         	break;
@@ -260,6 +276,8 @@ public class MainActivity extends Activity {
      	MyLocationListener.WaypointName = settings.getString("WaypointName", "defValue");
         MyLocationListener.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
         MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
+        MyLocationListener.WPTreshold = settings.getInt("WPTreshold", 1);
+
         lastNumberForInstantWaypoint = settings.getInt(getString(R.string.save_inst_num), 0);
         
         //speech rate
@@ -352,23 +370,31 @@ public class MainActivity extends Activity {
     public static Context getContext(){
         return mContext;
     }
+    public static void deleteView() {
+        rl.removeView(ActivatedWayTextView);
+        rl.removeView(previousButton);
+        rl.removeView(nextButton);
+
+
+    }
     private void _initView() {
     	
     	// find view in my resource
-        RelativeLayout rl = (RelativeLayout) findViewById(R.id.relativelayout);
+        rl = (RelativeLayout) findViewById(R.id.relativelayout);
 
         // add new text view
-		TextView selectedWayTextView = new TextView(this);
-		selectedWayTextView.setId(8453);
-		selectedWayTextView.setText("No selected way");
-		selectedWayTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textViewSpeed.getTextSize());
-		selectedWayTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+		ActivatedWayTextView = new TextView(this);
+		ActivatedWayTextView.setId(8453);
+		ActivatedWayTextView.setText(MyLocationListener.activatedWayName);
+		ActivatedWayTextView.setContentDescription(MyLocationListener.activatedWayName + "is activated.");
+		ActivatedWayTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textViewSpeed.getTextSize());
+		ActivatedWayTextView.setGravity(Gravity.CENTER_HORIZONTAL);
 		
 		// new textview's rules
         LayoutParams textViewParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         textViewParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        selectedWayTextView.setLayoutParams(textViewParam);
-        rl.addView(selectedWayTextView);
+        ActivatedWayTextView.setLayoutParams(textViewParam);
+        rl.addView(ActivatedWayTextView);
         
         // get width of screen
         Display display = getWindowManager().getDefaultDisplay();
@@ -377,42 +403,40 @@ public class MainActivity extends Activity {
         int width = size.x;
         
         //add previous button
-        Button bu1 = new Button(this);
+        previousButton = new Button(this);
         
         LayoutParams PreviousParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        PreviousParam.addRule(RelativeLayout.BELOW, selectedWayTextView.getId());
+        PreviousParam.addRule(RelativeLayout.BELOW, ActivatedWayTextView.getId());
         PreviousParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         
-        bu1.setBackgroundResource(R.drawable.custom_btn_shakespeare);
-        bu1.setTextAppearance(this, R.style.btnStyleShakespeare);
-        bu1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, instantButton.getTextSize());
+        previousButton.setBackgroundResource(R.drawable.custom_btn_shakespeare);
+        previousButton.setTextAppearance(this, R.style.btnStyleShakespeare);
+        previousButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, instantButton.getTextSize());
         
-        bu1.setText("Previous");
-        bu1.setId(6743);
-        bu1.setWidth(width/2);
-        bu1.setLayoutParams(PreviousParam);
-        rl.addView(bu1);
+        previousButton.setText("Previous");
+        previousButton.setId(6743);
+        previousButton.setWidth(width/2 - rl.getPaddingLeft());
+        previousButton.setLayoutParams(PreviousParam);
+        rl.addView(previousButton);
         
         // add next button
-        Button bu2 = new Button(this);
+        nextButton = new Button(this);
         
         LayoutParams NextParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        NextParam.addRule(RelativeLayout.BELOW, selectedWayTextView.getId());
+        NextParam.addRule(RelativeLayout.BELOW, ActivatedWayTextView.getId());
         NextParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        bu2.setBackgroundResource(R.drawable.custom_btn_shakespeare);
-        bu2.setTextAppearance(this, R.style.btnStyleShakespeare);
-        bu2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, instantButton.getTextSize());
+        nextButton.setBackgroundResource(R.drawable.custom_btn_shakespeare);
+        nextButton.setTextAppearance(this, R.style.btnStyleShakespeare);
+        nextButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, instantButton.getTextSize());
         
-        bu2.setText("Next");
-        bu2.setId(3743);
-        bu2.setWidth(width/2);
-        bu2.setLayoutParams(NextParam);
-        rl.addView(bu2);
-
-
+        nextButton.setText("Next");
+        nextButton.setId(3743);
+        nextButton.setWidth(width/2 - rl.getPaddingLeft());
+        nextButton.setLayoutParams(NextParam);
+        rl.addView(nextButton);
         
         LayoutParams textViewSpeedParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        textViewSpeedParam.addRule(RelativeLayout.BELOW, bu1.getId());
+        textViewSpeedParam.addRule(RelativeLayout.BELOW, previousButton.getId());
         textViewSpeed.setLayoutParams(textViewSpeedParam);
 		
     }
