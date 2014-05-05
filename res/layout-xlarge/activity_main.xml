@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativelayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:paddingBottom="10dp"
@@ -12,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="90dp"
+        android:textSize="75dp"
         tools:context=".MainActivity" />
 
     <TextView
@@ -22,7 +23,7 @@
         android:layout_below="@+id/speedView"
         android:gravity="center"
         android:paddingTop="40dp"
-        android:textSize="90dp"
+        android:textSize="75dp"
         tools:context=".MainActivity" />
 
     <TextView
@@ -32,7 +33,7 @@
         android:layout_below="@+id/heading"
         android:gravity="center"
         android:paddingTop="40dp"
-        android:textSize="90dp"
+        android:textSize="75dp"
         tools:context=".MainActivity" />
 
     <TextView
@@ -42,7 +43,7 @@
         android:layout_below="@+id/bearingView"
         android:gravity="center"
         android:paddingTop="40dp"
-        android:textSize="90dp"
+        android:textSize="75dp"
         tools:context=".MainActivity" />
 
     <TextView
@@ -53,7 +54,7 @@
         android:gravity="center"
         android:paddingBottom="50dp"
         android:paddingTop="40dp"
-        android:textSize="90dp"
+        android:textSize="75dp"
         tools:context=".MainActivity" />
 
     <ImageButton
@@ -76,6 +77,6 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/accuracyView"
         android:text="@string/instant_waypoint"
-        android:textSize="50dp" />
+        android:textSize="30dp" />
 
 </RelativeLayout>
