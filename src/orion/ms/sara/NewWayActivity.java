@@ -46,8 +46,8 @@ public class NewWayActivity extends Activity {
 	private Spinner wp2List;
 	private ArrayList<WP> tempList = new ArrayList<WP>();
 	
-	private WP selectedWP1;
-	private WP selectedWP2;
+	private WP selectedWP1 = null;
+	private WP selectedWP2 = null;
 	private String name;
 	private String latitude;
 	private String longitude;
@@ -358,60 +358,75 @@ public class NewWayActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.way_setting:
-			//get the new way's name EditText
-			wayName = wayNameBox.getText().toString();
-			waypoint1Name = selectedWP1.getName();
-			waypoint2Name = selectedWP2.getName();
-			
-			//check if some values change without saving
-			if((!waypoint1Name.equals("No selected waypoint") || !waypoint2Name.equals("No selected waypoint")) && !isRecorded(wayName, waypoint1Name, waypoint2Name)){
-				final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-				dialog.setTitle("Some values change, do you want to save?");
-				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						//pass the parameters
-						intentToWay.putExtra("newWayName",wayName);//name
-						intentToWay.putExtra("newWP1Name", waypoint1Name);//way point1 name
-						intentToWay.putExtra("newWP2Name", waypoint2Name);//way point2 name
-						isAlsoActivateForNW = false;//change status
-
-						//back to Way activity and send some parameters to the activity
-						setResult(RESULT_OK, intentToWay);
-						finish();
-					}
-				});
+			if(selectedWP1 != null && selectedWP2 != null){
+				//get the new way's name EditText
+				wayName = wayNameBox.getText().toString();
+				waypoint1Name = selectedWP1.getName();
+				waypoint2Name = selectedWP2.getName();
 				
-				dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						//don't save
-						//pass the parameters
-						intentToWay.putExtra("newWayName","");//name
-						intentToWay.putExtra("newWP1Name", "");//way point1 name
-						intentToWay.putExtra("newWP2Name", "");//way point2 name
-						isAlsoActivateForNW = false;//change status
+				//check if some values change without saving
+				if((!waypoint1Name.equals("No selected waypoint") || !waypoint2Name.equals("No selected waypoint")) && !isRecorded(wayName, waypoint1Name, waypoint2Name)){
+					final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+					dialog.setTitle("Some values change, do you want to save?");
+					dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							//pass the parameters
+							intentToWay.putExtra("newWayName",wayName);//name
+							intentToWay.putExtra("newWP1Name", waypoint1Name);//way point1 name
+							intentToWay.putExtra("newWP2Name", waypoint2Name);//way point2 name
+							isAlsoActivateForNW = false;//change status
+	
+							//back to Way activity and send some parameters to the activity
+							setResult(RESULT_OK, intentToWay);
+							finish();
+						}
+					});
+					
+					dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							//don't save
+							//pass the parameters
+							intentToWay.putExtra("newWayName","");//name
+							intentToWay.putExtra("newWP1Name", "");//way point1 name
+							intentToWay.putExtra("newWP2Name", "");//way point2 name
+							isAlsoActivateForNW = false;//change status
+	
+							//back to Way activity and send some parameters to the activity
+							setResult(RESULT_OK, intentToWay);
+							finish();
+						}
+					});
+					dialog.show();
+				}
+				else{
+					//don't save
+					//pass the parameters
+					intentToWay.putExtra("newWayName","");//name
+					intentToWay.putExtra("newWP1Name", "");//way point1 name
+					intentToWay.putExtra("newWP2Name", "");//way point2 name
+					isAlsoActivateForNW = false;//change status
+	
+					//back to Way activity and send some parameters to the activity
+					setResult(RESULT_OK, intentToWay);
+					finish();
+					break;
+				}
+		}//end if selected
+		else{
+			//don't save
+			//pass the parameters
+			intentToWay.putExtra("newWayName","");//name
+			intentToWay.putExtra("newWP1Name", "");//way point1 name
+			intentToWay.putExtra("newWP2Name", "");//way point2 name
+			isAlsoActivateForNW = false;//change status
 
-						//back to Way activity and send some parameters to the activity
-						setResult(RESULT_OK, intentToWay);
-						finish();
-					}
-				});
-				dialog.show();
-			}
-			else{
-				//don't save
-				//pass the parameters
-				intentToWay.putExtra("newWayName","");//name
-				intentToWay.putExtra("newWP1Name", "");//way point1 name
-				intentToWay.putExtra("newWP2Name", "");//way point2 name
-				isAlsoActivateForNW = false;//change status
-
-				//back to Way activity and send some parameters to the activity
-				setResult(RESULT_OK, intentToWay);
-				finish();
-				break;
-			}
+			//back to Way activity and send some parameters to the activity
+			setResult(RESULT_OK, intentToWay);
+			finish();
+			break;
+		}
 		default:
 			break;
 		}
