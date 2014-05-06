@@ -125,9 +125,13 @@ public class NewWayActivity extends Activity {
 		wayName = intentFromWay.getStringExtra("defaultNameFromWay");
 		wayNameBox.setText(wayName);
 		
+		//Spinner
+		wp1List = (Spinner) findViewById(R.id.spinner1);
+		wp2List = (Spinner) findViewById(R.id.Spinner2);
+		
 		//get way list
-		setUpWP1List(setUpTempWPList(tempList));
-		setUpWP2List(setUpTempWPList(anotherList));		
+		setUpWPList(setUpTempWPList(tempList), wp1List, wp1NameText);
+		setUpWPList(setUpTempWPList(anotherList), wp2List, wp2NameText);		
 		
 		//add more button
 		addMoreButton = (Button) findViewById(R.id.button1);
@@ -265,42 +269,23 @@ public class NewWayActivity extends Activity {
 		return tempList;
 	}
 	
-	//change the default name
-	private ArrayList<WP> setUpAnotherWPList() {
-		for(int i=0;i<WayPointActivity.getWayPointList().size();i++){
-			String tmpname = WayPointActivity.getWayPointList().get(i).getName();
-			Log.i("tempName", tmpname);
-			if(!tmpname.equals("Please selected a waypoint")){
-				name = WayPointActivity.getWayPointList().get(i).getName();
-				latitude = WayPointActivity.getWayPointList().get(i).getLatitude();
-				longitude = WayPointActivity.getWayPointList().get(i).getLongitude();
-				anotherList.add(new WP(name,latitude,longitude));
-			}
-		}
-		String defaultName = "No selected waypoint";
-		anotherList.add(0,new WP(defaultName,"",""));
-			
-			return anotherList;
-	}
-
-	//setting up waypoint list to spinner1
-	private void setUpWP1List(final List<WP> wList1) {
-		wp1List = (Spinner) findViewById(R.id.spinner1);
+	//setting up way point list to spinner and textView when selecting way point 
+	private void setUpWPList(final List<WP> wList1,Spinner spin,final TextView text) {
+		//get spinner's id
+		final int spinID = spin.getId();
 		arrAd = new ArrayAdapter<String>(NewWayActivity.this,
 						android.R.layout.simple_spinner_item, 
 						WayPointActivity.toNameArrayList(wList1));
 		arrAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);      
-		wp1List.setAdapter(arrAd);
-		wp1List.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
+		spin.setAdapter(arrAd);
+		spin.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
 			//OnItemSelectedListener creation
 			public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) { 
       				try{
-                		switch(adapterView.getId()){
-                		case R.id.spinner1: 
-                			selectedWP1 = wList1.get(i);
-                			waypoint1Name = selectedWP1.getName();
-                			if(!waypoint1Name.equals("No selected waypoint"))
-	            				wp1NameText.setText(waypoint1Name);
+                		if(adapterView.getId()==spinID){
+                			String wpName = wList1.get(i).getName();
+                			if(!wpName.equals("No selected waypoint"))
+                				text.setText(wpName);
                 		}
       				}catch(Exception e){
 	                        e.printStackTrace();
@@ -312,38 +297,7 @@ public class NewWayActivity extends Activity {
 			} 
 
 	    });//end setOnSelected
-	}//end setUpWP1List
-	
-	//setting up waypoint list to spinner2 and also remove selected item
-	private void setUpWP2List(final List<WP> wList2) {
-		wp2List = (Spinner) findViewById(R.id.Spinner2);
-		arrAd = new ArrayAdapter<String>(NewWayActivity.this,
-						android.R.layout.simple_spinner_item, 
-						WayPointActivity.toNameArrayList(tempList));
-		arrAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);      
-		wp2List.setAdapter(arrAd);
-		wp2List.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
-			//OnItemSelectedListener creation
-			public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) { 
-	  				try{
-	            		switch(adapterView.getId()){
-	            		case R.id.Spinner2: 
-	            			selectedWP2 = wList2.get(i);
-	            			waypoint2Name = selectedWP2.getName();
-	            			if(!waypoint2Name.equals("No selected waypoint"))
-	            				wp2NameText.setText(waypoint2Name);
-	            		}
-	  				}catch(Exception e){
-	                        e.printStackTrace();
-	                }//end try-catch
-	        }//end onItemSelected
-	        
-			public void onNothingSelected(AdapterView<?> arg0) {
-				Toast.makeText(NewWayActivity.this,"You selected Empty",Toast.LENGTH_SHORT).show();
-			} 
-	
-	    });//end setOnSelected
-	}
+	}//end setUpWPList
 
 	/*
 	 * Create more TextView and spinner for adding a way more in the view 
@@ -368,7 +322,7 @@ public class NewWayActivity extends Activity {
 	    nameParam.addRule(RelativeLayout.BELOW,way_WP.getId());
 	    TextView wp_name = new TextView(this);
 	    wp_name.setLayoutParams(nameParam);
-	    wp_name.setText("Name");
+	    wp_name.setText("");
 	    wp_name.setTextSize(TypedValue.COMPLEX_UNIT_PX,wp1Text.getTextSize());
 	    wp_name.setGravity(Gravity.CENTER_HORIZONTAL);
 	    wp_name.setId(way_WP.getId()+88);
@@ -380,6 +334,9 @@ public class NewWayActivity extends Activity {
 	    Spinner newWPList = new Spinner(this);
 	    newWPList.setLayoutParams(listParam);
 	    newWPList.setId(wp_name.getId()+88);
+	    ArrayList<WP> wList = new ArrayList<WP>();
+	    //set up way list
+		setUpWPList(setUpTempWPList(wList), newWPList, wp_name);
 	    rl.addView(newWPList);
 	    
 	    //set up new id
