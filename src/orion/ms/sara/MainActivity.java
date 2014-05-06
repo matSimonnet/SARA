@@ -408,7 +408,7 @@ public class MainActivity extends Activity {
 		ActivatedWayTextView.setId(8453);
 		ActivatedWayTextView.setText(MyLocationListener.activatedWayName);
 		ActivatedWayTextView.setContentDescription(MyLocationListener.activatedWayName + "is activated.");
-		ActivatedWayTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textViewSpeed.getTextSize());
+		ActivatedWayTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textViewSpeed.getTextSize());
 		ActivatedWayTextView.setGravity(Gravity.CENTER_HORIZONTAL);
 		
 		// new textview's rules
@@ -432,7 +432,7 @@ public class MainActivity extends Activity {
         
         previousButton.setBackgroundResource(R.drawable.custom_btn_shakespeare);
         previousButton.setTextAppearance(this, R.style.btnStyleShakespeare);
-        previousButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, instantButton.getTextSize());
+        previousButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, instantButton.getTextSize());
         
         previousButton.setText("Previous");
         previousButton.setId(6743);
@@ -448,7 +448,7 @@ public class MainActivity extends Activity {
         NextParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         nextButton.setBackgroundResource(R.drawable.custom_btn_shakespeare);
         nextButton.setTextAppearance(this, R.style.btnStyleShakespeare);
-        nextButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, instantButton.getTextSize());
+        nextButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, instantButton.getTextSize());
         
         nextButton.setText("Next");
         nextButton.setId(3743);
