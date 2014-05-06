@@ -5,20 +5,16 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,7 +23,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Build;
 
 public class ModifyWayActivity extends Activity {
 	//components
@@ -52,7 +47,7 @@ public class ModifyWayActivity extends Activity {
 	private ArrayList<WP> tempList = new ArrayList<WP>();
 	private ArrayList<WP> anotherList = new ArrayList<WP>();
 	
-	//waypoint
+	//way point
 	private WP selectedWP1;
 	private WP selectedWP2;
 	private String name;
@@ -144,7 +139,7 @@ public class ModifyWayActivity extends Activity {
 					modWP1Name = selectedWP1.getName();
 					modWP2Name = selectedWP2.getName();		
 					
-					//check if the filled name or the waypoints are already recorded
+					//check if the filled name or the way points are already recorded
 					if(!isRecorded(modWayName, modWP1Name, modWP2Name)){
 						tts.speak("Please fill the new information or create a new way", tts.QUEUE_ADD, null);
 					}
@@ -160,18 +155,25 @@ public class ModifyWayActivity extends Activity {
 								tts.speak("You selected the same waypoints", tts.QUEUE_ADD, null);
 							}
 							else{
-								tts.speak("new way already saved", tts.QUEUE_ADD, null);
-								Toast.makeText(ModifyWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
-								//change back to the way activity
-								//pass the parameters
-								intentToWay.putExtra("modWayName",modWayName);//name
-								intentToWay.putExtra("modWP1Name", modWP1Name);//latitude
-								intentToWay.putExtra("modWP2Name", modWP2Name);//longitude
-								isAlsoActivateForMW = false;//change status
-		
-								//back to WayPoint activity and send some parameters to the activity
-								setResult(RESULT_OK, intentToWay);
-								finish();
+								Way temp = new Way(modWayName,WayActivity.findWPfromName(modWP1Name),WayActivity.findWPfromName(modWP2Name));
+								if(isAllow(temp)){
+									tts.speak("new way already saved", tts.QUEUE_ADD, null);
+									Toast.makeText(ModifyWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
+									//change back to the way activity
+									//pass the parameters
+									intentToWay.putExtra("modWayName",modWayName);//name
+									intentToWay.putExtra("modWP1Name", modWP1Name);//latitude
+									intentToWay.putExtra("modWP2Name", modWP2Name);//longitude
+									isAlsoActivateForMW = false;//change status
+			
+									//back to WayPoint activity and send some parameters to the activity
+									setResult(RESULT_OK, intentToWay);
+									finish();
+								}
+								else{
+									tts.speak("This way is already recorded", tts.QUEUE_ADD, null);
+									Toast.makeText(ModifyWayActivity.this,"This way is already recorded", Toast.LENGTH_SHORT);
+								}
 							}
 						}//end else in if-else
 					}//end else
@@ -193,7 +195,7 @@ public class ModifyWayActivity extends Activity {
 					modWP1Name = selectedWP1.getName();
 					modWP2Name = selectedWP2.getName();		
 					
-					//check if the filled name or the waypoints are already recorded
+					//check if the filled name or the way points are already recorded
 					if(!isRecorded(modWayName, modWP1Name, modWP2Name)){
 						tts.speak("Please fill the new information or create a new way", tts.QUEUE_ADD, null);
 					}
@@ -209,20 +211,25 @@ public class ModifyWayActivity extends Activity {
 								tts.speak("You selected the same waypoints", tts.QUEUE_ADD, null);
 							}
 							else{
-								//notification
-								tts.speak("new way already saved", tts.QUEUE_ADD, null);
-								Toast.makeText(ModifyWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
-		
-								//change back to the way activity
-								//pass the parameters
-								intentToWay.putExtra("modWayName",modWayName);//name
-								intentToWay.putExtra("modWP1Name", modWP1Name);//latitude
-								intentToWay.putExtra("modWP2Name", modWP2Name);//longitude
-								isAlsoActivateForMW = true;//change status
-		
-								//back to WayPoint activity and send some parameters to the activity
-								setResult(RESULT_OK, intentToWay);
-								finish();
+								Way temp = new Way(modWayName,WayActivity.findWPfromName(modWP1Name),WayActivity.findWPfromName(modWP2Name));
+								if(isAllow(temp)){
+									tts.speak("new way already saved", tts.QUEUE_ADD, null);
+									Toast.makeText(ModifyWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
+									//change back to the way activity
+									//pass the parameters
+									intentToWay.putExtra("modWayName",modWayName);//name
+									intentToWay.putExtra("modWP1Name", modWP1Name);//latitude
+									intentToWay.putExtra("modWP2Name", modWP2Name);//longitude
+									isAlsoActivateForMW = true;//change status
+			
+									//back to WayPoint activity and send some parameters to the activity
+									setResult(RESULT_OK, intentToWay);
+									finish();
+								}
+								else{
+									tts.speak("This way is already recorded", tts.QUEUE_ADD, null);
+									Toast.makeText(ModifyWayActivity.this,"This way is already recorded", Toast.LENGTH_SHORT);
+								}
 							}
 						}//end else in if-else
 					}//end else
@@ -266,7 +273,7 @@ public class ModifyWayActivity extends Activity {
 			return anotherList;
 		}
 
-	//setting up waypoint list to spinner1
+	//setting up way point list to spinner1
 	private void setUpWP1List(final List<WP> wList1, String wp1) {
 		wp1List = (Spinner) findViewById(R.id.spinner1);
 		//set top of the list with old WP1 name
@@ -274,7 +281,7 @@ public class ModifyWayActivity extends Activity {
 		List<WP> list1 = null;
 		list1 = wList1;
 		if(!wp1.equals("No selected way")){
-        	//get the selected waypoint and add it on the top of the list
+        	//get the selected way point and add it on the top of the list
         	for(int i = 0;i<list1.size();i++){
         		if(wList1.get(i).getName().equals(wp1)){
         			tempWP = list1.remove(i);
@@ -360,12 +367,12 @@ public class ModifyWayActivity extends Activity {
 	}
 
 	//to check if the filled name is already recorded
-	public boolean isRecorded(String wayName, String w1name, String w2name){
+	private boolean isRecorded(String wayName, String w1name, String w2name){
 		List<Way> wayList = WayActivity.getWayList();
 		WP tempwp1 = WayActivity.findWPfromName(w1name);
 		WP tempwp2 = WayActivity.findWPfromName(w2name);
 
-		//check same name or waypoints
+		//check same name or way points
 		for(int i = 1;i<wayList.size();i++){
 			if(wayList.get(i).getName().equalsIgnoreCase(wayName) ||
 				(wayList.get(i).getFirstWP().equals(tempwp1) && wayList.get(i).getWP(1).equals(tempwp2)) ){
@@ -375,21 +382,46 @@ public class ModifyWayActivity extends Activity {
 		return false;
 	}//end isRecored
 	
-	//set top of the list
-	private void setTopList(List<WP> wList,WP selectedName){
-		WP tempWP = null;
-		if(!selectedName.getName().equals("No selected way")){
-			//get the selected way and add it on the top of the list
-	    	for(int i = 0;i<wList.size();i++){
-	    		if(wList.get(i).getName().equals(selectedName)){
-	    			tempWP = wList.remove(i);
-	    			Log.i("selected item from sort", tempWP.getName());
-	    		}
-	    	}
-	    	wList.add(0,tempWP);
+	//check if this way allow to have same name with different way points
+	//or same way points with different name
+	private boolean isAllow(Way way){
+		if(usedName(way.getName())&&!usedWay(way)) return true;
+		else if(!usedName(way.getName())&&usedWay(way)) return true;
+		return false;
+	}//end isAllow
+	
+	//check if this way's name is already used
+	private boolean usedName(String wayName){
+		List<Way> wayList = WayActivity.getWayList();
+		for(int i = 0;i<wayList.size();i++){
+			if(wayList.get(i).getName().equals(wayName))
+				return true;
 		}
+		return false;
 	}
-		
+	
+	//check if these way points is already used
+	private boolean usedWay(Way way){
+		List<Way> wayList = WayActivity.getWayList();
+		for(int i = 1;i<wayList.size();i++){//ways in way list
+			Way w = wayList.get(i);
+			if(sameWay(w,way))	
+				return true;
+		}
+		return false;
+	}
+	
+	//check if the same way (order, way points and size)
+	private boolean sameWay(Way w1, Way w2){
+		if(w1.getSize()!=w2.getSize()) 
+			return false;
+		for(int i= 0;i<w1.getSize();i++){
+			if(!w1.getWP(i).getName().equals(w2.getWP(i).getName()))
+				return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -424,7 +456,7 @@ public class ModifyWayActivity extends Activity {
 				if((!modWP1Name.equals("No selected waypoint") || !modWP2Name.equals("No selected waypoint")) 
 						&& !modWP1Name.equals(modWP2Name)
 						&& (!modWayName.equals(oldWayName) || !modWP1Name.equals(oldWP1Name) ||!modWP2Name.equals(oldWP2Name) )
-						){
+						&& isAllow(new Way(modWayName,WayActivity.findWPfromName(modWP1Name),WayActivity.findWPfromName(modWP2Name)))){
 					final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 					dialog.setTitle("Some values change, do you want to save?");
 					dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
@@ -472,7 +504,7 @@ public class ModifyWayActivity extends Activity {
 					finish();
 					break;
 				}
-		}//end if selected
+		}//end if selected != null
 		else{
 			//don't save
 			//pass the parameters
