@@ -115,7 +115,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	@Override
 	public void onLocationChanged(Location loc) {
 		
-		if (isWayActivated) {
+		if (isWayActivated && activatedWay.size() != 0) {
 			Log.i("WPTreshold", WPTreshold + "");
 			Double activatedLa = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
 			Double activatedLo = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
