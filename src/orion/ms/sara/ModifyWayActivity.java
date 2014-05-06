@@ -256,6 +256,7 @@ public class ModifyWayActivity extends Activity {
 		return tempList;
 	}
 	
+	//change the default name
 	private ArrayList<WP> setUpAnotherWPList() {
 		for(int i=0;i<WayPointActivity.getWayPointList().size();i++){
 			String tmpname = WayPointActivity.getWayPointList().get(i).getName();
@@ -271,7 +272,7 @@ public class ModifyWayActivity extends Activity {
 		anotherList.add(0,new WP(defaultName,"",""));
 			
 			return anotherList;
-		}
+	}
 
 	//setting up way point list to spinner1
 	private void setUpWP1List(final List<WP> wList1, String wp1) {
