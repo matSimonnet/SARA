@@ -1,5 +1,6 @@
 package orion.ms.sara;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.mapsforge.core.GeoPoint;
@@ -9,6 +10,7 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -96,7 +98,6 @@ public class MyLocationListener extends Activity implements LocationListener {
 	
 	public static int WPTreshold = 1;
 
-
 	public static boolean isInMain = true;
 
 	public Resources resource = MainActivity.getContext().getResources();
@@ -105,12 +106,45 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public static boolean isStartedDisplay = false;
 	public static boolean isAutoDrawTrack = false;
 	
-	public static WP[] activatedWay;
+	public static ArrayList<WP> activatedWay = new ArrayList<WP>();
 	public static String activatedWayName;
-
+	public static boolean isWayActivated = false;
+	public static int activatedIndex = 0;
+	public static float[] distanceWaypoint = new float[1];
 
 	@Override
 	public void onLocationChanged(Location loc) {
+		if (isWayActivated) {
+			Log.i("WPTreshold", WPTreshold + "");
+			Double activatedLa = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
+			Double activatedLo = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
+
+			Location.distanceBetween(activatedLa, activatedLo, loc.getLatitude(), loc.getLongitude(), distanceWaypoint);
+			Log.i("WP distance", distanceWaypoint[0] + "");
+			Log.i("WP size", activatedWay.size() + "");
+
+			if(distanceWaypoint[0] <= WPTreshold) { // in meters
+				if(activatedIndex == activatedWay.size() - 1) {
+					MainActivity.tts.speak("You have reached the last way point " + activatedWayName + " is disactivated.", TextToSpeech.QUEUE_FLUSH, null);
+					WaypointName = "";
+	    	        WaypointLatitude = 999.0;
+	    	        WaypointLongitude = 999.0;
+	    	        isWayActivated = false;
+	    	        activatedIndex = 0;
+	    	        MainActivity.deleteView();
+	    	        MainActivity.saveActivatedWaypoint();
+				}
+				else {
+					MainActivity.tts.speak("You have reached " + WaypointName, TextToSpeech.QUEUE_FLUSH, null);
+					activatedIndex = activatedIndex + 1;
+					WaypointName = activatedWay.get(activatedIndex).getName();
+					WaypointLatitude = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
+    	        	WaypointLongitude = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
+    	        	MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_ADD, null);
+	    	        MainActivity.saveActivatedWaypoint();
+				}
+			}
+		}
 
 		this.isWaypointActivated();
 		currentLatitude = String.valueOf(loc.getLatitude());
@@ -127,6 +161,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		bearingUnit = getBearingUnit(loc);
 
 		DistanceToCurrentWaypoint = getDistance(loc);
+		Log.i("text distance", DistanceToCurrentWaypoint);
 		distanceUnit = getDistanceUnit();
 
 		accuracy = getAccuracy(loc);
