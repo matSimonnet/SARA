@@ -392,7 +392,7 @@ public class ModifyWayActivity extends Activity {
 	}//end isAllow
 	
 	//check if this way's name is already used
-	private boolean usedName(String wayName){
+	public static boolean usedName(String wayName){
 		List<Way> wayList = WayActivity.getWayList();
 		for(int i = 0;i<wayList.size();i++){
 			if(wayList.get(i).getName().equals(wayName))
@@ -402,7 +402,7 @@ public class ModifyWayActivity extends Activity {
 	}
 	
 	//check if these way points is already used
-	private boolean usedWay(Way way){
+	public static boolean usedWay(Way way){
 		List<Way> wayList = WayActivity.getWayList();
 		for(int i = 1;i<wayList.size();i++){//ways in way list
 			Way w = wayList.get(i);
@@ -413,7 +413,7 @@ public class ModifyWayActivity extends Activity {
 	}
 	
 	//check if the same way (order, way points and size)
-	private boolean sameWay(Way w1, Way w2){
+	public static boolean sameWay(Way w1, Way w2){
 		if(w1.getSize()!=w2.getSize()) 
 			return false;
 		for(int i= 0;i<w1.getSize();i++){
