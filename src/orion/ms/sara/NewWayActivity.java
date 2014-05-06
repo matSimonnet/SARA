@@ -56,13 +56,16 @@ public class NewWayActivity extends Activity {
 	private ArrayList<WP> tempList = new ArrayList<WP>();
 	private ArrayList<WP> anotherList = new ArrayList<WP>();
 	
+	//iterator id number of the last item in the scroll view
+	private int belowID = R.id.Spinner2;
+	
 	//way point
 	private WP selectedWP1 = null;
 	private WP selectedWP2 = null;
 	private String name;
 	private String latitude;
 	private String longitude;
-	private int lastWP_num = 2;
+	private int way_Size = 2;
 	
 	//array adapter
 	private ArrayAdapter<String> arrAd = null;
@@ -112,6 +115,7 @@ public class NewWayActivity extends Activity {
 		
 		//EditText
 		wayNameBox = (EditText) findViewById(R.id.editText1);
+		wayNameBox.setSelectAllOnFocus(true);
 		
 		//Intent creation
 		intentFromWay = getIntent();
@@ -122,10 +126,8 @@ public class NewWayActivity extends Activity {
 		wayNameBox.setText(wayName);
 		
 		//get way list
-		tempList = setUpTempWPList();
-		anotherList = setUpAnotherWPList();
-		setUpWP1List(tempList);
-		setUpWP2List(anotherList);		
+		setUpWP1List(setUpTempWPList(tempList));
+		setUpWP2List(setUpTempWPList(anotherList));		
 		
 		//add more button
 		addMoreButton = (Button) findViewById(R.id.button1);
@@ -133,7 +135,7 @@ public class NewWayActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				//add more Text and spinner for choosing a way
-				moreWay(lastWP_num);
+				moreWay(belowID+77);
 			}
 		});
 		
@@ -242,7 +244,7 @@ public class NewWayActivity extends Activity {
 
 
 	//change default item name
-	private ArrayList<WP> setUpTempWPList() {
+	private ArrayList<WP> setUpTempWPList(ArrayList<WP> tempList) {
 		for(int i=0;i<WayPointActivity.getWayPointList().size();i++){
 			String tmpname = WayPointActivity.getWayPointList().get(i).getName();
 			Log.i("tempName", tmpname);
@@ -346,41 +348,47 @@ public class NewWayActivity extends Activity {
 	/*
 	 * Create more TextView and spinner for adding a way more in the view 
 	 */
-	private void moreWay(int lastWP_num) {
+	private void moreWay(int id) {
 		//set up
-        rl = (RelativeLayout) findViewById(R.id.relativelayout);
+        rl = (RelativeLayout) findViewById(R.id.rela);
+        way_Size += 1;
         //textView iterating way point number
   		LayoutParams wpParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		wpParam.addRule(RelativeLayout.BELOW,R.id.Spinner2);
+		wpParam.addRule(RelativeLayout.BELOW,belowID);
 	    TextView way_WP = new TextView(this);
 	    way_WP.setLayoutParams(wpParam);
-	    way_WP.setText("Way point"+(lastWP_num+1)+" is");
+	    way_WP.setText("Way point"+way_Size+" is  ");
+	    way_WP.setTextSize(TypedValue.COMPLEX_UNIT_PX,wp1Text.getTextSize());
+	    way_WP.setGravity(Gravity.CENTER_HORIZONTAL);
+	    way_WP.setId(id);
 	    rl.addView(way_WP);
-		//rl.addView(createNewTextView(lastWP_num));
+	    
+	    //textView to show selected way point's name
+	    LayoutParams nameParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+	    nameParam.addRule(RelativeLayout.BELOW,way_WP.getId());
+	    TextView wp_name = new TextView(this);
+	    wp_name.setLayoutParams(nameParam);
+	    wp_name.setText("Name");
+	    wp_name.setTextSize(TypedValue.COMPLEX_UNIT_PX,wp1Text.getTextSize());
+	    wp_name.setGravity(Gravity.CENTER_HORIZONTAL);
+	    wp_name.setId(way_WP.getId()+88);
+	    rl.addView(wp_name);
+	    
+	    //spinner showing way points list
+	    LayoutParams listParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+	    listParam.addRule(RelativeLayout.BELOW,wp_name.getId());
+	    Spinner newWPList = new Spinner(this);
+	    newWPList.setLayoutParams(listParam);
+	    newWPList.setId(wp_name.getId()+88);
+	    rl.addView(newWPList);
+	    
+	    //set up new id
+	    Log.i("belowID BEFORE", ""+belowID);
+	    belowID = wp_name.getId();
+	    Log.i("belowID 	AFTER", ""+belowID);
 		//rl.addView(createNewSelectedName());
 	}
-	
-	/*
-	 * create textView to iterate way point number
-	 */
-	private TextView createNewTextView(int lastWP){
-		final LayoutParams lparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-	    final TextView way_WP = new TextView(this);
-	    way_WP.setLayoutParams(lparams);
-	    way_WP.setText("Way point"+(lastWP+1)+" is");
-	    return way_WP;
-	}
-	
-	/*
-	 * create textView to show selected way point's name
-	 */
-	private TextView createNewSelectedName(){
-		final LayoutParams lparams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-	    final TextView wp_name = new TextView(this);
-	    wp_name.setLayoutParams(lparams);
-	    return wp_name;
-	}
-	
+		
 	//to check if the filled name or the position (latitude and longitude) are already recorded
 	public boolean isRecorded(Way way){
 		if(ModifyWayActivity.usedWay(way)) return true;
