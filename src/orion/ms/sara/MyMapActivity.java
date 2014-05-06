@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.CornerPathEffect;
+import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
@@ -40,7 +41,7 @@ import org.mapsforge.core.GeoPoint;
 public class MyMapActivity extends MapActivity {
 
 	private static Context mContext;
-	private static MapView mapView;
+	public static MapView mapView;
 	private static MapController Controller;	
 
 	private Button DisplayTrackButton;
@@ -50,15 +51,19 @@ public class MyMapActivity extends MapActivity {
 	
 	private static MyItemizedOverlay itemizedOverlay;
 	private static ArrayWayOverlay wayOverlay;
+	private static ArrayWayOverlay wayLineOverlay;
+
 	private static MyItemizedOverlay pinOverlay;
 	
 	private static OverlayItem item;
 	private static OverlayWay way;
 	private static Paint wayPaint;
+	private static Paint wayLinePaint;
+
 
 	private LocationManager lm = null;
 	public static MyLocationListener ll = null;
-
+	
 	// url for downloading file
 	private String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map";
 
@@ -101,6 +106,7 @@ public class MyMapActivity extends MapActivity {
 		mapView.setBuiltInZoomControls(true);
 
 		setPaintStyle();
+		loadWayLine();
 		loadWaypoint();
 		loadPath();
 		loadHeading();
@@ -146,6 +152,31 @@ public class MyMapActivity extends MapActivity {
 
 		DisplayTrackButton.setOnClickListener(onclickListener);
 		AutoCenterButton.setOnClickListener(onclickListener);
+	}
+	public void loadWayLine() {
+		if(MyLocationListener.isWayActivated) {
+			// remove the last way
+			if (wayLineOverlay != null) {
+				mapView.getOverlays().remove(wayLineOverlay);
+				wayLineOverlay.clear();
+			}
+			// new way management and set paint style
+			wayLineOverlay = new ArrayWayOverlay(wayLinePaint, wayLinePaint); 
+			// Create geopoint
+			int size = MyLocationListener.activatedWay.size();
+			GeoPoint[] waylist = new GeoPoint[size];
+			for(int i = 0; i < size; i++) {
+				Double la = Double.parseDouble(MyLocationListener.activatedWay.get(i).getLatitude());
+				Double lo = Double.parseDouble(MyLocationListener.activatedWay.get(i).getLongitude());
+				waylist[i] = new GeoPoint(la, lo);
+			}
+			// add GeoPoint to way overlay
+			OverlayWay way = new OverlayWay(new GeoPoint[][] { waylist });
+			
+			// add way to map view
+			wayLineOverlay.addWay(way);
+			mapView.getOverlays().add(wayLineOverlay);
+		}
 	}
 	public static void loadWaypoint() {
 		int size = WayPointActivity.wayPointList.size();
@@ -207,6 +238,7 @@ public class MyMapActivity extends MapActivity {
 		// remove the last way
 		if (wayOverlay != null) {
 			mapView.getOverlays().remove(wayOverlay);
+			wayOverlay.clear();
 		}
 		// new way management and set paint style
 		wayOverlay = new ArrayWayOverlay(wayPaint, wayPaint); 
@@ -229,6 +261,7 @@ public class MyMapActivity extends MapActivity {
 		// remove the last arrow
 		if (itemizedOverlay != null) {
 			mapView.getOverlays().remove(itemizedOverlay);
+			itemizedOverlay.clear();
 		}
 		// add marker to the current location with rotated arrow
 		if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
@@ -283,13 +316,26 @@ public class MyMapActivity extends MapActivity {
 		wayPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		wayPaint.setStyle(Paint.Style.STROKE);
 		wayPaint.setColor(getResources().getColor(R.color.ocean));
-		wayPaint.setStrokeWidth(8);
+		wayPaint.setStrokeWidth(10);
 	    wayPaint.setDither(true);
 		wayPaint.setAlpha(120);
 	    wayPaint.setStrokeJoin(Paint.Join.ROUND);
 	    wayPaint.setStrokeCap(Paint.Cap.ROUND);
 		wayPaint.setPathEffect(new CornerPathEffect(10));
 	    wayPaint.setAntiAlias(true);
+	    
+	    wayLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	    wayLinePaint.setStyle(Paint.Style.STROKE);
+	    wayLinePaint.setColor(getResources().getColor(R.color.maroon));
+	    wayLinePaint.setStrokeWidth(10);
+	    wayLinePaint.setDither(true);
+	    wayLinePaint.setAlpha(500);
+	    wayLinePaint.setStrokeJoin(Paint.Join.ROUND);
+	    wayLinePaint.setStrokeCap(Paint.Cap.ROUND);
+	    wayLinePaint.setPathEffect(new CornerPathEffect(10));
+	    wayLinePaint.setAntiAlias(true);
+	    wayLinePaint.setPathEffect(new DashPathEffect(new float[] {10,20}, 0)); 	    
+	    
 	}
 
 	// action bar
