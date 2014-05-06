@@ -50,6 +50,7 @@ public class MyMapActivity extends MapActivity {
 	
 	private static MyItemizedOverlay itemizedOverlay;
 	private static ArrayWayOverlay wayOverlay;
+	private static MyItemizedOverlay pinOverlay;
 	
 	private static OverlayItem item;
 	private static OverlayWay way;
@@ -146,14 +147,20 @@ public class MyMapActivity extends MapActivity {
 		DisplayTrackButton.setOnClickListener(onclickListener);
 		AutoCenterButton.setOnClickListener(onclickListener);
 	}
-	private void loadWaypoint() {
+	public static void loadWaypoint() {
 		int size = WayPointActivity.wayPointList.size();
 		GeoPoint[] waypoint = new GeoPoint[size];
 		double latitude;
 		double longitude;
 		String name;
 		
-		MyItemizedOverlay itemizedOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.inactivewp), true, getContext());
+		if(pinOverlay != null) {
+			mapView.getOverlays().remove(pinOverlay);
+			pinOverlay.clear();
+			Log.i("clear pin", "cleared");
+		}		
+		
+		pinOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.inactivewp), true, getContext());
 		OverlayItem item;
 		
 		for(int i = size-1; i >= 0; i--) {
@@ -165,14 +172,29 @@ public class MyMapActivity extends MapActivity {
 				waypoint[i] = new GeoPoint(latitude, longitude);
 				item = new OverlayItem(waypoint[i], name, latitude + " " + longitude);
 				
-				if(latitude == MyLocationListener.WaypointLatitude && longitude == MyLocationListener.WaypointLongitude) {
-					item.setMarker(ItemizedOverlay.boundCenterBottom(getResources().getDrawable(R.drawable.activewp)));
-					Log.i("activated", name);
+				if(MyLocationListener.isWayActivated && isInActivatedWay(name)) {
+					item.setMarker(ItemizedOverlay.boundCenterBottom(mContext.getResources().getDrawable(R.drawable.activateway)));
+					Log.i("activated way", name);
 				}
-				itemizedOverlay.addItem(item);
+				
+				if(latitude == MyLocationListener.WaypointLatitude && longitude == MyLocationListener.WaypointLongitude) {
+					item.setMarker(ItemizedOverlay.boundCenterBottom(mContext.getResources().getDrawable(R.drawable.activewp)));
+					Log.i("activated waypoint", name);
+				}
+				pinOverlay.addItem(item);
 			}
 		}
-		mapView.getOverlays().add(itemizedOverlay);	
+		mapView.getOverlays().add(pinOverlay);	
+	}
+	
+	private static boolean isInActivatedWay(String name) {
+		int size = MyLocationListener.activatedWay.size();
+		for(int i = 0; i < size; i++) {
+			if(MyLocationListener.activatedWay.get(i).getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private void loadPath() {
@@ -204,12 +226,10 @@ public class MyMapActivity extends MapActivity {
 	}
 
 	public static void drawHeading(int heading) {
-
 		// remove the last arrow
 		if (itemizedOverlay != null) {
 			mapView.getOverlays().remove(itemizedOverlay);
 		}
-		
 		// add marker to the current location with rotated arrow
 		if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
 			double latitude = Double.valueOf(MyLocationListener.currentLatitude);
