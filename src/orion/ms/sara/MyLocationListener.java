@@ -114,6 +114,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location loc) {
+		
 		if (isWayActivated) {
 			Log.i("WPTreshold", WPTreshold + "");
 			Double activatedLa = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
@@ -121,7 +122,6 @@ public class MyLocationListener extends Activity implements LocationListener {
 
 			Location.distanceBetween(activatedLa, activatedLo, loc.getLatitude(), loc.getLongitude(), distanceWaypoint);
 			Log.i("WP distance", distanceWaypoint[0] + "");
-			Log.i("WP size", activatedWay.size() + "");
 
 			if(distanceWaypoint[0] <= WPTreshold) { // in meters
 				if(activatedIndex == activatedWay.size() - 1) {
@@ -133,6 +133,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	    	        activatedIndex = 0;
 	    	        MainActivity.deleteView();
 	    	        MainActivity.saveActivatedWaypoint();
+	    	        updatePin();
 				}
 				else {
 					MainActivity.tts.speak("You have reached " + WaypointName, TextToSpeech.QUEUE_FLUSH, null);
@@ -142,6 +143,7 @@ public class MyLocationListener extends Activity implements LocationListener {
     	        	WaypointLongitude = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
     	        	MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_ADD, null);
 	    	        MainActivity.saveActivatedWaypoint();
+	    	        updatePin();
 				}
 			}
 		}
@@ -462,6 +464,12 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public void centerLocation() {
 		if(isAutoDrawTrack) {
 			MyMapActivity.centerLocation();
+		}
+	}
+	
+	public void updatePin() {
+		if(isAutoDrawTrack) {
+			MyMapActivity.loadWaypoint();
 		}
 	}
 
