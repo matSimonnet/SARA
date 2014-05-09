@@ -32,7 +32,7 @@ public class WaypointMapActivity extends MapActivity {
 	
 	private static Context mContext;
     private MyMapView mapView;
-	private String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map";
+	private String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map"; // for download .map file
 	private boolean isModify = false;
 	
 	private double ModifyLatitude = 999;
@@ -42,27 +42,29 @@ public class WaypointMapActivity extends MapActivity {
 	private double mapLatitude = 999;
 	private double mapLongitude = 999;
 	
-	private MyItemizedOverlay itemizedOverlay;
+	private MyItemizedOverlay itemizedOverlay; // is an array for managing an item
 	
 	private Button saveButton;
-	private OverlayItem itemModify;
+	private OverlayItem itemModify; // 
 	private OverlayItem itemCreate;
 	
-	private boolean isChanged = false;
-
+	private boolean isChanged = false; // if end user have long pressed on screen, isChange is true
  
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
  
         setContentView(R.layout.activity_waypoint_map);
-		mContext = this;
+		mContext = this; // set context
+		// create item manager with default drawable 
 		itemizedOverlay = new MyItemizedOverlay(mContext.getResources().getDrawable(R.drawable.inactivewp), true, getContext());
         
+		// get map view and save button from XML file
 		mapView = (MyMapView) findViewById(R.id.mapview);
         this.saveButton = (Button) findViewById(R.id.savebutton);
         this.saveButton.setContentDescription(getResources().getString(R.string.usethislocation));
         
+        // create listener for all buttons
 	    View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -83,10 +85,10 @@ public class WaypointMapActivity extends MapActivity {
 			}
 	    	
 	    };
-	    this.saveButton.setOnClickListener(onclickListener);
+	    this.saveButton.setOnClickListener(onclickListener); // add listener to button
 
-		setMapFile();
-		loadFlag();
+		setMapFile(); // set map file in the directory
+		loadFlag(); // if start activity from ModifyWaypointActivity, return true
 		loadWaypoint();
 
         mapView.setOnLongpressListener(new MyMapView.OnLongpressListener() {
@@ -103,7 +105,9 @@ public class WaypointMapActivity extends MapActivity {
         });
     }
     
+    // if end user have long pressed on screen, add that waypoint with blue pin
     private void pinWaypoint(double la, double lo) {
+    	// remove the last item before adding the new one
     	if(isModify) {
     		if(itemModify != null) {
     			itemizedOverlay.removeItem(itemModify);
