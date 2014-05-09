@@ -189,17 +189,6 @@ public class MainActivity extends Activity {
 			        tts.speak(MyLocationListener.activatedWayName + " is activated", TextToSpeech.QUEUE_FLUSH, null);
         			_initView();
         		}
-        		else {
-			        tts.speak(MyLocationListener.activatedWayName + " is disactivated", TextToSpeech.QUEUE_FLUSH, null);
-        			initView();
-           	        MyLocationListener.WaypointName = "";
-        	        MyLocationListener.WaypointLatitude = 999;
-        	        MyLocationListener.WaypointLongitude = 999;
-           			MyLocationListener.isWayActivated = false;
-           			saveActivatedWaypoint();
-
-
-        		}
         	break;
         	}// end of case
         	
@@ -212,7 +201,6 @@ public class MainActivity extends Activity {
         	        MyLocationListener.WaypointLongitude = data.getDoubleExtra("actLongitude", 999);
         			this.actName = data.getStringExtra("actName");
         			Log.i("receiveing name", actName);
-        			
         			saveActivatedWaypoint();
 				    
         			Log.i("Waypoint Latitude", MyLocationListener.WaypointLatitude+"");

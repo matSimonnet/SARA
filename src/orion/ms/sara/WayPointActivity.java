@@ -550,10 +550,6 @@ public class WayPointActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.navigation_setting:
 			//back to WayPoint activity and send some parameters to the activity
-			intentToMain.putExtra("actName", "Please selected a waypoint");//name
-			intentToMain.putExtra("actLatitude", 999);//latitude
-			intentToMain.putExtra("actLongitude", 999);//longitude
-			setResult(RESULT_OK, intentToMain);
 			finish();
 			break;
 		default:
