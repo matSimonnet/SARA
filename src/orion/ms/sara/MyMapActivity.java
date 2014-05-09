@@ -160,29 +160,31 @@ public class MyMapActivity extends MapActivity {
 		DisplayTrackButton.setOnClickListener(onclickListener);
 		AutoCenterButton.setOnClickListener(onclickListener);
 	}
-	public void loadWayLine() {
+	public static void loadWayLine() {
 		if(MyLocationListener.isWayActivated) {
 			// remove the last way
 			if (wayLineOverlay != null) {
 				mapView.getOverlays().remove(wayLineOverlay);
 				wayLineOverlay.clear();
 			}
-			// new way management and set paint style
-			wayLineOverlay = new ArrayWayOverlay(wayLinePaint, wayLinePaint); 
-			// Create geopoint
-			int size = MyLocationListener.activatedWay.size();
-			GeoPoint[] waylist = new GeoPoint[size];
-			for(int i = 0; i < size; i++) {
-				Double la = Double.parseDouble(MyLocationListener.activatedWay.get(i).getLatitude());
-				Double lo = Double.parseDouble(MyLocationListener.activatedWay.get(i).getLongitude());
-				waylist[i] = new GeoPoint(la, lo);
-			}
-			// add GeoPoint to way overlay
-			OverlayWay way = new OverlayWay(new GeoPoint[][] { waylist });
+			if(MyLocationListener.WaypointName != "") {
+				// new way management and set paint style
+				wayLineOverlay = new ArrayWayOverlay(wayLinePaint, wayLinePaint); 
+				// Create geopoint
+				int size = MyLocationListener.activatedWay.size();
+				GeoPoint[] waylist = new GeoPoint[size];
+				for(int i = 0; i < size; i++) {
+					Double la = Double.parseDouble(MyLocationListener.activatedWay.get(i).getLatitude());
+					Double lo = Double.parseDouble(MyLocationListener.activatedWay.get(i).getLongitude());
+					waylist[i] = new GeoPoint(la, lo);
+				}
+				// add GeoPoint to way overlay
+				OverlayWay way = new OverlayWay(new GeoPoint[][] { waylist });
 			
-			// add way to map view
-			wayLineOverlay.addWay(way);
-			mapView.getOverlays().add(wayLineOverlay);
+				// add way to map view
+				wayLineOverlay.addWay(way);
+				mapView.getOverlays().add(wayLineOverlay);
+			}
 		}
 	}
 	public static void loadWaypoint() {
@@ -220,6 +222,10 @@ public class MyMapActivity extends MapActivity {
 					drawRadius(latitude, longitude);
 					Log.i("activated waypoint", name);
 				}
+				if(MyLocationListener.WaypointLatitude == 999 && MyLocationListener.WaypointLongitude == 999) {
+					drawRadius(latitude, longitude);
+					loadWayLine();
+				}
 				pinOverlay.addItem(item);
 			}
 		}
@@ -230,11 +236,13 @@ public class MyMapActivity extends MapActivity {
 			mapView.getOverlays().remove(arrayRadius);
 			arrayRadius.clear();
 		}
-		GeoPoint tmp = new GeoPoint(latitude,longitude);
-		OverlayCircle Radius = new OverlayCircle(tmp , MyLocationListener.WPTreshold, FillCirclePaint, OutlineCirclePaint, "Waypoint Treshold");
-		arrayRadius = new ArrayCircleOverlay(FillCirclePaint, OutlineCirclePaint);
-		arrayRadius.addCircle(Radius);
-		mapView.getOverlays().add(arrayRadius);	
+		if(MyLocationListener.WaypointName != "") { 
+			GeoPoint tmp = new GeoPoint(latitude,longitude);
+			OverlayCircle Radius = new OverlayCircle(tmp , MyLocationListener.WPTreshold, FillCirclePaint, OutlineCirclePaint, "Waypoint Treshold");
+			arrayRadius = new ArrayCircleOverlay(FillCirclePaint, OutlineCirclePaint);
+			arrayRadius.addCircle(Radius);
+			mapView.getOverlays().add(arrayRadius);	
+		}
 	}
 	
 	private static boolean isInActivatedWay(String name) {
@@ -346,7 +354,7 @@ public class MyMapActivity extends MapActivity {
 	    wayLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	    wayLinePaint.setStyle(Paint.Style.STROKE);
 	    wayLinePaint.setColor(getResources().getColor(R.color.maroon));
-	    wayLinePaint.setStrokeWidth(10);
+	    wayLinePaint.setStrokeWidth(8);
 	    wayLinePaint.setDither(true);
 	    wayLinePaint.setAlpha(500);
 	    wayLinePaint.setStrokeJoin(Paint.Join.ROUND);

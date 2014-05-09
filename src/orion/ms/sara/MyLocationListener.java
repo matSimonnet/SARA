@@ -134,6 +134,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	    	        MainActivity.deleteView();
 	    	        MainActivity.saveActivatedWaypoint();
 	    	        updatePin();
+	    	        saveActivatedWaypoint();
 				}
 				else {
 					MainActivity.tts.speak("You have reached " + WaypointName, TextToSpeech.QUEUE_FLUSH, null);
@@ -144,7 +145,20 @@ public class MyLocationListener extends Activity implements LocationListener {
     	        	MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_ADD, null);
 	    	        MainActivity.saveActivatedWaypoint();
 	    	        updatePin();
+	    	        saveActivatedWaypoint();
 				}
+			}
+		}
+		if (!isWayActivated && isWaypointActivated) {
+			Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distanceWaypoint);
+			if(distanceWaypoint[0] <= WPTreshold) { // in meters
+				MainActivity.tts.speak("You have reached " + WaypointName + " " + WaypointName + " is disactivated", TextToSpeech.QUEUE_FLUSH, null);
+				WaypointName = "";
+				WaypointLatitude = 999;
+				WaypointLongitude = 999;
+    	        updatePin();
+       			saveActivatedWaypoint();
+				Log.i("waypoint", "disactivate");
 			}
 		}
 
@@ -467,10 +481,16 @@ public class MyLocationListener extends Activity implements LocationListener {
 		}
 	}
 	
-	public void updatePin() {
+	public static void updatePin() {
 		if(isAutoDrawTrack) {
 			MyMapActivity.loadWaypoint();
 		}
+	}
+	public void saveActivatedWaypoint() {
+	    MainActivity.editor.putString("WaypointLatitude", String.valueOf(MyLocationListener.WaypointLatitude));
+	    MainActivity.editor.putString("WaypointLongitude", String.valueOf(MyLocationListener.WaypointLongitude));
+	    MainActivity.editor.putString("WaypointName", MyLocationListener.WaypointName);
+	    MainActivity.editor.commit();
 	}
 
 
