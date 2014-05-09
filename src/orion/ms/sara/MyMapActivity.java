@@ -63,11 +63,7 @@ public class MyMapActivity extends MapActivity {
 	private static Paint wayPaint;
 	private static Paint wayLinePaint;
 	private static Paint OutlineCirclePaint;
-	private static Paint FillCirclePaint;
-
-	
-
-
+	private static Paint FillCirclePaint;	
 	private LocationManager lm = null;
 	public static MyLocationListener ll = null;
 	
@@ -111,6 +107,7 @@ public class MyMapActivity extends MapActivity {
 		mapView = (MapView) findViewById(R.id.mapView);
 		mapView.setClickable(true);
 		mapView.setBuiltInZoomControls(true);
+		mapView.getMapScaleBar().setShowMapScaleBar(true);
 
 		setPaintStyle();
 		loadWayLine();
