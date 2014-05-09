@@ -28,6 +28,7 @@
     <string name="km">km</string>        
     <string name="metres">metres</string> 
     
+    <!-- waypoint -->
     <string name="title_activity_way_point">Waypoint Activity</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_new_way_point">New waypoint Activity</string>
@@ -37,9 +38,11 @@
     <string name="longitudeText">Waypoint longitude is</string>
     <string name="saveText">Save</string>
     <string name="choosingTitle">You selected :</string>
+    
+    <!-- modify waypoint -->
     <string name="title_activity_modify">Modify Waypoint Activity</string>
     <string name="modifyButton">Save modifying waypoint</string>
-    <string name="current_checkedBox">Use current position</string>
+    <string name="wp_treshold">Waypoint treshold is</string>
     
     <string name="autobearing">auto bearing</string>
     <string name="autodistance">auto distance</string>
@@ -129,7 +132,7 @@
     <string name="speech_rate_setting">Speech Rate Setting</string>
     
     <!-- speed unit -->
-     <string name="knots">knots</string>
+    <string name="knots">knots</string>
     <string name="km_per_hour">kilometers per hour</string>
     <string name="speedUnitIntro">Choose the speed unit</string>
     

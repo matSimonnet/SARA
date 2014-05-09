@@ -31,16 +31,19 @@ public class ModifyWPActivity extends Activity {
 	private String modName = "";
 	private String modLatitude = "";
 	private String modLongitude = "";
+	private String modTres = "";
 	
 	//TextView
 	private TextView modNameText =null;
 	private TextView modLatitudeText =null;
 	private TextView modLongitudeText =null;
+	private TextView modTresholdText =null;
 	
 	//EditText
 	private EditText nameBox = null;
 	private EditText latitudeBox = null;
 	private EditText longitudeBox = null;
+	private EditText tresholdBox = null;
 	
 	//button
 	private Button saveButton = null;
@@ -55,6 +58,7 @@ public class ModifyWPActivity extends Activity {
 	private String oldName = "";
 	private String oldLatitude = "";
 	private String oldLongitude = "";
+	private String oldTres = "";
 	
 	//current location
 	private String currentLatitude = "";
@@ -93,11 +97,14 @@ public class ModifyWPActivity extends Activity {
 		modLatitudeText.setContentDescription("mod waypoint latitude is");
 		modLongitudeText = (TextView) findViewById(R.id.textView3);
 		modLongitudeText.setContentDescription("mod waypoint longitude is");
+		modTresholdText = (TextView) findViewById(R.id.textView4);
+		modTresholdText.setContentDescription("mod waypoint treshold is");
 		
 		//EditText
 		nameBox = (EditText) findViewById(R.id.editText1);
 		latitudeBox = (EditText) findViewById(R.id.editText2);
 		longitudeBox = (EditText) findViewById(R.id.editText3);
+		tresholdBox = (EditText) findViewById(R.id.editText4);
 		
 		//intent creation
 		intentFromWayPointAct = getIntent();
@@ -107,11 +114,13 @@ public class ModifyWPActivity extends Activity {
 		oldName = intentFromWayPointAct.getStringExtra("modName");
 		oldLatitude = intentFromWayPointAct.getStringExtra("modLatitude");
 		oldLongitude = intentFromWayPointAct.getStringExtra("modLongitude");
+		oldTres = intentFromWayPointAct.getStringExtra("modTres");
 		
 		//set default modifying name and position as the old ones
 		modName = oldName;
 		modLatitude = oldLatitude;
 		modLongitude = oldLongitude;
+		modTres = oldTres;
 		
 		//nameBox
 		//set default name
@@ -123,6 +132,9 @@ public class ModifyWPActivity extends Activity {
 		//latitudeBox
 		longitudeBox.setText(oldLongitude);
 		longitudeBox.setSelectAllOnFocus(true);
+		//tresholdBox
+		tresholdBox.setText(oldTres);
+		tresholdBox.setSelectAllOnFocus(true);
 		
 		//button
 		//current location button
@@ -197,6 +209,7 @@ public class ModifyWPActivity extends Activity {
 					modName = nameBox.getText().toString();
 					modLatitude = latitudeBox.getText().toString();
 					modLongitude = longitudeBox.getText().toString();
+					modTres = tresholdBox.getText().toString();
 					
 					//check if the filled name or the position (latitude and longitude) are already recorded
 					if(!isRecorded(modName, modLatitude, modLongitude)){
@@ -214,6 +227,7 @@ public class ModifyWPActivity extends Activity {
 						intentToWayPoint.putExtra("modName",modName);//name
 						intentToWayPoint.putExtra("modLatitude", modLatitude);//latitude
 						intentToWayPoint.putExtra("modLongitude", modLongitude);//longitude
+						intentToWayPoint.putExtra("modTres", modTres);//treshold
 						isAlsoActivateForMWP = false;//change status
 						
 						//back to WayPoint activity and send some parameters to the activity
@@ -239,6 +253,7 @@ public class ModifyWPActivity extends Activity {
 					modName = nameBox.getText().toString();
 					modLatitude = latitudeBox.getText().toString();
 					modLongitude = longitudeBox.getText().toString();
+					modTres = tresholdBox.getText().toString();
 					
 					//check if the filled name or the position (latitude and longitude) are already recorded
 					if(!isRecorded(modName, modLatitude, modLongitude)){
@@ -256,6 +271,7 @@ public class ModifyWPActivity extends Activity {
 						intentToWayPoint.putExtra("modName",modName);//name
 						intentToWayPoint.putExtra("modLatitude", modLatitude);//latitude
 						intentToWayPoint.putExtra("modLongitude", modLongitude);//longitude
+						intentToWayPoint.putExtra("modTres", modTres);//treshold
 						isAlsoActivateForMWP = true;//status change
 						
 						setResult(RESULT_OK, intentToWayPoint);
@@ -324,6 +340,7 @@ public class ModifyWPActivity extends Activity {
 			modName = nameBox.getText().toString();
 			modLatitude = latitudeBox.getText().toString();
 			modLongitude = longitudeBox.getText().toString();
+			modTres = tresholdBox.getText().toString();
 			
 			//check if some values change without saving
 			if(!oldName.equals(modName) || !oldLatitude.equals(modLatitude) || !oldLongitude.equals(modLongitude)){
@@ -336,6 +353,7 @@ public class ModifyWPActivity extends Activity {
 						intentToWayPoint.putExtra("modName",modName);//name
 						intentToWayPoint.putExtra("modLatitude", modLatitude);//latitude
 						intentToWayPoint.putExtra("modLongitude", modLongitude);//longitude
+						intentToWayPoint.putExtra("modTres", modTres);//treshold
 						isAlsoActivateForMWP = true;//status change
 						
 						setResult(RESULT_OK, intentToWayPoint);
@@ -351,6 +369,7 @@ public class ModifyWPActivity extends Activity {
 						intentToWayPoint.putExtra("modName",oldName);//name
 						intentToWayPoint.putExtra("modLatitude", oldLatitude);//latitude
 						intentToWayPoint.putExtra("modLongitude", oldLongitude);//longitude
+						intentToWayPoint.putExtra("modTres", modTres);//treshold
 						isAlsoActivateForMWP = false;//change status 
 						setResult(RESULT_OK, intentToWayPoint);
 						finish();
@@ -363,6 +382,7 @@ public class ModifyWPActivity extends Activity {
 				intentToWayPoint.putExtra("modName","");//name
 				intentToWayPoint.putExtra("modLatitude", "");//latitude
 				intentToWayPoint.putExtra("modLongitude", "");//longitude
+				intentToWayPoint.putExtra("modTres", "");//treshold
 				isAlsoActivateForMWP = false;//change status 
 				setResult(RESULT_OK, intentToWayPoint);
 				finish();

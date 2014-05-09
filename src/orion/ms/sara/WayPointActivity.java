@@ -47,6 +47,7 @@ public class WayPointActivity extends Activity {
 		private String modName = "";
 		private String modLatitude = "";
 		private String modLongitude = "";
+		private String modTres = "";
 		
 		//Generating a number for a new waypoint's default name
 		public static int lastNumberForWaypoint = 0;
@@ -195,10 +196,11 @@ public class WayPointActivity extends Activity {
 											tts.speak("Modify", tts.QUEUE_FLUSH, null);
 											
 											//change to the "Modify" activity
-											//passing modifying waypoint point name and position
+											//passing modifying way point point name and position
 											intentToModifyWP.putExtra("modName", choosingWaypoint.getName());//name
 											intentToModifyWP.putExtra("modLatitude", choosingWaypoint.getLatitude());//latitude
 											intentToModifyWP.putExtra("modLongitude", choosingWaypoint.getLongitude());//longitude
+											intentToModifyWP.putExtra("modTres", choosingWaypoint.getTreshold()+"");//treshold
 											intentToModifyWP.putExtra("index", selectedItem);//longitude
 
 											//start ModifyWP activity
@@ -307,6 +309,68 @@ public class WayPointActivity extends Activity {
 			tts.shutdown();
 		}
 		
+	//Intent to handle receive parameters from NewWayPoint and Modify
+		@Override
+		protected void onActivityResult(int requestCode, int resultCode, Intent intentFromAnother){
+		    super.onActivityResult(requestCode, resultCode, intentFromAnother);
+			
+			//get parameters from the NewWayPoint activity when create a new waypoint point
+		    if(requestCode == NEW_WAYPOINT && resultCode == RESULT_OK){
+		    	newName = intentFromAnother.getStringExtra("newName");
+				newLatitude = intentFromAnother.getStringExtra("newLatitude");
+				newLongitude = intentFromAnother.getStringExtra("newLongitude");
+				//not from pressing menu item
+				if(!newName.equals("") && !newLatitude.equals("") && !newLongitude.equals(""))
+					addNewWPtoList(wayPointList, newName, newLatitude, newLongitude);
+				//pressing save and activate
+				if(NewWayPointActivity.isAlsoActivateForNWP){
+					//change back to the main activity
+					//passing activate waypoint point name and position
+					intentToMain.putExtra("actName", newName);//name
+					intentToMain.putExtra("actLatitude", Double.parseDouble(newLatitude));//latitude
+					intentToMain.putExtra("actLongitude", Double.parseDouble(newLongitude));//longitude
+					
+					Log.i("selected", newName);
+					//back to main activity and send some parameters to the activity
+					setResult(RESULT_OK, intentToMain);
+					
+					finish();
+				}//end if for pressing save and activate
+		    }
+		    
+		  //get parameters from the Modify activity and replace the old information
+		    if(requestCode == MODIFY_WAYPOINT && resultCode == RESULT_OK){
+		    	modName = intentFromAnother.getStringExtra("modName");
+				modLatitude = intentFromAnother.getStringExtra("modLatitude");
+				modLongitude = intentFromAnother.getStringExtra("modLongitude");
+				modTres = intentFromAnother.getStringExtra("modTres");
+				//not pressing from menu item
+				if(!modName.equals("") && !modLatitude.equals("") && !modLongitude.equals("") && !modTres.equals("")){
+					//replace the old information with the modifying information
+		    		choosingWaypoint.setName(modName);
+		    		choosingWaypoint.setLatitude(modLatitude);
+		    		choosingWaypoint.setLongitude(modLongitude);
+		    		choosingWaypoint.setTreshold(Integer.parseInt(modTres));
+		    		sortingWaypointList(wayPointList);
+				}
+				//pressing save and activate
+				if(ModifyWPActivity.isAlsoActivateForMWP){
+					//change back to the main activity
+					//passing activate waypoint point name and position
+					intentToMain.putExtra("actName", modName);//name
+					intentToMain.putExtra("actLatitude", Double.parseDouble(modLatitude));//latitude
+					intentToMain.putExtra("actLongitude", Double.parseDouble(modLongitude));//longitude
+					Log.i("selected", modName);
+					
+					//back to main activity and send some parameters to the activity
+					setResult(RESULT_OK, intentToMain);
+					
+					finish();
+				}//end if for pressing save and activate
+		    }
+		    
+		}
+
 	//to convert from array list of waypoint point into name of the waypoint point array list
 	public static ArrayList<String> toNameArrayList(List<WP> wList){
 		ArrayList<String> nameList = new ArrayList<String>();
@@ -439,66 +503,6 @@ public class WayPointActivity extends Activity {
 	}//end sorting
 		
 		
-	
-	//Intent to handle receive parameters from NewWayPoint and Modify
-	@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intentFromAnother){
-        super.onActivityResult(requestCode, resultCode, intentFromAnother);
-		
-    	//get parameters from the NewWayPoint activity when create a new waypoint point
-        if(requestCode == NEW_WAYPOINT && resultCode == RESULT_OK){
-        	newName = intentFromAnother.getStringExtra("newName");
-    		newLatitude = intentFromAnother.getStringExtra("newLatitude");
-    		newLongitude = intentFromAnother.getStringExtra("newLongitude");
-    		//not from pressing menu item
-    		if(!newName.equals("") && !newLatitude.equals("") && !newLongitude.equals(""))
-    			addNewWPtoList(wayPointList, newName, newLatitude, newLongitude);
-    		//pressing save and activate
-    		if(NewWayPointActivity.isAlsoActivateForNWP){
-    			//change back to the main activity
-				//passing activate waypoint point name and position
-				intentToMain.putExtra("actName", newName);//name
-				intentToMain.putExtra("actLatitude", Double.parseDouble(newLatitude));//latitude
-				intentToMain.putExtra("actLongitude", Double.parseDouble(newLongitude));//longitude
-				
-				Log.i("selected", newName);
-				//back to main activity and send some parameters to the activity
-				setResult(RESULT_OK, intentToMain);
-				
-				finish();
-    		}//end if for pressing save and activate
-        }
-        
-      //get parameters from the Modify activity and replace the old information
-        if(requestCode == MODIFY_WAYPOINT && resultCode == RESULT_OK){
-        	modName = intentFromAnother.getStringExtra("modName");
-    		modLatitude = intentFromAnother.getStringExtra("modLatitude");
-    		modLongitude = intentFromAnother.getStringExtra("modLongitude");
-    		//not pressing from menu item
-    		if(!modName.equals("") && !modLatitude.equals("") && !modLongitude.equals("")){
-    			//replace the old information with the modifying information
-        		choosingWaypoint.setName(modName);
-        		choosingWaypoint.setLatitude(modLatitude);
-        		choosingWaypoint.setLongitude(modLongitude);
-        		sortingWaypointList(wayPointList);
-    		}
-    		//pressing save and activate
-    		if(ModifyWPActivity.isAlsoActivateForMWP){
-    			//change back to the main activity
-				//passing activate waypoint point name and position
-				intentToMain.putExtra("actName", modName);//name
-				intentToMain.putExtra("actLatitude", Double.parseDouble(modLatitude));//latitude
-				intentToMain.putExtra("actLongitude", Double.parseDouble(modLongitude));//longitude
-				Log.i("selected", modName);
-				
-				//back to main activity and send some parameters to the activity
-				setResult(RESULT_OK, intentToMain);
-				
-				finish();
-    		}//end if for pressing save and activate
-        }
-        
-	}
 	
 	//load preferences
 	private void loadPref(){
