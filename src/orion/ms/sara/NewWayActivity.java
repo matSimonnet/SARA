@@ -3,7 +3,6 @@ package orion.ms.sara;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -86,10 +85,7 @@ public class NewWayActivity extends Activity {
 	private Way temp = null;
 	private String defaultName = "No selected waypoint";
 	private String wpName = "No selected waypoint";
-	//private Way temp_3plus;
 	private int way_Size = 2;
-	//private int wpNum = 0;
-	//private boolean firstClick = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -346,15 +342,6 @@ public class NewWayActivity extends Activity {
 	    });//end setOnSelected
 	}//end setUpWPList
 	
-	//check if way points above already chose
-	/*private boolean areChose(Way way){
-		for(int i=0;i<way.getSize();i++){
-			if(way.getWP(i).getName().equals("No selected waypoint"))
-				return false;
-		}
-		return true;
-	}*/
-
 	/*
 	 * Create more TextView and spinner for adding a way more in the view 
 	 * then adding new way point into temporary way
@@ -430,100 +417,6 @@ public class NewWayActivity extends Activity {
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.new_way, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		switch (item.getItemId()) {
-		case R.id.way_setting:
-			if(selectedWP1 != null && selectedWP2 != null){
-				//get the new way's name EditText
-				wayName = wayNameBox.getText().toString();
-				waypoint1Name = selectedWP1.getName();
-				waypoint2Name = selectedWP2.getName();
-				
-				temp = new Way(wayName);
-				temp.addWPtoWay(WayActivity.findWPfromName(waypoint1Name));
-				temp.addWPtoWay(WayActivity.findWPfromName(waypoint2Name));
-				//check if some values change without saving
-				if((!waypoint1Name.equals("No selected waypoint") || !waypoint2Name.equals("No selected waypoint")) 
-						&& !waypoint1Name.equals(waypoint2Name)
-						&& !isRecorded(temp)){
-					final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-					dialog.setTitle("Some values change, do you want to save?");
-					dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							//pass the parameters
-							intentToWay.putExtra("newWayName",wayName);//name
-							intentToWay.putExtra("newWP1Name", waypoint1Name);//way point1 name
-							intentToWay.putExtra("newWP2Name", waypoint2Name);//way point2 name
-							isAlsoActivateForNW = false;//change status
-	
-							//back to Way activity and send some parameters to the activity
-							setResult(RESULT_OK, intentToWay);
-							finish();
-						}
-					});
-					
-					dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							//don't save
-							//pass the parameters
-							intentToWay.putExtra("newWayName","");//name
-							intentToWay.putExtra("newWP1Name", "");//way point1 name
-							intentToWay.putExtra("newWP2Name", "");//way point2 name
-							isAlsoActivateForNW = false;//change status
-	
-							//back to Way activity and send some parameters to the activity
-							setResult(RESULT_OK, intentToWay);
-							finish();
-						}
-					});
-					dialog.show();
-				}
-				else{
-					//don't save
-					//pass the parameters
-					intentToWay.putExtra("newWayName","");//name
-					intentToWay.putExtra("newWP1Name", "");//way point1 name
-					intentToWay.putExtra("newWP2Name", "");//way point2 name
-					isAlsoActivateForNW = false;//change status
-	
-					//back to Way activity and send some parameters to the activity
-					setResult(RESULT_OK, intentToWay);
-					finish();
-					break;
-				}
-		}//end if selected
-		else{
-			//don't save
-			//pass the parameters
-			intentToWay.putExtra("newWayName","");//name
-			intentToWay.putExtra("newWP1Name", "");//way point1 name
-			intentToWay.putExtra("newWP2Name", "");//way point2 name
-			isAlsoActivateForNW = false;//change status
-
-			//back to Way activity and send some parameters to the activity
-			setResult(RESULT_OK, intentToWay);
-			finish();
-			break;
-		}
-		default:
-			break;
-		}
-		return false;
-	}
-	
-	@Override
 	protected void onResume() {
 		super.onResume();
 	}
@@ -544,6 +437,105 @@ public class NewWayActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		tts.shutdown();
+	}
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.new_way, menu);
+		return true;
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		switch (item.getItemId()) {
+		case R.id.way_setting:
+			//get the new way's name EditText
+			wayName = wayNameBox.getText().toString();
+			//check if some values change without saving
+			//check if new way has name and its size is more than 1 way point
+			if(temp.getSize()>=2 && !wayName.isEmpty()){
+				//set up way name
+				temp.setName(wayName);
+				//chenk if the new way can save
+				if(!isRecorded(temp)){
+					final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+					dialog.setTitle("Some values change, do you want to save?");
+					dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							//pass the parameters
+							intentToWay.putExtra("newWayName", temp.getName());
+							intentToWay.putExtra("newWaySize", temp.getSize());
+							for(int i = 0; i < temp.getSize(); i++) {
+								intentToWay.putExtra("WP"+(i+1)+"Name", temp.getWP(i).getName());
+							}
+							isAlsoActivateForNW = false;//change status
+	
+							//back to Way activity and send some parameters to the activity
+							setResult(RESULT_OK, intentToWay);
+							finish();
+						}
+					});
+					
+					dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							//don't save
+							//pass the parameters
+							intentToWay.putExtra("newWayName", "");
+							intentToWay.putExtra("newWaySize", "");
+							for(int i = 0; i < temp.getSize(); i++) {
+								intentToWay.putExtra("WP"+(i+1)+"Name", "");
+							}
+							isAlsoActivateForNW = false;//change status
+	
+							//back to Way activity and send some parameters to the activity
+							setResult(RESULT_OK, intentToWay);
+							finish();
+						}
+					});
+					dialog.show();
+				}//end isRecord
+				else{
+					//don't save
+					//pass the parameters
+					intentToWay.putExtra("newWayName", "");
+					intentToWay.putExtra("newWaySize", "");
+					for(int i = 0; i < temp.getSize(); i++) {
+						intentToWay.putExtra("WP"+(i+1)+"Name", "");
+					}
+					isAlsoActivateForNW = false;//change status	
+					//back to Way activity and send some parameters to the activity
+					setResult(RESULT_OK, intentToWay);
+					finish();
+					break;
+				}//end isRecord
+		}//end if value change
+		else{
+			//don't save
+			//pass the parameters
+			intentToWay.putExtra("newWayName", "");
+			intentToWay.putExtra("newWaySize", "");
+			for(int i = 0; i < temp.getSize(); i++) {
+				intentToWay.putExtra("WP"+(i+1)+"Name", "");
+			}
+			isAlsoActivateForNW = false;//change status
+	
+			//back to Way activity and send some parameters to the activity
+			setResult(RESULT_OK, intentToWay);
+			finish();
+			break;
+		}
+		default:
+			break;
+		}
+		return false;
 	}
 
 }

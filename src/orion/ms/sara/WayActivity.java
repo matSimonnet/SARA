@@ -320,17 +320,18 @@ public class WayActivity extends Activity {
 	    if(requestCode == NEW_WAY && resultCode == RESULT_OK){
 	    	newWayName = intentFromAnother.getStringExtra("newWayName");
 	    	//not from pressing menu item
-	    	if(!newWayName.equals(""))
-	    	//create a new way
-	    	tempWay = new Way(newWayName);
-	    	newWaySize = intentFromAnother.getIntExtra("newWaySize", 0);
-	    	for(int i =0;i<newWaySize;i++){
-	    		//receive way point name and add the way point to way
-	    		tempWP = findWPfromName(intentFromAnother.getStringExtra("WP"+(i+1)+"Name"));
-	    		tempWay.addWPtoWay(tempWP);
+	    	if(!newWayName.equals("")){
+		    	//create a new way
+		    	tempWay = new Way(newWayName);
+		    	newWaySize = intentFromAnother.getIntExtra("newWaySize", 0);
+		    	for(int i =0;i<newWaySize;i++){
+		    		//receive way point name and add the way point to way
+		    		tempWP = findWPfromName(intentFromAnother.getStringExtra("WP"+(i+1)+"Name"));
+		    		tempWay.addWPtoWay(tempWP);
+		    	}
+		    	//add the new way to the way list
+		    	addNewWaytoList(wayList, tempWay);
 	    	}
-	    	//add the new way to the way list
-	    	addNewWaytoList(wayList, tempWay);
 				
 			//pressing save and activate
 			if(NewWayActivity.isAlsoActivateForNW){
