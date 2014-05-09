@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
  <color name="white">#FFFFFF</color>
- <color name="yellow">#FFFF00</color>
  <color name="fuchsia">#FF00FF</color>
  <color name="red">#FF0000</color>
  <color name="silver">#C0C0C0</color>
@@ -17,5 +16,8 @@
  <color name="navy">#000080</color>
  <color name="black">#000000</color>
  <color name="ocean">#308d9e</color>
+ <color name="yellow">#FFFF00</color>
+ <color name="darkyellow">#FFCC33</color>
+ 
  
  </resources>

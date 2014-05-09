@@ -32,8 +32,10 @@ import android.os.Build;
 import java.util.List;
 import java.io.File;
 import org.mapsforge.android.maps.*;
+import org.mapsforge.android.maps.overlay.ArrayCircleOverlay;
 import org.mapsforge.android.maps.overlay.ArrayWayOverlay;
 import org.mapsforge.android.maps.overlay.ItemizedOverlay;
+import org.mapsforge.android.maps.overlay.OverlayCircle;
 import org.mapsforge.android.maps.overlay.OverlayItem;
 import org.mapsforge.android.maps.overlay.OverlayWay;
 import org.mapsforge.core.GeoPoint;
@@ -52,6 +54,7 @@ public class MyMapActivity extends MapActivity {
 	private static MyItemizedOverlay itemizedOverlay;
 	private static ArrayWayOverlay wayOverlay;
 	private static ArrayWayOverlay wayLineOverlay;
+	private static ArrayCircleOverlay arrayRadius;
 
 	private static MyItemizedOverlay pinOverlay;
 	
@@ -59,6 +62,10 @@ public class MyMapActivity extends MapActivity {
 	private static OverlayWay way;
 	private static Paint wayPaint;
 	private static Paint wayLinePaint;
+	private static Paint OutlineCirclePaint;
+	private static Paint FillCirclePaint;
+
+	
 
 
 	private LocationManager lm = null;
@@ -210,12 +217,24 @@ public class MyMapActivity extends MapActivity {
 				
 				if(latitude == MyLocationListener.WaypointLatitude && longitude == MyLocationListener.WaypointLongitude) {
 					item.setMarker(ItemizedOverlay.boundCenterBottom(mContext.getResources().getDrawable(R.drawable.activewp)));
+					drawRadius(latitude, longitude);
 					Log.i("activated waypoint", name);
 				}
 				pinOverlay.addItem(item);
 			}
 		}
 		mapView.getOverlays().add(pinOverlay);	
+	}
+	private static void drawRadius(double latitude, double longitude) {
+		if(arrayRadius != null) {
+			mapView.getOverlays().remove(arrayRadius);
+			arrayRadius.clear();
+		}
+		GeoPoint tmp = new GeoPoint(latitude,longitude);
+		OverlayCircle Radius = new OverlayCircle(tmp , MyLocationListener.WPTreshold, FillCirclePaint, OutlineCirclePaint, "Waypoint Treshold");
+		arrayRadius = new ArrayCircleOverlay(FillCirclePaint, OutlineCirclePaint);
+		arrayRadius.addCircle(Radius);
+		mapView.getOverlays().add(arrayRadius);	
 	}
 	
 	private static boolean isInActivatedWay(String name) {
@@ -334,7 +353,23 @@ public class MyMapActivity extends MapActivity {
 	    wayLinePaint.setStrokeCap(Paint.Cap.ROUND);
 	    wayLinePaint.setPathEffect(new CornerPathEffect(10));
 	    wayLinePaint.setAntiAlias(true);
-	    wayLinePaint.setPathEffect(new DashPathEffect(new float[] {10,20}, 0)); 	    
+	    wayLinePaint.setPathEffect(new DashPathEffect(new float[] {10,20}, 0)); 	   
+	    
+	    FillCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	    FillCirclePaint.setStyle(Paint.Style.FILL);
+	    FillCirclePaint.setColor(getResources().getColor(R.color.yellow));
+	    FillCirclePaint.setAlpha(80);
+	    
+	    OutlineCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	    OutlineCirclePaint.setStyle(Paint.Style.STROKE);
+	    OutlineCirclePaint.setColor(getResources().getColor(R.color.darkyellow));
+	    OutlineCirclePaint.setStrokeWidth(3);
+	    OutlineCirclePaint.setDither(true);
+	    OutlineCirclePaint.setAlpha(200);
+	    OutlineCirclePaint.setStrokeJoin(Paint.Join.ROUND);
+	    OutlineCirclePaint.setStrokeCap(Paint.Cap.ROUND);
+	    OutlineCirclePaint.setPathEffect(new CornerPathEffect(10));
+	    OutlineCirclePaint.setAntiAlias(true);
 	    
 	}
 
