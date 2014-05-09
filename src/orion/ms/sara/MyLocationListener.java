@@ -6,6 +6,8 @@ import java.util.Date;
 import org.mapsforge.core.GeoPoint;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
@@ -100,7 +102,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 
 	public static boolean isInMain = true;
 
-	public Resources resource = MainActivity.getContext().getResources();
+	public static Resources resource = MainActivity.getContext().getResources();
 	
 	public static GeoPoint geoPoint[] = new GeoPoint[0];
 	public static boolean isStartedDisplay = false;
@@ -111,6 +113,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public static boolean isWayActivated = false;
 	public static int activatedIndex = 0;
 	public static float[] distanceWaypoint = new float[1];
+	
+	private static AlertDialog.Builder alertDialog;
 
 	@Override
 	public void onLocationChanged(Location loc) {
@@ -132,7 +136,6 @@ public class MyLocationListener extends Activity implements LocationListener {
 	    	        isWayActivated = false;
 	    	        activatedIndex = 0;
 	    	        MainActivity.deleteView();
-	    	        MainActivity.saveActivatedWaypoint();
 	    	        updatePin();
 	    	        saveActivatedWaypoint();
 				}
@@ -142,8 +145,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 					WaypointName = activatedWay.get(activatedIndex).getName();
 					WaypointLatitude = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
     	        	WaypointLongitude = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
-    	        	MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_ADD, null);
-	    	        MainActivity.saveActivatedWaypoint();
+    	        	MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_FLUSH, null);
 	    	        updatePin();
 	    	        saveActivatedWaypoint();
 				}
@@ -486,11 +488,64 @@ public class MyLocationListener extends Activity implements LocationListener {
 			MyMapActivity.loadWaypoint();
 		}
 	}
-	public void saveActivatedWaypoint() {
+	public static void saveActivatedWaypoint() {
 	    MainActivity.editor.putString("WaypointLatitude", String.valueOf(MyLocationListener.WaypointLatitude));
 	    MainActivity.editor.putString("WaypointLongitude", String.valueOf(MyLocationListener.WaypointLongitude));
 	    MainActivity.editor.putString("WaypointName", MyLocationListener.WaypointName);
 	    MainActivity.editor.commit();
+	}
+	public static void previousWaypoint() {
+		if(activatedIndex == 0) {
+			alertDialog = new AlertDialog.Builder(MainActivity.getContext());
+			alertDialog.setTitle("This is the start waypoint of " + activatedWayName);
+			alertDialog.setIcon(android.R.drawable.presence_busy);
+			alertDialog.setCancelable(true);
+			alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					dialog.dismiss();
+				}
+			});
+			alertDialog.show();
+		}
+		else {
+			activatedIndex = activatedIndex - 1;
+			WaypointName = activatedWay.get(activatedIndex).getName();
+			WaypointLatitude = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
+			WaypointLongitude = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
+			MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_FLUSH, null);
+			updatePin();
+			saveActivatedWaypoint();
+		}
+	}
+	
+	public static void nextWaypoint() {
+		if(activatedIndex == activatedWay.size() - 1) {
+			alertDialog = new AlertDialog.Builder(MainActivity.getContext());
+			alertDialog.setTitle("This is the end waypoint of " + activatedWayName);
+			alertDialog.setIcon(android.R.drawable.presence_busy);
+			alertDialog.setCancelable(true);
+			alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					dialog.dismiss();
+				}
+			});
+			alertDialog.show();
+		}
+		else {
+			activatedIndex = activatedIndex + 1;
+			WaypointName = activatedWay.get(activatedIndex).getName();
+			WaypointLatitude = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
+	    	WaypointLongitude = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
+	    	MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_FLUSH, null);
+	        updatePin();
+	        saveActivatedWaypoint();
+		}
 	}
 
 

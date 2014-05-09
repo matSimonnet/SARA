@@ -447,7 +447,21 @@ public class MainActivity extends Activity {
         LayoutParams textViewSpeedParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         textViewSpeedParam.addRule(RelativeLayout.BELOW, previousButton.getId());
         textViewSpeed.setLayoutParams(textViewSpeedParam);
-		
+        
+        View.OnClickListener onclickListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+        		if(v == previousButton) {
+        			MyLocationListener.previousWaypoint();
+        		}
+        		if(v == nextButton) {
+        			MyLocationListener.nextWaypoint();
+        		}
+			}
+        };
+        previousButton.setOnClickListener(onclickListener);
+        nextButton.setOnClickListener(onclickListener);		
     }
     private void initView() {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
