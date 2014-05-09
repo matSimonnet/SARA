@@ -151,23 +151,8 @@ public class NewWayActivity extends Activity {
 			@SuppressWarnings("static-access")
 			@Override
 			public void onClick(View arg0) {
-				/*if(firstClick){
-					firstClick = false;
-					Log.i("add more", selectedWP1.getName());
-					Log.i("add more", selectedWP2.getName());
-
-					temp_3plus = new Way(wayNameBox.getText().toString(),WayActivity.findWPfromName(selectedWP1.getName()),WayActivity.findWPfromName(selectedWP2.getName()));
-				}
-				//check if way points above already chose
-				if(areChose(temp_3plus)){
-					//add more Text and spinner for choosing a way
-				*/	moreWay(belowID+77);
-					tts.speak("More waypoint selection shown", tts.QUEUE_FLUSH, null);
-				/*}
-				else{
-					//prevent incomplete above way points' information
-					tts.speak("Please select way points above before adding more way point", tts.QUEUE_FLUSH, null);
-				}*/
+				moreWay(belowID+77);
+				tts.speak("More waypoint selection shown", tts.QUEUE_FLUSH, null);
 			}
 		});
 		
@@ -184,46 +169,102 @@ public class NewWayActivity extends Activity {
 					//get the new way's name EditText
 					wayName = wayNameBox.getText().toString();
 					temp.setName(wayName);
-					Log.i("temp size", wayName+" :"+temp.getSize());
-    				for(int j = 0;j<temp.getSize();j++){
-    					Log.i("wp in new", "Way1 ----WP"+j+" : "+temp.getWP(j).getName());
-    				}
-					
-					//check if the filled name or the way points are already recorded
-					if(isRecorded(temp)){
-						tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
+					if(temp.getSize()<2){
+						tts.speak("Cannot create a way with less than 2 waypoints", tts.QUEUE_FLUSH, null);
 					}
 					else{
-						if(wayName.isEmpty()){
-							//prevent incomplete way's name
-							tts.speak("Please fill the name before saving", tts.QUEUE_ADD, null);
+						Log.i("temp size", wayName+" :"+temp.getSize());
+	    				for(int j = 0;j<temp.getSize();j++){
+	    					Log.i("wp in new", "Way1 ----WP"+j+" : "+temp.getWP(j).getName());
+	    				}
+						
+						//check if the filled name or the way points are already recorded
+						if(isRecorded(temp)){
+							tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
 						}
 						else{
-							//notification
-							tts.speak("the new way already saved", tts.QUEUE_ADD, null);
-							Toast.makeText(NewWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
-	
-							//change back to the way activity
-							//passing activate way name and way points
-							intentToWay.putExtra("newWayName", temp.getName());
-							intentToWay.putExtra("newWaySize", temp.getSize());
-							for(int i = 0; i < temp.getSize(); i++) {
-								intentToWay.putExtra("WP"+(i+1)+"Name", temp.getWP(i).getName());
+							if(wayName.isEmpty()){
+								//prevent incomplete way's name
+								tts.speak("Please fill the name before saving", tts.QUEUE_ADD, null);
 							}
-							isAlsoActivateForNW = false;//change status
-	
-							//back to WayPoint activity and send some parameters to the activity
-							setResult(RESULT_OK, intentToWay);
-							finish();
-						}//end else in if-else
-						
-					}//end else
-				}//end if
+							else{
+								//notification
+								tts.speak("the new way already saved", tts.QUEUE_ADD, null);
+								Toast.makeText(NewWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
+		
+								//change back to the way activity
+								//passing activate way name and way points
+								intentToWay.putExtra("newWayName", temp.getName());
+								intentToWay.putExtra("newWaySize", temp.getSize());
+								for(int i = 0; i < temp.getSize(); i++) {
+									intentToWay.putExtra("WP"+(i+1)+"Name", temp.getWP(i).getName());
+								}
+								isAlsoActivateForNW = false;//change status
+		
+								//back to WayPoint activity and send some parameters to the activity
+								setResult(RESULT_OK, intentToWay);
+								finish();
+							}//end isEmpty
+						}//end isRecord	
+					}//end size<2
+				}//end saveButton
 			}//end onClick
-		});
+		});//end setOnClick
 		
 		//save and activate button
 		saveActButton = (Button) findViewById(R.id.button3);
+		//setOnClickedListener
+		saveActButton.setOnClickListener(new OnClickListener() {
+			//OnClickedListener creation
+			@SuppressWarnings("static-access")
+			@SuppressLint("ShowToast")
+			@Override
+			public void onClick(View v) {
+				if(v==saveActButton){
+					//get the new way's name EditText
+					wayName = wayNameBox.getText().toString();
+					temp.setName(wayName);
+					if(temp.getSize()<2){
+						tts.speak("Cannot create a way with less than 2 waypoints", tts.QUEUE_FLUSH, null);
+					}
+					else{
+						Log.i("temp size", wayName+" :"+temp.getSize());
+	    				for(int j = 0;j<temp.getSize();j++){
+	    					Log.i("wp in new", "Way1 ----WP"+j+" : "+temp.getWP(j).getName());
+	    				}
+						
+						//check if the filled name or the way points are already recorded
+						if(isRecorded(temp)){
+							tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
+						}
+						else{
+							if(wayName.isEmpty()){
+								//prevent incomplete way's name
+								tts.speak("Please fill the name before saving", tts.QUEUE_ADD, null);
+							}
+							else{
+								//notification
+								tts.speak("the new way already saved", tts.QUEUE_ADD, null);
+								Toast.makeText(NewWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
+		
+								//change back to the way activity
+								//passing activate way name and way points
+								intentToWay.putExtra("newWayName", temp.getName());
+								intentToWay.putExtra("newWaySize", temp.getSize());
+								for(int i = 0; i < temp.getSize(); i++) {
+									intentToWay.putExtra("WP"+(i+1)+"Name", temp.getWP(i).getName());
+								}
+								isAlsoActivateForNW = true;//change status
+		
+								//back to WayPoint activity and send some parameters to the activity
+								setResult(RESULT_OK, intentToWay);
+								finish();
+							}//end isEmpty
+						}//end isRecord	
+					}//end size<2
+				}//end saveButton
+			}//end onClick
+		});//end setOnClick	
 		
 	}
 

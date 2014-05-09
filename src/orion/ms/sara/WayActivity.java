@@ -319,6 +319,8 @@ public class WayActivity extends Activity {
 		//get parameters from the NewWay activity when create a new way
 	    if(requestCode == NEW_WAY && resultCode == RESULT_OK){
 	    	newWayName = intentFromAnother.getStringExtra("newWayName");
+	    	//not from pressing menu item
+	    	if(!newWayName.equals(""))
 	    	//create a new way
 	    	tempWay = new Way(newWayName);
 	    	newWaySize = intentFromAnother.getIntExtra("newWaySize", 0);
@@ -329,29 +331,12 @@ public class WayActivity extends Activity {
 	    	}
 	    	//add the new way to the way list
 	    	addNewWaytoList(wayList, tempWay);
-	    	
-	    	/*newWP1Name = intentFromAnother.getStringExtra("newWP1Name");
-	
-			//not from pressing menu item
-			if(!newWayName.equals("") && !newWP1Name.equals("") && !newWP2Name.equals("")){
-				for(int i=0;i<WayPointActivity.wayPointList.size();i++){
-					tempWP = WayPointActivity.wayPointList.get(i);
-					if(tempWP.getName().equals(newWP1Name))
-						wp1 = tempWP;
-					else if(tempWP.getName().equals(newWP2Name))
-						wp2 = tempWP;
-				}
-				tempWay = new Way(newWayName);
-				tempWay.addWPtoWay(wp1);
-				tempWay.addWPtoWay(wp2);
-				addNewWaytoList(wayList,tempWay);
-			}
 				
 			//pressing save and activate
 			if(NewWayActivity.isAlsoActivateForNW){
 				//change back to the main activity
 				//passing activate way point name and position
-				for(int i = 0; i < choosingWay.getSize(); i++) {
+				for(int i = 0; i < tempWay.getSize(); i++) {
 					intentToMain.putExtra("WPName" + i, tempWay.getWP(i).getName());
 					intentToMain.putExtra("WPLa" + i, tempWay.getWP(i).getLatitude());
 					intentToMain.putExtra("WPLo" + i, tempWay.getWP(i).getLongitude());
@@ -362,7 +347,6 @@ public class WayActivity extends Activity {
 				setResult(RESULT_OK, intentToMain);
 				finish();
 			}//end if for pressing save and activate
-			*/
 	    }
 	    
 	  //get parameters from the Modify activity and replace the old information
