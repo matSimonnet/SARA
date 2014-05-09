@@ -3,34 +3,22 @@ package orion.ms.sara;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.location.Location;
-
 public class Way implements Comparable<Way>{
 	private List<WP> way;
 	private Double distance;
-	private float[] result;
-	@SuppressWarnings("unused")
-	private WP wp1;
-	@SuppressWarnings("unused")
-	private WP wp2;
 	private WP tempWP1;
-	private WP tempWP2;
 	private String name;
 	
 	//constructor
-	public Way(String name,WP wp1,WP wp2){
-		this.wp1 = wp1;
-		this.wp2 = wp2;
+	public Way(String name){
 		this.name = name;
 		way = new ArrayList<WP>();
-		way.add(wp1);
-		way.add(wp2);
 	}
 	
-	//add new waypoint to way
+	//add new way point to way
 	public List<WP> addWPtoWay(WP newWP){
-		if(!newWP.getName().equals("No waypoint selected")){
-			//if there is a selected waypoint
+		if(!newWP.getName().equals("No selected waypoint")){
+			//if there is a selected way point
 			way.add(newWP);
 		}
 		else{
@@ -39,31 +27,31 @@ public class Way implements Comparable<Way>{
 		return way;
 	}
 	
-	//delete waypoint from way
+	//add a way point at the selected position
+	public List<WP> addWPat(WP wp,int position){
+		way.add(position, wp);
+		return way;
+	}
+	
+	//delete a way point at the selected position
+	public List<WP> removeWPat(int position){
+		way.remove(position);
+		return way;
+	}
+	
+	//delete way point from way
 	private List<WP> deleteWPfromWay(WP deleteWP){
-		//check if there is still any waypoint left
+		//check if there is still any way point left
 		if(way.size()>=1){
 			for(int i=0;i<way.size();i++){
 				tempWP1 = way.get(i);
 				if(tempWP1.getName().equals(deleteWP.getName())){
-					//delete the selected waypoint
+					//delete the selected way point
 					way.remove(i);
 				}
 			}
 		}
 		return way;
-	}
-
-	//calculate distance between two waypoints
-	public Double getDistanceBTWtwoWPs(String wp1, String wp2){
-		for(int i=0;i<way.size();i++){
-			if(way.get(i).getName().equals(wp1))	tempWP1 = way.get(i);
-			else if(way.get(i).getName().equals(wp2))	tempWP2 = way.get(i);
-		}
-		Location.distanceBetween(Double.parseDouble(tempWP1.getLatitude()), Double.parseDouble(tempWP1.getLongitude()), 
-				Double.parseDouble(tempWP2.getLatitude()), Double.parseDouble(tempWP2.getLongitude()), result);
-		distance = Double.parseDouble(""+result[0]);
-		return distance;
 	}
 	
 	public String getName() {
@@ -112,7 +100,7 @@ public class Way implements Comparable<Way>{
 	
 	@Override
 	public int compareTo(Way another) {
-		//compare each way by the first waypoint of the way
+		//compare each way by the first way point of the way
 		if(this.getFirstWP().getDistance()<=another.getFirstWP().getDistance()) return -1;
 		else return 1;
 	}

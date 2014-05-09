@@ -72,7 +72,7 @@
             <RelativeLayout
                 android:id="@+id/rela"
                 android:layout_width="match_parent"
-                android:layout_height="769dp" 
+                android:layout_height="wrap_content" 
                 android:layout_marginTop="30dp">
 
                 <TextView
@@ -97,7 +97,6 @@
            			android:layout_height="80dp"
            			android:layout_below="@+id/spinner1"
             		android:layout_centerHorizontal="true"
-            		android:layout_marginTop="30dp"
             		android:text="@string/way_wp2"
             		android:textSize="50dp" />
                 
@@ -125,6 +124,15 @@
 		            android:layout_below="@+id/textView2"
 		            android:text="@string/waypoint1_name"
 		            android:textSize="50dp" />
+
+		        <LinearLayout
+		            android:id="@+id/blankPlate"
+		            android:layout_width="match_parent"
+		            android:layout_height="30dp"
+		            android:layout_alignParentBottom="true"
+		            android:layout_alignParentLeft="true"
+		            android:orientation="vertical" >
+		        </LinearLayout>
 
             </RelativeLayout>
         </ScrollView>

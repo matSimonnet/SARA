@@ -30,7 +30,7 @@ public class NewWayPointActivity extends Activity {
 		private TextView newLatitudeText =null;
 		private TextView newLongitudeText =null;
 	
-		//string for each attribute of the new waypoint
+		//string for each attribute of the new way point
 		private String name = "";
 		private String latitude = "";
 		private String longitude = "";
@@ -62,7 +62,7 @@ public class NewWayPointActivity extends Activity {
 		//request code
 		private final int WP_MAP = 1;
 
-		//status for check if save and activate button is pressed (new waypoint)
+		//status for check if save and activate button is pressed (new way point)
 		public static boolean isAlsoActivateForNWP = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -168,12 +168,10 @@ public class NewWayPointActivity extends Activity {
 							intentToWPMap.putExtra("oldLatitude", latitudeBox.getText().toString());
 							intentToWPMap.putExtra("oldLongitude", longitudeBox.getText().toString());
 							startActivityForResult(intentToWPMap, WP_MAP);
-							Log.i("", "put" + longitudeBox.getText().toString());
 						}
 						else {
 							intentToWPMap.putExtra("ifMod", false);
 							startActivityForResult(intentToWPMap, WP_MAP);
-							Log.i("", "notput");
 						}
 					}
 				});

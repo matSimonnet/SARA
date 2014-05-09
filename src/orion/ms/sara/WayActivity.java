@@ -32,7 +32,7 @@ public class WayActivity extends Activity {
 	private Button newWay = null;
 	private Spinner way = null;	
 			
-	private TextToSpeech tts = null;
+	private static TextToSpeech tts = null;
 	private LocationManager lm = null;
 	
 	//a list of many way points sorted by proximity
@@ -40,10 +40,7 @@ public class WayActivity extends Activity {
 	
 	//Receiving parameters from new way
 	private String newWayName = "Way1";
-	private String newWP1Name = "";
-	private String newWP2Name = "";
-	private WP wp1 = null;
-	private WP wp2 = null;
+	private int newWaySize = 0;
 	private Way tempWay;
 	
 	//strings for each attribute of the modifying way point
@@ -82,207 +79,207 @@ public class WayActivity extends Activity {
 	private int selectedItem = 0;
 	private String selectedName = "No selected way";
 	
-@Override
-public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.activity_way);
-		setTitle(R.string.title_activity_way);
-		
-		Log.i("WayAct", "---------------OnCreate----------------");
-		
-		//load preferences
-		// Restore preferences
-		this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
-		this.editor = settings.edit();
-		//loadPref();
-		
-		for(int i = 0;i<wayList.size();i++){
-			Log.i("way list", "item "+i+": "+wayList.get(i).getName());
-		}
-							
-		//OnInitListener Creation
-		OnInitListener onInitListener = new OnInitListener() {
-			@Override
-			public void onInit(int status) {
-			}
-		};
-		
-	    // textToSpeech creation
-		tts = new TextToSpeech(this, onInitListener);
-		
-		//location manager creation
-        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
-		
-		//alert dialog creation
-		choosingDialog = new AlertDialog.Builder(this);
-		deletingDialog = new AlertDialog.Builder(this);
-		
-		//Intent creation
-		intentToMain = new Intent(WayActivity.this,MainActivity.class);
-		intentToNewWay = new Intent(WayActivity.this,NewWayActivity.class);
-		intentToModifyWay = new Intent(WayActivity.this,ModifyWayActivity.class);
-
-		//get selected item from main
-		/*Intent intentFromMain = getIntent();
-		selectedName = intentFromMain.getStringExtra("actName");
-		Log.i("selected item from onCreate",selectedName);
-		*/
-		
-		//sort the list
-		if(MyLocationListener.currentLatitude.equals("") && selectedItem==0){
-			//GPS unavailable
-        	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        	dialog.setTitle("GPS is unavailable the list is not sort Please wait");
-        	dialog.setNeutralButton(R.string.ok_button, null);
-        	dialog.show();
-        }
-		else{
-			//GPS available
-			sortingWayList(wayList);
-			Log.i("from on create", "sort from on create");
-		}
-		
-		//spinner set up
-		way = (Spinner) findViewById(R.id.spinner1);
-		way.setContentDescription("Choose the way in ");
-		//setOnItemSelectedListener
-		way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
-			//OnItemSelectedListener creation
-            @SuppressWarnings("static-access")
-			public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) { 
-      				try{
-                		switch(adapterView.getId()){
-                		case R.id.spinner1: 
-                				if(i!=0){
-                					selectedItem = i;
-                				}
-                				//choosing way point
-        	      				choosingWay = wayList.get(selectedItem);
-        	      				
-        	      				//dialog creation
-        	      				choosingDialog.setTitle("You selected : "+choosingWay.getName());
-                				choosingDialog.setIcon(android.R.drawable.presence_busy);
-                				
-                				//setOnClickListener
-                	
-                				//activate button OnClickListener
-                				choosingDialog.setNegativeButton(R.string.activate, new OnClickListener(){
-                					//activate button OnClickListener creation
-									@Override
-									public void onClick(DialogInterface arg0, int arg1) {
-		                				//notify
-										Toast.makeText(WayActivity.this,"Activate",Toast.LENGTH_SHORT).show();
-										tts.speak("Activate", tts.QUEUE_FLUSH, null);
-										
-		                				//change back to the main activity
-										//passing activate way point name and position
-										for(int i = 0; i < choosingWay.getSize(); i++) {
-											intentToMain.putExtra("WPName" + i, choosingWay.getWP(i).getName());
-											intentToMain.putExtra("WPLa" + i, choosingWay.getWP(i).getLatitude());
-											intentToMain.putExtra("WPLo" + i, choosingWay.getWP(i).getLongitude());
-										}
-										//back to WayPoint activity and send some parameters to the activity
-										intentToMain.putExtra("WayLength", choosingWay.getSize());
-										intentToMain.putExtra("WayName", choosingWay.getName());
-										setResult(RESULT_OK, intentToMain);
-										finish();
-									}
-                				});//end activate button
-                				
-                				//modify button OnClickListener
-                				choosingDialog.setNeutralButton(R.string.modify, new OnClickListener(){
-                					//modify button OnClickListener creation
-									@Override
-									public void onClick(DialogInterface dialog,int which) {
-										//notification
-										Toast.makeText(WayActivity.this,"Modify",Toast.LENGTH_SHORT).show();
-										tts.speak("Modify", tts.QUEUE_FLUSH, null);
-										
-										//change to the "Modify" activity
-										//passing modifying way point name and position
-										intentToModifyWay.putExtra("modName", choosingWay.getName());//name
-										intentToModifyWay.putExtra("modWP1", choosingWay.getFirstWP().getName());//waypoint1 name
-										intentToModifyWay.putExtra("modWP2", choosingWay.getWP(1).getName());//waypoint2 name
-										
-										//start NewWayPoint activity
-										startActivityForResult(intentToModifyWay, MODIFY_WAY);
-									}//end of onClick
-                					
-                				});//end modify button
-                				
-                				//delete button OnClickListener
-                				choosingDialog.setPositiveButton(R.string.delete, new OnClickListener(){
-                					//delete button OnClickListener creation
-									@Override
-									public void onClick(DialogInterface dialog,int which) {
-		                				//notify
-										Toast.makeText(WayActivity.this,R.string.delete,Toast.LENGTH_SHORT).show();
-										tts.speak("Delete", tts.QUEUE_FLUSH, null);
-										
-										//dialog creation
-										deletingDialog.setTitle("Are you sure deleting "+choosingWay.getName()+"?");
-										deletingDialog.setIcon(android.R.drawable.presence_busy);
-										tts.speak("Are you sure deleting "+choosingWay.getName()+"?", tts.QUEUE_FLUSH, null);
-
-										//button
-										deletingDialog.setPositiveButton(R.string.cancel, null);
-										deletingDialog.setNegativeButton(R.string.sure, new OnClickListener() {
-											//OnClick listener for delete button
-											@Override
-											public void onClick(DialogInterface dialog, int which) {
-												deleteWayfromList(wayList,choosingWay);
-											}
-										});
-										//show the deleting dialog
-										deletingDialog.show();
-									}
-                				});//end delete button	
-                				if(!choosingWay.getName().equals("No selected way") && i!=0){
-                					//show the choosing dialog if selected some way points from the list
-                					choosingDialog.show();
-                				}//end if
-                				
-                			}//end switch case
-                    }catch(Exception e){
-                        e.printStackTrace();
-                    }//end try-catch
-                    
-              	}
-
-				@SuppressWarnings("static-access")
-				public void onNothingSelected(AdapterView<?> arg0) {
-      				Toast.makeText(WayActivity.this,"You selected Empty",Toast.LENGTH_SHORT).show();
-      				tts.speak("Your Selected : nothing", tts.QUEUE_FLUSH, null);
-				} 
-				
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+	
+			setContentView(R.layout.activity_way);
+			setTitle(R.string.title_activity_way);
 			
-
-        });
-		
-		//"New Way" button
-		//button creation
-		newWay = (Button) findViewById(R.id.button1);
-		//setOnClickListener
-		newWay.setOnClickListener(new View.OnClickListener(){
-					// OnClickListener creation			    
+			Log.i("WayAct", "---------------OnCreate----------------");
+			
+			//load preferences
+			// Restore preferences
+			this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
+			this.editor = settings.edit();
+			//loadPref();
+			
+			for(int i = 0;i<wayList.size();i++){
+				Log.i("way list", "item "+i+": "+wayList.get(i).getName());
+			}
+								
+			//OnInitListener Creation
+			OnInitListener onInitListener = new OnInitListener() {
+				@Override
+				public void onInit(int status) {
+				}
+			};
+			
+		    // textToSpeech creation
+			tts = new TextToSpeech(this, onInitListener);
+			
+			//location manager creation
+	        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
+			
+			//alert dialog creation
+			choosingDialog = new AlertDialog.Builder(this);
+			deletingDialog = new AlertDialog.Builder(this);
+			
+			//Intent creation
+			intentToMain = new Intent(WayActivity.this,MainActivity.class);
+			intentToNewWay = new Intent(WayActivity.this,NewWayActivity.class);
+			intentToModifyWay = new Intent(WayActivity.this,ModifyWayActivity.class);
+	
+			//get selected item from main
+			/*Intent intentFromMain = getIntent();
+			selectedName = intentFromMain.getStringExtra("actName");
+			Log.i("selected item from onCreate",selectedName);
+			*/
+			
+			//sort the list
+			if(MyLocationListener.currentLatitude.equals("") && selectedItem==0){
+				//GPS unavailable
+	        	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+	        	dialog.setTitle("GPS is unavailable the list is not sort Please wait");
+	        	dialog.setNeutralButton(R.string.ok_button, null);
+	        	dialog.show();
+	        }
+			else{
+				//GPS available
+				sortingWayList(wayList);
+				Log.i("from on create", "sort from on create");
+			}
+			
+			//spinner set up
+			way = (Spinner) findViewById(R.id.spinner1);
+			way.setContentDescription("Choose the way in ");
+			//setOnItemSelectedListener
+			way.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() { 
+				//OnItemSelectedListener creation
+	            @SuppressWarnings("static-access")
+				public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) { 
+	      				try{
+	                		switch(adapterView.getId()){
+	                		case R.id.spinner1: 
+	                				if(i!=0){
+	                					selectedItem = i;
+	                				}
+	                				//choosing way point
+	        	      				choosingWay = wayList.get(selectedItem);
+	        	      				
+	        	      				//dialog creation
+	        	      				choosingDialog.setTitle("You selected : "+choosingWay.getName());
+	                				choosingDialog.setIcon(android.R.drawable.presence_busy);
+	                				
+	                				//setOnClickListener
+	                	
+	                				//activate button OnClickListener
+	                				choosingDialog.setNegativeButton(R.string.activate, new OnClickListener(){
+	                					//activate button OnClickListener creation
+										@Override
+										public void onClick(DialogInterface arg0, int arg1) {
+			                				//notify
+											Toast.makeText(WayActivity.this,"Activate",Toast.LENGTH_SHORT).show();
+											tts.speak("Activate", tts.QUEUE_FLUSH, null);
+											
+			                				//change back to the main activity
+											//passing activate way point name and position
+											for(int i = 0; i < choosingWay.getSize(); i++) {
+												intentToMain.putExtra("WPName" + i, choosingWay.getWP(i).getName());
+												intentToMain.putExtra("WPLa" + i, choosingWay.getWP(i).getLatitude());
+												intentToMain.putExtra("WPLo" + i, choosingWay.getWP(i).getLongitude());
+											}
+											//back to WayPoint activity and send some parameters to the activity
+											intentToMain.putExtra("WayLength", choosingWay.getSize());
+											intentToMain.putExtra("WayName", choosingWay.getName());
+											setResult(RESULT_OK, intentToMain);
+											finish();
+										}
+	                				});//end activate button
+	                				
+	                				//modify button OnClickListener
+	                				choosingDialog.setNeutralButton(R.string.modify, new OnClickListener(){
+	                					//modify button OnClickListener creation
+										@Override
+										public void onClick(DialogInterface dialog,int which) {
+											//notification
+											Toast.makeText(WayActivity.this,"Modify",Toast.LENGTH_SHORT).show();
+											tts.speak("Modify", tts.QUEUE_FLUSH, null);
+											
+											//change to the "Modify" activity
+											//passing modifying way point name and position
+											intentToModifyWay.putExtra("modName", choosingWay.getName());//name
+											intentToModifyWay.putExtra("modWP1", choosingWay.getFirstWP().getName());//waypoint1 name
+											intentToModifyWay.putExtra("modWP2", choosingWay.getWP(1).getName());//waypoint2 name
+											
+											//start NewWayPoint activity
+											startActivityForResult(intentToModifyWay, MODIFY_WAY);
+										}//end of onClick
+	                					
+	                				});//end modify button
+	                				
+	                				//delete button OnClickListener
+	                				choosingDialog.setPositiveButton(R.string.delete, new OnClickListener(){
+	                					//delete button OnClickListener creation
+										@Override
+										public void onClick(DialogInterface dialog,int which) {
+			                				//notify
+											Toast.makeText(WayActivity.this,R.string.delete,Toast.LENGTH_SHORT).show();
+											tts.speak("Delete", tts.QUEUE_FLUSH, null);
+											
+											//dialog creation
+											deletingDialog.setTitle("Are you sure deleting "+choosingWay.getName()+"?");
+											deletingDialog.setIcon(android.R.drawable.presence_busy);
+											tts.speak("Are you sure deleting "+choosingWay.getName()+"?", tts.QUEUE_FLUSH, null);
+	
+											//button
+											deletingDialog.setPositiveButton(R.string.cancel, null);
+											deletingDialog.setNegativeButton(R.string.sure, new OnClickListener() {
+												//OnClick listener for delete button
+												@Override
+												public void onClick(DialogInterface dialog, int which) {
+													deleteWayfromList(wayList,choosingWay);
+												}
+											});
+											//show the deleting dialog
+											deletingDialog.show();
+										}
+	                				});//end delete button	
+	                				if(!choosingWay.getName().equals("No selected way") && i!=0){
+	                					//show the choosing dialog if selected some way points from the list
+	                					choosingDialog.show();
+	                				}//end if
+	                				
+	                			}//end switch case
+	                    }catch(Exception e){
+	                        e.printStackTrace();
+	                    }//end try-catch
+	                    
+	              	}
+	
 					@SuppressWarnings("static-access")
-					@Override
-					public void onClick(View v) {
-						if(v==newWay){
-							//notification
-							tts.speak("create a new way", tts.QUEUE_FLUSH, null);
+					public void onNothingSelected(AdapterView<?> arg0) {
+	      				Toast.makeText(WayActivity.this,"You selected Empty",Toast.LENGTH_SHORT).show();
+	      				tts.speak("Your Selected : nothing", tts.QUEUE_FLUSH, null);
+					} 
+					
 				
-							//sending default name for a new way
-							intentToNewWay.putExtra("defaultNameFromWay", String.valueOf("Way"+(lastNumberForWay+1)));
-							//start NewWay activity
-							startActivityForResult(intentToNewWay, NEW_WAY);
-						}
-					}//end of onClick
-			    	
-			    });//end of new way clickListener	
-
+	
+	        });
+			
+			//"New Way" button
+			//button creation
+			newWay = (Button) findViewById(R.id.button1);
+			//setOnClickListener
+			newWay.setOnClickListener(new View.OnClickListener(){
+						// OnClickListener creation			    
+						@SuppressWarnings("static-access")
+						@Override
+						public void onClick(View v) {
+							if(v==newWay){
+								//notification
+								tts.speak("create a new way", tts.QUEUE_FLUSH, null);
+								lastNumberForWay += 1;
+								//sending default name for a new way
+								intentToNewWay.putExtra("defaultNameFromWay", String.valueOf("Way"+lastNumberForWay));
+								//start NewWay activity
+								startActivityForResult(intentToNewWay, NEW_WAY);
+							}
+						}//end of onClick
+				    	
+				    });//end of new way clickListener	
+	
 	}//end of OnCreate
 	
 	@Override
@@ -297,22 +294,22 @@ public void onCreate(Bundle savedInstanceState) {
 	    }
 	}
 
-	  @Override
-	  protected void onPause() {
-	    super.onPause();
-	  }
+	@Override
+	protected void onPause() {
+	   super.onPause();
+	}
 	  
-	  @Override
-	  protected void onStop() {
-	    super.onStop();
-	  }
+	@Override
+	protected void onStop() {
+	   super.onStop();
+	}
 	  
-		@Override
-		protected void onDestroy() {
-			super.onDestroy();
-			lm.removeUpdates(MainActivity.ll);
-			tts.shutdown();
-		}
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		lm.removeUpdates(MainActivity.ll);
+		tts.shutdown();
+	}
 		
 	//Intent to handle receive parameters from NewWayPoint and Modify
 	@Override
@@ -322,8 +319,18 @@ public void onCreate(Bundle savedInstanceState) {
 		//get parameters from the NewWay activity when create a new way
 	    if(requestCode == NEW_WAY && resultCode == RESULT_OK){
 	    	newWayName = intentFromAnother.getStringExtra("newWayName");
-			newWP1Name = intentFromAnother.getStringExtra("newWP1Name");
-			newWP2Name = intentFromAnother.getStringExtra("newWP2Name");
+	    	//create a new way
+	    	tempWay = new Way(newWayName);
+	    	newWaySize = intentFromAnother.getIntExtra("newWaySize", 0);
+	    	for(int i =0;i<newWaySize;i++){
+	    		//receive way point name and add the way point to way
+	    		tempWP = findWPfromName(intentFromAnother.getStringExtra("WP"+(i+1)+"Name"));
+	    		tempWay.addWPtoWay(tempWP);
+	    	}
+	    	//add the new way to the way list
+	    	addNewWaytoList(wayList, tempWay);
+	    	
+	    	/*newWP1Name = intentFromAnother.getStringExtra("newWP1Name");
 	
 			//not from pressing menu item
 			if(!newWayName.equals("") && !newWP1Name.equals("") && !newWP2Name.equals("")){
@@ -334,7 +341,9 @@ public void onCreate(Bundle savedInstanceState) {
 					else if(tempWP.getName().equals(newWP2Name))
 						wp2 = tempWP;
 				}
-				tempWay = new Way(newWayName,wp1,wp2);
+				tempWay = new Way(newWayName);
+				tempWay.addWPtoWay(wp1);
+				tempWay.addWPtoWay(wp2);
 				addNewWaytoList(wayList,tempWay);
 			}
 				
@@ -353,7 +362,7 @@ public void onCreate(Bundle savedInstanceState) {
 				setResult(RESULT_OK, intentToMain);
 				finish();
 			}//end if for pressing save and activate
-			
+			*/
 	    }
 	    
 	  //get parameters from the Modify activity and replace the old information
@@ -385,16 +394,6 @@ public void onCreate(Bundle savedInstanceState) {
 	    }
 	    
 	}
-
-	//to convert from array list of way into name of the way array list
-	public static ArrayList<String> toNameArrayList(List<Way> wList){
-		ArrayList<String> nameList = new ArrayList<String>();
-		for(int i = 0;i<wList.size();i++){
-			nameList.add(wList.get(i).getName());
-		}
-		return nameList;
-	}
-
 	//adding new way point into the way point list
 	public void addNewWaytoList(List<Way> wList,Way newWay){
 		//Get the latest number after adding a new way point
@@ -426,13 +425,13 @@ public void onCreate(Bundle savedInstanceState) {
 		return null;
 	}
 	
-	//sorting the way list by proximity calculated from current distance to the first waypoint
+	//sorting the way list by proximity calculated from current distance to the first way point
 	private void sortingWayList(List<Way> wList){
 		//temp way, distance and result
 		Way tempWay = null;
 		float[] tempResult = new float[3];
 		//default value if no way in the list yet
-		Way first = new Way("No selected way",null,null);
+		Way first = new Way("No selected way");
 		
 		//update location
 	    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
@@ -490,11 +489,9 @@ public void onCreate(Bundle savedInstanceState) {
 		way = (Spinner) findViewById(R.id.spinner1);
 		arrAd = new ArrayAdapter<String>(WayActivity.this,
 						android.R.layout.simple_spinner_item, 
-						toNameArrayList(wList));
+						nameWayArray(wList));
 		arrAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);      
 		way.setAdapter(arrAd);
-		
-		Log.i("top list", way.getTop()+"");
 		
 		//save the last number of default name value and attributes of way point in the list
 		//savePref(lastNumberForWay,nameWayArray(wList),nameWayArray(),nameWayArray(wList));
@@ -540,6 +537,44 @@ public void onCreate(Bundle savedInstanceState) {
 			arrayName[i] = wList.get(i).getName();
 		}
 		return arrayName;
+	}
+	
+	//check if this way's name is already used
+	public static boolean usedName(String wayName){
+		for(int i = 0;i<wayList.size();i++){
+			if(wayList.get(i).getName().equals(wayName))
+				return true;
+		}
+		return false;
+	}
+	
+	//check if these way points is already used
+	public static boolean usedWay(Way way){
+		for(int i = 0;i<wayList.size();i++){//ways in way list
+			Way w = wayList.get(i);
+			Log.i("Same WP?", w.getName());
+			if(sameWay(w,way))	
+				return true;
+		}
+		return false;
+	}
+	
+	//check if the same way (order, way points and size)
+	@SuppressWarnings("static-access")
+	public static boolean sameWay(Way w1, Way w2){
+		if(w1.getSize()!=w2.getSize()) 
+			//check size
+			return false;
+	for(int i= 0;i<w1.getSize();i++){
+		//check way points and their orders
+		Log.i("Same WP?", w1.getWP(i).getName());
+		Log.i("Same WP?", w2.getWP(i).getName());
+		if(!w1.getWP(i).getName().equalsIgnoreCase(w2.getWP(i).getName())){
+			tts.speak("You cannot selected same way points next to each other!!!", tts.QUEUE_ADD, null);
+			return false;
+		}
+	}
+	return true;
 	}
 
 	public static List<Way> getWayList() {

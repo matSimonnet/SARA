@@ -155,8 +155,10 @@ public class ModifyWayActivity extends Activity {
 								tts.speak("You selected the same waypoints", tts.QUEUE_ADD, null);
 							}
 							else{
-								Way temp = new Way(modWayName,WayActivity.findWPfromName(modWP1Name),WayActivity.findWPfromName(modWP2Name));
-								if(isAllow(temp)){
+								Way temp = new Way(modWayName);
+								temp.addWPtoWay(WayActivity.findWPfromName(modWP1Name));
+								temp.addWPtoWay(WayActivity.findWPfromName(modWP2Name));
+								if(modifiable(temp)){
 									tts.speak("new way already saved", tts.QUEUE_ADD, null);
 									Toast.makeText(ModifyWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
 									//change back to the way activity
@@ -211,8 +213,10 @@ public class ModifyWayActivity extends Activity {
 								tts.speak("You selected the same waypoints", tts.QUEUE_ADD, null);
 							}
 							else{
-								Way temp = new Way(modWayName,WayActivity.findWPfromName(modWP1Name),WayActivity.findWPfromName(modWP2Name));
-								if(isAllow(temp)){
+								Way temp = new Way(modWayName);
+								temp.addWPtoWay(WayActivity.findWPfromName(modWP1Name));
+								temp.addWPtoWay(WayActivity.findWPfromName(modWP2Name));
+								if(modifiable(temp)){
 									tts.speak("new way already saved", tts.QUEUE_ADD, null);
 									Toast.makeText(ModifyWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
 									//change back to the way activity
@@ -385,43 +389,12 @@ public class ModifyWayActivity extends Activity {
 	
 	//check if this way allow to have same name with different way points
 	//or same way points with different name
-	private boolean isAllow(Way way){
-		if(usedName(way.getName())&&!usedWay(way)) return true;
-		else if(!usedName(way.getName())&&usedWay(way)) return true;
+	private boolean modifiable(Way way){
+		if(WayActivity.usedName(way.getName())&&!WayActivity.usedWay(way)) return true;
+		else if(!WayActivity.usedName(way.getName())&&WayActivity.usedWay(way)) return true;
 		return false;
 	}//end isAllow
 	
-	//check if this way's name is already used
-	public static boolean usedName(String wayName){
-		List<Way> wayList = WayActivity.getWayList();
-		for(int i = 0;i<wayList.size();i++){
-			if(wayList.get(i).getName().equals(wayName))
-				return true;
-		}
-		return false;
-	}
-	
-	//check if these way points is already used
-	public static boolean usedWay(Way way){
-		List<Way> wayList = WayActivity.getWayList();
-		for(int i = 1;i<wayList.size();i++){//ways in way list
-			Way w = wayList.get(i);
-			if(sameWay(w,way))	
-				return true;
-		}
-		return false;
-	}
-	
-	//check if the same way (order, way points and size)
-	public static boolean sameWay(Way w1, Way w2){
-		if(w1.getSize()!=w2.getSize()) 
-			return false;
-		for(int i= 0;i<w1.getSize();i++){
-			if(!w1.getWP(i).getName().equals(w2.getWP(i).getName()))
-				return false;
-		}
-		return true;
-	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -444,20 +417,15 @@ public class ModifyWayActivity extends Activity {
 				modWP1Name = selectedWP1.getName();
 				modWP2Name = selectedWP2.getName();	
 				
-				Log.i("without saving", "=====old====");
-				Log.i("without saving", oldWayName);
-				Log.i("without saving", oldWP1Name);
-				Log.i("without saving", oldWP2Name);
-				Log.i("without saving", "=====MOD====");
-				Log.i("without saving", modWayName);
-				Log.i("without saving", modWP1Name);
-				Log.i("without saving", modWP2Name);
+				Way temp = new Way(modWayName);
+				temp.addWPtoWay(WayActivity.findWPfromName(modWP1Name));
+				temp.addWPtoWay(WayActivity.findWPfromName(modWP2Name));
 			
 				//check if some values change without saving
 				if((!modWP1Name.equals("No selected waypoint") || !modWP2Name.equals("No selected waypoint")) 
 						&& !modWP1Name.equals(modWP2Name)
 						&& (!modWayName.equals(oldWayName) || !modWP1Name.equals(oldWP1Name) ||!modWP2Name.equals(oldWP2Name) )
-						&& isAllow(new Way(modWayName,WayActivity.findWPfromName(modWP1Name),WayActivity.findWPfromName(modWP2Name)))){
+						&& modifiable(temp)){
 					final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 					dialog.setTitle("Some values change, do you want to save?");
 					dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
