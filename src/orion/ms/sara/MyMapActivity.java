@@ -406,13 +406,11 @@ public class MyMapActivity extends MapActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		lm.removeUpdates(ll);
 		MyLocationListener.isAutoDrawTrack = false;
 	}
 
 	@Override
 	protected void onStop() {
-		lm.removeUpdates(ll);
 		MyLocationListener.isAutoDrawTrack = false;
 		super.onStop();
 	}
@@ -420,7 +418,6 @@ public class MyMapActivity extends MapActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		lm.removeUpdates(ll);
 		MyLocationListener.isAutoDrawTrack = false;
 	}
 

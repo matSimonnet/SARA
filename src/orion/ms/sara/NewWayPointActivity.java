@@ -304,14 +304,11 @@ public class NewWayPointActivity extends Activity {
 	  @Override
 	  protected void onStop() {
 	    super.onStop();
-		tts.shutdown();
 	  }
 	  
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		lm.removeUpdates(MainActivity.ll);
-		tts.shutdown();
 	}
 	
 	//Intent to handle receive parameters from NewWayPoint and Modify

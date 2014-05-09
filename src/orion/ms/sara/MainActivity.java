@@ -117,22 +117,18 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		lm.removeUpdates(ll);
         MyLocationListener.isInMain = false;
 	}
   
 	@Override
 	protected void onStop() {
         MyLocationListener.isInMain = false;
-		lm.removeUpdates(ll);
 		super.onStop();
 	}
   
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		lm.removeUpdates(ll);
-		tts.shutdown();
         MyLocationListener.isInMain = false;
 	}
 
@@ -586,7 +582,9 @@ public class MainActivity extends Activity {
         };
 
         // Text to speech creation
-        tts = new TextToSpeech(this, onInitListener);
+        if(tts == null) {
+        	tts = new TextToSpeech(this, onInitListener);
+        }
     }
 
 }//end of Activity
