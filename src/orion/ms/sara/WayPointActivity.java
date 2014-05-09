@@ -305,6 +305,7 @@ public class WayPointActivity extends Activity {
 		@Override
 		protected void onDestroy() {
 			super.onDestroy();
+		    tts.shutdown();
 		}
 		
 	//Intent to handle receive parameters from NewWayPoint and Modify
