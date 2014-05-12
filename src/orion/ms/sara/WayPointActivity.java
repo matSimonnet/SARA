@@ -47,7 +47,7 @@ public class WayPointActivity extends Activity {
 		private String modName = "";
 		private String modLatitude = "";
 		private String modLongitude = "";
-		private String modTres = "";
+		private int modTres = 1;
 		
 		//Generating a number for a new waypoint's default name
 		public static int lastNumberForWaypoint = 0;
@@ -79,7 +79,7 @@ public class WayPointActivity extends Activity {
 		private int selectedItem = 0;
 		private String selectedName = "Please selected a waypoint";
 		
-		private int treshold = 1;
+		private int treshold = 0;
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -202,7 +202,7 @@ public class WayPointActivity extends Activity {
 											intentToModifyWP.putExtra("modName", choosingWaypoint.getName());//name
 											intentToModifyWP.putExtra("modLatitude", choosingWaypoint.getLatitude());//latitude
 											intentToModifyWP.putExtra("modLongitude", choosingWaypoint.getLongitude());//longitude
-											intentToModifyWP.putExtra("modTres", choosingWaypoint.getTreshold()+"");//treshold
+											intentToModifyWP.putExtra("treshold", choosingWaypoint.getTreshold());//treshold
 											intentToModifyWP.putExtra("index", selectedItem);//longitude
 
 											//start ModifyWP activity
@@ -320,7 +320,7 @@ public class WayPointActivity extends Activity {
 		    	newName = intentFromAnother.getStringExtra("newName");
 				newLatitude = intentFromAnother.getStringExtra("newLatitude");
 				newLongitude = intentFromAnother.getStringExtra("newLongitude");
-				treshold = intentFromAnother.getIntExtra("treshold", 1);
+				treshold = intentFromAnother.getIntExtra("treshold", 0);
 
 				//not from pressing menu item
 				if(!newName.equals("") && !newLatitude.equals("") && !newLongitude.equals(""))
@@ -347,14 +347,14 @@ public class WayPointActivity extends Activity {
 		    	modName = intentFromAnother.getStringExtra("modName");
 				modLatitude = intentFromAnother.getStringExtra("modLatitude");
 				modLongitude = intentFromAnother.getStringExtra("modLongitude");
-				modTres = intentFromAnother.getStringExtra("modTres");
+				modTres = intentFromAnother.getIntExtra("treshold", 0);
 				//not pressing from menu item
-				if(!modName.equals("") && !modLatitude.equals("") && !modLongitude.equals("") && !modTres.equals("")){
+				if(!modName.equals("") && !modLatitude.equals("") && !modLongitude.equals("") && modTres != 0){
 					//replace the old information with the modifying information
 		    		choosingWaypoint.setName(modName);
 		    		choosingWaypoint.setLatitude(modLatitude);
 		    		choosingWaypoint.setLongitude(modLongitude);
-		    		choosingWaypoint.setTreshold(Integer.parseInt(modTres));
+		    		choosingWaypoint.setTreshold(modTres);
 		    		sortingWaypointList(wayPointList);
 				}
 				//pressing save and activate

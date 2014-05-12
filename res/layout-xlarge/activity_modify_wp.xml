@@ -16,24 +16,29 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical" >
+
             <requestFocus />
         </LinearLayout>
 
         <Button
             android:id="@+id/button2"
+            style="@style/btnStyleShakespeare"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:textSize="50dp"
-            android:text="@string/current_checkedBox" />
+            android:layout_marginTop="20dp"
+            android:text="@string/current_checkedBox"
+            android:textSize="50dp" />
 
         <Button
             android:id="@+id/button3"
+            style="@style/btnStyleShakespeare"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:textSize="50dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/button2"
-            android:text="@string/using_map" />
+            android:layout_marginTop="5dp"
+            android:text="@string/using_map"
+            android:textSize="50dp" />
 
         <TextView
             android:id="@+id/textView1"
@@ -98,26 +103,63 @@
             android:ems="10"
             android:inputType="numberSigned|numberDecimal" />
 
+        <TextView
+            android:id="@+id/WPTresholdTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/editText3"
+            android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@+id/DecreaseWPTresholdButton"
+            android:gravity="center"
+            android:text="@string/distancetimetreshold"
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/DecreaseWPTresholdButton"
+            style="@style/btnStyleShakespeare"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_below="@+id/editText3"
+            android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@+id/IncreaseWPTresholdButton"
+            android:gravity="center"
+            android:text="@string/DecreaseButton"
+            android:textSize="50dp" />
+
+        <Button
+            android:id="@+id/IncreaseWPTresholdButton"
+            style="@style/btnStyleShakespeare"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/editText3"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/IncreaseButton"
+            android:textSize="50dp" />
+
         <Button
             android:id="@+id/button1"
+            style="@style/btnStyleShakespeare"
             android:layout_width="400dp"
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/editText3"
+            android:layout_below="@+id/IncreaseWPTresholdButton"
             android:layout_marginTop="30dp"
             android:text="@string/modifyButton"
             android:textSize="50dp" />
 
         <Button
             android:id="@+id/button4"
+            style="@style/btnStyleShakespeare"
             android:layout_width="400dp"
             android:layout_height="100dp"
-            android:textSize="50dp"
             android:layout_alignBaseline="@+id/button1"
             android:layout_alignBottom="@+id/button1"
             android:layout_alignParentRight="true"
-            android:text="@string/save_and_activateButton" />
-
+            android:text="@string/save_and_activateButton"
+            android:textSize="50dp" />
     </RelativeLayout>
 
 </FrameLayout>

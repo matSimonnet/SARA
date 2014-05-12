@@ -448,6 +448,8 @@ public class NewWayPointActivity extends Activity {
 						intentToWayPoint.putExtra("newName",name);//name
 						intentToWayPoint.putExtra("newLatitude", latitude);//latitude
 						intentToWayPoint.putExtra("newLongitude", longitude);//longitude
+						intentToWayPoint.putExtra("treshold", WPTreshold);//treshold
+
 						isAlsoActivateForNWP = false;//change status
 
 						//back to WayPoint activity and send some parameters to the activity
