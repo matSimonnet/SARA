@@ -71,7 +71,7 @@ public class NewWayPointActivity extends Activity {
 		private Button IncreaseWPTresholdButton = null;
 		private Button DecreaseWPTresholdButton = null;
 		
-		private int WPTreshold = 1;
+		private int WPTreshold = 50;
 		private int step = 1;
 		
 	@Override

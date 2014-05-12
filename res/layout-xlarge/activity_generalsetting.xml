@@ -43,16 +43,4 @@
         android:text="@string/distance_unit_setting"
         android:textSize="50dp" />
 
-    <Button
-        android:id="@+id/button4"
-        style="@style/btnStyleShakespeare"
-        android:layout_width="fill_parent"
-        android:layout_height="150dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/button3"
-        android:layout_marginTop="10dp"
-        android:text="@string/wptresholdsetting"
-        android:textSize="50dp" />
-
 </RelativeLayout>
