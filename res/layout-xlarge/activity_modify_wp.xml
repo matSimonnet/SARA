@@ -102,11 +102,11 @@
             android:id="@+id/button1"
             android:layout_width="400dp"
             android:layout_height="100dp"
-            android:textSize="50dp"
             android:layout_alignParentLeft="true"
-			android:layout_marginTop="30dp"
-            android:layout_below="@+id/editText4"
-            android:text="@string/modifyButton" />
+            android:layout_below="@+id/editText3"
+            android:layout_marginTop="30dp"
+            android:text="@string/modifyButton"
+            android:textSize="50dp" />
 
         <Button
             android:id="@+id/button4"
@@ -117,27 +117,6 @@
             android:layout_alignBottom="@+id/button1"
             android:layout_alignParentRight="true"
             android:text="@string/save_and_activateButton" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/editText3"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:text="@string/wp_treshold"
-            android:textSize="40dp" />
-
-        <EditText
-            android:id="@+id/editText4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/textView4"
-            android:layout_marginTop="30dp"
-            android:ems="10"
-            android:inputType="number" />
 
     </RelativeLayout>
 

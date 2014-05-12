@@ -97,14 +97,11 @@ public class ModifyWPActivity extends Activity {
 		modLatitudeText.setContentDescription("mod waypoint latitude is");
 		modLongitudeText = (TextView) findViewById(R.id.textView3);
 		modLongitudeText.setContentDescription("mod waypoint longitude is");
-		modTresholdText = (TextView) findViewById(R.id.textView4);
-		modTresholdText.setContentDescription("mod waypoint treshold is");
-		
+			
 		//EditText
 		nameBox = (EditText) findViewById(R.id.editText1);
 		latitudeBox = (EditText) findViewById(R.id.editText2);
 		longitudeBox = (EditText) findViewById(R.id.editText3);
-		tresholdBox = (EditText) findViewById(R.id.editText4);
 		
 		//intent creation
 		intentFromWayPointAct = getIntent();

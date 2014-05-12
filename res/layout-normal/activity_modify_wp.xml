@@ -16,18 +16,21 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical" >
+            <requestFocus />
         </LinearLayout>
 
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="80dp"
+            android:textSize="50dp"
             android:text="@string/current_checkedBox" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="80dp"
+            android:textSize="50dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/button2"
             android:text="@string/using_map" />
@@ -41,7 +44,7 @@
             android:layout_marginTop="30dp"
             android:text="@string/nameText"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="30sp" />
+            android:textSize="40dp" />
 
         <EditText
             android:id="@+id/editText1"
@@ -64,7 +67,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/latitudeText"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="30sp" />
+            android:textSize="40dp" />
 
         <EditText
             android:id="@+id/editText2"
@@ -84,7 +87,7 @@
             android:layout_marginTop="30dp"
             android:text="@string/longitudeText"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="30sp" />
+            android:textSize="40dp" />
 
         <EditText
             android:id="@+id/editText3"
@@ -101,16 +104,20 @@
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/editText3"
-            android:text="@string/modifyButton" />
+            android:layout_marginTop="30dp"
+            android:text="@string/modifyButton"
+            android:textSize="50dp" />
 
         <Button
             android:id="@+id/button4"
             android:layout_width="400dp"
             android:layout_height="100dp"
+            android:textSize="50dp"
             android:layout_alignBaseline="@+id/button1"
             android:layout_alignBottom="@+id/button1"
             android:layout_alignParentRight="true"
             android:text="@string/save_and_activateButton" />
+
     </RelativeLayout>
 
 </FrameLayout>
