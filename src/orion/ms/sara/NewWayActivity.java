@@ -53,7 +53,6 @@ public class NewWayActivity extends Activity {
 	private Spinner wp2List;
 	private ArrayList<WP> tempList = new ArrayList<WP>();
 	private ArrayList<WP> anotherList = new ArrayList<WP>();
-	private List<Integer> spinnerID = new ArrayList<Integer>();
 	private int spin_id = 3;
 	
 	//iterator id number of the last item in the scroll view
@@ -360,7 +359,6 @@ public class NewWayActivity extends Activity {
 	    Spinner newWPList = new Spinner(this);
 	    newWPList.setLayoutParams(listParam);
 	    newWPList.setId(spin_id);
-	    spinnerID.add(newWPList.getId());
 	    spin_id += 1;
 	    ArrayList<WP> wList = new ArrayList<WP>();
 	    //set up way list
