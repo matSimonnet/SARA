@@ -124,13 +124,6 @@ public class GeneralSettingActivity extends Activity {
 	     		}
 	     		break;	     	
 	     	}
-	     	case WP_TRESHOLD : {
-	     		if (resultCode == RESULT_OK && null != data) {
-	     			MyLocationListener.WPTreshold = data.getIntExtra("WPTreshold", 1);
-	     			Log.i("WP Treshold", MyLocationListener.WPTreshold+"");
-	     		}
-	     		break;
-	     	}
 	     }
 	}
 

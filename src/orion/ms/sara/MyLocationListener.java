@@ -121,13 +121,14 @@ public class MyLocationListener extends Activity implements LocationListener {
 		
 		if (isWayActivated && activatedWay.size() != 0) {
 			Log.i("WPTreshold", WPTreshold + "");
+			String activatedName = activatedWay.get(activatedIndex).getName();
 			Double activatedLa = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
 			Double activatedLo = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
 
 			Location.distanceBetween(activatedLa, activatedLo, loc.getLatitude(), loc.getLongitude(), distanceWaypoint);
 			Log.i("WP distance", distanceWaypoint[0] + "");
 
-			if(distanceWaypoint[0] <= WPTreshold) { // in meters
+			if(distanceWaypoint[0] <= WayActivity.findWPfromName(activatedName).getTreshold()) { // in meters
 				if(activatedIndex == activatedWay.size() - 1) {
 					MainActivity.tts.speak("You have reached the last way point " + activatedWayName + " is disactivated.", TextToSpeech.QUEUE_FLUSH, null);
 					WaypointName = "";

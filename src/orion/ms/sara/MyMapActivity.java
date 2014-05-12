@@ -216,11 +216,11 @@ public class MyMapActivity extends MapActivity {
 				
 				if(latitude == MyLocationListener.WaypointLatitude && longitude == MyLocationListener.WaypointLongitude) {
 					item.setMarker(ItemizedOverlay.boundCenterBottom(mContext.getResources().getDrawable(R.drawable.activewp)));
-					drawRadius(latitude, longitude);
+					drawRadius(WayPointActivity.wayPointList.get(i));
 					Log.i("activated waypoint", name);
 				}
 				if(MyLocationListener.WaypointLatitude == 999 && MyLocationListener.WaypointLongitude == 999) {
-					drawRadius(latitude, longitude);
+					drawRadius(WayPointActivity.wayPointList.get(i));
 					loadWayLine();
 				}
 				pinOverlay.addItem(item);
@@ -228,14 +228,16 @@ public class MyMapActivity extends MapActivity {
 		}
 		mapView.getOverlays().add(pinOverlay);	
 	}
-	private static void drawRadius(double latitude, double longitude) {
+	private static void drawRadius(WP activatedWP) {
 		if(arrayRadius != null) {
 			mapView.getOverlays().remove(arrayRadius);
 			arrayRadius.clear();
 		}
 		if(MyLocationListener.WaypointName != "") { 
-			GeoPoint tmp = new GeoPoint(latitude,longitude);
-			OverlayCircle Radius = new OverlayCircle(tmp , MyLocationListener.WPTreshold, FillCirclePaint, OutlineCirclePaint, "Waypoint Treshold");
+			double la = Double.parseDouble(activatedWP.getLatitude());
+			double lo = Double.parseDouble(activatedWP.getLongitude());
+			GeoPoint tmp = new GeoPoint(la,lo);
+			OverlayCircle Radius = new OverlayCircle(tmp , activatedWP.getTreshold(), FillCirclePaint, OutlineCirclePaint, "Waypoint Treshold");
 			arrayRadius = new ArrayCircleOverlay(FillCirclePaint, OutlineCirclePaint);
 			arrayRadius.addCircle(Radius);
 			mapView.getOverlays().add(arrayRadius);	

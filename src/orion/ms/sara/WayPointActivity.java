@@ -320,8 +320,8 @@ public class WayPointActivity extends Activity {
 		    	newName = intentFromAnother.getStringExtra("newName");
 				newLatitude = intentFromAnother.getStringExtra("newLatitude");
 				newLongitude = intentFromAnother.getStringExtra("newLongitude");
-				treshold = intentFromAnother.getIntExtra("treshold", 1)
-						;
+				treshold = intentFromAnother.getIntExtra("treshold", 1);
+
 				//not from pressing menu item
 				if(!newName.equals("") && !newLatitude.equals("") && !newLongitude.equals(""))
 					addNewWPtoList(wayPointList, newName, newLatitude, newLongitude);
@@ -332,7 +332,8 @@ public class WayPointActivity extends Activity {
 					intentToMain.putExtra("actName", newName);//name
 					intentToMain.putExtra("actLatitude", Double.parseDouble(newLatitude));//latitude
 					intentToMain.putExtra("actLongitude", Double.parseDouble(newLongitude));//longitude
-					
+					intentToMain.putExtra("actTreshold", treshold);//longitude
+
 					Log.i("selected", newName);
 					//back to main activity and send some parameters to the activity
 					setResult(RESULT_OK, intentToMain);
@@ -381,6 +382,14 @@ public class WayPointActivity extends Activity {
 			nameList.add(wList.get(i).getName());
 		}
 		return nameList;
+	}
+	//to convert from array list of waypoint point into name of the waypoint point array
+	public static int[] tresholdArray(List<WP> wList){
+		int[] arrayTreshold = new int[wList.size()];
+		for(int i = 0;i<wList.size();i++){
+			arrayTreshold[i] = wList.get(i).getTreshold();
+		}
+		return arrayTreshold;
 	}
 	
 	//to convert from array list of waypoint point into name of the waypoint point array
@@ -503,7 +512,7 @@ public class WayPointActivity extends Activity {
 		Log.i("top list", waypoint.getTop()+"");
 		
 		//save the last number of default name value and attributes of waypoint point in the list
-		savePref(lastNumberForWaypoint,nameArray(wList),latitudeArray(wList),longitudeArray(wList));
+		savePref(lastNumberForWaypoint,nameArray(wList),latitudeArray(wList),longitudeArray(wList),tresholdArray(wList));
 		
 	}//end sorting
 		
@@ -517,7 +526,7 @@ public class WayPointActivity extends Activity {
 	}
 	
 	//save preferences
-	private void savePref(int lnum, String[] name, String[] lati, String[] longi){
+	private void savePref(int lnum, String[] name, String[] lati, String[] longi, int[] treshold){
 		//last number for new waypoint 
 		editor.putInt(getString(R.string.save_last_num), lnum);
 		
@@ -535,6 +544,12 @@ public class WayPointActivity extends Activity {
 	    editor.putInt("longitudeArray" +"_size", longi.length);  
 	    for(int i=0;i<longi.length;i++)  
 	        editor.putString("longitudeArray" + "_" + i, longi[i]);
+		editor.commit();
+		
+	    //treshold array
+	    editor.putInt("tresholdArray" +"_size", treshold.length);  
+	    for(int i=0;i<longi.length;i++)  
+	        editor.putInt("tresholdArray" + "_" + i, treshold[i]);
 		editor.commit();
 		
 	}
