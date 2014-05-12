@@ -161,6 +161,10 @@ public class NewWayActivity extends Activity {
 					//get the new way's name EditText
 					wayName = wayNameBox.getText().toString();
 					temp.setName(wayName);
+					Log.i("temp size", wayName+" :"+temp.getSize());
+    				for(int j = 0;j<temp.getSize();j++){
+    					Log.i("wp in new", "Way1 ----WP"+j+" : "+temp.getWP(j).getName());
+    				}
 					if(temp.getSize()<2){
 						tts.speak("Cannot create a way with less than 2 waypoints", tts.QUEUE_FLUSH, null);
 					}
@@ -220,11 +224,6 @@ public class NewWayActivity extends Activity {
 						tts.speak("Cannot create a way with less than 2 waypoints", tts.QUEUE_FLUSH, null);
 					}
 					else{
-						Log.i("temp size", wayName+" :"+temp.getSize());
-	    				for(int j = 0;j<temp.getSize();j++){
-	    					Log.i("wp in new", "Way1 ----WP"+j+" : "+temp.getWP(j).getName());
-	    				}
-						
 						//check if the filled name or the way points are already recorded
 						if(isRecorded(temp)){
 							tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
@@ -381,27 +380,53 @@ public class NewWayActivity extends Activity {
 	//set way point to way
 	@SuppressWarnings("static-access")
 	private void setWPtoWay(int spinnerID,WP wp){
+		int order = 3;
 		if(spinnerID==wp1List.getId()){
 			//way point1
-			temp.setWP(0, wp);
-			tts.speak("Waypoint1"+" is "+selecting.getName(), tts.QUEUE_FLUSH, null);
+			if(temp.getWP(0)!=null){
+				//replace old way point
+				temp.setWP(0, wp);
+			}
+			else{
+				//add new way point
+				temp.addWPtoWay(selecting);
+			}
+			order = 1;
 		}
 		else if(spinnerID==wp2List.getId()){
 			//way point2
-			temp.setWP(1, wp);
-			tts.speak("Waypoint2"+" is "+selecting.getName(), tts.QUEUE_FLUSH, null);
+			if(temp.getWP(1)!=null){
+				//replace old way point
+				temp.setWP(1, wp);
+			}
+			else{
+				//add new way point
+				temp.addWPtoWay(selecting);
+			}
+			order = 2;
 		}
 		else{
 			//old way points
 			for(int k=0;k<temp.getSize();k++){
 				if(spinnerID==(k+1)){
-					temp.setWP(k, wp);
-					tts.speak("Waypoint"+(k+1)+" is "+selecting.getName(), tts.QUEUE_FLUSH, null);
+					if(temp.getWP(k)!=null){
+						//replace old way point
+						temp.setWP(k, wp);
+					}
+					else{
+						//add new way point
+						temp.addWPtoWay(selecting);
+					}
+					order = k+1;
+					
 				}
 			}
-			//add new way point
-			temp.addWPtoWay(selecting);
+			if(order>temp.getSize()){
+				temp.addWPtoWay(selecting);
+			}
 		}
+		//tts announcement
+		tts.speak("Waypoint"+order+" is "+selecting.getName(), tts.QUEUE_FLUSH, null);
 	}
 		
 	//to check if the filled name or the position (latitude and longitude) are already recorded
