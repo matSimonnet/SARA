@@ -6,121 +6,135 @@
     tools:context="orion.ms.sara.ModifyWayActivity"
     tools:ignore="MergeRootFrame" >
 
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical" >
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/way_name"
+            android:textSize="50dp" />
+
+        <EditText
+            android:id="@+id/editText1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView1"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:inputType="text" >
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_centerHorizontal="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:text="@string/way_name"
-                android:textSize="50dp" />
+            <requestFocus />
+        </EditText>
 
-            <EditText
-                android:id="@+id/editText1"
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="400dp"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/button3"
+            android:text="@string/modifyway_button"
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="400dp"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/save_and_activateButton"
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_above="@+id/button2"
+            android:layout_alignParentLeft="true"
+            android:text="@string/add_more_wp"
+            android:textSize="30dp" />
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button1"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/editText1" >
+
+            <RelativeLayout
+                android:id="@+id/rela"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView1"
-                android:layout_marginTop="30dp"
-                android:ems="10"
-                android:inputType="text" >
+                android:layout_marginTop="30dp" >
 
-                <requestFocus />
-            </EditText>
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/way_wp1"
+                    android:textSize="50dp" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_below="@+id/editText1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:text="@string/way_wp1"
-                android:textSize="50dp" />
+                <Spinner
+                    android:id="@+id/spinner1"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/textView3"
+                    android:textAlignment="center" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_alignBaseline="@+id/textView2"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/textView2"
-                android:text="@string/waypoint1_name"
-                android:textSize="50dp" />
+                <TextView
+                    android:id="@+id/TextView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/spinner1"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/way_wp2"
+                    android:textSize="50dp" />
 
-            <Spinner
-                android:id="@+id/spinner1"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_below="@+id/textView2"
-                android:layout_marginTop="30dp"
-                android:textAlignment="center" />
+                <TextView
+                    android:id="@+id/TextView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/TextView4"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/waypoint2_name"
+                    android:textSize="50dp" />
 
-            <TextView
-                android:id="@+id/TextView4"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_below="@+id/spinner1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:text="@string/way_wp2"
-                android:textSize="50dp" />
+                <Spinner
+                    android:id="@+id/Spinner2"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/TextView5"
+                    android:textAlignment="center" />
 
-            <TextView
-                android:id="@+id/TextView5"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_alignBaseline="@+id/TextView4"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/TextView4"
-                android:text="@string/waypoint2_name"
-                android:textSize="50dp" />
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/textView2"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/waypoint1_name"
+                    android:textSize="50dp" />
 
-            <Spinner
-                android:id="@+id/Spinner2"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_below="@+id/TextView4"
-                android:layout_marginTop="30dp"
-                android:textAlignment="center" />
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_below="@+id/Spinner2"
-                android:layout_marginTop="30dp"
-                android:text="@string/add_more_wp"
-                android:textSize="30dp" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="400dp"
-                android:layout_height="100dp"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/button1"
-                android:text="@string/modifyway_button"
-                android:textSize="30dp" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="400dp"
-                android:layout_height="100dp"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/button1"
-                android:text="@string/save_and_activateButton"
-                android:textSize="30dp" />
-        </RelativeLayout>
-    </ScrollView>
+                <LinearLayout
+                    android:id="@+id/blankPlate"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:orientation="vertical" >
+                </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
 
 </FrameLayout>

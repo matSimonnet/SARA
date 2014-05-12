@@ -58,8 +58,6 @@ public class NewWayActivity extends Activity {
 	private int belowID = R.id.Spinner2;
 	
 	//way point
-	private WP selectedWP1 = null;
-	private WP selectedWP2 = null;
 	private String name;
 	private String latitude;
 	private String longitude;
@@ -80,8 +78,6 @@ public class NewWayActivity extends Activity {
 	
 	//way attributes
 	private String wayName = "Way1";
-	private String waypoint1Name = "No selected waypoint";
-	private String waypoint2Name = "No selected waypoint";
 	private Way temp = null;
 	private String defaultName = "No selected waypoint";
 	private String wpName = "No selected waypoint";
@@ -143,7 +139,6 @@ public class NewWayActivity extends Activity {
 		//add more button
 		addMoreButton = (Button) findViewById(R.id.button1);
 		addMoreButton.setOnClickListener(new OnClickListener() {
-			//@SuppressWarnings("static-access")
 			@SuppressWarnings("static-access")
 			@Override
 			public void onClick(View arg0) {
@@ -284,9 +279,6 @@ public class NewWayActivity extends Activity {
 	private void setUpArrayAdapter(final List<WP> wList, final Spinner spin,final TextView nameText) {
 		//get spinner's id
 		final int spinID = spin.getId();
-		//add a last selected way point and remove a selecting way point
-		//wList.add(lastselected);
-		//lastselected = wList.remove(selecting);
 		arrAd = new ArrayAdapter<String>(NewWayActivity.this,
 						android.R.layout.simple_spinner_item, 
 						WayPointActivity.toNameArrayList(wList));
@@ -322,7 +314,7 @@ public class NewWayActivity extends Activity {
                 				}
                 				spin.setFocusable(true);
                 				spin.setFocusableInTouchMode(true);
-                				spin.requestFocus();
+                				//spin.requestFocus();
                 				//test
                 				Log.i("temp size", temp.getName()+" : "+temp.getSize());
                 				for(int j = 0;j<temp.getSize();j++){

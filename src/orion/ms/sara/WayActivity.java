@@ -197,12 +197,13 @@ public class WayActivity extends Activity {
 											Toast.makeText(WayActivity.this,"Modify",Toast.LENGTH_SHORT).show();
 											tts.speak("Modify", tts.QUEUE_FLUSH, null);
 											
-											//change to the "Modify" activity
-											//passing modifying way point name and position
+											//change to the "ModifyWay" activity
+											//passing modifying way and way points
 											intentToModifyWay.putExtra("modName", choosingWay.getName());//name
-											intentToModifyWay.putExtra("modWP1", choosingWay.getFirstWP().getName());//waypoint1 name
-											intentToModifyWay.putExtra("modWP2", choosingWay.getWP(1).getName());//waypoint2 name
-											
+											intentToModifyWay.putExtra("modSize", choosingWay.getSize());//size
+											for(int i = 0; i < choosingWay.getSize(); i++) {
+												intentToModifyWay.putExtra("WP"+(i+1)+"Name", choosingWay.getWP(i).getName());
+											}											
 											//start NewWayPoint activity
 											startActivityForResult(intentToModifyWay, MODIFY_WAY);
 										}//end of onClick
@@ -353,7 +354,7 @@ public class WayActivity extends Activity {
 	  //get parameters from the Modify activity and replace the old information
 	    if(requestCode == MODIFY_WAY && resultCode == RESULT_OK){
 	    	modName = intentFromAnother.getStringExtra("modWayName");
-			modWP1 = intentFromAnother.getStringExtra("modWP1Name");
+			/*modWP1 = intentFromAnother.getStringExtra("modWP1Name");
 			modWP2 = intentFromAnother.getStringExtra("modWP2Name");
 			
 			//not pressing from menu item
@@ -376,6 +377,7 @@ public class WayActivity extends Activity {
 				setResult(RESULT_OK, intentToMain);
 				finish();
 			}//end if for pressing save and activate
+			*/
 	    }
 	    
 	}
