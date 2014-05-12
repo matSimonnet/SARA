@@ -79,6 +79,8 @@ public class WayPointActivity extends Activity {
 		private int selectedItem = 0;
 		private String selectedName = "Please selected a waypoint";
 		
+		private int treshold = 1;
+		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -318,6 +320,8 @@ public class WayPointActivity extends Activity {
 		    	newName = intentFromAnother.getStringExtra("newName");
 				newLatitude = intentFromAnother.getStringExtra("newLatitude");
 				newLongitude = intentFromAnother.getStringExtra("newLongitude");
+				treshold = intentFromAnother.getIntExtra("treshold", 1)
+						;
 				//not from pressing menu item
 				if(!newName.equals("") && !newLatitude.equals("") && !newLongitude.equals(""))
 					addNewWPtoList(wayPointList, newName, newLatitude, newLongitude);
@@ -415,7 +419,9 @@ public class WayPointActivity extends Activity {
 			lastNumberForWaypoint = Integer.parseInt(n.substring(2));//substring "WP" name to get the number after that
 		}
 		//Adding the new waypoint point into the list
-		wList.add(new WP(n,la,lo));//create new waypoint point with assuming distance
+		WP newWP = new WP(n,la,lo);
+		newWP.setTreshold(treshold);
+		wList.add(newWP);//create new waypoint point with assuming distance
 		sortingWaypointList(wList);//sorting the list
 	}
 	

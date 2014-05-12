@@ -64,6 +64,16 @@ public class NewWayPointActivity extends Activity {
 
 		//status for check if save and activate button is pressed (new way point)
 		public static boolean isAlsoActivateForNWP = false;
+		
+		private TextView textViewWPTreshold = null;
+
+		// declare change distance time treshold buttons
+		private Button IncreaseWPTresholdButton = null;
+		private Button DecreaseWPTresholdButton = null;
+		
+		private int WPTreshold = 1;
+		private int step = 1;
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -214,6 +224,8 @@ public class NewWayPointActivity extends Activity {
 									intentToWayPoint.putExtra("newName",name);//name
 									intentToWayPoint.putExtra("newLatitude", latitude);//latitude
 									intentToWayPoint.putExtra("newLongitude", longitude);//longitude
+									intentToWayPoint.putExtra("treshold", WPTreshold);//treshold
+
 									isAlsoActivateForNWP = false;//change status
 
 									//back to WayPoint activity and send some parameters to the activity
@@ -257,6 +269,8 @@ public class NewWayPointActivity extends Activity {
 									intentToWayPoint.putExtra("newName",name);//name
 									intentToWayPoint.putExtra("newLatitude", latitude);//latitude
 									intentToWayPoint.putExtra("newLongitude", longitude);//longitude
+									intentToWayPoint.putExtra("treshold", WPTreshold);//treshold
+
 									isAlsoActivateForNWP = true;//change the status
 									
 									//back to WayPoint activity and send some parameters to the activity
@@ -267,6 +281,79 @@ public class NewWayPointActivity extends Activity {
 						}//end if
 					}//end onClick
 				});//end setOnClick
+				// increase&decrease distance time treshold button
+				IncreaseWPTresholdButton = (Button) findViewById(R.id.IncreaseWPTresholdButton);
+				IncreaseWPTresholdButton.setContentDescription(getResources().getString(R.string.increase) + " " + getResources().getString(R.string.wptreshold));
+				DecreaseWPTresholdButton = (Button) findViewById(R.id.DecreaseWPTresholdButton);
+				DecreaseWPTresholdButton.setContentDescription(getResources().getString(R.string.decrease) + " " + getResources().getString(R.string.wptreshold));
+				
+				// distance time treshold view
+				textViewWPTreshold = (TextView) findViewById(R.id.WPTresholdTextView);
+				textViewWPTreshold.setText(getResources().getString(R.string.wptreshold) + " " + WPTreshold + " " + getResources().getString(R.string.metres));
+				textViewWPTreshold.setContentDescription(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres));
+
+				
+				// OnClickListener creation
+				View.OnClickListener onclickListener = new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (v == IncreaseWPTresholdButton) {
+							if (WPTreshold >= 0 && WPTreshold < 10) {
+								step = 1;
+								WPTreshold = WPTreshold + step;
+								textViewWPTreshold.setText(getResources().getString(R.string.wptreshold) + " " + WPTreshold + " " + getResources().getString(R.string.metres));
+								textViewWPTreshold.setContentDescription(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres));
+								tts.speak(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres), TextToSpeech.QUEUE_FLUSH, null);
+								Log.i("test", "increase wp treshold 1");
+							} else if (WPTreshold >= 10 && WPTreshold < 100) {
+								step = 10;
+								WPTreshold = WPTreshold + step;
+								textViewWPTreshold.setText(getResources().getString(R.string.wptreshold) + " " + WPTreshold + " " + getResources().getString(R.string.metres));
+								textViewWPTreshold.setContentDescription(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres));
+								tts.speak(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres), TextToSpeech.QUEUE_FLUSH, null);
+								Log.i("test", "increase wp treshold 10");
+							} else if (WPTreshold >= 100 && WPTreshold < 1000) {
+								step = 100;
+								WPTreshold = WPTreshold + step;
+								textViewWPTreshold.setText(getResources().getString(R.string.wptreshold) + " " + WPTreshold + " " + getResources().getString(R.string.metres));
+								textViewWPTreshold.setContentDescription(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres));
+								tts.speak(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres), TextToSpeech.QUEUE_FLUSH, null);
+								Log.i("test", "increase wp treshold 100");
+							} else if (WPTreshold == 1000) {
+								tts.speak(getResources().getString(R.string.wptreshold) + " " + WPTreshold + " " + getResources().getString(R.string.metres) + " " + getResources().getString(R.string.cant_increase), TextToSpeech.QUEUE_FLUSH, null);
+							}
+
+						}
+						if (v == DecreaseWPTresholdButton) {
+							if (WPTreshold > 1 && WPTreshold <= 10) {
+								step = 1;
+								WPTreshold = WPTreshold - step;
+								textViewWPTreshold.setText(getResources().getString(R.string.wptreshold) + " " + WPTreshold + " " + getResources().getString(R.string.metres));
+								textViewWPTreshold.setContentDescription(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres));
+								tts.speak(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres), TextToSpeech.QUEUE_FLUSH, null);
+								Log.i("test", "decrease wp treshold 1");
+							} else if (WPTreshold > 10 && WPTreshold <= 100) {
+								step = 10;
+								WPTreshold = WPTreshold - step;
+								textViewWPTreshold.setText(getResources().getString(R.string.wptreshold) + " " + WPTreshold + " " + getResources().getString(R.string.metres));
+								textViewWPTreshold.setContentDescription(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres));
+								tts.speak(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres), TextToSpeech.QUEUE_FLUSH, null);
+								Log.i("test", "decrease wp treshold 10");
+							} else if (WPTreshold > 100 && WPTreshold <= 1000) {
+								step = 100;
+								WPTreshold = WPTreshold - step;
+								textViewWPTreshold.setText(getResources().getString(R.string.wptreshold) + " " + WPTreshold + " " + getResources().getString(R.string.metres));
+								textViewWPTreshold.setContentDescription(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres));
+								tts.speak(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres), TextToSpeech.QUEUE_FLUSH, null);
+								Log.i("test", "decrease wp treshold 100");
+							} else if (WPTreshold == 1) {
+								tts.speak(getResources().getString(R.string.wptreshold) + " " + WPTreshold + " " + getResources().getString(R.string.metres) + " " + getResources().getString(R.string.cant_decrease), TextToSpeech.QUEUE_FLUSH, null);
+							}
+						}
+					}// end of onclick
+				}; // end of new View.LocationListener
+				IncreaseWPTresholdButton.setOnClickListener(onclickListener);
+				DecreaseWPTresholdButton.setOnClickListener(onclickListener);
 				
 	}//end of OnCreate
 
