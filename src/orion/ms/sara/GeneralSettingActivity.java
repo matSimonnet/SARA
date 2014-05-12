@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,12 +17,10 @@ public class GeneralSettingActivity extends Activity {
 	private Button speedUnitButton = null;
 	private Button bearingUnitButton = null;
 	private Button distanceUnitButton = null;
-	private Button WPTresholdButton = null;
 	
 	private Intent intentToSpeed;
 	private Intent intentToBearing;
 	private Intent intentToDistance;
-	private Intent intentToWPTreshold;
 	
 	//code for intent
 	protected static final int SPEED_UNIT = 141;
@@ -62,14 +59,10 @@ public class GeneralSettingActivity extends Activity {
 		this.distanceUnitButton = (Button) findViewById(R.id.button3);
 		this.distanceUnitButton.setContentDescription(getResources().getString(R.string.distanceunitsetting));
 		
-		this.WPTresholdButton = (Button) findViewById(R.id.button4);
-		this.WPTresholdButton.setContentDescription(getResources().getString(R.string.maptypesetting));
-
 		//intent creations
 		intentToSpeed = new Intent(GeneralSettingActivity.this,SpeedUnitActivity.class);
 		intentToBearing = new Intent(GeneralSettingActivity.this,BearingUnitActivity.class);
 		intentToDistance = new Intent(GeneralSettingActivity.this,DistanceUnitActivity.class);
-		intentToWPTreshold = new Intent(GeneralSettingActivity.this,WPTresholdActivity.class);
 		
 	    View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
@@ -83,15 +76,11 @@ public class GeneralSettingActivity extends Activity {
 				if(v == distanceUnitButton) {
 		            startActivityForResult(intentToDistance, DISTANCE_UNIT);					
 				}
-				if(v == WPTresholdButton) {
-		            startActivityForResult(intentToWPTreshold, WP_TRESHOLD);					
-				}
 			}
 	    };
 	    speedUnitButton.setOnClickListener(onclickListener);
 	    bearingUnitButton.setOnClickListener(onclickListener);
 	    distanceUnitButton.setOnClickListener(onclickListener);
-	    WPTresholdButton.setOnClickListener(onclickListener);
 
 	} // end of on create
 	
