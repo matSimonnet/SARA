@@ -62,6 +62,7 @@
         
     <string name="navigation_setting">Back to Navigation</string>
     <string name="using_map">Use location from the map</string>
+    <string name="current_checkedBox">Use current position</string>
     
     <string name="no_satellite">No Satellite</string>
     <string name="waiting_gps">is waiting for gps signal.</string>     
