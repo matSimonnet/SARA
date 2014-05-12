@@ -306,9 +306,37 @@ public class MainActivity extends Activity {
 	  	
 	  	WayPointActivity.wayPointList = wList;
 	  	
-	  	//wayList
-	  	//name array
-  		/*int nameWaySize = settings.getInt("nameWayArray" + "_size", 0);  
+	  	//way List
+	  	List<Way> tempWayList = new ArrayList<Way>();
+	  	//way name array
+	  	int waySize = settings.getInt("nameWayArray" +"_size", 0);
+	  	for(int i=0;i<waySize;i++){
+	  		//ways
+	  		String wayName = settings.getString("nameWayArray" + "_" + i, null);
+	  		Way tempWay = new Way(wayName);
+	  		int tempWaySize = settings.getInt(wayName+"_waySize", 0);
+	  		for(int j=0;j<tempWaySize;j++){
+	  			//way points
+	  			String wpLoadName = settings.getString(wayName+"_wpNameArray" + "_" + j, null);
+	  			WP tempLoad = WayActivity.findWPfromName(wpLoadName);
+	  			//adding way points into way
+	  			tempWay.addWPtoWay(tempLoad);
+	  		}
+	  		//adding ways into a way list
+	  		tempWayList.add(tempWay);
+	  	}
+	  	
+	  	WayActivity.wayList = tempWayList;
+  		/*//way name array  
+	    for(int i=0;i<nameWay.length;i++){  
+	        editor.putString("nameWayArray" + "_" + i, nameWay[i]);
+	      //way point name array
+	        Way tempSave = findWayfromName(nameWay[i]);
+	        for(int j=0;j<tempSave.getSize();j++){
+	        	editor.putString(nameWay[i]+"_wpNameArray" + "_" + j, tempSave.getWP(j).getName());
+	        }
+	    }
+  		 * int nameWaySize = settings.getInt("nameWayArray" + "_size", 0);  
   	    String nameWay[] = new String[nameWaySize];  
   	    for(int i=0;i<nameWaySize;i++)  
   	    	nameWay[i] = settings.getString("nameWayArray" + "_" + i, null);
@@ -447,7 +475,6 @@ public class MainActivity extends Activity {
         View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
         		if(v == previousButton) {
         			MyLocationListener.previousWaypoint();
         		}

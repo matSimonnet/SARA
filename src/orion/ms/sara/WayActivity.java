@@ -92,7 +92,7 @@ public class WayActivity extends Activity {
 			// Restore preferences
 			this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
 			this.editor = settings.edit();
-			//loadPref();
+			loadPref();
 			
 			for(int i = 0;i<wayList.size();i++){
 				Log.i("way list", "item "+i+": "+wayList.get(i).getName());
@@ -404,10 +404,20 @@ public class WayActivity extends Activity {
 		sortingWayList(wList);//sorting the list
 	}
 	
+	//Search way point from its name
 	public static WP findWPfromName(String name){
 		for(int i= 0;i<WayPointActivity.getWayPointList().size();i++){
 			if(WayPointActivity.getWayPointList().get(i).getName().equals(name))
 				return WayPointActivity.getWayPointList().get(i);
+		}
+		return null;
+	}
+	
+	//Search way from its name
+	public Way findWayfromName(String name){
+		for(int i = 0;i<wayList.size();i++){
+			if(wayList.get(i).getName().equals(name))
+				return wayList.get(i);
 		}
 		return null;
 	}
@@ -481,7 +491,7 @@ public class WayActivity extends Activity {
 		way.setAdapter(arrAd);
 		
 		//save the last number of default name value and attributes of way point in the list
-		//savePref(lastNumberForWay,nameWayArray(wList),nameWayArray(),nameWayArray(wList));
+		savePref(lastNumberForWay,nameWayArray(wList));
 		
 	}//end sorting
 		
@@ -494,24 +504,21 @@ public class WayActivity extends Activity {
 	}
 	
 	//save preferences
-	private void savePref(int lnum, String[] nameWay,String[] nameWP1,String[] nameWP2){
+	private void savePref(int lnum, String[] nameWay){
 		//last number for new way 
 		editor.putInt("Last_name_for_way", lnum);
 		
-		//name array
+		//way name array
 		editor.putInt("nameWayArray" +"_size", nameWay.length);  
-	    for(int i=0;i<nameWay.length;i++)  
+	    for(int i=0;i<nameWay.length;i++){  
 	        editor.putString("nameWayArray" + "_" + i, nameWay[i]);
-	    
-	    //wp1 name array
-	    editor.putInt("nameWP1Array" +"_size", nameWP1.length);  
-	    for(int i=0;i<nameWP1.length;i++)  
-	  	    editor.putString("nameWP1Array" + "_" + i, nameWP1[i]);
-	    
-	  	//wp2 name array
-	    editor.putInt("nameWP2Array" +"_size", nameWP2.length);  
-	    for(int i=0;i<nameWP2.length;i++)  
-	  	    editor.putString("nameWP2Array" + "_" + i, nameWP2[i]);
+	      //way point name array
+	        Way tempSave = findWayfromName(nameWay[i]);
+	        editor.putInt(nameWay[i]+"_waySize", tempSave.getSize());
+	        for(int j=0;j<tempSave.getSize();j++){
+	        	editor.putString(nameWay[i]+"_wpNameArray" + "_" + j, tempSave.getWP(j).getName());
+	        }
+	    }
 	    
 	    editor.commit();
 		
