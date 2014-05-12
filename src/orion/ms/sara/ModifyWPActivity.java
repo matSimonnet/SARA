@@ -37,7 +37,6 @@ public class ModifyWPActivity extends Activity {
 	private TextView modNameText =null;
 	private TextView modLatitudeText =null;
 	private TextView modLongitudeText =null;
-	private TextView modTresholdText =null;
 	
 	//EditText
 	private EditText nameBox = null;
