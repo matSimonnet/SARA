@@ -452,7 +452,7 @@ public class MyMapActivity extends MapActivity {
 											// download
 											if (isDownloadManagerAvailable(MyMapActivity.this)) {
 												DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-												request.setDescription("/Android/data/map/");
+												request.setDescription("Downloading...");
 												request.setTitle("bretagne.map");
 												// in order for this if to run,
 												// you must use the android 3.2
@@ -461,7 +461,7 @@ public class MyMapActivity extends MapActivity {
 													request.allowScanningByMediaScanner();
 													request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 												}
-												request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "bretagne.map");
+												request.setDestinationInExternalPublicDir(Environment.getExternalStorageDirectory().getPath() + "/Android/data/org.mapsforge.android.maps/map/", "bretagne.map");
 
 												// get download service and
 												// enqueue file
@@ -484,7 +484,7 @@ public class MyMapActivity extends MapActivity {
 							// Start downloading file via wireless network
 							// notify
 							AlertDialog.Builder dialog = new AlertDialog.Builder(MyMapActivity.this);
-							dialog.setTitle("Start downloading bretagne.map");
+							dialog.setTitle("Start downloading bretagne.map, please come back to this page when finish downloading file");
 							dialog.setNeutralButton("OK", null);
 							dialog.show();
 							// download
