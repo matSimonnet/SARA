@@ -27,18 +27,6 @@ public class Way implements Comparable<Way>{
 		return way;
 	}
 	
-	//add a way point at the selected position
-	public List<WP> addWPat(WP wp,int position){
-		way.add(position, wp);
-		return way;
-	}
-	
-	//delete a way point at the selected position
-	public List<WP> removeWPat(int position){
-		way.remove(position);
-		return way;
-	}
-	
 	//delete way point from way
 	private List<WP> deleteWPfromWay(WP deleteWP){
 		//check if there is still any way point left

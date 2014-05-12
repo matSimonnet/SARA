@@ -43,10 +43,9 @@ public class WayActivity extends Activity {
 	private int newWaySize = 0;
 	private Way tempWay;
 	
-	//strings for each attribute of the modifying way point
-	private String modName = "";
-	private String modWP1 = "";
-	private String modWP2 = "";
+	//strings for each attribute of the modifying way 
+	private String modWayName = "";
+	private int modWaySize = 0;
 	
 	//Generating a number for a new way's default name
 	public static int lastNumberForWay = 0;
@@ -353,31 +352,36 @@ public class WayActivity extends Activity {
 	    
 	  //get parameters from the Modify activity and replace the old information
 	    if(requestCode == MODIFY_WAY && resultCode == RESULT_OK){
-	    	modName = intentFromAnother.getStringExtra("modWayName");
-			/*modWP1 = intentFromAnother.getStringExtra("modWP1Name");
-			modWP2 = intentFromAnother.getStringExtra("modWP2Name");
-			
-			//not pressing from menu item
-			if(!modName.equals("") && !modWP1.equals("") && !modWP2.equals("")){
-				//replace the old information with the modifying information
-	    		choosingWay.setName(modName);
-	    		choosingWay.setFirstWP(findWPfromName(modWP1));
-	    		choosingWay.setWP(1, findWPfromName(modWP2));
-	    		sortingWayList(wayList);
-			}
+	    	modWayName = intentFromAnother.getStringExtra("modWayName");
+	    	if(!modWayName.equals("")){
+		    	//create a new way
+		    	tempWay = new Way(modWayName);
+		    	modWaySize = intentFromAnother.getIntExtra("modWaySize", 0);
+		    	for(int i =0;i<modWaySize;i++){
+		    		//receive way point name and add the way point to way
+		    		tempWP = findWPfromName(intentFromAnother.getStringExtra("modWP"+(i+1)+"Name"));
+		    		tempWay.addWPtoWay(tempWP);
+		    	}
+		    	//replace new way in the way list
+		    	wayList.set(selectedItem, tempWay);
+		    	sortingWayList(wayList);
+
+	    	}
 			//pressing save and activate
 			if(ModifyWayActivity.isAlsoActivateForMW){
 				//change back to the main activity
 				//passing activate way point name and position
-				intentToMain.putExtra("actName", modName);//name
-				intentToMain.putExtra("actLatitude", modWP1);//latitude
-				intentToMain.putExtra("actLongitude", modWP2);//longitude
+				for(int i = 0; i < tempWay.getSize(); i++) {
+					intentToMain.putExtra("WPName" + i, tempWay.getWP(i).getName());
+					intentToMain.putExtra("WPLa" + i, tempWay.getWP(i).getLatitude());
+					intentToMain.putExtra("WPLo" + i, tempWay.getWP(i).getLongitude());
+				}
 				
-				//back to main activity and send some parameters to the activity
+				intentToMain.putExtra("WayLength", tempWay.getSize());
+				intentToMain.putExtra("WayName", tempWay.getName());
 				setResult(RESULT_OK, intentToMain);
 				finish();
 			}//end if for pressing save and activate
-			*/
 	    }
 	    
 	}
@@ -561,10 +565,10 @@ public class WayActivity extends Activity {
 			return false;
 	for(int i= 0;i<w1.getSize();i++){
 		//check way points and their orders
-		Log.i("Same WP?", w1.getWP(i).getName());
-		Log.i("Same WP?", w2.getWP(i).getName());
+		Log.i("Same WP1?", w1.getWP(i).getName());
+		Log.i("Same WP2?", w2.getWP(i).getName());
 		if(!w1.getWP(i).getName().equalsIgnoreCase(w2.getWP(i).getName())){
-			tts.speak("You cannot selected same way points next to each other!!!", tts.QUEUE_ADD, null);
+			tts.speak("You cannot selected same way points next to each other!!!", tts.QUEUE_FLUSH, null);
 			return false;
 		}
 	}
