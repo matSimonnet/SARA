@@ -16,25 +16,30 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical" >
+
             <requestFocus />
         </LinearLayout>
 
         <Button
             android:id="@+id/button2"
+            style="@style/btnStyleShakespeare"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:textSize="50dp"
-            android:text="@string/current_checkedBox" />
-        
+            android:layout_marginTop="20dp"
+            android:text="@string/current_checkedBox"
+            android:textSize="50dp" />
+
         <Button
             android:id="@+id/button3"
+            style="@style/btnStyleShakespeare"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:textSize="50dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/button2"
-            android:text="@string/using_map" />
-        
+            android:layout_marginTop="5dp"
+            android:text="@string/using_map"
+            android:textSize="50dp" />
+
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
@@ -42,32 +47,31 @@
             android:layout_below="@+id/button3"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:textSize="40dp"
             android:text="@string/nameText"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        
-		<EditText
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="40dp" />
+
+        <EditText
             android:id="@+id/editText1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textView1"
             android:ems="10"
-            android:inputType="text" >            
+            android:inputType="text" >
         </EditText>
-        
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_below="@+id/editText1"
-            android:layout_marginTop="20dp"
-            android:textSize="40dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
             android:text="@string/latitudeText"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="40dp" />
 
-        
         <EditText
             android:id="@+id/editText2"
             android:layout_width="match_parent"
@@ -77,47 +81,85 @@
             android:ems="10"
             android:inputType="numberSigned|numberDecimal" />
 
-         <TextView
+        <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/editText2"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:textSize="40dp"
             android:text="@string/longitudeText"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="40dp" />
+
         <EditText
             android:id="@+id/editText3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textView3"
-            android:paddingBottom="30dp"
             android:ems="10"
-            android:inputType="numberSigned|numberDecimal" />
+            android:inputType="numberSigned|numberDecimal"
+            android:paddingBottom="30dp" />
+
+        <TextView
+            android:id="@+id/WPTresholdTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/editText3"
+            android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@+id/DecreaseWPTresholdButton"
+            android:gravity="center"
+            android:text="@string/distancetimetreshold"
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/DecreaseWPTresholdButton"
+            style="@style/btnStyleShakespeare"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_below="@+id/editText3"
+            android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@+id/IncreaseWPTresholdButton"
+            android:gravity="center"
+            android:text="@string/DecreaseButton"
+            android:textSize="50dp" />
+
+        <Button
+            android:id="@+id/IncreaseWPTresholdButton"
+            style="@style/btnStyleShakespeare"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/editText3"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/IncreaseButton"
+            android:textSize="50dp" />
 
         <Button
             android:id="@+id/button1"
+            style="@style/btnStyleShakespeare"
             android:layout_width="400dp"
             android:layout_height="100dp"
-            android:textSize="30dp"
-            android:layout_below="@+id/editText3"
             android:layout_alignParentLeft="true"
-            android:text="@string/saveText"/>
+            android:layout_below="@+id/IncreaseWPTresholdButton"
+            android:layout_marginTop="20dp"
+            android:text="@string/saveText"
+            android:textSize="30dp" />
 
         <Button
             android:id="@+id/button4"
+            style="@style/btnStyleShakespeare"
             android:layout_width="400dp"
             android:layout_height="100dp"
-            android:textSize="30dp"
             android:layout_alignBaseline="@+id/button1"
             android:layout_alignBottom="@+id/button1"
             android:layout_alignParentRight="true"
-            android:text="@string/save_and_activateButton" />
-
-       
+            android:layout_marginTop="20dp"
+            android:text="@string/save_and_activateButton"
+            android:textSize="30dp" />
     </RelativeLayout>
 
 </FrameLayout>

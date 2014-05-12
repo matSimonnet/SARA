@@ -12,7 +12,7 @@ public class WP implements Comparable<WP>{
 		private double distance = 0.0;
 		private double bearing = 0.0;
 		// default treshold
-		private int treshold = 100;
+		private int treshold;
 		
 		//constructor
 		public WP(String n, String la, String lo){
