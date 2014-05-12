@@ -195,6 +195,8 @@ public class MainActivity extends Activity {
         	        MyLocationListener.WaypointName = data.getStringExtra("actName");
         	        MyLocationListener.WaypointLatitude = data.getDoubleExtra("actLatitude", 999);
         	        MyLocationListener.WaypointLongitude = data.getDoubleExtra("actLongitude", 999);
+        	        MyLocationListener.WPTreshold = data.getIntExtra("actTreshold", 1);
+
         			this.actName = data.getStringExtra("actName");
         			Log.i("receiveing name", actName);
         			saveActivatedWaypoint();
@@ -298,10 +300,18 @@ public class MainActivity extends Activity {
 	  	for(int i=0;i<longitudeSize;i++)  
 	  		longitude[i] = settings.getString("longitudeArray" + "_" + i, null);
 	  	
+	  	//longitude array
+	    int tresholdSize = settings.getInt("tresholdArray" +"_size", 0);  
+	  	int treshold[] = new int[tresholdSize];  
+	  	for(int i=0;i<tresholdSize;i++)  
+	  		treshold[i] = settings.getInt("tresholdArray" + "_" + i, 0);
+	  	
 	  	//way point list
 	  	List<WP> wList = new ArrayList<WP>();
 	  	for(int i=0;i<nameSize;i++){
-		  	wList.add(new WP(name[i],latitude[i],longitude[i]));
+	  		WP tmp = new WP(name[i],latitude[i],longitude[i]);
+	  		tmp.setTreshold(treshold[i]);
+		  	wList.add(tmp);
 	  	}
 	  	
 	  	WayPointActivity.wayPointList = wList;
