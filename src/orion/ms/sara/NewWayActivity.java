@@ -53,6 +53,8 @@ public class NewWayActivity extends Activity {
 	private Spinner wp2List;
 	private ArrayList<WP> tempList = new ArrayList<WP>();
 	private ArrayList<WP> anotherList = new ArrayList<WP>();
+	private List<Integer> spinnerID = new ArrayList<Integer>();
+	private int spin_id = 3;
 	
 	//iterator id number of the last item in the scroll view
 	private int belowID = R.id.Spinner2;
@@ -303,23 +305,11 @@ public class NewWayActivity extends Activity {
 	                				if(sameChoosing(selecting, lastSelect)){
 	                					tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
 	                				}
-	                				else{
-	                					tts.speak("Waypoint"+(temp.getSize()+1)+" is "+selecting.getName(), tts.QUEUE_FLUSH, null);
-	                					temp.addWPtoWay(selecting);
-	                				}
-                				}
-                				else{	                					
-                					tts.speak("Waypoint"+(temp.getSize()+1)+" is "+selecting.getName(), tts.QUEUE_FLUSH, null);
-                					temp.addWPtoWay(selecting);
-                				}
+                				}//end size>=1
+                				//find the way point number from the spinner's id
+	            				setWPtoWay(spinID, selecting);
                 				spin.setFocusable(true);
                 				spin.setFocusableInTouchMode(true);
-                				//spin.requestFocus();
-                				//test
-                				Log.i("temp size", temp.getName()+" : "+temp.getSize());
-                				for(int j = 0;j<temp.getSize();j++){
-                					Log.i("wp in new", "Way1 ----WP"+j+" : "+temp.getWP(j).getName());
-                				}
                 			}
                 		}
       				}catch(Exception e){
@@ -369,7 +359,9 @@ public class NewWayActivity extends Activity {
 	    listParam.addRule(RelativeLayout.BELOW,wp_name.getId());
 	    Spinner newWPList = new Spinner(this);
 	    newWPList.setLayoutParams(listParam);
-	    newWPList.setId(wp_name.getId()+88);
+	    newWPList.setId(spin_id);
+	    spinnerID.add(newWPList.getId());
+	    spin_id += 1;
 	    ArrayList<WP> wList = new ArrayList<WP>();
 	    //set up way list
 		setUpArrayAdapter(setUpWPList(wList), newWPList, wp_name);
@@ -386,6 +378,32 @@ public class NewWayActivity extends Activity {
 	    
 	    //set up new id
 	    belowID = blank.getId();
+	}
+	
+	//set way point to way
+	@SuppressWarnings("static-access")
+	private void setWPtoWay(int spinnerID,WP wp){
+		if(spinnerID==wp1List.getId()){
+			//way point1
+			temp.setWP(0, wp);
+			tts.speak("Waypoint1"+" is "+selecting.getName(), tts.QUEUE_FLUSH, null);
+		}
+		else if(spinnerID==wp2List.getId()){
+			//way point2
+			temp.setWP(1, wp);
+			tts.speak("Waypoint2"+" is "+selecting.getName(), tts.QUEUE_FLUSH, null);
+		}
+		else{
+			//old way points
+			for(int k=0;k<temp.getSize();k++){
+				if(spinnerID==(k+1)){
+					temp.setWP(k, wp);
+					tts.speak("Waypoint"+(k+1)+" is "+selecting.getName(), tts.QUEUE_FLUSH, null);
+				}
+			}
+			//add new way point
+			temp.addWPtoWay(selecting);
+		}
 	}
 		
 	//to check if the filled name or the position (latitude and longitude) are already recorded

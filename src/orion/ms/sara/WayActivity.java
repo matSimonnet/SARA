@@ -565,8 +565,6 @@ public class WayActivity extends Activity {
 			return false;
 	for(int i= 0;i<w1.getSize();i++){
 		//check way points and their orders
-		Log.i("Same WP1?", w1.getWP(i).getName());
-		Log.i("Same WP2?", w2.getWP(i).getName());
 		if(!w1.getWP(i).getName().equalsIgnoreCase(w2.getWP(i).getName())){
 			tts.speak("You cannot selected same way points next to each other!!!", tts.QUEUE_FLUSH, null);
 			return false;
