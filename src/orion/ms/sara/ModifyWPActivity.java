@@ -42,7 +42,6 @@ public class ModifyWPActivity extends Activity {
 	private EditText nameBox = null;
 	private EditText latitudeBox = null;
 	private EditText longitudeBox = null;
-	private EditText tresholdBox = null;
 	
 	//button
 	private Button saveButton = null;
@@ -128,9 +127,6 @@ public class ModifyWPActivity extends Activity {
 		//latitudeBox
 		longitudeBox.setText(oldLongitude);
 		longitudeBox.setSelectAllOnFocus(true);
-		//tresholdBox
-		tresholdBox.setText(oldTres);
-		tresholdBox.setSelectAllOnFocus(true);
 		
 		//button
 		//current location button
@@ -205,7 +201,6 @@ public class ModifyWPActivity extends Activity {
 					modName = nameBox.getText().toString();
 					modLatitude = latitudeBox.getText().toString();
 					modLongitude = longitudeBox.getText().toString();
-					modTres = tresholdBox.getText().toString();
 					
 					//check if the filled name or the position (latitude and longitude) are already recorded
 					if(!isRecorded(modName, modLatitude, modLongitude)){
@@ -249,7 +244,6 @@ public class ModifyWPActivity extends Activity {
 					modName = nameBox.getText().toString();
 					modLatitude = latitudeBox.getText().toString();
 					modLongitude = longitudeBox.getText().toString();
-					modTres = tresholdBox.getText().toString();
 					
 					//check if the filled name or the position (latitude and longitude) are already recorded
 					if(!isRecorded(modName, modLatitude, modLongitude)){
@@ -312,6 +306,7 @@ public class ModifyWPActivity extends Activity {
 		@Override
 		protected void onDestroy() {
 			super.onDestroy();
+			tts.shutdown();
 		}
 
 	@Override
@@ -333,7 +328,6 @@ public class ModifyWPActivity extends Activity {
 			modName = nameBox.getText().toString();
 			modLatitude = latitudeBox.getText().toString();
 			modLongitude = longitudeBox.getText().toString();
-			modTres = tresholdBox.getText().toString();
 			
 			//check if some values change without saving
 			if(!oldName.equals(modName) || !oldLatitude.equals(modLatitude) || !oldLongitude.equals(modLongitude)){

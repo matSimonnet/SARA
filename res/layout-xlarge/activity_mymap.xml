@@ -17,7 +17,7 @@
             android:id="@+id/trackbutton"
             style="@style/btnStyleShakespeare"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="75dp"
             android:layout_weight="1"
             android:text="@string/display" >
         </Button>
@@ -26,7 +26,7 @@
             android:id="@+id/autocenterbutton"
             style="@style/btnStyleShakespeare"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="75dp"
             android:layout_weight="1"
             android:text="@string/autocenter" >
         </Button>

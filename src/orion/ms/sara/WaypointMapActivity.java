@@ -46,11 +46,15 @@ public class WaypointMapActivity extends MapActivity {
 	private MyItemizedOverlay itemizedOverlay; // is an array for managing an item
 	
 	private Button saveButton;
-	private OverlayItem itemModify; // 
+	private Button AutoCenterButton;
+
+	private OverlayItem itemModify;
 	private OverlayItem itemCreate;
 	
 	private boolean isChanged = false; // if end user have long pressed on screen, isChange is true
  
+	private MapController Controller;	
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +69,11 @@ public class WaypointMapActivity extends MapActivity {
 		mapView = (MyMapView) findViewById(R.id.mapview);
         this.saveButton = (Button) findViewById(R.id.savebutton);
         this.saveButton.setContentDescription(getResources().getString(R.string.usethislocation));
+        
+		AutoCenterButton = (Button) findViewById(R.id.autocenterbutton);
+		AutoCenterButton.setContentDescription(getResources().getString(R.string.autocenter));
+		AutoCenterButton.setText(getResources().getString(R.string.autocenter));
+		
         
         // create listener for all buttons
 	    View.OnClickListener onclickListener = new View.OnClickListener() {
@@ -83,15 +92,26 @@ public class WaypointMapActivity extends MapActivity {
 						finish();
 					}
 				}
+				if(v == AutoCenterButton) {
+					if(MyLocationListener.currentLatitude != "" && MyLocationListener.currentLongitude != "") {
+						double latitude = Double.valueOf(MyLocationListener.currentLatitude);
+						double longitude = Double.valueOf(MyLocationListener.currentLongitude);
+						GeoPoint currentlocation = new GeoPoint(latitude, longitude);
+						Controller.setCenter(currentlocation);
+					}
+				}
 
 			}
 	    	
 	    };
-	    this.saveButton.setOnClickListener(onclickListener); // add listener to button
-
+	    saveButton.setOnClickListener(onclickListener); // add listener to button
+	    AutoCenterButton.setOnClickListener(onclickListener);
+	    
 		setMapFile(); // set map file in the directory
 		loadFlag(); // if start activity from ModifyWaypointActivity, return true
 		loadWaypoint();
+		Controller = mapView.getController();
+
 
         mapView.setOnLongpressListener(new MyMapView.OnLongpressListener() {
         public void onLongpress(final MapView view, final GeoPoint longpressLocation) {

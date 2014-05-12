@@ -19,8 +19,16 @@
             android:layout_width="0dp"
             android:layout_height="75dp"
             android:layout_weight="1"
-            android:textSize="30dp"
             android:text="@string/usethislocation" >
+        </Button>
+
+        <Button
+            android:id="@+id/autocenterbutton"
+            style="@style/btnStyleShakespeare"
+            android:layout_width="0dp"
+            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:text="@string/autocenter" >
         </Button>
     </LinearLayout>
 
