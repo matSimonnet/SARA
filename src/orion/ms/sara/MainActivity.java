@@ -64,7 +64,8 @@ public class MainActivity extends Activity {
 	private Button instantButton = null;
 	private static Button nextButton = null;
 	private static Button previousButton = null;
-	private static Button stopNavigationButton = null;
+	private static Button stopWaypointButton = null;
+	private static Button stopWayButton = null;
 
 	private LocationManager lm = null;
 	public static MyLocationListener ll = null;
@@ -92,12 +93,12 @@ public class MainActivity extends Activity {
 		LoadPref(); // Restore preferences
 		initView();
 		if(MyLocationListener.isWayActivated) {
-			_initView();
+			initActivatedWayView();
 			Log.i("test", "way view");
 
 		}
-		else if(MyLocationListener.isWaypointActivated()) {
-			_initView2();
+		else if(MyLocationListener.isWaypointActivated) {
+			initActivatedWaypointView();
 			Log.i("test", "waypoint view");
 		}
 
@@ -141,7 +142,16 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		MyLocationListener.WaypointName = "";
+		MyLocationListener.WaypointLatitude = 999;
+		MyLocationListener.WaypointLongitude = 999;
+		saveActivatedWaypoint();
         MyLocationListener.isInMain = false;
+        MyLocationListener.isWayActivated = false;
+        MyLocationListener.isWaypointActivated = false;
+		editor.putBoolean("isWayActivated", MyLocationListener.isWayActivated);
+		editor.putBoolean("isWaypointActivated", MyLocationListener.isWaypointActivated);
+		editor.commit();
 	}
 
     @Override
@@ -190,10 +200,12 @@ public class MainActivity extends Activity {
         				}
         			}
         			MyLocationListener.activatedWayName = data.getStringExtra("WayName");
-           			MyLocationListener.isWayActivated = true;
            			saveActivatedWaypoint();
+           			MyLocationListener.isWayActivated = true;
+           			editor.putBoolean("isWayActivated", MyLocationListener.isWayActivated);
+           			editor.commit();
 			        tts.speak(MyLocationListener.activatedWayName + " is activated", TextToSpeech.QUEUE_FLUSH, null);
-        			_initView();
+        			initActivatedWayView();
         		}
         	break;
         	}// end of case
@@ -209,8 +221,10 @@ public class MainActivity extends Activity {
 
         			this.actName = data.getStringExtra("actName");
         			saveActivatedWaypoint();
-				    _initView2();
-				    
+				    initActivatedWaypointView();
+				    MyLocationListener.isWaypointActivated = true;
+           			editor.putBoolean("isWaypointActivated", MyLocationListener.isWaypointActivated);
+           			editor.commit();
         			Log.i("receiveing name", actName);
         			Log.i("Waypoint Latitude", MyLocationListener.WaypointLatitude+"");
         			Log.i("Waypoint Latitude", MyLocationListener.WaypointLongitude+"");
@@ -285,6 +299,9 @@ public class MainActivity extends Activity {
      	MyLocationListener.WaypointName = settings.getString("WaypointName", "defValue");
         MyLocationListener.WaypointLatitude = Double.parseDouble(settings.getString("WaypointLatitude", "999"));
         MyLocationListener.WaypointLongitude = Double.parseDouble(settings.getString("WaypointLongitude", "999"));
+        MyLocationListener.isWayActivated = settings.getBoolean("isWayActivated", false);
+        MyLocationListener.isWaypointActivated = settings.getBoolean("isWaypointActivated", false);
+
         MyLocationListener.WPTreshold = settings.getInt("WPTreshold", 1);
 
         lastNumberForInstantWaypoint = settings.getInt(getString(R.string.save_inst_num), 0);
@@ -398,9 +415,11 @@ public class MainActivity extends Activity {
     	if(ActivatedWayPointTextView != null) rl.removeView(ActivatedWayPointTextView);
     	if(previousButton != null) rl.removeView(previousButton);
     	if(nextButton != null) rl.removeView(nextButton);
-    	if(stopNavigationButton != null) rl.removeView(stopNavigationButton);
+    	if(stopWaypointButton != null) rl.removeView(stopWaypointButton);
+    	if(stopWayButton != null) rl.removeView(stopWayButton);
+
     }
-private void _initView2() {
+private void initActivatedWaypointView() {
     	
     	// find view in my resource
         rl = (RelativeLayout) findViewById(R.id.relativelayout);
@@ -426,44 +445,47 @@ private void _initView2() {
         int width = size.x;
         
         //add stop button
-        stopNavigationButton = new Button(this);
+        stopWaypointButton = new Button(this);
         
         LayoutParams StopParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         StopParam.addRule(RelativeLayout.BELOW, ActivatedWayPointTextView.getId());
         StopParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         
-        stopNavigationButton.setBackgroundResource(R.drawable.custom_btn_shakespeare);
-        stopNavigationButton.setTextAppearance(this, R.style.btnStyleShakespeare);
-        stopNavigationButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, instantButton.getTextSize());
+        stopWaypointButton.setBackgroundResource(R.drawable.custom_btn_shakespeare);
+        stopWaypointButton.setTextAppearance(this, R.style.btnStyleShakespeare);
+        stopWaypointButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, instantButton.getTextSize());
         
-        stopNavigationButton.setText("Stop Navigation");
-        stopNavigationButton.setId(5621);
-        stopNavigationButton.setWidth(width - rl.getPaddingLeft());
-        stopNavigationButton.setLayoutParams(StopParam);
-        rl.addView(stopNavigationButton);
+        stopWaypointButton.setText("Stop Navigation");
+        stopWaypointButton.setId(5621);
+        stopWaypointButton.setWidth(width - rl.getPaddingLeft());
+        stopWaypointButton.setLayoutParams(StopParam);
+        rl.addView(stopWaypointButton);
         
         LayoutParams textViewSpeedParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        textViewSpeedParam.addRule(RelativeLayout.BELOW, stopNavigationButton.getId());
+        textViewSpeedParam.addRule(RelativeLayout.BELOW, stopWaypointButton.getId());
         textViewSpeed.setLayoutParams(textViewSpeedParam);
         
         View.OnClickListener onclickListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-        		if(v == stopNavigationButton) {
+        		if(v == stopWaypointButton) {
     				MainActivity.tts.speak("You have stoped the navigation " + MyLocationListener.WaypointName + " is disactivated", TextToSpeech.QUEUE_FLUSH, null);
     				MyLocationListener.WaypointName = "";
     				MyLocationListener.WaypointLatitude = 999;
     				MyLocationListener.WaypointLongitude = 999;
            			saveActivatedWaypoint();
+           			MyLocationListener.isWayActivated = false;
+           			editor.putBoolean("isWayActivated", MyLocationListener.isWayActivated);
+           			editor.commit();
            			deleteView();
     				Log.i("waypoint", "disactivate");        
     			}
 
 			}
         };
-        stopNavigationButton.setOnClickListener(onclickListener);
+        stopWaypointButton.setOnClickListener(onclickListener);
     }
-    private void _initView() {
+    private void initActivatedWayView() {
     	
     	// find view in my resource
         rl = (RelativeLayout) findViewById(R.id.relativelayout);
@@ -501,23 +523,42 @@ private void _initView2() {
         
         previousButton.setText("Previous");
         previousButton.setId(6743);
-        previousButton.setWidth(width/2 - rl.getPaddingLeft());
+        previousButton.setWidth(width/3 - rl.getPaddingLeft());
         previousButton.setLayoutParams(PreviousParam);
         rl.addView(previousButton);
+        
+        //add stop button
+        stopWayButton = new Button(this);
+        
+        LayoutParams StopParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        StopParam.addRule(RelativeLayout.BELOW, ActivatedWayTextView.getId());
+        StopParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        
+        stopWayButton.setBackgroundResource(R.drawable.custom_btn_shakespeare);
+        stopWayButton.setTextAppearance(this, R.style.btnStyleShakespeare);
+        stopWayButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, instantButton.getTextSize());
+        
+        stopWayButton.setText("Stop Navigation");
+        stopWayButton.setId(7881);
+        stopWayButton.setWidth(width/3 - rl.getPaddingLeft());
+        stopWayButton.setLayoutParams(StopParam);
+        rl.addView(stopWayButton);
         
         // add next button
         nextButton = new Button(this);
         
-        LayoutParams NextParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        LayoutParams NextParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         NextParam.addRule(RelativeLayout.BELOW, ActivatedWayTextView.getId());
-        NextParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        NextParam.addRule(RelativeLayout.RIGHT_OF, previousButton.getId());
+        NextParam.addRule(RelativeLayout.LEFT_OF, stopWayButton.getId());
+
         nextButton.setBackgroundResource(R.drawable.custom_btn_shakespeare);
         nextButton.setTextAppearance(this, R.style.btnStyleShakespeare);
         nextButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, instantButton.getTextSize());
         
         nextButton.setText("Next");
         nextButton.setId(3743);
-        nextButton.setWidth(width/2 - rl.getPaddingLeft());
+        nextButton.setWidth(LayoutParams.MATCH_PARENT);
         nextButton.setLayoutParams(NextParam);
         rl.addView(nextButton);
         
@@ -534,10 +575,24 @@ private void _initView2() {
         		if(v == nextButton) {
         			MyLocationListener.nextWaypoint();
         		}
+        		if(v == stopWayButton) {
+					MainActivity.tts.speak("You have stoped the navigation " + MyLocationListener.activatedWayName + " is disactivated.", TextToSpeech.QUEUE_FLUSH, null);
+					MyLocationListener.WaypointName = "";
+					MyLocationListener.WaypointLatitude = 999.0;
+					MyLocationListener.WaypointLongitude = 999.0;
+					MyLocationListener.activatedIndex = 0;
+	    	        deleteView();
+	    	        saveActivatedWaypoint();
+					MyLocationListener.isWayActivated = false;
+           			editor.putBoolean("isWayActivated", MyLocationListener.isWayActivated);
+           			editor.commit();
+        		}
 			}
         };
         previousButton.setOnClickListener(onclickListener);
         nextButton.setOnClickListener(onclickListener);		
+        stopWayButton.setOnClickListener(onclickListener);		
+
     }
     private void initView() {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
