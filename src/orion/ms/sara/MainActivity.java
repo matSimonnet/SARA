@@ -56,12 +56,15 @@ public class MainActivity extends Activity {
 	public static TextView textViewBearing = null;
 	public static TextView textViewAccuracy = null;
 	public static TextView ActivatedWayTextView = null;
+	public static TextView ActivatedWayPointTextView = null;
+
 	public static TextToSpeech tts = null;
 
 	private ImageButton buttonReco = null;
 	private Button instantButton = null;
 	private static Button nextButton = null;
 	private static Button previousButton = null;
+	private static Button stopNavigationButton = null;
 
 	private LocationManager lm = null;
 	public static MyLocationListener ll = null;
@@ -86,10 +89,19 @@ public class MainActivity extends Activity {
 
 		
         mContext = this;
-		initView();
-		if(MyLocationListener.isWayActivated) _initView();
-		initLocationListener(); // 
 		LoadPref(); // Restore preferences
+		initView();
+		if(MyLocationListener.isWayActivated) {
+			_initView();
+			Log.i("test", "way view");
+
+		}
+		else if(MyLocationListener.isWaypointActivated()) {
+			_initView2();
+			Log.i("test", "waypoint view");
+		}
+
+		initLocationListener(); // 
 		initIntent(); // create all intent
 		initDate(); // initial time for auto announce
 		initTTS(); // initial text to speech
@@ -161,9 +173,7 @@ public class MainActivity extends Activity {
         	
         	case RESULT_WAY : {
         		if (resultCode == RESULT_OK && null != data) {
-        			if(previousButton != null && nextButton != null && ActivatedWayTextView != null) {
-                		deleteView();
-        			}
+        			deleteView();
         			MyLocationListener.activatedWay = new ArrayList<WP>();
         			int length = data.getIntExtra("WayLength", -1);
         			for(int i = 0; i < length; i++) {        				
@@ -190,7 +200,7 @@ public class MainActivity extends Activity {
         	
         	case RESULT_WAYPOINT : {
         		if (resultCode == RESULT_OK && null != data) {
-        		        	        
+        			deleteView();
         	        //activating way point name and location
         	        MyLocationListener.WaypointName = data.getStringExtra("actName");
         	        MyLocationListener.WaypointLatitude = data.getDoubleExtra("actLatitude", 999);
@@ -198,9 +208,10 @@ public class MainActivity extends Activity {
         	        MyLocationListener.WPTreshold = data.getIntExtra("actTreshold", 1);
 
         			this.actName = data.getStringExtra("actName");
-        			Log.i("receiveing name", actName);
         			saveActivatedWaypoint();
+				    _initView2();
 				    
+        			Log.i("receiveing name", actName);
         			Log.i("Waypoint Latitude", MyLocationListener.WaypointLatitude+"");
         			Log.i("Waypoint Latitude", MyLocationListener.WaypointLongitude+"");
         		}
@@ -383,11 +394,74 @@ public class MainActivity extends Activity {
         return mContext;
     }
     public static void deleteView() {
-        rl.removeView(ActivatedWayTextView);
-        rl.removeView(previousButton);
-        rl.removeView(nextButton);
+    	if(ActivatedWayTextView != null) rl.removeView(ActivatedWayTextView);
+    	if(ActivatedWayPointTextView != null) rl.removeView(ActivatedWayPointTextView);
+    	if(previousButton != null) rl.removeView(previousButton);
+    	if(nextButton != null) rl.removeView(nextButton);
+    	if(stopNavigationButton != null) rl.removeView(stopNavigationButton);
+    }
+private void _initView2() {
+    	
+    	// find view in my resource
+        rl = (RelativeLayout) findViewById(R.id.relativelayout);
 
+        // add new text view
+		ActivatedWayPointTextView = new TextView(this);
+		ActivatedWayPointTextView.setId(5421);
+		ActivatedWayPointTextView.setText(MyLocationListener.WaypointName);
+		ActivatedWayPointTextView.setContentDescription(MyLocationListener.WaypointName + "was activated.");
+		ActivatedWayPointTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textViewSpeed.getTextSize());
+		ActivatedWayPointTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+		
+		// new textview's rules
+        LayoutParams textViewParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        textViewParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        ActivatedWayPointTextView.setLayoutParams(textViewParam);
+        rl.addView(ActivatedWayPointTextView);
+        
+        // get width of screen
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        
+        //add stop button
+        stopNavigationButton = new Button(this);
+        
+        LayoutParams StopParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        StopParam.addRule(RelativeLayout.BELOW, ActivatedWayPointTextView.getId());
+        StopParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        
+        stopNavigationButton.setBackgroundResource(R.drawable.custom_btn_shakespeare);
+        stopNavigationButton.setTextAppearance(this, R.style.btnStyleShakespeare);
+        stopNavigationButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, instantButton.getTextSize());
+        
+        stopNavigationButton.setText("Stop Navigation");
+        stopNavigationButton.setId(5621);
+        stopNavigationButton.setWidth(width - rl.getPaddingLeft());
+        stopNavigationButton.setLayoutParams(StopParam);
+        rl.addView(stopNavigationButton);
+        
+        LayoutParams textViewSpeedParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        textViewSpeedParam.addRule(RelativeLayout.BELOW, stopNavigationButton.getId());
+        textViewSpeed.setLayoutParams(textViewSpeedParam);
+        
+        View.OnClickListener onclickListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+        		if(v == stopNavigationButton) {
+    				MainActivity.tts.speak("You have stoped the navigation " + MyLocationListener.WaypointName + " is disactivated", TextToSpeech.QUEUE_FLUSH, null);
+    				MyLocationListener.WaypointName = "";
+    				MyLocationListener.WaypointLatitude = 999;
+    				MyLocationListener.WaypointLongitude = 999;
+           			saveActivatedWaypoint();
+           			deleteView();
+    				Log.i("waypoint", "disactivate");        
+    			}
 
+			}
+        };
+        stopNavigationButton.setOnClickListener(onclickListener);
     }
     private void _initView() {
     	

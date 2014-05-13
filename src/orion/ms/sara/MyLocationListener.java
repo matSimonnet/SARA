@@ -84,7 +84,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	private String headingUnit = "";
 	private String accuracyUnit = "";
 	
-	private boolean isWaypointActivated = false;
+	public static boolean isWaypointActivated = false;
 	private boolean isMorePrecise5Announced = false;
 	private boolean isMorePrecise10Announced = false;
 	private boolean isLessPrecise10Announced = false;
@@ -152,7 +152,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 				}
 			}
 		}
-		if (!isWayActivated && isWaypointActivated) {
+		if (!isWayActivated && isWaypointActivated()) {
 			Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distanceWaypoint);
 			if(distanceWaypoint[0] <= WPTreshold) { // in meters
 				MainActivity.tts.speak("You have reached " + WaypointName + " " + WaypointName + " is disactivated", TextToSpeech.QUEUE_FLUSH, null);
@@ -165,7 +165,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			}
 		}
 
-		this.isWaypointActivated();
+		isWaypointActivated();
 		currentLatitude = String.valueOf(loc.getLatitude());
 		currentLongitude = String.valueOf(loc.getLongitude());
 
@@ -426,12 +426,14 @@ public class MyLocationListener extends Activity implements LocationListener {
 		}			
 	}
 	
-	public void isWaypointActivated() {
+	public static boolean isWaypointActivated() {
 		if (WaypointLatitude == 999 || WaypointLongitude == 999) {
-			this.isWaypointActivated = false;
+			isWaypointActivated = false;
+			return false;
 		}
 		else {
-			this.isWaypointActivated = true;
+			isWaypointActivated = true;
+			return true;
 		}
 	}
 	
