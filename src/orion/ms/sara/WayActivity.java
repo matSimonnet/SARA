@@ -95,11 +95,7 @@ public class WayActivity extends Activity {
 			this.settings = getSharedPreferences(MyLocationListener.PREFS_NAME, 0);
 			this.editor = settings.edit();
 			loadPref();
-			
-			for(int i = 0;i<wayList.size();i++){
-				Log.i("way list", "item "+i+": "+wayList.get(i).getName());
-			}
-								
+							
 			//OnInitListener Creation
 			OnInitListener onInitListener = new OnInitListener() {
 				@Override
@@ -140,7 +136,6 @@ public class WayActivity extends Activity {
 			else{
 				//GPS available
 				sortingWayList(wayList);
-				Log.i("from on create", "sort from on create");
 			}
 			
 			//spinner set up
@@ -293,7 +288,6 @@ public class WayActivity extends Activity {
 	    	//set array adapter of the list into the spinner
 			sortingWayList(wayList);
 			//way.setTop(selectedItem);
-			Log.i("sort from on resume", "sort from on resume");
 	    }
 	}
 
@@ -393,13 +387,9 @@ public class WayActivity extends Activity {
 		//Get the latest number after adding a new way point
 		if(newWay.getName().length()>3 && newWay.getName().substring(0,3).equalsIgnoreCase("way")){
 			lastNumberForWay = Integer.parseInt(newWay.getName().substring(3));//substring "Way" name to get the number after that
-			Log.i("Number Way", lastNumberForWay+"");
 		}
 		//Adding the new way point into the list
 		wList.add(newWay);//create new way point with assuming distance
-		for(int i= 0;i<wList.size();i++){
-			Log.i("way", wList.get(i).getName());
-		}
 		sortingWayList(wList);//sorting the list
 	}
 	
@@ -464,7 +454,6 @@ public class WayActivity extends Activity {
 							Double.parseDouble(MyLocationListener.currentLatitude), Double.parseDouble(MyLocationListener.currentLongitude), tempResult);
 					//set up the new distance from the current position into every way point in the list
 					wList.get(i).setDistance(Double.parseDouble(tempResult[0]+""));
-					Log.i("sort way", "way:"+tempWay.getName()+" Distance: "+tempResult[0]);
 				}
 				Collections.sort(wList);//Sorting the list by proximity of the first waypoint
 	        }//end if
@@ -482,7 +471,6 @@ public class WayActivity extends Activity {
 	    	for(int i = 0;i<wList.size();i++){
 	    		if(wList.get(i).getName().equals(selectedName)){
 	    			tempWay = wList.remove(i);
-	    			Log.i("selected item from sort", tempWay.getName());
 	    		}
 	    	}
 	    	wList.add(0,tempWay);
@@ -553,7 +541,6 @@ public class WayActivity extends Activity {
 	public static boolean usedWay(Way way){
 		for(int i = 0;i<wayList.size();i++){//ways in way list
 			Way w = wayList.get(i);
-			Log.i("Same WP?", w.getName());
 			if(sameWay(w,way))	
 				return true;
 		}

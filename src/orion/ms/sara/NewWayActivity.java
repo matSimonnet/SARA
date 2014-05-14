@@ -12,7 +12,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -133,9 +132,6 @@ public class NewWayActivity extends Activity {
 		
 		//temporary way creation
 		temp = new Way(wayNameBox.getText().toString());
-		Log.i("temp creation", "name "+temp.getName());
-		Log.i("temp size", temp.getName()+" :"+temp.getSize());
-		
 		//get way list
 		setUpArrayAdapter(setUpWPList(tempList), wp1List, wp1NameText);
 		setUpArrayAdapter(setUpWPList(anotherList), wp2List, wp2NameText);		
@@ -164,19 +160,10 @@ public class NewWayActivity extends Activity {
 					//get the new way's name EditText
 					wayName = wayNameBox.getText().toString();
 					temp.setName(wayName);
-					Log.i("temp size", wayName+" :"+temp.getSize());
-    				for(int j = 0;j<temp.getSize();j++){
-    					Log.i("wp in new", "Way1 ----WP"+j+" : "+temp.getWP(j).getName());
-    				}
 					if(temp.getSize()<2){
 						tts.speak("Cannot create a way with less than 2 waypoints", tts.QUEUE_FLUSH, null);
 					}
 					else{
-						Log.i("temp size", wayName+" :"+temp.getSize());
-	    				for(int j = 0;j<temp.getSize();j++){
-	    					Log.i("wp in new", "Way1 ----WP"+j+" : "+temp.getWP(j).getName());
-	    				}
-						
 						//check if the filled name or the way points are already recorded
 						if(isRecorded(temp)){
 							tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
@@ -301,7 +288,6 @@ public class NewWayActivity extends Activity {
                 				//start checking after choosing the first way point
                 				if(temp.getSize()>=1){
 	                				lastSelect = temp.getWP(temp.getSize()-1);
-	                				Log.i("select", temp.getName()+" item: "+selecting.getName());
 	                				//check if the previous way point in the same as selecting way point
 	                				if(sameChoosing(selecting, lastSelect)){
 	                					tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
@@ -498,7 +484,7 @@ public class NewWayActivity extends Activity {
 			if(temp.getSize()>=2 && !wayName.isEmpty()){
 				//set up way name
 				temp.setName(wayName);
-				//chenk if the new way can save
+				//check if the new way can save
 				if(!isRecorded(temp)){
 					final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 					dialog.setTitle("Some values change, do you want to save?");
