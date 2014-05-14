@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.pm.ActivityInfo;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -84,6 +85,8 @@ public class WayActivity extends Activity {
 	
 			setContentView(R.layout.activity_way);
 			setTitle(R.string.title_activity_way);
+			//set display in portrait only
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			
 			Log.i("WayAct", "---------------OnCreate----------------");
 			
