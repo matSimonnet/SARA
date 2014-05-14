@@ -279,15 +279,6 @@ public class ModifyWayActivity extends Activity {
 	              				//add selecting way point in to way
 	            				selecting = WayActivity.findWPfromName(wpName);
 	              			}
-	              			else{
-	              				//don't save
-	              				//passing activate way name and way points
-								intentToWay.putExtra("modWayName", temp.getName());
-								intentToWay.putExtra("modWaySize", temp.getSize());
-								for(int j = 0; j < temp.getSize(); j++) {
-									intentToWay.putExtra("modWP"+(j+1)+"Name", temp.getWP(j).getName());
-								}
-	              			}
 	            			if(!wpName.equals("No selected waypoint")){
 	            				nameText.setText(wpName);
 	            				//add selecting way point in to way
