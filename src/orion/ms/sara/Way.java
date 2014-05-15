@@ -28,7 +28,7 @@ public class Way implements Comparable<Way>{
 	}
 	
 	//delete way point from way
-	private List<WP> deleteWPfromWay(WP deleteWP){
+	public List<WP> deleteWPfromWay(WP deleteWP){
 		//check if there is still any way point left
 		if(way.size()>=1){
 			for(int i=0;i<way.size();i++){

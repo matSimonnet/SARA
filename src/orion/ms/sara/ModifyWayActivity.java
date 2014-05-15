@@ -64,6 +64,8 @@ public class ModifyWayActivity extends Activity {
 	private String latitude;
 	private String longitude;
 	private WP selecting = WayActivity.findWPfromName("No selected waypoint");
+	private WP deleteWP = new WP("Delete this waypoint","","");
+	private WP del = null;
 
 	//array adapter
 	private ArrayAdapter<String> arrAd = null;
@@ -161,6 +163,14 @@ public class ModifyWayActivity extends Activity {
 						tts.speak("Please fill the name before saving", tts.QUEUE_ADD, null);
 					}
 					else{
+						//remove delete way points from way
+						for(int i=0; i<temp.getSize();i++){
+							if(temp.getWP(i).getName().equals("Delete this waypoint")){
+								//delete this way point from way
+								del = temp.getWP(i);
+								temp.deleteWPfromWay(del);
+							}
+						}
 						if(temp.getSize()<2){
 							//prevent incomplete way
 							tts.speak("Cannot create a way with less than 2 waypoints", tts.QUEUE_FLUSH, null);
@@ -209,6 +219,14 @@ public class ModifyWayActivity extends Activity {
 						tts.speak("Please fill the name before saving", tts.QUEUE_ADD, null);
 					}
 					else{
+						//remove delete way points from way
+						for(int i=0; i<temp.getSize();i++){
+							if(temp.getWP(i).getName().equals("Delete this waypoint")){
+								//delete this way point from way
+								del = temp.getWP(i);
+								temp.deleteWPfromWay(del);
+							}
+						}
 						if(temp.getSize()<2){
 							//prevent incomplete way
 							tts.speak("Cannot create a way with less than 2 waypoints", tts.QUEUE_FLUSH, null);
@@ -255,6 +273,8 @@ public class ModifyWayActivity extends Activity {
 		}
 		//default item
 		tempList.add(0,new WP("No selected waypoint","",""));
+		//delete item
+		tempList.add(1,new WP("Delete this waypoint","",""));
 		return tempList;
 	}
 			
@@ -280,14 +300,19 @@ public class ModifyWayActivity extends Activity {
 	            				selecting = WayActivity.findWPfromName(wpName);
 	              			}
 	            			if(!wpName.equals("No selected waypoint")){
-	            				nameText.setText(wpName);
-	            				//add selecting way point in to way
-	            				selecting = WayActivity.findWPfromName(wpName);               					
+	            				if(!wpName.equals("Delete this waypoint")){
+	            					//add selecting way point in to way
+		            				selecting = WayActivity.findWPfromName(wpName);
+	            				}
+	            				else{
+	            					selecting = deleteWP;
+	            				}
+	            				nameText.setText(wpName);              					
 	            				//find the way point number from the spinner's id
 	            				setWPtoWay(spinID, selecting);
 	            				spin.setFocusable(true);
 	            				spin.setFocusableInTouchMode(true);	            				
-	            			}
+	            			}//neither default nor delete item
 	            		}
 	  				}catch(Exception e){
 	                        e.printStackTrace();
@@ -306,88 +331,116 @@ public class ModifyWayActivity extends Activity {
 	private void setWPtoWay(int spinnerID,WP wp){
 		if(spinnerID==wp1List.getId()){
 			//way point1
-			//check if a selecting way point is the same as the previous way point and the next way point 
-			if(sameChoosing(wp, temp.getWP(1))){
-				//way point1 and way point2 are the same
-				tts.speak("Cannot selecting the same way point as next way point", tts.QUEUE_FLUSH, null);
-			}
+			//check if selecting "Delete this way point"
+			if(!wp.getName().equals("Delete this waypoint")){
+				//check if a selecting way point is the same as the previous way point and the next way point 
+				if(sameChoosing(wp, temp.getWP(1))){
+					//way point1 and way point2 are the same
+					tts.speak("Cannot selecting the same way point as next way point", tts.QUEUE_FLUSH, null);
+				}
+				else{
+					//replace old way point
+					temp.setWP(0, wp);
+					order = 1;
+				}
+			}//end not delete
 			else{
-				//replace old way point
-				temp.setWP(0, wp);
+				temp.setWP(0, deleteWP);
 				order = 1;
-			}
+			}//end delete
 		}//end spinner1
 		else if(spinnerID==wp2List.getId()){
 			//way point2
-			//check if there are only two way points
-			if(temp.getSize()==2){
-				if(sameChoosing(wp, temp.getWP(0))){
-					//way point1 and way point2 are the same
-					tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
-				}
+			//check if selecting "Delete this way point"
+			if(!wp.getName().equals("Delete this waypoint")){
+				//check if there are only two way points
+				if(temp.getSize()==2){
+					if(sameChoosing(wp, temp.getWP(0))){
+						//way point1 and way point2 are the same
+						tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
+					}
+					else{
+						//replace old way point
+						temp.setWP(1, wp);
+					}//end not the same choosing
+				}//end size==2
 				else{
-					//replace old way point
-					temp.setWP(1, wp);
-				}//end not the same choosing
-			}//end size==2
+					//size > 2
+					if(sameChoosing(wp, temp.getWP(0)) || sameChoosing(wp, temp.getWP(2)) ){
+						//way point1 and way point2 are the same or way point 2 and way point 3 are the same
+						tts.speak("Cannot selecting the same way point as previous or next way point", tts.QUEUE_FLUSH, null);
+					}
+					else{
+						//replace old way point
+						temp.setWP(1, wp);
+					}//end not the same choosing
+				}//end size > 2
+				order = 2;
+			}//end not delete
 			else{
-				//size > 2
-				if(sameChoosing(wp, temp.getWP(0)) || sameChoosing(wp, temp.getWP(2)) ){
-					//way point1 and way point2 are the same or way point 2 and way point 3 are the same
-					tts.speak("Cannot selecting the same way point as previous or next way point", tts.QUEUE_FLUSH, null);
-				}
-				else{
-					//replace old way point
-					temp.setWP(1, wp);
-				}//end not the same choosing
-			}//end size > 2
-			order = 2;
+				temp.setWP(1, deleteWP);
+				order = 2;
+			}
 		}//end spinner2
 		else{
-			//check if it is the last way point in the way now
-			if(spinnerID==temp.getSize()){
-				if(sameChoosing(wp, temp.getWP(spinnerID-2))){
-					//selecting way point and the previous way point are the same
-					tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
-				}
-				else{
-					if(temp.getWP(spinnerID-1)!=null){
-						//replace old way point
-						temp.setWP(spinnerID-1, wp);
+			//check if selecting "Delete this way point"
+			if(!wp.getName().equals("Delete this waypoint")){
+				//check if it is the last way point in the way now
+				if(spinnerID==temp.getSize()){
+					if(sameChoosing(wp, temp.getWP(spinnerID-2))){
+						//selecting way point and the previous way point are the same
+						tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
+					}
+					else{
+						if(temp.getWP(spinnerID-1)!=null){
+							//replace old way point
+							temp.setWP(spinnerID-1, wp);
+						}
+						else{
+							//add new way point
+							temp.addWPtoWay(wp);
+						}
+					}//end not the same choosing
+				}//end it is the last way point in the way now
+				else if(spinnerID>temp.getSize()){
+					if(sameChoosing(wp, temp.getWP(spinnerID-2))){
+						//selecting way point and the previous way point are the same
+						tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
 					}
 					else{
 						//add new way point
 						temp.addWPtoWay(wp);
 					}
-				}//end not the same choosing
-			}//end it is the last way point in the way now
-			else if(spinnerID>temp.getSize()){
-				if(sameChoosing(wp, temp.getWP(spinnerID-2))){
-					//selecting way point and the previous way point are the same
-					tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
 				}
 				else{
-					//add new way point
-					temp.addWPtoWay(wp);
-				}
-			}
+					if( sameChoosing(wp, temp.getWP(spinnerID-2)) || sameChoosing(wp, temp.getWP(spinnerID))){
+						//selecting way point and the previous way point are the same or selecting way point and the next way point are the same
+						tts.speak("Cannot selecting the same way point as previous or next way point", tts.QUEUE_FLUSH, null);
+					}
+					else{
+						if(temp.getWP(spinnerID-1)!=null){
+							//replace old way point
+							temp.setWP(spinnerID-1, wp);
+						}
+						else{
+							//add new way point
+							temp.addWPtoWay(wp);
+						}
+					}//end not the same choosing
+				}//end not the last
+				order = spinnerID;
+			}//end not delete
 			else{
-				if( sameChoosing(wp, temp.getWP(spinnerID-2)) || sameChoosing(wp, temp.getWP(spinnerID))){
-					//selecting way point and the previous way point are the same or selecting way point and the next way point are the same
-					tts.speak("Cannot selecting the same way point as previous or next way point", tts.QUEUE_FLUSH, null);
+				if(spinnerID>temp.getSize()){
+					//add new way point
+					temp.addWPtoWay(deleteWP);
 				}
 				else{
-					if(temp.getWP(spinnerID-1)!=null){
-						//replace old way point
-						temp.setWP(spinnerID-1, wp);
-					}
-					else{
-						//add new way point
-						temp.addWPtoWay(wp);
-					}
-				}//end not the same choosing
-			}//end not the last
-			order = spinnerID;
+					//replace old way point
+					temp.setWP(spinnerID-1, deleteWP);
+				}
+				order = spinnerID;
+			}//end delete
 		}//end else
 		//tts announcement
 		tts.speak("Waypoint"+order+" is "+wp.getName(), tts.QUEUE_ADD, null);
@@ -526,42 +579,67 @@ public class ModifyWayActivity extends Activity {
 			modWayName = wayNameBox.getText().toString();
 			if(!modWayName.isEmpty()&&(!WayActivity.sameWay(temp, oldWay) || !oldWay.getName().equals(modWayName))){
 				temp.setName(modWayName);
-				final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-				dialog.setTitle("Some values change, do you want to save?");
-				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						//passing activate way name and way points
-						intentToWay.putExtra("modWayName", temp.getName());
-						intentToWay.putExtra("modWaySize", temp.getSize());
-						for(int j = 0; j < temp.getSize(); j++) {
-							intentToWay.putExtra("modWP"+(j+1)+"Name", temp.getWP(j).getName());
-						}
-						isAlsoActivateForMW = false;//change status
-
-						//back to Way activity and send some parameters to the activity
-						setResult(RESULT_OK, intentToWay);
-						finish();
+				//remove delete way points from way
+				for(int i=0; i<temp.getSize();i++){
+					if(temp.getWP(i).getName().equals("Delete this waypoint")){
+						//delete this way point from way
+						del = temp.getWP(i);
+						temp.deleteWPfromWay(del);
 					}
-				});
-				
-				dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						//don't save
-						//passing activate way name and way points
-						intentToWay.putExtra("modWayName", "");
-						intentToWay.putExtra("modWaySize", oldWay.getSize());
-						for(int j = 0; j < temp.getSize(); j++) {
-							intentToWay.putExtra("modWP"+(j+1)+"Name", "");
+				}
+				//check if can create a way
+				if(temp.getSize()>=2){
+					final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+					dialog.setTitle("Some values change, do you want to save?");
+					dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							//passing activate way name and way points
+							intentToWay.putExtra("modWayName", temp.getName());
+							intentToWay.putExtra("modWaySize", temp.getSize());
+							for(int j = 0; j < temp.getSize(); j++) {
+								intentToWay.putExtra("modWP"+(j+1)+"Name", temp.getWP(j).getName());
+							}
+							isAlsoActivateForMW = false;//change status
+	
+							//back to Way activity and send some parameters to the activity
+							setResult(RESULT_OK, intentToWay);
+							finish();
 						}
-						isAlsoActivateForMW = false;//change status
-						//back to Way activity and send some parameters to the activity
-						setResult(RESULT_OK, intentToWay);
-						finish();
+					});
+					
+					dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							//don't save
+							//passing activate way name and way points
+							intentToWay.putExtra("modWayName", "");
+							intentToWay.putExtra("modWaySize", oldWay.getSize());
+							for(int j = 0; j < temp.getSize(); j++) {
+								intentToWay.putExtra("modWP"+(j+1)+"Name", "");
+							}
+							isAlsoActivateForMW = false;//change status
+							//back to Way activity and send some parameters to the activity
+							setResult(RESULT_OK, intentToWay);
+							finish();
+						}
+					});
+					dialog.show();
+				}//end size>=2
+				else{
+					//passing activate way name and way points
+					intentToWay.putExtra("modWayName", "");
+					intentToWay.putExtra("modWaySize", oldWay.getSize());
+					for(int j = 0; j < temp.getSize(); j++) {
+						intentToWay.putExtra("modWP"+(j+1)+"Name", "");
 					}
-				});
-				dialog.show();
+					isAlsoActivateForMW = false;//change status
+		
+					//back to Way activity and send some parameters to the activity
+					setResult(RESULT_OK, intentToWay);
+					finish();
+					break;
+				}
 			}
 			else{
 				//don't save
