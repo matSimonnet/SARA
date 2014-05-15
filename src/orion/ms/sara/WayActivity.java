@@ -120,10 +120,9 @@ public class WayActivity extends Activity {
 			intentToModifyWay = new Intent(WayActivity.this,ModifyWayActivity.class);
 	
 			//get selected item from main
-			/*Intent intentFromMain = getIntent();
-			selectedName = intentFromMain.getStringExtra("actName");
+			Intent intentFromMain = getIntent();
+			selectedName = intentFromMain.getStringExtra("actWayName");
 			Log.i("selected item from onCreate",selectedName);
-			*/
 			
 			//sort the list
 			if(MyLocationListener.currentLatitude.equals("") && selectedItem==0){
@@ -446,7 +445,7 @@ public class WayActivity extends Activity {
 				for(int i = 0;i< wList.size();i++){
 					tempWay = wList.get(i);
 					
-					//calculate new distance from the first waypoint of the way
+					//calculate new distance from the first way point of the way
 					double tempLa = Double.parseDouble(tempWay.getFirstWP().getLatitude());
 					double tempLong = Double.parseDouble(tempWay.getFirstWP().getLongitude());
 					

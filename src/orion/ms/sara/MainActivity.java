@@ -75,8 +75,9 @@ public class MainActivity extends Activity {
 	
 	//Generating a number for a new waypoint's default name
 	public static int lastNumberForInstantWaypoint = 0;
-	//activating way point item name from the list
+	//activating way point and way item name from the list
 	private String actName = "Please selected a waypoint";
+	private String actWayName = "No selected way";
     private static RelativeLayout rl;
 
 
@@ -200,6 +201,7 @@ public class MainActivity extends Activity {
         				}
         			}
         			MyLocationListener.activatedWayName = data.getStringExtra("WayName");
+        			actWayName = data.getStringExtra("WayName");
            			saveActivatedWaypoint();
            			MyLocationListener.isWayActivated = true;
            			editor.putBoolean("isWayActivated", MyLocationListener.isWayActivated);
@@ -266,6 +268,7 @@ public class MainActivity extends Activity {
 			startActivityForResult(intent_Map_activity, RESULT_MAP);
 			break;
 		case R.id.way_menu:
+			intent_Way_activity.putExtra("actWayName", actWayName);
 			startActivityForResult(intent_Way_activity, RESULT_WAY);
 			break;
 		default:
