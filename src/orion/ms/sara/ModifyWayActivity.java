@@ -307,9 +307,9 @@ public class ModifyWayActivity extends Activity {
 		if(spinnerID==wp1List.getId()){
 			//way point1
 			//check if a selecting way point is the same as the previous way point and the next way point 
-			if(sameChoosing(selecting, temp.getWP(1))){
+			if(sameChoosing(wp, temp.getWP(1))){
 				//way point1 and way point2 are the same
-				tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
+				tts.speak("Cannot selecting the same way point as next way point", tts.QUEUE_FLUSH, null);
 			}
 			else{
 				//replace old way point
@@ -321,7 +321,7 @@ public class ModifyWayActivity extends Activity {
 			//way point2
 			//check if there are only two way points
 			if(temp.getSize()==2){
-				if(sameChoosing(selecting, temp.getWP(0))){
+				if(sameChoosing(wp, temp.getWP(0))){
 					//way point1 and way point2 are the same
 					tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
 				}
@@ -332,7 +332,7 @@ public class ModifyWayActivity extends Activity {
 			}//end size==2
 			else{
 				//size > 2
-				if(sameChoosing(selecting, temp.getWP(0)) || sameChoosing(selecting, temp.getWP(2)) ){
+				if(sameChoosing(wp, temp.getWP(0)) || sameChoosing(wp, temp.getWP(2)) ){
 					//way point1 and way point2 are the same or way point 2 and way point 3 are the same
 					tts.speak("Cannot selecting the same way point as previous or next way point", tts.QUEUE_FLUSH, null);
 				}
@@ -346,7 +346,7 @@ public class ModifyWayActivity extends Activity {
 		else{
 			//check if it is the last way point in the way now
 			if(spinnerID==temp.getSize()){
-				if(sameChoosing(selecting, temp.getWP(spinnerID-2))){
+				if(sameChoosing(wp, temp.getWP(spinnerID-2))){
 					//selecting way point and the previous way point are the same
 					tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
 				}
@@ -357,22 +357,22 @@ public class ModifyWayActivity extends Activity {
 					}
 					else{
 						//add new way point
-						temp.addWPtoWay(selecting);
+						temp.addWPtoWay(wp);
 					}
 				}//end not the same choosing
 			}//end it is the last way point in the way now
 			else if(spinnerID>temp.getSize()){
-				if(sameChoosing(selecting, temp.getWP(spinnerID-2))){
+				if(sameChoosing(wp, temp.getWP(spinnerID-2))){
 					//selecting way point and the previous way point are the same
 					tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
 				}
 				else{
 					//add new way point
-					temp.addWPtoWay(selecting);
+					temp.addWPtoWay(wp);
 				}
 			}
 			else{
-				if( sameChoosing(selecting, temp.getWP(spinnerID-2)) || sameChoosing(selecting, temp.getWP(spinnerID))){
+				if( sameChoosing(wp, temp.getWP(spinnerID-2)) || sameChoosing(wp, temp.getWP(spinnerID))){
 					//selecting way point and the previous way point are the same or selecting way point and the next way point are the same
 					tts.speak("Cannot selecting the same way point as previous or next way point", tts.QUEUE_FLUSH, null);
 				}
@@ -383,14 +383,14 @@ public class ModifyWayActivity extends Activity {
 					}
 					else{
 						//add new way point
-						temp.addWPtoWay(selecting);
+						temp.addWPtoWay(wp);
 					}
 				}//end not the same choosing
 			}//end not the last
 			order = spinnerID;
 		}//end else
 		//tts announcement
-		tts.speak("Waypoint"+order+" is "+selecting.getName(), tts.QUEUE_ADD, null);
+		tts.speak("Waypoint"+order+" is "+wp.getName(), tts.QUEUE_ADD, null);
 	}
 
 
