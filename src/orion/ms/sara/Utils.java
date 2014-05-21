@@ -72,7 +72,7 @@ public class Utils {
 	
 	public static void setDistanceTextView(String value, String unit) {
 		if(unit != "") {
-			String temp = "Distance" + " to " + MyLocationListener.WaypointName + "\n" + value + " " + unit;
+			String temp = resource.getString(R.string.distance) + " to " + MyLocationListener.WaypointName + "\n" + value + " " + unit;
 			msp = new SpannableString (temp);
 			int titleindex = temp.lastIndexOf("\n");
 			int unitindex = temp.lastIndexOf(" ");
@@ -80,7 +80,7 @@ public class Utils {
 			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		else {
-			String temp = "Distance" + "\n" + value + " " + unit;
+			String temp = resource.getString(R.string.distance) + "\n" + value + " " + unit;
 			msp = new SpannableString (temp);
 			int titleindex = temp.lastIndexOf("\n");
 			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -90,7 +90,7 @@ public class Utils {
 		MainActivity.textViewDistance.setGravity(Gravity.RIGHT);
 	}
 	public static void setHeadingTextView(String value, String unit) {
-		String temp = "Heading" + "\n" + value + " " + unit;
+		String temp = resource.getString(R.string.heading) + "\n" + value + " " + unit;
 		msp = new SpannableString (temp);
 		int unitindex = temp.lastIndexOf(" ");
 		int titleindex = temp.lastIndexOf("\n");
@@ -108,7 +108,7 @@ public class Utils {
 	}	
 	public static void setBearingTextView(String value, String unit) {
 		if(unit != "") {
-			String temp = "Bearing" + " to " + MyLocationListener.WaypointName + "\n" + value + " " + unit;
+			String temp = resource.getString(R.string.bearing) + " to " + MyLocationListener.WaypointName + "\n" + value + " " + unit;
 			msp = new SpannableString (temp);
 			int unitindex = temp.lastIndexOf(" ");
 			int titleindex = temp.lastIndexOf("\n");
@@ -122,7 +122,7 @@ public class Utils {
 			}
 		}
 		else {
-			String temp = "Bearing" + "\n" + value + " " + unit;
+			String temp = resource.getString(R.string.bearing) + "\n" + value + " " + unit;
 			msp = new SpannableString (temp);
 			int titleindex = temp.lastIndexOf("\n");
 			msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -132,7 +132,7 @@ public class Utils {
 		MainActivity.textViewBearing.setGravity(Gravity.LEFT);
 	}
 	public static void setSpeedTextView(String value, String unit) {
-		String temp = "Speed" + "\n" + value + " " + unit;
+		String temp = resource.getString(R.string.speed) + "\n" + value + " " + unit;
 		msp = new SpannableString (temp);
 		int unitindex = temp.lastIndexOf(" ");
 		int titleindex = temp.lastIndexOf("\n");
@@ -149,7 +149,7 @@ public class Utils {
 		MainActivity.textViewSpeed.setGravity(Gravity.LEFT);
 	}
 	public static void setAccuracyTextView(String value, String unit) {
-		String temp = "Accuracy" + "\n" + value + " " + unit;
+		String temp = resource.getString(R.string.accuracy) + "\n" + value + " " + unit;
 		msp = new SpannableString (temp);
 		int unitindex = temp.lastIndexOf(" ");
 		int titleindex = temp.lastIndexOf("\n");

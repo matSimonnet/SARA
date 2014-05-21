@@ -161,6 +161,7 @@
     <string name="title_alertdialog_bearingunit">Bearing unit was changed.Do you want to save?</string>
     <string name="title_alertdialog_distanceunit">Distance unit was changed.Do you want to save?</string>
     <string name="yes">yes</string>
+    <string name="no">no</string>
     
     <!-- speech rate setting -->
     <string name="speechIntro">Adjust the speech rate below</string>
@@ -237,6 +238,17 @@
     
 	<string name="title_alertdialog_waypointmap">Location was changed.Do you want to use this location?</string>
     <string name="usethislocation">Use this location</string>
+    
+    <!-- mainPage Navigation -->
+    <string name="stop_navigation">You have stoped the navigation</string>
+    <string name="is_disactivated">is disactivated</string>
+    <string name="stop_current_navigation">stop navigation</string>
+    <string name="is_activated">is activated</string>
+    <string name="is_saved_here">is saved here</string>
+    <string name="is">is</string>
+    <string name="waypoint_alreadysaved">This waypoint is already saved before</string>
+    <string name="next">next</string>
+    <string name="previous">previous</string>
     
 </resources>
     

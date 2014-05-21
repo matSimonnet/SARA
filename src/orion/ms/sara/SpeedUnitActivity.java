@@ -120,7 +120,7 @@ public class SpeedUnitActivity extends Activity {
 				
 				alertDialog = new AlertDialog.Builder(this);
 				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_speedunit));
-				alertDialog.setNegativeButton("YES", new OnClickListener(){
+				alertDialog.setNegativeButton(getResources().getString(R.string.yes), new OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						
@@ -135,7 +135,7 @@ public class SpeedUnitActivity extends Activity {
 						finish();					
 					}
 				});
-				alertDialog.setPositiveButton("NO", new OnClickListener(){
+				alertDialog.setPositiveButton(getResources().getString(R.string.no), new OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						finish();

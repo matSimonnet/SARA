@@ -472,7 +472,7 @@ private void initActivatedWaypointView() {
 			@Override
 			public void onClick(View v) {
         		if(v == stopWaypointButton) {
-    				MainActivity.tts.speak("You have stoped the navigation " + MyLocationListener.WaypointName + " is disactivated", TextToSpeech.QUEUE_FLUSH, null);
+    				MainActivity.tts.speak(getResources().getString(R.string.stop_navigation), TextToSpeech.QUEUE_FLUSH, null);
     				MyLocationListener.WaypointName = "";
     				MyLocationListener.WaypointLatitude = 999;
     				MyLocationListener.WaypointLongitude = 999;
@@ -524,7 +524,7 @@ private void initActivatedWaypointView() {
         previousButton.setTextAppearance(this, R.style.btnStyleShakespeare);
         previousButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, instantButton.getTextSize());
         
-        previousButton.setText("Previous");
+        previousButton.setText(getResources().getString(R.string.previous));
         previousButton.setId(6743);
         previousButton.setWidth(width/3 - rl.getPaddingLeft());
         previousButton.setLayoutParams(PreviousParam);
@@ -541,7 +541,7 @@ private void initActivatedWaypointView() {
         stopWayButton.setTextAppearance(this, R.style.btnStyleShakespeare);
         stopWayButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, instantButton.getTextSize());
         
-        stopWayButton.setText("Stop Navigation");
+        stopWayButton.setText(getResources().getString(R.string.stop_current_navigation));
         stopWayButton.setId(7881);
         stopWayButton.setWidth(width/3 - rl.getPaddingLeft());
         stopWayButton.setLayoutParams(StopParam);
@@ -559,7 +559,7 @@ private void initActivatedWaypointView() {
         nextButton.setTextAppearance(this, R.style.btnStyleShakespeare);
         nextButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, instantButton.getTextSize());
         
-        nextButton.setText("Next");
+        nextButton.setText(getResources().getString(R.string.next));
         nextButton.setId(3743);
         nextButton.setWidth(LayoutParams.MATCH_PARENT);
         nextButton.setLayoutParams(NextParam);
@@ -579,7 +579,7 @@ private void initActivatedWaypointView() {
         			MyLocationListener.nextWaypoint();
         		}
         		if(v == stopWayButton) {
-					MainActivity.tts.speak("You have stoped the navigation " + MyLocationListener.activatedWayName + " is disactivated.", TextToSpeech.QUEUE_FLUSH, null);
+					MainActivity.tts.speak(getResources().getString(R.string.stop_navigation), TextToSpeech.QUEUE_FLUSH, null);
 					MyLocationListener.WaypointName = "";
 					MyLocationListener.WaypointLatitude = 999.0;
 					MyLocationListener.WaypointLongitude = 999.0;
@@ -658,8 +658,8 @@ private void initActivatedWaypointView() {
 				        	WayPointActivity.wayPointList.add(new WP("H"+lastNumberForInstantWaypoint,//name
 					        		MyLocationListener.currentLatitude, MyLocationListener.currentLongitude));//current location
 					        //Notify
-					        tts.speak("H"+lastNumberForInstantWaypoint+" is saved here.", TextToSpeech.QUEUE_ADD, null);
-					        Toast.makeText(MainActivity.this, "H"+lastNumberForInstantWaypoint+" is saved here.", Toast.LENGTH_SHORT).show();
+					        tts.speak("H"+lastNumberForInstantWaypoint+getResources().getString(R.string.is_saved_here)+".", TextToSpeech.QUEUE_ADD, null);
+					        Toast.makeText(MainActivity.this, "H"+lastNumberForInstantWaypoint+ getResources().getString(R.string.is_saved_here)+".", Toast.LENGTH_SHORT).show();
 					        for(int i=0;i<WayPointActivity.wayPointList.size();i++){
 					        	Log.i("waypoint list", "item "+i+" : "+WayPointActivity.wayPointList.get(i).getName());
 					        }
@@ -668,14 +668,14 @@ private void initActivatedWaypointView() {
 				        }
 				        else{
 				        	//Notify
-					        tts.speak("This waypoint is already saved before.", TextToSpeech.QUEUE_FLUSH, null);
-					        Toast.makeText(MainActivity.this, "This waypoint is already saved before.", Toast.LENGTH_SHORT).show();
+					        tts.speak(getResources().getString(R.string.waypoint_alreadysaved) + ".", TextToSpeech.QUEUE_FLUSH, null);
+					        Toast.makeText(MainActivity.this, getResources().getString(R.string.waypoint_alreadysaved) + ".", Toast.LENGTH_SHORT).show();
 				        }
 					}//end if in if-else
 					else{
 						//GPS not available
-						Toast.makeText(MainActivity.this,"GPS is unavailable." , Toast.LENGTH_SHORT).show();
-						tts.speak("GPS is unavailable.", TextToSpeech.QUEUE_FLUSH, null);
+						Toast.makeText(MainActivity.this,getResources().getString(R.string.no_satellite) , Toast.LENGTH_SHORT).show();
+						tts.speak(getResources().getString(R.string.no_satellite), TextToSpeech.QUEUE_FLUSH, null);
 					}
 			    }
 	        }// end of on click		

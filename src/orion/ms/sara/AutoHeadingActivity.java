@@ -230,7 +230,7 @@ public class AutoHeadingActivity extends Activity {
 			if(LastheadingTreshold != headingTreshold || LastheadingTimeTreshold != headingTimeTreshold || LastisAutoHeading != HeadingAutoCheckBox.isChecked()) {				
 				alertDialog = new AlertDialog.Builder(this);
 				alertDialog.setTitle(getResources().getString(R.string.title_alertdialog_headingsetting));
-				alertDialog.setNegativeButton("YES", new OnClickListener(){
+				alertDialog.setNegativeButton(getResources().getString(R.string.yes), new OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 					    editor.putString("headingTreshold", String.valueOf(headingTreshold));
@@ -246,7 +246,7 @@ public class AutoHeadingActivity extends Activity {
 						finish();					
 					}
 				});
-				alertDialog.setPositiveButton("No", new OnClickListener(){
+				alertDialog.setPositiveButton(getResources().getString(R.string.no), new OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						finish();

@@ -73,7 +73,7 @@
     <string name="nowaypoint">pas de point de route</string>
     <string name="notactivate">point de route non activé</string>
     <string name="savebutton">enregistrer</string>
-    <string name="save_and_activateButton">Save &amp; Activer</string>
+    <string name="save_and_activateButton">enregistrer &amp; Activer</string>
     <string name="instant_waypoint">créer un point de route ici</string>
     <string name="title_autosetting">Annonces auto</string>
 
@@ -131,7 +131,8 @@
     <string name="title_alertdialog_bearingunit">unité de relèvement changée. Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_distanceunit">unité de distance changée. Voulez-vous enregistrer?</string>
     <string name="yes">oui</string>
-
+    <string name="no">non</string>
+    
     <!-- speech rate setting -->
     <string name="speechIntro">ajuster la vitesse d\'élocution</string>
     <string name="plus_button">+</string>
@@ -153,21 +154,60 @@
     <string name="to">à</string>
     <string name="stopdisplay">arrêter d\'afficher</string>
     <string name="display">Afficher la trace</string>
-    <string name="title_activity_speed_unit">speed unit</string>
-    <string name="title_activity_bearing_unit">bearing unit</string>
-    <string name="title_activity_distance_unit">distance unit</string>
-    <string name="title_activity_map_type">map type</string>
+    <string name="title_activity_speed_unit">unité de vitesse</string>
+    <string name="title_activity_bearing_unit">unité de relèvement</string>
+    <string name="title_activity_distance_unit">unité de distance</string>
+    <string name="title_activity_map_type">type de carte</string>
     <string name="title_activity_speech_rate">speech rate</string>
     <string name="increase">augmenter</string>
     <string name="decrease">diminuer</string>
-    <string name="title_activity_waypoint_map">WaypointMapActivity</string>
-    <string name="autocenter">Focus my location</string>
-    <string name="manualcenter">Stop Focusing</string>
+    <string name="title_activity_waypoint_map">point de route</string>
+    <string name="autocenter">centrer sur ma position</string>
+    <string name="manualcenter">arrêter de centrer</string>
     
-    <string name="wptreshold">Waypoint treshold</string>
-    <string name="wptresholdsetting">Waypoint Treshold Setting</string>
-    <string name="title_alertdialog_wptreshold">Waypoint treshold was changed.Do you want to save?</string>
-    <string name="title_alertdialog_waypointmap">Location was changed.Do you want to use this location?</string>
-    <string name="usethislocation">Use this location</string>
+    <string name="wptreshold">seuil de distance du point de route</string>
+    <string name="wptresholdsetting">réglage du seuil de distance du point de route</string>
+    <string name="title_alertdialog_wptreshold">le seuil de distance du point de route a été changé, voulez-vous l\'enregistrer ?</string>
+    <string name="title_alertdialog_waypointmap">La position a été changée. Voulez-vous l\'utiliser?</string>
+    <string name="usethislocation">Utiliser cette position</string>
     
+       <!-- way activity -->
+   <string name="title_activity_way">Route</string>
+   <string name="way_menu">MENU ROUTE</string>
+   <string name="button_newway">Nouvelle route</string>
+   <string name="way_activity">retour vers route</string>
+   <string name="ok_button">OK</string>
+   		<!-- choosing dialog -->
+ 		<string name="activate">activer</string>
+ 		<string name="modify">modifier</string>
+ 		<string name="delete">supprimer</string>
+ 		<!-- deleting dialog -->
+ 		<string name="cancel">annuler</string>
+ 		<string name="sure">Certain</string>
+ 		
+ 		
+   <!-- new way activity -->
+   <string name="title_activity_new_way">Nouvelle route</string>
+   <string name="way_name">Nom de la route</string>
+   <string name="way_wp1">point de route 1 </string>
+   <string name="waypoint1_name"></string>  
+   <string name="way_wp2">point de route 2 </string>
+   <string name="waypoint2_name"></string>
+   <string name="add_more_wp">ajouter un point de route</string>  
+   
+   <!-- modify way activity -->
+   <string name="title_activity_modify_way">Modifier une route</string>
+   <string name="modifyway_button">enregistrer</string>    
+   
+    <string name="stop_navigation">Vous avez stoppé la navigation</string>
+    <string name="stop_current_navigation">stopper la navigation</string>
+    <string name="is_disactivated">est désactivé</string>
+    <string name="is_activated">est activé</string>
+    <string name="is_saved_here">est enregistré ici</string>
+    <string name="is">est</string>
+    <string name="waypoint_alreadysaved">ce point de route a déjà été enregistré</string>
+    <string name="next">suivant</string>
+    <string name="previous">précédent</string>
+   
+   
 </resources>
