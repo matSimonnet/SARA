@@ -167,19 +167,19 @@ public class Utils {
 	
 	public static void setSpeedTextViewDescription(String value, String unit) {
 		if(unit == resource.getString(R.string.knots)) {
-			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + " is " + value + " " + resource.getString(R.string.knots));
+			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + value + " " + resource.getString(R.string.knots));
 		}
 		if(unit == resource.getString(R.string.kmperh)) {
-			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + " is " + value + " " + resource.getString(R.string.km_per_hour));
+			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + value + " " + resource.getString(R.string.km_per_hour));
 		}
 	}
 	
 	public static void setHeadingTextViewDescription(String value) {
-		MainActivity.textViewheading.setContentDescription(resource.getString(R.string.heading) + " is " + value + " " + resource.getString(R.string.headingunit));
+		MainActivity.textViewheading.setContentDescription(resource.getString(R.string.heading) + value + " " + resource.getString(R.string.headingunit));
 	}
 	
 	public static void setAccuracyTextViewDescription(String value) {
-		MainActivity.textViewAccuracy.setContentDescription(resource.getString(R.string.accuracy) + " is " + value + " " + resource.getString(R.string.metres));
+		MainActivity.textViewAccuracy.setContentDescription(resource.getString(R.string.accuracy) + value + " " + resource.getString(R.string.metres));
 	}
 	
 	public static void setDistanceTextViewDescription(String value, String unit) {
@@ -213,28 +213,28 @@ public class Utils {
 	}
 	public static void speakBearingTextView(String value, String unit) {
 		if(unit == resource.getString(R.string.deg)) {
-			MainActivity.tts.speak(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " is " + value + " " + resource.getString(R.string.bearingunit), TextToSpeech.QUEUE_ADD, null);
+			MainActivity.tts.speak(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + value + " " + resource.getString(R.string.bearingunit), TextToSpeech.QUEUE_ADD, null);
 		}
 		else { // on starboard/port
-			MainActivity.tts.speak(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " is " + value + " " + unit, TextToSpeech.QUEUE_ADD, null);
+			MainActivity.tts.speak(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + value + " " + unit, TextToSpeech.QUEUE_ADD, null);
 		}
 	}
 	
 	public static void speakSpeedTextView(String value, String unit) {
 		if(unit == resource.getString(R.string.knots)) {
-			MainActivity.tts.speak(resource.getString(R.string.speed) + " is " + value + " " + resource.getString(R.string.knots), TextToSpeech.QUEUE_ADD, null);
+			MainActivity.tts.speak(resource.getString(R.string.speed) + value + " " + resource.getString(R.string.knots), TextToSpeech.QUEUE_ADD, null);
 		}
 		if(unit == resource.getString(R.string.kmperh)) {
-			MainActivity.tts.speak(resource.getString(R.string.speed) + " is " + value + " " + resource.getString(R.string.km_per_hour), TextToSpeech.QUEUE_ADD, null);
+			MainActivity.tts.speak(resource.getString(R.string.speed) + value + " " + resource.getString(R.string.km_per_hour), TextToSpeech.QUEUE_ADD, null);
 		}
 	}
 	
 	public static void speakHeadingTextView(String value, String unit) {
-		MainActivity.tts.speak(resource.getString(R.string.heading) + " is " + value + " " + resource.getString(R.string.degrees), TextToSpeech.QUEUE_ADD, null);
+		MainActivity.tts.speak(resource.getString(R.string.heading) + value + " " + resource.getString(R.string.degrees), TextToSpeech.QUEUE_ADD, null);
 	}
 	
 	public static void speakAccuracyTextView(String value, String unit) {
-		MainActivity.tts.speak(resource.getString(R.string.accuracy) + " is " + value + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
+		MainActivity.tts.speak(resource.getString(R.string.accuracy) + value + " " + resource.getString(R.string.metres), TextToSpeech.QUEUE_ADD, null);
 	}
 	
 	public static void speakDistanceTextView(String value, String unit) {
