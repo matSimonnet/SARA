@@ -78,7 +78,8 @@ public class WayPointActivity extends Activity {
 		
 		//selected waypoint point item number
 		private int selectedItem = 0;
-		private String selectedName = "Please selected a waypoint";
+		//private String selectedName = "Please selected a waypoint";
+		private String selectedName = "Sélectionner un point de route";
 		//private String selectedName = getResources().getString(R.string.please_selected_a_waypoint);
 		
 		private int treshold = 0;
@@ -241,7 +242,7 @@ public class WayPointActivity extends Activity {
 											deletingDialog.show();
 										}
 	                				});//end delete button	
-	                				if(!choosingWaypoint.getName().equals("Please selected a waypoint") && i!=0){
+	                				if(!choosingWaypoint.getName().equals("Sélectionner un point de route") && i!=0){
 	                					//show the choosing dialog if selected some waypoint points from the list
 	                					choosingDialog.show();
 	                				}//end if
@@ -447,7 +448,8 @@ public class WayPointActivity extends Activity {
 	public void deleteWPfromList(List<WP> wList, WP del){
 		//Deleting the waypoint point from the list
 		wList.remove(del);
-		selectedName = "Please selected a waypoint";//reset to default
+		//selectedName = "Please selected a waypoint";//reset to default
+		selectedName = "Sélectionner un point de route";//reset to default
 		sortingWaypointList(wList);//sorting the list
 	}
 	
@@ -457,7 +459,7 @@ public class WayPointActivity extends Activity {
 		WP tempWP = null;
 		float[] tempResult = new float[3];
 		//default value if no waypoint in the list yet
-		WP first = new WP("Please selected a waypoint","","");
+		WP first = new WP("Sélectionner un point de route","","");
 		
 		//update location
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.ll);
@@ -465,7 +467,7 @@ public class WayPointActivity extends Activity {
       //remove the default value before sorting
     	int defaultItem = -1;
     	for(int i = 0;i<wList.size();i++){
-    		if(wList.get(i).getName().equals("Please selected a waypoint")){
+    		if(wList.get(i).getName().equals("Sélectionner un point de route")){
     			defaultItem = i;
     		}
     	}
@@ -498,7 +500,8 @@ public class WayPointActivity extends Activity {
     	}
 		
         //back from main activity after activating
-        if(!selectedName.equals("Please selected a waypoint")){
+        //if(!selectedName.equals("Please selected a waypoint")){
+    	if(!selectedName.equals("Sélectionner un point de route")){
         	//get the selected waypoint and add it on the top of the list
         	for(int i = 0;i<wList.size();i++){
         		if(wList.get(i).getName().equals(selectedName)){

@@ -76,7 +76,8 @@ public class MainActivity extends Activity {
 	//Generating a number for a new waypoint's default name
 	public static int lastNumberForInstantWaypoint = 0;
 	//activating way point and way item name from the list
-	private String actName = "Please selected a waypoint";
+	//private String actName = "Please selected a waypoint";
+	private String actName = "Sélectionner un point de route";
 	private String actWayName = "No selected way";
 	//private String actName = getResources().getString(R.string.please_selected_a_waypoint);
 	//private String actWayName = getResources().getString(R.string.no_selected_way);
