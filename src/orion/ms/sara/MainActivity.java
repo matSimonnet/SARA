@@ -621,7 +621,7 @@ private void initActivatedWaypointView() {
             
         textViewSpeed = (TextView) findViewById(R.id.speedView);
         Utils.setSpeedTextView(MyLocationListener.speed, "");
-        textViewSpeed.setContentDescription(getResources().getString(R.string.speed) + " " + getResources().getString(R.string.waiting_gps));
+        textViewSpeed.setContentDescription(getResources().getString(R.string.speed) + " coucou " + getResources().getString(R.string.waiting_gps));
         
         textViewheading = (TextView) findViewById(R.id.heading);
         Utils.setHeadingTextView(MyLocationListener.heading, "");

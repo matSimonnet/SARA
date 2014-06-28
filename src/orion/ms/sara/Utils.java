@@ -5,6 +5,7 @@ import android.speech.tts.TextToSpeech;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.Gravity;
 
 public class Utils {
@@ -72,7 +73,7 @@ public class Utils {
 	
 	public static void setDistanceTextView(String value, String unit) {
 		if(unit != "") {
-			String temp = resource.getString(R.string.distance) + " to " + MyLocationListener.WaypointName + "\n" + value + " " + unit;
+			String temp = resource.getString(R.string.distance) + MyLocationListener.WaypointName + "\n" + value + " " + unit;
 			msp = new SpannableString (temp);
 			int titleindex = temp.lastIndexOf("\n");
 			int unitindex = temp.lastIndexOf(" ");
@@ -132,7 +133,10 @@ public class Utils {
 		MainActivity.textViewBearing.setGravity(Gravity.LEFT);
 	}
 	public static void setSpeedTextView(String value, String unit) {
+
 		String temp = resource.getString(R.string.speed) + "\n" + value + " " + unit;
+		
+		Log.e("temp",temp);
 		msp = new SpannableString (temp);
 		int unitindex = temp.lastIndexOf(" ");
 		int titleindex = temp.lastIndexOf("\n");
@@ -166,11 +170,17 @@ public class Utils {
 	}
 	
 	public static void setSpeedTextViewDescription(String value, String unit) {
+		if (value.contains(".")){
+		int speedPointIndex = value.indexOf(".");
+		String intSpeed = value.substring(0, speedPointIndex);
+		String decimalSpeed = value.substring(speedPointIndex+1,speedPointIndex+2);
+		value = intSpeed + " " + unit + "" + decimalSpeed;
+		}	
 		if(unit == resource.getString(R.string.knots)) {
-			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + value + " " + resource.getString(R.string.knots));
+			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + value  + " . ");
 		}
 		if(unit == resource.getString(R.string.kmperh)) {
-			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + value + " " + resource.getString(R.string.km_per_hour));
+			MainActivity.textViewSpeed.setContentDescription(resource.getString(R.string.speed) + value  + " . ");
 		}
 	}
 	
@@ -183,17 +193,24 @@ public class Utils {
 	}
 	
 	public static void setDistanceTextViewDescription(String value, String unit) {
+		if (value.contains(".")){
+		int distancePointIndex = value.indexOf(".");
+		String intDistance = value.substring(0, distancePointIndex);
+		String decimalDistance = value.substring(distancePointIndex+1,distancePointIndex+2);
+		value = intDistance + " " + unit + "" + decimalDistance;
+		}
+		
 		if(unit == "") {
 			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.notactivate));
 		}
 		if(unit == resource.getString(R.string.nm)) {
-			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " is " + value + " " + resource.getString(R.string.nauticalmiles));
-		}
-		if(unit == resource.getString(R.string.m)) {
-			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " is " + value + " " + resource.getString(R.string.metres));
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + "." + value + " . " );
 		}
 		if(unit == resource.getString(R.string.km)) {
-			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " is " + value + " " + resource.getString(R.string.kilometres));			
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + "." + value +" . " );
+		}
+		if(unit == resource.getString(R.string.m)) {
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + "." +  value + " " + resource.getString(R.string.metres));			
 		}
 	}
 	
@@ -202,13 +219,13 @@ public class Utils {
 			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.notactivate));
 		}
 		if(unit == resource.getString(R.string.deg)) {
-			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " is " + value + " " + resource.getString(R.string.degrees));
+			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " . " + value + " " + resource.getString(R.string.degrees));
 		}
 		if(unit == resource.getString(R.string.onport)) {
-			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " is " + value + " " + resource.getString(R.string.onport));
+			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName +  " . " + value + " " + resource.getString(R.string.onport));
 		}
 		if(unit == resource.getString(R.string.onstarboard)) {
-			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " is " + value + " " + resource.getString(R.string.onstarboard));
+			MainActivity.textViewBearing.setContentDescription(resource.getString(R.string.bearing) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName +  " . " + value + " " + resource.getString(R.string.onstarboard));
 		}
 	}
 	public static void speakBearingTextView(String value, String unit) {

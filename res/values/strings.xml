@@ -136,7 +136,7 @@
     <string name="KMandM">Kilomètre et mètre</string>
     <string name="nauticalmile">mille nautique</string>
     <string name="nauticalmiles">milles nautiques</string>
-    <string name="nm">MN</string>
+    <string name="nm">nautique</string>
     <string name="title_alertdialog_speedunit">unité de vitesse changée. Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_bearingunit">unité de relèvement changée. Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_distanceunit">unité de distance changée. Voulez-vous enregistrer?</string>
