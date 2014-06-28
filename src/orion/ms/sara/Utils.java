@@ -197,20 +197,20 @@ public class Utils {
 		int distancePointIndex = value.indexOf(".");
 		String intDistance = value.substring(0, distancePointIndex);
 		String decimalDistance = value.substring(distancePointIndex+1,distancePointIndex+2);
-		value = intDistance + " " + unit + "" + decimalDistance;
+		value = intDistance + " " + unit + " " + decimalDistance;
 		}
 		
 		if(unit == "") {
 			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.notactivate));
 		}
 		if(unit == resource.getString(R.string.nm)) {
-			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + "." + value + " . " );
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " . " + value + " . " );
 		}
 		if(unit == resource.getString(R.string.km)) {
-			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + "." + value +" . " );
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " . " + value +" . " );
 		}
 		if(unit == resource.getString(R.string.m)) {
-			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + "." +  value + " " + resource.getString(R.string.metres));			
+			MainActivity.textViewDistance.setContentDescription(resource.getString(R.string.distance) + " " + resource.getString(R.string.to) + " " + MyLocationListener.WaypointName + " . " +  value + " " + resource.getString(R.string.metres));			
 		}
 	}
 	
