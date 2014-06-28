@@ -67,6 +67,7 @@ public class WaypointMapActivity extends MapActivity {
         
 		// get map view and save button from XML file
 		mapView = (MyMapView) findViewById(R.id.mapview);
+		mapView.setContentDescription( getResources().getString(R.string.map) );
         this.saveButton = (Button) findViewById(R.id.savebutton);
         this.saveButton.setContentDescription(getResources().getString(R.string.usethislocation));
         

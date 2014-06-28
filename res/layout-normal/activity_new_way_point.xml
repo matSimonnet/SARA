@@ -18,31 +18,32 @@
             android:orientation="vertical" >
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="@string/current_checkedBox" />
-        
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/button2"
-            android:text="@string/using_map" />
-        
+	        <Button
+	            android:id="@+id/button2"
+	            android:layout_width="match_parent"
+	            android:layout_height="60dp"
+	            android:textSize="20sp"
+	            android:text="@string/current_checkedBox" />
+	        
+	        <Button
+	            android:id="@+id/button3"
+	            android:layout_width="match_parent"
+	            android:layout_height="60dp"
+	            android:textSize="20sp"
+	            android:layout_alignParentLeft="true"
+	            android:layout_below="@+id/button2"
+	            android:text="@string/using_map" />
+	        
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="30dp"
             android:layout_below="@+id/button3"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textSize="20sp"
             android:text="@string/nameText"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        
+            android:textAppearance="?android:attr/textAppearanceLarge" />      
 		<EditText
             android:id="@+id/editText1"
             android:layout_width="match_parent"
@@ -56,15 +57,13 @@
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="30dp"
             android:layout_below="@+id/editText1"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textSize="20sp"
             android:layout_centerHorizontal="true"
             android:text="@string/latitudeText"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        
         <EditText
             android:id="@+id/editText2"
             android:layout_width="match_parent"
@@ -80,11 +79,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/editText2"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textSize="20sp"
             android:text="@string/longitudeText"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        
+            android:textAppearance="?android:attr/textAppearanceLarge" /> 
         <EditText
             android:id="@+id/editText3"
             android:layout_width="match_parent"
@@ -94,65 +92,54 @@
             android:ems="10"
             android:inputType="numberSigned|numberDecimal" />
 
-                <TextView
+        
+        
+        <TextView
             android:id="@+id/WPTresholdTextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80sp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/editText3"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_toLeftOf="@+id/DecreaseWPTresholdButton"
             android:gravity="center"
             android:text="@string/distancetimetreshold"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <Button
             android:id="@+id/DecreaseWPTresholdButton"
             style="@style/btnStyleShakespeare"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="80sp"
             android:layout_below="@+id/editText3"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_toLeftOf="@+id/IncreaseWPTresholdButton"
             android:gravity="center"
             android:text="@string/DecreaseButton"
-            android:textSize="50dp" />
+            android:textSize="40dp" />
 
         <Button
             android:id="@+id/IncreaseWPTresholdButton"
             style="@style/btnStyleShakespeare"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="80sp"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/editText3"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="@string/IncreaseButton"
-            android:textSize="50dp" />
-
-        <Button
-            android:id="@+id/button1"
-            style="@style/btnStyleShakespeare"
-            android:layout_width="400dp"
-            android:layout_height="100dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/IncreaseWPTresholdButton"
-            android:layout_marginTop="20dp"
-            android:text="@string/saveText"
-            android:textSize="30dp" />
-        
+            android:textSize="40dp" /> 
         
         <Button
             android:id="@+id/button1"
-            android:layout_width="400dp"
+            android:layout_width="fill_parent"
             android:layout_height="60dp"
-            android:layout_below="@+id/editText3"
-            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/WPTresholdTextView"
             android:text="@string/saveText" />
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="400dp"
+            android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:layout_below="@+id/button1"
             android:text="@string/save_and_activateButton" />

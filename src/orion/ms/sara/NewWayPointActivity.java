@@ -99,11 +99,11 @@ public class NewWayPointActivity extends Activity {
 				
 				//TextView
 				newNameText = (TextView) findViewById(R.id.textView1);
-				newNameText.setContentDescription("new waypoint name is");
+				newNameText.setContentDescription(getResources().getString(R.string.new_waypoint_name_is));
 				newLatitudeText = (TextView) findViewById(R.id.textView2);
-				newLatitudeText.setContentDescription("new waypoint latitude is");
+				newLatitudeText.setContentDescription(getResources().getString(R.string.new_waypoint_latitude_is));
 				newLongitudeText = (TextView) findViewById(R.id.textView3);
-				newLongitudeText.setContentDescription("new waypoint longitude is");
+				newLongitudeText.setContentDescription(getResources().getString(R.string.new_waypoint_longitude_is));
 				
 				//EditText and description
 				nameBox = (EditText) findViewById(R.id.editText1);
@@ -130,7 +130,7 @@ public class NewWayPointActivity extends Activity {
 				//button
 				//current location button
 				currentLoButton = (Button) findViewById(R.id.button2);
-				currentLoButton.setTextSize(30);
+				//currentLoButton.setTextSize(30);
 				currentLoButton.setOnClickListener(new OnClickListener() {
 					//OnClick creation
 					@Override
@@ -170,7 +170,7 @@ public class NewWayPointActivity extends Activity {
 				
 				//map location button
 				mapLoButton = (Button) findViewById(R.id.button3);
-				mapLoButton.setTextSize(30);
+				//mapLoButton.setTextSize(30);
 				mapLoButton.setOnClickListener(new OnClickListener() {
 					//OnClick creation
 					@Override

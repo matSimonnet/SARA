@@ -65,6 +65,8 @@ public class ModifyWayActivity extends Activity {
 	private String longitude;
 	private WP selecting = WayActivity.findWPfromName("No selected waypoint");
 	private WP deleteWP = new WP("Delete this waypoint","","");
+	//private WP selecting = WayActivity.findWPfromName(getResources().getString(R.string.no_selected_waypoint));
+	//private WP deleteWP = new WP(getResources().getString(R.string.no_selected_waypoint),"","");
 	private WP del = null;
 
 	//array adapter

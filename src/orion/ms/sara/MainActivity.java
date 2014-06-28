@@ -78,6 +78,8 @@ public class MainActivity extends Activity {
 	//activating way point and way item name from the list
 	private String actName = "Please selected a waypoint";
 	private String actWayName = "No selected way";
+	//private String actName = getResources().getString(R.string.please_selected_a_waypoint);
+	//private String actWayName = getResources().getString(R.string.no_selected_way);
     private static RelativeLayout rl;
 
 
@@ -431,7 +433,7 @@ private void initActivatedWaypointView() {
 		ActivatedWayPointTextView = new TextView(this);
 		ActivatedWayPointTextView.setId(5421);
 		ActivatedWayPointTextView.setText(MyLocationListener.WaypointName);
-		ActivatedWayPointTextView.setContentDescription(MyLocationListener.WaypointName + "was activated.");
+		ActivatedWayPointTextView.setContentDescription(getResources().getString(R.string.current_waypoint) + " : " +  MyLocationListener.WaypointName + ".");
 		ActivatedWayPointTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textViewSpeed.getTextSize());
 		ActivatedWayPointTextView.setGravity(Gravity.CENTER_HORIZONTAL);
 		

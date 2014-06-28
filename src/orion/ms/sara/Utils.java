@@ -108,7 +108,7 @@ public class Utils {
 	}	
 	public static void setBearingTextView(String value, String unit) {
 		if(unit != "") {
-			String temp = resource.getString(R.string.bearing) + " to " + MyLocationListener.WaypointName + "\n" + value + " " + unit;
+			String temp = resource.getString(R.string.bearing) + " " +  MyLocationListener.WaypointName + "\n" + value + " " + unit;
 			msp = new SpannableString (temp);
 			int unitindex = temp.lastIndexOf(" ");
 			int titleindex = temp.lastIndexOf("\n");
@@ -117,7 +117,7 @@ public class Utils {
 				msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 			else {
-				msp.setSpan (new RelativeSizeSpan (0.4f), unitindex-2, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				msp.setSpan (new RelativeSizeSpan (0.4f), unitindex, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 				msp.setSpan (new RelativeSizeSpan (0.4f), 0, titleindex+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 		}

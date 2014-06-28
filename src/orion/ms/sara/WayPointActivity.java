@@ -79,6 +79,7 @@ public class WayPointActivity extends Activity {
 		//selected waypoint point item number
 		private int selectedItem = 0;
 		private String selectedName = "Please selected a waypoint";
+		//private String selectedName = getResources().getString(R.string.please_selected_a_waypoint);
 		
 		private int treshold = 0;
 		
@@ -381,7 +382,13 @@ public class WayPointActivity extends Activity {
 	public static ArrayList<String> toNameArrayList(List<WP> wList){
 		ArrayList<String> nameList = new ArrayList<String>();
 		for(int i = 0;i<wList.size();i++){
-			nameList.add(wList.get(i).getName());
+			try {
+				nameList.add(wList.get(i).getName());
+			} catch (Exception e) {
+				e.printStackTrace();
+				Log.e("e.printStackTrace()",""+ e);
+			}
+
 		}
 		return nameList;
 	}

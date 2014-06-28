@@ -1,4 +1,12 @@
 <resources>
+    <string name="no_selected_way">no selected way</string>
+    <string name="please_selected_a_waypoint">Please selected a waypoint</string>
+    <string name="new_waypoint_name_is">new waypoint name is</string>
+    <string name="new_waypoint_latitude_is">new waypoint latitude is</string>
+    <string name="new_waypoint_longitude_is">new waypoint longitude is</string>
+    <string name="current_waypoint">current waypoint</string>
+    <string name="no_selected_waypoint">no selected waypoint</string>
+    <string name="Delete_this_waypoint">Delete this waypoint</string>
     
     <string name="app_name">SARA</string>
     <string name="menu_settings">Settings</string>

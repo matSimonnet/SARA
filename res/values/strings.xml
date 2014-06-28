@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <string name="please_selected_a_waypoint">sélectionner un point de route</string>
+    <string name="no_selected_way">pas de route sélectionné</string>
+    <string name="new_waypoint_name_is">le nouveau point de route est </string>
+    <string name="new_waypoint_latitude_is">la latitude du nouveau point de route est </string>
+    <string name="new_waypoint_longitude_is">la longitude du nouveau point de route est </string>
+    <string name="go_back">Retour</string>
+    <string name="current_waypoint">Point de route en cours</string>
+    <string name="no_selected_waypoint">pas de point de route sélectionné</string>
+    <string name="Delete_this_waypoint">Effacer ce point de route</string>
 
     <string name="app_name">SARA</string>
     <string name="menu_settings">réglages</string>
@@ -78,8 +88,8 @@
     <string name="title_autosetting">Annonces auto</string>
 
     <!-- Action bar -->
-    <string name="auto_setting">MENU ANNONCES AUTO</string>
-    <string name="waypoint_setting">MENU POINT DE ROUTE</string>
+    <string name="auto_setting">menu annonce auto</string>
+    <string name="waypoint_setting">menu point de route</string>
     <string name="navigation">Retour à la navigation</string>
     <string name="navigation_title">NAVIGATION</string>
     <string name="autoaccuracy">précision auto</string>
@@ -89,9 +99,9 @@
     <string name="accuracytimetreshold">Temps minimum de répétition</string>
     <string name="maxaccuracytimetreshold">le temps maximum de répétition est atteint</string>
     <string name="minaccuracytimetreshold">le temps minimum de répétition est atteint</string>
-    <string name="general_setting">MENU REGLAGE</string>
+    <string name="general_setting">menu réglage</string>
     <string name="title_generalsetting">réglage</string>
-    <string name="map">CARTE</string>
+    <string name="map">carte</string>
     <string name="speedsetting">réglage vitesse auto</string>
     <string name="headingsetting">réglage cap auto</string>
     <string name="bearingsetting">réglage relèvement auto</string>
@@ -117,7 +127,7 @@
     <string name="title_alertdialog_distancesetting">distance auto changée. Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_accuracysetting">précision auto changée. Voulez-vous enregistrer?</string>
     <string name="kmperh">km/h</string>
-    <string name="backtogeneralsetting">RETOUR AUX REGLAGES</string>
+    <string name="backtogeneralsetting">retour aux réglages</string>
     <string name="cardinal">cardinal</string>
     <string name="portandstarboard">tribord/babord</string>
     <string name="onport">babord</string>
@@ -173,7 +183,7 @@
     
        <!-- way activity -->
    <string name="title_activity_way">Route</string>
-   <string name="way_menu">MENU ROUTE</string>
+   <string name="way_menu">menu route</string>
    <string name="button_newway">Nouvelle route</string>
    <string name="way_activity">retour vers route</string>
    <string name="ok_button">OK</string>

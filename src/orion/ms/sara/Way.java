@@ -2,6 +2,9 @@ package orion.ms.sara;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import android.util.Log;
 
 public class Way implements Comparable<Way>{
 	private List<WP> way;
@@ -17,13 +20,28 @@ public class Way implements Comparable<Way>{
 	
 	//add new way point to way
 	public List<WP> addWPtoWay(WP newWP){
-		if(!newWP.getName().equals("No selected waypoint")){
-			//if there is a selected way point
-			way.add(newWP);
-		}
-		else{
-			way = deleteWPfromWay(newWP);
-		}
+		
+		Log.e("LANGUAGE", "" + Locale.getDefault().getDisplayLanguage());
+		
+		//if (Locale.getDefault().getDisplayLanguage()== "ENGLISH"){
+			if(!newWP.getName().equals("No selected waypoint")){
+				//if there is a selected way point
+				way.add(newWP);
+			}
+			else{
+				way = deleteWPfromWay(newWP);
+			}	
+		//}
+		
+//		if (Locale.getDefault().getDisplayLanguage()== "FRENCH"){
+//			if(!newWP.getName().equals("pas de point de route sélectionné")){
+//				//if there is a selected way point
+//				way.add(newWP);
+//			}
+//			else{
+//				way = deleteWPfromWay(newWP);
+//			}
+//		}
 		return way;
 	}
 	
