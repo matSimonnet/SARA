@@ -337,10 +337,10 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public String getSpeed(Location loc) {
 		String speed = "";
 		if (isKnotsSelected) {
-			speed = String.valueOf(Utils.arrondiSpeed(loc.getSpeed() * (1.944)));
+			speed = String.valueOf(Utils.roundSpeed(loc.getSpeed() * (1.944)));
 		}
 		if (isKmPerHrSelected) {
-			speed = String.valueOf(Utils.arrondiSpeed(loc.getSpeed() * (3.6)));
+			speed = String.valueOf(Utils.roundSpeed(loc.getSpeed() * (3.6)));
 		}
 		return speed;
 	}
@@ -367,7 +367,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		}
 		if (isNMSelected) {
 			Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distance);
-			return String.valueOf(Utils.arrondiDistance(((distance[0] / 1000) * 0.54)));
+			return String.valueOf(Utils.roundDistance(((distance[0] / 1000) * 0.54)));
 		}
 		else { // kilometre and Metre
 			Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distance);
@@ -439,10 +439,10 @@ public class MyLocationListener extends Activity implements LocationListener {
 	
 	public double getSpeedAuto(Location loc) {
 		if (isKnotsSelected) {
-			return Utils.arrondiSpeed(loc.getSpeed() * (1.945));
+			return Utils.roundSpeed(loc.getSpeed() * (1.945));
 		}
 		else { // km/h
-			return Utils.arrondiSpeed(loc.getSpeed() * (3.6));
+			return Utils.roundSpeed(loc.getSpeed() * (3.6));
 		}
 	}
 	

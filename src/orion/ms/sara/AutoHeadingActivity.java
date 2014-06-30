@@ -102,7 +102,7 @@ public class AutoHeadingActivity extends Activity {
 			public void onClick(View v) {
 				if (v== IncreaseHeadingTresholdButton){
 					if(headingTreshold >= 0 && headingTreshold < 30) {
-						headingTreshold = Utils.arrondiHeadingTreshold(headingTreshold + headingTresholdStep);
+						headingTreshold = Utils.roundHeadingTreshold(headingTreshold + headingTresholdStep);
 						textViewHeadingTreshold.setText(getResources().getString(R.string.headingtreshold)+ " "  + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit));
 						textViewHeadingTreshold.setContentDescription(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit));
 						tts.speak(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit) ,TextToSpeech.QUEUE_FLUSH, null);
@@ -114,7 +114,7 @@ public class AutoHeadingActivity extends Activity {
 		        }	
 				if (v== DecreaseHeadingTresholdButton){
 					if(headingTreshold > 0 && headingTreshold <= 30) {
-						headingTreshold = Utils.arrondiHeadingTreshold(headingTreshold - headingTresholdStep);
+						headingTreshold = Utils.roundHeadingTreshold(headingTreshold - headingTresholdStep);
 						textViewHeadingTreshold.setText(getResources().getString(R.string.headingtreshold)+ " "  + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit));
 						textViewHeadingTreshold.setContentDescription(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit));
 						tts.speak(getResources().getString(R.string.headingtreshold) + Integer.toString((int)headingTreshold) + " " + getResources().getString(R.string.headingunit) ,TextToSpeech.QUEUE_FLUSH, null);

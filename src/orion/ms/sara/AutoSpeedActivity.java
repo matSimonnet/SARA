@@ -106,7 +106,7 @@ public class AutoSpeedActivity extends Activity {
 			public void onClick(View v) {
 				if (v== IncreaseSpeedTresholdButton){
 					if(speedTreshold >= 0.0 && speedTreshold < 3.0) {
-						speedTreshold = Utils.arrondiSpeedTreshold(speedTreshold + speedTresholdStep);
+						speedTreshold = Utils.roundSpeedTreshold(speedTreshold + speedTresholdStep);
 						textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + speedUnit);
 						textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + speedUnitDescription);
 						tts.speak(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + speedUnitDescription ,TextToSpeech.QUEUE_FLUSH, null);
@@ -118,7 +118,7 @@ public class AutoSpeedActivity extends Activity {
 		        }
 				if (v== DecreaseSpeedTresholdButton){
  					if(speedTreshold > 0.0 && speedTreshold <= 3.0) {
-						speedTreshold = Utils.arrondiSpeedTreshold(speedTreshold - speedTresholdStep);
+						speedTreshold = Utils.roundSpeedTreshold(speedTreshold - speedTresholdStep);
 						textViewSpeedTreshold.setText(getResources().getString(R.string.speedtreshold)+ " "  + speedTreshold + " " + speedUnit);
 						textViewSpeedTreshold.setContentDescription(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + speedUnitDescription);
 						tts.speak(getResources().getString(R.string.speedtreshold) + speedTreshold + " " + speedUnitDescription ,TextToSpeech.QUEUE_FLUSH, null);

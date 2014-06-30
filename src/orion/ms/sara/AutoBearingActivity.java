@@ -101,7 +101,7 @@ public class AutoBearingActivity extends Activity {
 			public void onClick(View v) {
 				if (v== IncreaseBearingTresholdButton){
 					if(bearingTreshold >= 0 && bearingTreshold < 30) {
-						bearingTreshold = Utils.arrondiHeadingTreshold(bearingTreshold + bearingTresholdStep);
+						bearingTreshold = Utils.roundHeadingTreshold(bearingTreshold + bearingTresholdStep);
 						textViewBearingTreshold.setText(getResources().getString(R.string.bearingtreshold)+ " "  + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit));
 						textViewBearingTreshold.setContentDescription(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit));
 						tts.speak(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit) ,TextToSpeech.QUEUE_FLUSH, null);
@@ -113,7 +113,7 @@ public class AutoBearingActivity extends Activity {
 		        }	
 				if (v== DecreaseBearingTresholdButton){
 					if(bearingTreshold > 0 && bearingTreshold <= 30) {
-						bearingTreshold = Utils.arrondiHeadingTreshold(bearingTreshold - bearingTresholdStep);
+						bearingTreshold = Utils.roundHeadingTreshold(bearingTreshold - bearingTresholdStep);
 						textViewBearingTreshold.setText(getResources().getString(R.string.bearingtreshold)+ " "  + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit));
 						textViewBearingTreshold.setContentDescription(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit));
 						tts.speak(getResources().getString(R.string.bearingtreshold) + Integer.toString((int)bearingTreshold) + " " + getResources().getString(R.string.bearingunit) ,TextToSpeech.QUEUE_FLUSH, null);
