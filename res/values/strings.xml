@@ -16,7 +16,7 @@
     <string name="GPS_is_unavailable_the_list_is_not_sort">Pas de satellite, les points ne sont pas triés par proximité</string>
     <string name="Please_fill_the_new_information">remplir les champs</string>
     <string name="Cannot_create_a_way_with_less_than_2_waypoints">impossible de créer une route avec moins de 2 points de route</string>
-    <string name="Please_fill_the_name_before_saving">saisir un nom avant d enregistrer</string>
+    <string name="Please_fill_the_name_before_saving">saisir un nom avant d\'enregistrer</string>
     <string name="please_selected_a_waypoint">sélectionner un point de route</string>
     <string name="no_selected_way">pas de route sélectionné</string>
     <string name="new_waypoint_name_is">le nouveau point de route est </string>
@@ -47,8 +47,8 @@
     <string name="speedunit">noeuds</string>
     <string name="headingunit">degrés</string>
     <string name="bearingunit">degrés</string>
-    <string name="timeunit">seconde"s</string>
-    <string name="kilometres">kilomètres</string>
+    <string name="timeunit">secondes</string>
+    <string name="kilometres">kilomètre</string>
     <string name="m">m</string>
     <string name="km">km</string>
     <string name="metres">mètres</string>
@@ -133,8 +133,8 @@
     <string name="speech_rate_setting">vitesse d\'élocution</string>
 
     <!-- speed unit -->
-    <string name="knots">noeuds</string>
-    <string name="km_per_hour">kilomètres/heure</string>
+    <string name="knots">noeud </string>
+    <string name="km_per_hour">kilomètre heure</string>
     <string name="speedUnitIntro">choisir l\'unité de vitesse</string>
     <string name="message_alertdialog_autosetting">Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_speedsetting">vitesse auto changée. Voulez-vous enregistrer?</string>
@@ -145,13 +145,13 @@
     <string name="kmperh">km/h</string>
     <string name="backtogeneralsetting">retour aux réglages</string>
     <string name="cardinal">cardinal</string>
-    <string name="portandstarboard">tribord/babord</string>
-    <string name="onport">babord</string>
+    <string name="portandstarboard">tribord/bâbord</string>
+    <string name="onport">bâbor</string>
     <string name="onstarboard">tribord</string>
     <string name="degrees">degrés</string>
     <string name="KMandM">Kilomètre et mètre</string>
     <string name="nauticalmile">mille nautique</string>
-    <string name="nauticalmiles">milles nautiques</string>
+    <string name="nauticalmiles">milles nautique</string>
     <string name="nm">nautique</string>
     <string name="title_alertdialog_speedunit">unité de vitesse changée. Voulez-vous enregistrer?</string>
     <string name="title_alertdialog_bearingunit">unité de relèvement changée. Voulez-vous enregistrer?</string>
