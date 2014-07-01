@@ -72,11 +72,11 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public static double distanceTreshold = 0.0;
 	public static double bearingTreshold = 10.0;
 
-	public static long speedTimeTreshold = 5;
-	public static long headingTimeTreshold = 5;
+	public static long speedTimeTreshold = 10;
+	public static long headingTimeTreshold = 10;
 	public static long distanceTimeTreshold = 5;
-	public static long bearingTimeTreshold = 5;
-	public static long accuracyTimeTreshold = 5;
+	public static long bearingTimeTreshold = 10;
+	public static long accuracyTimeTreshold = 10;
 
 	private String speedUnit = "";
 	private String distanceUnit = "";
@@ -276,7 +276,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		if (isAutoAccuracy) {
 			accuracyAuto = loc.getAccuracy();
 			accuracyNow = new Date();
-			if (isMorePrecise5Announced == false && accuracyAuto < 5 
+			if (isMorePrecise5Announced == false && accuracyAuto < 8 
 					&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
 				
 				Utils.speakAccuracyTextView(accuracy, accuracyUnit);
@@ -286,7 +286,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 				isMorePrecise10Announced = false;
 				isLessPrecise10Announced = false;
 			} 
-			else if (isMorePrecise10Announced == false && accuracyAuto >= 5 && accuracyAuto < 10 
+			else if (isMorePrecise10Announced == false && accuracyAuto >= 8 && accuracyAuto < 16 
 					&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
 
 				Utils.speakAccuracyTextView(accuracy, accuracyUnit);
@@ -295,7 +295,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 				isMorePrecise5Announced = false;
 				isMorePrecise10Announced = true;
 				isLessPrecise10Announced = false;
-			} else if (isLessPrecise10Announced == false && accuracyAuto >= 10
+			} else if (isLessPrecise10Announced == false && accuracyAuto >= 16
 					&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
 				
 				Utils.speakAccuracyTextView(accuracy, accuracyUnit);
