@@ -1,5 +1,7 @@
 <resources>
     
+    
+    <string name="You_have_reached_the_last_way_point">You have reached the last way point</string>
     <string name="This_position_is_already_recorded">This position is already recorded</string>
     <string name="This_name_is_already_recorded">This name is already recorded</string>
     <string name="Are_you_sure_changing_to_the_current_position">Are you sure changing to the current position?</string>

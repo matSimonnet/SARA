@@ -130,7 +130,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 
 			if(distanceWaypoint[0] <= WayActivity.findWPfromName(activatedName).getTreshold()) { // in meters
 				if(activatedIndex == activatedWay.size() - 1) {
-					MainActivity.tts.speak("You have reached the last way point " + activatedWayName + " is disactivated.", TextToSpeech.QUEUE_FLUSH, null);
+					MainActivity.tts.speak(getResources().getString(R.string.You_have_reached_the_last_way_point) + " : " + activatedWayName + " " +  
+							getResources().getString(R.string.is_disactivated) + " . ", TextToSpeech.QUEUE_FLUSH, null);
 					WaypointName = "";
 	    	        WaypointLatitude = 999.0;
 	    	        WaypointLongitude = 999.0;
@@ -141,7 +142,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	    	        saveActivatedWaypoint();
 				}
 				else {
-					MainActivity.tts.speak("You have reached " + WaypointName, TextToSpeech.QUEUE_FLUSH, null);
+					MainActivity.tts.speak(getResources().getString(R.string.You_have_reached_the_last_way_point) + " : " + WaypointName + " . ", TextToSpeech.QUEUE_FLUSH, null);
 					activatedIndex = activatedIndex + 1;
 					WaypointName = activatedWay.get(activatedIndex).getName();
 					WaypointLatitude = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
@@ -155,7 +156,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 		if (!isWayActivated && isWaypointActivated()) {
 			Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distanceWaypoint);
 			if(distanceWaypoint[0] <= WPTreshold) { // in meters
-				MainActivity.tts.speak("You have reached " + WaypointName + " " + WaypointName + " is disactivated", TextToSpeech.QUEUE_FLUSH, null);
+				MainActivity.tts.speak("You have reached " + WaypointName + " " + WaypointName + " " + getResources().getString(R.string.is_activated) + " . ", TextToSpeech.QUEUE_FLUSH, null);
 				WaypointName = "";
 				WaypointLatitude = 999;
 				WaypointLongitude = 999;
