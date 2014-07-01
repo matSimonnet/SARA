@@ -85,9 +85,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 	private String accuracyUnit = "";
 	
 	public static boolean isWaypointActivated = false;
-	private boolean isMorePrecise5Announced = false;
-	private boolean isMorePrecise10Announced = false;
-	private boolean isLessPrecise10Announced = false;
+	private boolean isMorePrecise8Announced = false;
+	private boolean isMorePrecise16Announced = false;
+	private boolean isLessPrecise16Announced = false;
 
 	public static boolean isKnotsSelected = true;
 	public static boolean isKmPerHrSelected = false;
@@ -142,12 +142,13 @@ public class MyLocationListener extends Activity implements LocationListener {
 	    	        saveActivatedWaypoint();
 				}
 				else {
-					MainActivity.tts.speak(getResources().getString(R.string.You_have_reached_the_last_way_point) + " : " + WaypointName + " . ", TextToSpeech.QUEUE_FLUSH, null);
+					MainActivity.tts.speak(getResources().getString(R.string.You_have_reached_the_last_way_point) + " : " 
+							+ WaypointName + " . ", TextToSpeech.QUEUE_FLUSH, null);
 					activatedIndex = activatedIndex + 1;
 					WaypointName = activatedWay.get(activatedIndex).getName();
 					WaypointLatitude = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
     	        	WaypointLongitude = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
-    	        	MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_FLUSH, null);
+    	        	MainActivity.tts.speak(WaypointName + getResources().getString(R.string.is_activated) + " . ", TextToSpeech.QUEUE_FLUSH, null);
 	    	        updatePin();
 	    	        saveActivatedWaypoint();
 				}
@@ -156,7 +157,8 @@ public class MyLocationListener extends Activity implements LocationListener {
 		if (!isWayActivated && isWaypointActivated()) {
 			Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distanceWaypoint);
 			if(distanceWaypoint[0] <= WPTreshold) { // in meters
-				MainActivity.tts.speak("You have reached " + WaypointName + " " + WaypointName + " " + getResources().getString(R.string.is_activated) + " . ", TextToSpeech.QUEUE_FLUSH, null);
+				MainActivity.tts.speak(WaypointName + " " + getResources().getString(R.string.reached) + " . "  
+						+  WaypointName + " " + getResources().getString(R.string.is_activated) + " . ", TextToSpeech.QUEUE_FLUSH, null);
 				WaypointName = "";
 				WaypointLatitude = 999;
 				WaypointLongitude = 999;
@@ -277,46 +279,46 @@ public class MyLocationListener extends Activity implements LocationListener {
 		if (isAutoAccuracy) {
 			accuracyAuto = loc.getAccuracy();
 			accuracyNow = new Date();
-			if (isMorePrecise5Announced == false && accuracyAuto < 8 
+			if (isMorePrecise8Announced == false && accuracyAuto < 8 
 					&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
 				
 				Utils.speakAccuracyTextView(accuracy, accuracyUnit);
 				accuracyBefore = new Date();
 				Log.i("accuracy", accuracy);
-				isMorePrecise5Announced = true;
-				isMorePrecise10Announced = false;
-				isLessPrecise10Announced = false;
+				isMorePrecise8Announced = true;
+				isMorePrecise16Announced = false;
+				isLessPrecise16Announced = false;
 			} 
-			else if (isMorePrecise10Announced == false && accuracyAuto >= 8 && accuracyAuto < 16 
+			else if (isMorePrecise16Announced == false && accuracyAuto >= 8 && accuracyAuto < 16 
 					&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
 
 				Utils.speakAccuracyTextView(accuracy, accuracyUnit);
 				accuracyBefore = new Date();
 				Log.i("accuracy", accuracy);
-				isMorePrecise5Announced = false;
-				isMorePrecise10Announced = true;
-				isLessPrecise10Announced = false;
-			} else if (isLessPrecise10Announced == false && accuracyAuto >= 16
+				isMorePrecise8Announced = false;
+				isMorePrecise16Announced = true;
+				isLessPrecise16Announced = false;
+			} else if (isLessPrecise16Announced == false && accuracyAuto >= 16
 					&& (accuracyNow.getTime() - accuracyBefore.getTime()) > accuracyTimeTreshold * 1000) {
 				
 				Utils.speakAccuracyTextView(accuracy, accuracyUnit);
 				accuracyBefore = new Date();
 				Log.i("accuracy", accuracy);
-				isMorePrecise5Announced = false;
-				isMorePrecise10Announced = false;
-				isLessPrecise10Announced = true;
+				isMorePrecise8Announced = false;
+				isMorePrecise16Announced = false;
+				isLessPrecise16Announced = true;
 			}
 		}// end of if AccuracyAutoCheck...
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		Toast.makeText(getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), getResources().getString(R.string.GPS_disable) + " . ", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		Toast.makeText(getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), getResources().getString(R.string.GPS_enable) + " . ", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -505,7 +507,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public static void previousWaypoint() {
 		if(activatedIndex == 0) {
 			alertDialog = new AlertDialog.Builder(MainActivity.getContext());
-			alertDialog.setTitle("This is the start waypoint of " + activatedWayName);
+			alertDialog.setTitle(resource.getString(R.string.This_is_the_start_waypoint_of) + " :  " + activatedWayName);
 			alertDialog.setIcon(android.R.drawable.presence_busy);
 			alertDialog.setCancelable(true);
 			alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -523,7 +525,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			WaypointName = activatedWay.get(activatedIndex).getName();
 			WaypointLatitude = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
 			WaypointLongitude = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
-			MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_FLUSH, null);
+			MainActivity.tts.speak(WaypointName + " "  + resource.getString(R.string.is_activated), TextToSpeech.QUEUE_FLUSH, null);
 			updatePin();
 			saveActivatedWaypoint();
 		}
@@ -532,7 +534,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 	public static void nextWaypoint() {
 		if(activatedIndex == activatedWay.size() - 1) {
 			alertDialog = new AlertDialog.Builder(MainActivity.getContext());
-			alertDialog.setTitle("This is the end waypoint of " + activatedWayName);
+			alertDialog.setTitle(resource.getString(R.string.This_is_the_end_waypoint_of) + "  " + activatedWayName);
 			alertDialog.setIcon(android.R.drawable.presence_busy);
 			alertDialog.setCancelable(true);
 			alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -550,7 +552,7 @@ public class MyLocationListener extends Activity implements LocationListener {
 			WaypointName = activatedWay.get(activatedIndex).getName();
 			WaypointLatitude = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
 	    	WaypointLongitude = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
-	    	MainActivity.tts.speak(WaypointName + " is activated", TextToSpeech.QUEUE_FLUSH, null);
+	    	MainActivity.tts.speak(WaypointName +  resource.getString(R.string.is_activated), TextToSpeech.QUEUE_FLUSH, null);
 	        updatePin();
 	        saveActivatedWaypoint();
 		}
