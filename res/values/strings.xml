@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <string name="New_information_of_the_waypoint_is_already_modified"> Les informations du point de route sont déjà modifiées </string>
+    <string name="Please_fill_the_new_information_or_create_a_new_waypoint"> Remplir les nouvelles informations ou créer un nouveau point de route </string>
+    <string name="mod_waypoint_lat_is"> La latitude du point de route modifié est </string>
+    <string name="mod_waypoint_lon_is"> La longitude du point de route modifié est </string>
+    <string name="mod_waypoint_name_is"> Le nom du point de route modifié est </string>
     <string name="This_is_the_end_waypoint_of"> Derner point de route de </string>
     <string name="This_is_the_start_waypoint_of"> Premier point de route de </string>
     <string name="GPS_enable"> GPS activé </string>

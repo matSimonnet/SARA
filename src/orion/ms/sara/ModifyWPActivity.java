@@ -101,11 +101,11 @@ public class ModifyWPActivity extends Activity {
 			
 		//TextView
 		modNameText = (TextView) findViewById(R.id.textView1);
-		modNameText.setContentDescription("mod waypoint name is");
+		modNameText.setContentDescription(getResources().getString(R.string.mod_waypoint_name_is) + " ");
 		modLatitudeText = (TextView) findViewById(R.id.textView2);
-		modLatitudeText.setContentDescription("mod waypoint latitude is");
+		modLatitudeText.setContentDescription(getResources().getString(R.string.mod_waypoint_lat_is) + " ");
 		modLongitudeText = (TextView) findViewById(R.id.textView3);
-		modLongitudeText.setContentDescription("mod waypoint longitude is");
+		modLongitudeText.setContentDescription(getResources().getString(R.string.mod_waypoint_lon_is) + " ");
 			
 		//EditText
 		nameBox = (EditText) findViewById(R.id.editText1);
@@ -154,7 +154,7 @@ public class ModifyWPActivity extends Activity {
 				if(currentLatitude.equals("")){
 					//GPS unavailable
 					AlertDialog.Builder dialog = new AlertDialog.Builder(ModifyWPActivity.this);
-					dialog.setTitle("GPS is unavailable,please wait.");
+					dialog.setTitle(getResources().getString(R.string.no_satellite) + "");
 					dialog.setNeutralButton("OK", null);
 					dialog.show();
 				}
@@ -163,8 +163,8 @@ public class ModifyWPActivity extends Activity {
 					if(!latitudeBox.getText().equals(currentLatitude) || !longitudeBox.getText().equals(currentLongitude)){
 						//if the location change
 						AlertDialog.Builder dialog = new AlertDialog.Builder(ModifyWPActivity.this);
-						dialog.setTitle("Are you sure changing to the current position?");
-						dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+						dialog.setTitle(getResources().getString(R.string.Are_you_sure_changing_to_the_current_position) + "");
+						dialog.setNegativeButton(getResources().getString(R.string.yes) + " ", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface arg0, int arg1) {
 								//if the user want to change
@@ -215,14 +215,14 @@ public class ModifyWPActivity extends Activity {
 					
 					//check if the filled name or the position (latitude and longitude) are already recorded
 					if(!isRecorded(modName, modLatitude, modLongitude)){
-						tts.speak("Please fill the new information or create a new waypoint", tts.QUEUE_ADD, null);
+						tts.speak(getResources().getString(R.string.Please_fill_the_new_information_or_create_a_new_waypoint), tts.QUEUE_ADD, null);
 					}
 					else{
 						//sent the modifying waypoint information back to waypoint activity
 														
 						//notification
-						tts.speak("New information of the waypoint is already modified", tts.QUEUE_ADD, null);
-						Toast.makeText(ModifyWPActivity.this,"New information of the waypoint is already modified", Toast.LENGTH_SHORT);
+						tts.speak( getResources().getString(R.string.New_information_of_the_waypoint_is_already_modified) + " . " , tts.QUEUE_ADD, null);
+						Toast.makeText(ModifyWPActivity.this,getResources().getString(R.string.New_information_of_the_waypoint_is_already_modified) + " . " , Toast.LENGTH_SHORT);
 						
 						//change back to the waypoint activity
 						//pass the parameters including name,latitude,longitude
@@ -258,14 +258,14 @@ public class ModifyWPActivity extends Activity {
 					
 					//check if the filled name or the position (latitude and longitude) are already recorded
 					if(!isRecorded(modName, modLatitude, modLongitude)){
-						tts.speak("Please fill the new information or create a new waypoint", tts.QUEUE_ADD, null);
+						tts.speak(getResources().getString(R.string.Please_fill_the_new_information_or_create_a_new_waypoint) + " . " , tts.QUEUE_ADD, null);
 					}
 					else{
 						//sent the modifying waypoint information back to waypoint activity
 														
 						//notification
-						tts.speak("New information of the waypoint is already modified", tts.QUEUE_ADD, null);
-						Toast.makeText(ModifyWPActivity.this,"New information of the waypoint is already modified", Toast.LENGTH_SHORT);
+						tts.speak(getResources().getString(R.string.New_information_of_the_waypoint_is_already_modified) + " . " , tts.QUEUE_ADD, null);
+						Toast.makeText(ModifyWPActivity.this,getResources().getString(R.string.New_information_of_the_waypoint_is_already_modified) + " . " , Toast.LENGTH_SHORT);
 						
 						//intent to way point
 						//pass the parameters including name,latitude,longitude
@@ -417,7 +417,7 @@ public class ModifyWPActivity extends Activity {
 			//check if some values change without saving
 			if(!oldName.equals(modName) || !oldLatitude.equals(modLatitude) || !oldLongitude.equals(modLongitude) || oldTres != WPTreshold){
 				AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-				dialog.setTitle("Some values change, do you want to save?");
+				dialog.setTitle(getResources().getString(R.string.Some_values_change_do_you_want_to_save) );
 				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {

@@ -1,5 +1,11 @@
 <resources>
     
+    
+    <string name="New_information_of_the_waypoint_is_already_modified"> New information of the waypoint is already modified </string>
+    <string name="Please_fill_the_new_information_or_create_a_new_waypoint"> Please fill the new information or create a new waypoint </string>
+    <string name="mod_waypoint_lat_is"> modified latitude is </string>
+    <string name="mod_waypoint_lon_is"> modified longitude is </string>
+    <string name="mod_waypoint_name_is"> modified name is </string>
     <string name="This_is_the_end_waypoint_of"> This is the end waypoint of </string>
     <string name="This_is_the_start_waypoint_of"> This is the start waypoint of </string>
     <string name="GPS_enable"> GPS enabled </string>
