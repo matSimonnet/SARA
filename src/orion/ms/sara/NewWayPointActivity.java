@@ -142,7 +142,7 @@ public class NewWayPointActivity extends Activity {
 						if(currentLatitude.equals("")){
 							//GPS unavailable
 							AlertDialog.Builder dialog = new AlertDialog.Builder(NewWayPointActivity.this);
-							dialog.setTitle("GPS is unavailable,please wait.");
+							dialog.setTitle(" " + getResources().getString(R.string.no_satellite));
 							dialog.setNeutralButton("OK", null);
 							dialog.show();
 						}
@@ -151,8 +151,8 @@ public class NewWayPointActivity extends Activity {
 							if(!latitudeBox.getText().equals(currentLatitude) || !longitudeBox.getText().equals(currentLongitude)){
 								//if the location change
 								AlertDialog.Builder dialog = new AlertDialog.Builder(NewWayPointActivity.this);
-								dialog.setTitle("Are you sure changing to the current position?");
-								dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+								dialog.setTitle( " " + getResources().getString(R.string.Are_you_sure_changing_to_the_current_position ) );
+								dialog.setNegativeButton(" " + getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface arg0, int arg1) {
 										//if the user want to change
@@ -161,7 +161,7 @@ public class NewWayPointActivity extends Activity {
 										longitudeBox.setText(currentLongitude);
 									}
 								});//end onClick
-								dialog.setPositiveButton("Cancel", null);//don't want to change
+								dialog.setPositiveButton(" " + getResources().getString(R.string.cancel), null);//don't want to change
 								dialog.show();
 							}//end if
 						}//end else
@@ -208,19 +208,18 @@ public class NewWayPointActivity extends Activity {
 							
 							//check if the filled name or the position (latitude and longitude) are already recorded
 							if(isRecorded(name, latitude, longitude)){
-								tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
+								tts.speak( " " + getResources().getString(R.string.Please_fill_the_new_information), tts.QUEUE_ADD, null);
 							}
 							else{
 								if(latitude.isEmpty() || longitude.isEmpty() || name.isEmpty()){
 									//prevent unfilled text box(es)
-									tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
+									tts.speak(" " + getResources().getString(R.string.Please_fill_the_name_before_saving) , tts.QUEUE_ADD, null);
 								}
 								else{
 									//sent the new waypoint information back to waypoint activity
 									
 									//notification
-									tts.speak("the new waypoint already saved", tts.QUEUE_ADD, null);
-									Toast.makeText(NewWayPointActivity.this,"new waypoint already saved", Toast.LENGTH_SHORT);
+									tts.speak(" " + getResources().getString(R.string.new_waypoint), tts.QUEUE_ADD, null);
 									
 									//change back to the waypoint activity
 									//pass the parameters including name,latitude,longitude
@@ -258,12 +257,12 @@ public class NewWayPointActivity extends Activity {
 							
 							//check if the filled name or the position (latitude and longitude) are already recorded
 							if(isRecorded(name, latitude, longitude)){
-								tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
+								tts.speak( " " + getResources().getString(R.string.Please_fill_the_new_information), tts.QUEUE_ADD, null);
 							}
 							else{
 								if(latitude.isEmpty() || longitude.isEmpty() || name.isEmpty()){
 									//prevent unfilled text box(es)
-									tts.speak("Please fill all information before saving", tts.QUEUE_ADD, null);
+									tts.speak(" " + getResources().getString(R.string.Please_fill_the_name_before_saving), tts.QUEUE_ADD, null);
 								}
 								else{
 									//sent the new waypoint information back to waypoint activity
@@ -323,7 +322,8 @@ public class NewWayPointActivity extends Activity {
 								tts.speak(getResources().getString(R.string.wptreshold) + WPTreshold + " " + getResources().getString(R.string.metres), TextToSpeech.QUEUE_FLUSH, null);
 								Log.i("test", "increase wp treshold 100");
 							} else if (WPTreshold == 1000) {
-								tts.speak(getResources().getString(R.string.wptreshold) + " " + WPTreshold + " " + getResources().getString(R.string.metres) + " " + getResources().getString(R.string.cant_increase), TextToSpeech.QUEUE_FLUSH, null);
+								tts.speak(getResources().getString(R.string.wptreshold) + " " + WPTreshold + " " + getResources().getString(R.string.metres)
+										+ " " + getResources().getString(R.string.cant_increase), TextToSpeech.QUEUE_FLUSH, null);
 							}
 
 						}
@@ -369,13 +369,11 @@ public class NewWayPointActivity extends Activity {
 		for(int i = 1;i<wList.size();i++){
 			if(wList.get(i).getName().equalsIgnoreCase(n)){
 				// same name
-				Toast.makeText(NewWayPointActivity.this, "This name is already recorded.", Toast.LENGTH_SHORT);
-				tts.speak("This name is already recorded.", tts.QUEUE_FLUSH, null);
+				tts.speak(" " + getResources().getString(R.string.This_name_is_already_recorded), tts.QUEUE_FLUSH, null);
 				return true;
 			}//end if
 			else if(wList.get(i).getLatitude().equalsIgnoreCase(la) && wList.get(i).getLongitude().equalsIgnoreCase(lo)){
 				//same position
-				Toast.makeText(NewWayPointActivity.this, "This position is already recorded.", Toast.LENGTH_SHORT);
 				tts.speak("This position is already recorded.", tts.QUEUE_FLUSH, null);
 				return true;
 			}//end if
@@ -443,8 +441,8 @@ public class NewWayPointActivity extends Activity {
 			//check if some values change without saving
 			if((!latitude.equals("") || !longitude.equals("")) && !isRecorded(name, latitude, longitude)){
 				final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-				dialog.setTitle("Some values change, do you want to save?");
-				dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
+				dialog.setTitle(" " + getResources().getString(R.string.Some_values_change_do_you_want_to_save));
+				dialog.setNegativeButton(" " + getResources().getString(R.string.yes), new DialogInterface.OnClickListener(){
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 						//pass the parameters including name,latitude,longitude
@@ -461,7 +459,7 @@ public class NewWayPointActivity extends Activity {
 					}
 				});
 				
-				dialog.setNeutralButton("No", new DialogInterface.OnClickListener(){
+				dialog.setNeutralButton(" " + getResources().getString(R.string.no), new DialogInterface.OnClickListener(){
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 						//don't save use the old name and position

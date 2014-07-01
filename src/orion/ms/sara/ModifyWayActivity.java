@@ -110,12 +110,12 @@ public class ModifyWayActivity extends Activity {
 
 		//TextView
 		wayNameText = (TextView) findViewById(R.id.textView1);
-		wayNameText.setContentDescription("modify way's name");
+		//wayNameText.setContentDescription("modify way's name");
 		wp1Text = (TextView) findViewById(R.id.textView2);
-		wp1Text.setContentDescription("waypoint 1 name is"); 
+		//wp1Text.setContentDescription("waypoint 1 name is"); 
 		wp1NameText = (TextView) findViewById(R.id.textView3);
 		wp2Text = (TextView) findViewById(R.id.TextView4);
-		wp2Text.setContentDescription("waypoint 2 name is"); 
+		//wp2Text.setContentDescription("waypoint 2 name is"); 
 		wp2NameText = (TextView) findViewById(R.id.TextView5);
 		
 		//layout
@@ -143,7 +143,7 @@ public class ModifyWayActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				moreWay(belowID+77,"");
-				tts.speak("More waypoint selection shown", tts.QUEUE_FLUSH, null);
+				tts.speak(" " + getResources().getString(R.string.More_waypoint_selection_shown), tts.QUEUE_FLUSH, null);
 			}
 		});
 		
@@ -162,7 +162,7 @@ public class ModifyWayActivity extends Activity {
 					temp.setName(modWayName);
 					if(modWayName.isEmpty()){
 						//prevent incomplete way's name
-						tts.speak("Please fill the name before saving", tts.QUEUE_ADD, null);
+						tts.speak(" " + getResources().getString(R.string.More_waypoint_selection_shown), tts.QUEUE_ADD, null);
 					}
 					else{
 						//remove delete way points from way
@@ -175,17 +175,16 @@ public class ModifyWayActivity extends Activity {
 						}
 						if(temp.getSize()<2){
 							//prevent incomplete way
-							tts.speak("Cannot create a way with less than 2 waypoints", tts.QUEUE_FLUSH, null);
+							tts.speak(" " + getResources().getString(R.string.Cannot_create_a_way_with_less_than_2_waypoints), tts.QUEUE_FLUSH, null);
 						}
 						else{
 							//check if the filled name or the way points are already recorded
 							if(!isRecorded(temp)&&!modifiable(temp)){
-								tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
+								tts.speak(" " + getResources().getString(R.string.Please_fill_the_new_information), tts.QUEUE_ADD, null);
 							}
 							else{
 								//notification
-								tts.speak("the new way already saved", tts.QUEUE_ADD, null);
-								Toast.makeText(ModifyWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
+								tts.speak(" " + getResources().getString(R.string.the_new_way_already_saved), tts.QUEUE_ADD, null);
 								//change back to the way activity
 								//passing activate way name and way points
 								intentToWay.putExtra("modWayName", temp.getName());
@@ -218,7 +217,7 @@ public class ModifyWayActivity extends Activity {
 					temp.setName(modWayName);
 					if(modWayName.isEmpty()){
 						//prevent incomplete way's name
-						tts.speak("Please fill the name before saving", tts.QUEUE_ADD, null);
+						tts.speak(" " + getResources().getString(R.string.Please_fill_the_name_before_saving), tts.QUEUE_ADD, null);
 					}
 					else{
 						//remove delete way points from way
@@ -231,17 +230,16 @@ public class ModifyWayActivity extends Activity {
 						}
 						if(temp.getSize()<2){
 							//prevent incomplete way
-							tts.speak("Cannot create a way with less than 2 waypoints", tts.QUEUE_FLUSH, null);
+							tts.speak("" + R.string.Cannot_create_a_way_with_less_than_2_waypoints, tts.QUEUE_FLUSH, null);
 						}
 						else{
 							//check if the filled name or the way points are already recorded
 							if(!isRecorded(temp)&&!modifiable(temp)){
-								tts.speak("Please fill the new information", tts.QUEUE_ADD, null);
+								tts.speak(" " + getResources().getString(R.string.Please_fill_the_new_information), tts.QUEUE_ADD, null);
 							}
 							else{
 								//notification
-								tts.speak("the new way already saved", tts.QUEUE_ADD, null);
-								Toast.makeText(ModifyWayActivity.this,"new way already saved", Toast.LENGTH_SHORT);
+								tts.speak(" " + getResources().getString(R.string.the_new_way_already_saved), tts.QUEUE_ADD, null);
 								//change back to the way activity
 								//passing activate way name and way points
 								intentToWay.putExtra("modWayName", temp.getName());
@@ -322,7 +320,7 @@ public class ModifyWayActivity extends Activity {
 	        }//end onItemSelected
 	        
 			public void onNothingSelected(AdapterView<?> arg0) {
-				Toast.makeText(ModifyWayActivity.this,"You selected Empty",Toast.LENGTH_SHORT).show();
+				Toast.makeText(ModifyWayActivity.this, " " + getResources().getString(R.string.you_selected) + " " + getResources().getString(R.string.nothing),Toast.LENGTH_SHORT).show();
 			} 
 	
 	    });//end setOnSelected
@@ -338,7 +336,7 @@ public class ModifyWayActivity extends Activity {
 				//check if a selecting way point is the same as the previous way point and the next way point 
 				if(sameChoosing(wp, temp.getWP(1))){
 					//way point1 and way point2 are the same
-					tts.speak("Cannot selecting the same way point as next way point", tts.QUEUE_FLUSH, null);
+					tts.speak(" " + getResources().getString(R.string.Cannot_selecting_the_same_way_point_as_next_way_point), tts.QUEUE_FLUSH, null);
 				}
 				else{
 					//replace old way point
@@ -359,7 +357,7 @@ public class ModifyWayActivity extends Activity {
 				if(temp.getSize()==2){
 					if(sameChoosing(wp, temp.getWP(0))){
 						//way point1 and way point2 are the same
-						tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
+						tts.speak(" " + getResources().getString(R.string.Cannot_selecting_the_same_way_point_as_next_way_point), tts.QUEUE_FLUSH, null);
 					}
 					else{
 						//replace old way point
@@ -370,7 +368,7 @@ public class ModifyWayActivity extends Activity {
 					//size > 2
 					if(sameChoosing(wp, temp.getWP(0)) || sameChoosing(wp, temp.getWP(2)) ){
 						//way point1 and way point2 are the same or way point 2 and way point 3 are the same
-						tts.speak("Cannot selecting the same way point as previous or next way point", tts.QUEUE_FLUSH, null);
+						tts.speak(" " + getResources().getString(R.string.Cannot_selecting_the_same_way_point_as_next_way_point), tts.QUEUE_FLUSH, null);
 					}
 					else{
 						//replace old way point
@@ -391,7 +389,7 @@ public class ModifyWayActivity extends Activity {
 				if(spinnerID==temp.getSize()){
 					if(sameChoosing(wp, temp.getWP(spinnerID-2))){
 						//selecting way point and the previous way point are the same
-						tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
+						tts.speak(" " + getResources().getString(R.string.Cannot_selecting_the_same_way_point_as_next_way_point), tts.QUEUE_FLUSH, null);
 					}
 					else{
 						if(temp.getWP(spinnerID-1)!=null){
@@ -407,7 +405,7 @@ public class ModifyWayActivity extends Activity {
 				else if(spinnerID>temp.getSize()){
 					if(sameChoosing(wp, temp.getWP(spinnerID-2))){
 						//selecting way point and the previous way point are the same
-						tts.speak("Cannot selecting the same way point as previous way point", tts.QUEUE_FLUSH, null);
+						tts.speak(" " + getResources().getString(R.string.Cannot_selecting_the_same_way_point_as_next_way_point), tts.QUEUE_FLUSH, null);
 					}
 					else{
 						//add new way point
@@ -417,7 +415,7 @@ public class ModifyWayActivity extends Activity {
 				else{
 					if( sameChoosing(wp, temp.getWP(spinnerID-2)) || sameChoosing(wp, temp.getWP(spinnerID))){
 						//selecting way point and the previous way point are the same or selecting way point and the next way point are the same
-						tts.speak("Cannot selecting the same way point as previous or next way point", tts.QUEUE_FLUSH, null);
+						tts.speak(" " + getResources().getString(R.string.Cannot_selecting_the_same_way_point_as_next_way_point), tts.QUEUE_FLUSH, null);
 					}
 					else{
 						if(temp.getWP(spinnerID-1)!=null){
@@ -445,7 +443,7 @@ public class ModifyWayActivity extends Activity {
 			}//end delete
 		}//end else
 		//tts announcement
-		tts.speak("Waypoint"+order+" is "+wp.getName(), tts.QUEUE_ADD, null);
+		tts.speak(" " + getResources().getString(R.string.waypoint) + order + " " + wp.getName(), tts.QUEUE_ADD, null);
 	}
 
 
@@ -495,7 +493,7 @@ public class ModifyWayActivity extends Activity {
 		wpParam.addRule(RelativeLayout.BELOW,belowID);
 	    TextView way_WP = new TextView(this);
 	    way_WP.setLayoutParams(wpParam);
-	    way_WP.setText("Way point"+way_Size+" is  ");
+	    way_WP.setText(getResources().getString(R.string.waypoint) + way_Size + " ");
 	    way_WP.setTextSize(TypedValue.COMPLEX_UNIT_PX,wp1Text.getTextSize());
 	    way_WP.setGravity(Gravity.CENTER_HORIZONTAL);
 	    way_WP.setId(id);
@@ -592,7 +590,7 @@ public class ModifyWayActivity extends Activity {
 				//check if can create a way
 				if(temp.getSize()>=2){
 					final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-					dialog.setTitle("Some values change, do you want to save?");
+					dialog.setTitle(" " + getResources().getString(R.string.Some_values_change_do_you_want_to_save));
 					dialog.setNegativeButton("Yes", new DialogInterface.OnClickListener(){
 						@Override
 						public void onClick(DialogInterface arg0, int arg1) {

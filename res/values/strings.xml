@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
+    <string name="This_position_is_already_recorded">Cette position est déjà utilisée</string>
+    <string name="This_name_is_already_recorded">Ce nom est déjà utilisé</string>
+    <string name="Are_you_sure_changing_to_the_current_position">êtes vous certain de vouloir changer la position actuelle ?</string>
+    <string name="Some_values_change_do_you_want_to_save">Des valeurs ont été changées, voulez-vous les enregistrer ?</string>
+    <string name="waypoint">point de route</string>
+    <string name="Cannot_selecting_the_same_way_point_as_next_way_point">Impossible de sélectionner le même point de route que le précédent</string>
+    <string name="create_a_new_waypoint">création dun nouveau point de route</string>
+    <string name="nothing">rien</string>
+    <string name="Are_you_sure_deleting">êtes vous sûr de vouloir effacer </string>
+    <string name="the_new_way_already_saved">la nouvelle route est déjà enregistrée</string>
+    <string name="you_selected">vous avez choisi</string>
+    <string name="Choose_the_waypoint_in">choix du point de route</string>
+    <string name="GPS_is_unavailable_the_list_is_not_sort">Pas de satellite, les points ne sont pas triés par proximité</string>
+    <string name="Please_fill_the_new_information">remplir les champs</string>
+    <string name="Cannot_create_a_way_with_less_than_2_waypoints">impossible de créer une route avec moins de 2 points de route</string>
+    <string name="Please_fill_the_name_before_saving">saisir un nom avant d enregistrer</string>
     <string name="please_selected_a_waypoint">sélectionner un point de route</string>
     <string name="no_selected_way">pas de route sélectionné</string>
     <string name="new_waypoint_name_is">le nouveau point de route est </string>
