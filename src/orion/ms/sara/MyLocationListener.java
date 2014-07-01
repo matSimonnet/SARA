@@ -448,9 +448,13 @@ public class MyLocationListener extends Activity implements LocationListener {
 	
 	public int getDistanceTreshold() {
 		if (distanceAuto < 10) return 1;
-		if (distanceAuto < 100 && distanceAuto >= 10) return 10;
-		if (distanceAuto < 1000 && distanceAuto >= 100) return 100;
-		if (distanceAuto < 10000 && distanceAuto >= 1000) return 1000;
+		if (distanceAuto < 50 && distanceAuto >= 10) return 5;
+		if (distanceAuto < 100 && distanceAuto >= 50) return 10;
+		if (distanceAuto < 500 && distanceAuto >= 100) return 50;
+		if (distanceAuto < 1000 && distanceAuto >= 500) return 100;
+		if (distanceAuto < 5000 && distanceAuto >= 1000) return 500;
+		if (distanceAuto < 10000 && distanceAuto >= 5000) return 1000;
+		if (distanceAuto < 50000 && distanceAuto >= 100000) return 5000;
 		else return 10000;
 	}
 	
