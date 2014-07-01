@@ -69,7 +69,8 @@ public class MyMapActivity extends MapActivity {
 	
 	// url for downloading file
 	private String url = "http://download.mapsforge.org/maps/europe/france/bretagne.map";
-
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -424,7 +425,8 @@ public class MyMapActivity extends MapActivity {
 	}
 
 	private void setMapFile() {
-		File mapFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Android/data/org.mapsforge.android.maps/map/bretagne.map");
+//		File mapFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Android/data/org.mapsforge.android.maps/map/bretagne.map");
+		File mapFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Android/data/org.mapsforge.android.maps/map/provence-alpes-cote-d-azur.map");
 		// check if there is a bretagne.map
 		if (mapFile.exists()) {
 			mapView.setMapFile(mapFile);
