@@ -40,7 +40,7 @@ public class AutoHeadingActivity extends Activity {
 	private Button DecreaseHeadingTimeTresholdButton = null;
 	
 	private double headingTreshold = 10.0; 
-	private long headingTimeTreshold = 5;	
+	private long headingTimeTreshold = 10;	
 	private double headingTresholdStep = 1.0;
 	private long headingTimeTresholdStep = 1;
 

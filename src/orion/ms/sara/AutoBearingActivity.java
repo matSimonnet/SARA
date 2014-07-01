@@ -40,7 +40,7 @@ public class AutoBearingActivity extends Activity {
 	private Button DecreaseBearingTimeTresholdButton = null;
 	
 	private double bearingTreshold = 10.0;
-	private long bearingTimeTreshold = 5;
+	private long bearingTimeTreshold = 10;
 	private double bearingTresholdStep = 1.0;
 	private long bearingTimeTresholdStep = 1;
 

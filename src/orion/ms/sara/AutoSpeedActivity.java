@@ -38,7 +38,7 @@ public class AutoSpeedActivity extends Activity {
 	private Button DecreaseSpeedTimeTresholdButton = null;
 	
 	private double speedTreshold = 1.0; 
-	private long speedTimeTreshold = 5;
+	private long speedTimeTreshold = 10;
 	private double speedTresholdStep = 0.1;
 	private long speedTimeTresholdStep = 1;
 	private String speedUnit = "";

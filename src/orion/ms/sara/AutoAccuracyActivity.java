@@ -32,7 +32,7 @@ public class AutoAccuracyActivity extends Activity {
 	private Button IncreaseAccuracyTimeTresholdButton = null;
 	private Button DecreaseAccuracyTimeTresholdButton = null;
 	
-	private long accuracyTimeTreshold = 5;
+	private long accuracyTimeTreshold = 10;
 	private long accuracyTimeTresholdStep = 1;
 
 	private boolean isAutoAccuracy = true;
