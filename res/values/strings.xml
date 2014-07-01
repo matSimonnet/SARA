@@ -73,7 +73,7 @@
     <string name="saveText">enregistrer</string>
     <string name="choosingTitle">vous avez sélectionné :</string>
     <string name="title_activity_modify">modifier</string>
-    <string name="modifyButton">enregistrer les modifications du point de route</string>
+    <string name="modifyButton">enregistrer les modifications</string>
     <string name="current_checkedBox">utiliser la position actuelle</string>
     <string name="autobearing">relèvement automatique</string>
     <string name="autodistance">distance automatique</string>
