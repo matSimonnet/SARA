@@ -130,8 +130,9 @@ public class MyLocationListener extends Activity implements LocationListener {
 
 			if(distanceWaypoint[0] <= WayActivity.findWPfromName(activatedName).getTreshold()) { // in meters
 				if(activatedIndex == activatedWay.size() - 1) {
-					MainActivity.tts.speak(getResources().getString(R.string.You_have_reached_the_last_way_point) + " : " + activatedWayName + " " +  
-							getResources().getString(R.string.is_disactivated) + " . ", TextToSpeech.QUEUE_FLUSH, null);
+					/*MainActivity.tts.speak(getResources().getString(R.string.You_have_reached_the_last_way_point) + " : " + activatedWayName + " " +  
+							getResources().getString(R.string.is_disactivated) + " . ", TextToSpeech.QUEUE_FLUSH, null);*/
+					MainActivity.tts.speak("dernier point de route atteint", TextToSpeech.QUEUE_FLUSH, null);
 					WaypointName = "";
 	    	        WaypointLatitude = 999.0;
 	    	        WaypointLongitude = 999.0;
@@ -142,13 +143,15 @@ public class MyLocationListener extends Activity implements LocationListener {
 	    	        saveActivatedWaypoint();
 				}
 				else {
-					MainActivity.tts.speak(getResources().getString(R.string.You_have_reached_the_last_way_point) + " : " 
-							+ WaypointName + " . ", TextToSpeech.QUEUE_FLUSH, null);
+					/*MainActivity.tts.speak(getResources().getString(R.string.You_have_reached_the_last_way_point) + " : " 
+							+ WaypointName + " . ", TextToSpeech.QUEUE_FLUSH, null);*/
+					MainActivity.tts.speak( WaypointName + " est atteint ", TextToSpeech.QUEUE_FLUSH, null);		
 					activatedIndex = activatedIndex + 1;
 					WaypointName = activatedWay.get(activatedIndex).getName();
 					WaypointLatitude = Double.parseDouble(activatedWay.get(activatedIndex).getLatitude());
     	        	WaypointLongitude = Double.parseDouble(activatedWay.get(activatedIndex).getLongitude());
-    	        	MainActivity.tts.speak(WaypointName + getResources().getString(R.string.is_activated) + " . ", TextToSpeech.QUEUE_FLUSH, null);
+    	        	//MainActivity.tts.speak(WaypointName + getResources().getString(R.string.is_activated) + " . ", TextToSpeech.QUEUE_FLUSH, null);
+    	        	//MainActivity.tts.speak(WaypointName + " est activé ", TextToSpeech.QUEUE_FLUSH, null);
 	    	        updatePin();
 	    	        saveActivatedWaypoint();
 				}

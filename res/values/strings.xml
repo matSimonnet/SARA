@@ -11,7 +11,7 @@
     <string name="GPS_enable"> GPS activé </string>
     <string name="GPS_disable"> GPS désactivé </string>
     <string name="reached">atteint </string>
-    <string name="You_have_reached_the_last_way_point">Bravo ! le dernier point de route est atteint.</string>
+    <string name="You_have_reached_the_last_way_point">Bravo, le dernier point de route est atteint.</string>
     <string name="This_position_is_already_recorded">Cette position est déjà utilisée</string>
     <string name="This_name_is_already_recorded">Ce nom est déjà utilisé</string>
     <string name="Are_you_sure_changing_to_the_current_position">êtes vous certain de vouloir changer la position actuelle ?</string>

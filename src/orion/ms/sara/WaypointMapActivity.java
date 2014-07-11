@@ -194,8 +194,8 @@ public class WaypointMapActivity extends MapActivity {
 	}
     
 	private void setMapFile() {
-//		File mapFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Android/data/org.mapsforge.android.maps/map/bretagne.map");
-		File mapFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Android/data/org.mapsforge.android.maps/map/provence-alpes-cote-d-azur.map");
+	File mapFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Android/data/org.mapsforge.android.maps/map/bretagne.map");
+		//File mapFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Android/data/org.mapsforge.android.maps/map/provence-alpes-cote-d-azur.map");
 		// check if there is a bretagne.map
 		if (mapFile.exists()) {
 			mapView.setMapFile(mapFile);
