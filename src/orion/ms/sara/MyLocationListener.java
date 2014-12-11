@@ -157,11 +157,13 @@ public class MyLocationListener extends Activity implements LocationListener {
 				}
 			}
 		}
+		
 		if (!isWayActivated && isWaypointActivated()) {
 			Location.distanceBetween(WaypointLatitude, WaypointLongitude, loc.getLatitude(), loc.getLongitude(), distanceWaypoint);
 			if(distanceWaypoint[0] <= WPTreshold) { // in meters
-				MainActivity.tts.speak(WaypointName + " " + getResources().getString(R.string.reached) + " . "  
-						+  WaypointName + " " + getResources().getString(R.string.is_activated) + " . ", TextToSpeech.QUEUE_FLUSH, null);
+//				MainActivity.tts.speak(WaypointName + " " + getResources().getString(R.string.reached) + " . "  
+//						+  WaypointName + " " + getResources().getString(R.string.is_activated) + " . ", TextToSpeech.QUEUE_FLUSH, null);
+				MainActivity.tts.speak(WaypointName + " atteint" + " . "  , TextToSpeech.QUEUE_FLUSH, null);
 				WaypointName = "";
 				WaypointLatitude = 999;
 				WaypointLongitude = 999;
